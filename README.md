@@ -1,5 +1,5 @@
 # Contribution service frontend
-This repository contains code for the [Investor App](https://contribution.autonolas.network/) frontend.
+This repository contains code for the [Contribution service App](https://contribution.autonolas.network/) frontend.
 
 ## Tech Stack
 - web3.js
