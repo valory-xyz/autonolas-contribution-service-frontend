@@ -79,7 +79,7 @@ export async function pollNftDetails(id) {
       try {
         const response = await fetch(infoUrl);
 
-        // poll until the URL is resolved
+        // poll until the URL is resolved with 200 response
         if (response.status === 200) {
           const json = await response.json();
           const image = get(json, 'image');
