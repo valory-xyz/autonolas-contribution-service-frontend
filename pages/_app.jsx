@@ -1,9 +1,9 @@
+/* eslint-disable jest/require-hook */
 import App from 'next/app';
 import Head from 'next/head';
 import { createWrapper } from 'next-redux-wrapper';
 import PropTypes from 'prop-types';
 
-// web3 libraries
 import Web3 from 'web3';
 import { Web3ReactProvider } from '@web3-react/core';
 
