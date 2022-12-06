@@ -28,6 +28,43 @@ const GlobalStyle = createGlobalStyle`
     display: initial;
   }
 
+  /* layout */
+  .ant-layout {
+    background: ${COLOR.WHITE};
+  }
+  .ant-layout-header {
+    display: flex;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    .ant-menu {
+      flex: 1;
+      &.ant-menu-horizontal {
+        border: none;
+      }
+      &.ant-menu-horizontal > .ant-menu-item::after,
+      .ant-menu-horizontal > .ant-menu-submenu::after {
+        border-bottom: none !important;
+      }
+      .ant-menu-item-selected {
+        font-weight: bold;
+      }
+    }
+  }
+  .ant-layout-footer {
+    text-align: center;
+  }
+
+  /* layout */
+  .site-layout {
+    padding: 0 50px;
+    margin-top: 64px;
+  }
+  .site-layout-background {
+    padding: 24px 0;
+    min-height: calc(100vh - 140px);
+  }
+
   ${MEDIA_QUERY.mobileL} {
     .show-only-sm {
       display: initial;

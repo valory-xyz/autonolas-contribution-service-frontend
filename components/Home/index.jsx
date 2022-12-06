@@ -17,17 +17,20 @@ const Home = () => {
         onClose={onClose}
       />
 
-      <Row align="middle">
-        <Col xs={24} lg={14}>
-          {/* <div style={{ border: '1px solid red', height: '400px' }} /> */}
-        </Col>
-        <Col xs={24} lg={4} className="arrow-image-container">
-          <Button type="primary">Mint Badge</Button>
-          <MintNft />
-        </Col>
-      </Row>
     </>
   );
 };
 
 export default Home;
+/*
+
+     <Row align="middle">
+        <Col xs={24} lg={14}>
+          <div style={{ border: '1px solid red', height: '400px' }} />
+          </Col>
+          <Col xs={24} lg={4} className="arrow-image-container">
+            <Button type="primary">Mint Badge</Button>
+            <MintNft />
+          </Col>
+        </Row>
+*/
