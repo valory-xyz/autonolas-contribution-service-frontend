@@ -9,8 +9,8 @@
     "testc": "jest --coverage --verbose"
   },
   "dependencies": {
-    "@ethersproject/providers": "^5.6.8",
     "@autonolas/frontend-library": "^0.1.0",
+    "@ethersproject/providers": "^5.6.8",
     "@walletconnect/web3-provider": "^1.7.8",
     "@web3-react/core": "^6.1.9",
     "@zeit/next-css": "^1.0.1",
@@ -28,6 +28,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-feather": "^2.0.10",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // import { COLOR, MEDIA_QUERY } from 'util/theme';
 
-export const BuOlasContainer = styled.div`
+export const MintNftContainer = styled.div`
   display: flex;
   align-items: flex-start;
   max-width: 980px;

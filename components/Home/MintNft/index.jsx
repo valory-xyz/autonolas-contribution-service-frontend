@@ -1,22 +1,19 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'antd/lib';
+import { Button, Image } from 'antd/lib';
 import PropTypes from 'prop-types';
 // import get from 'lodash/get';
+import { get } from 'lodash';
 import { getToken } from '../common';
-import {
-  fetchMapLockedBalances,
-  fetchReleasableAmount,
-  withdraw,
-} from './utils';
+import { getLatestMintedNft, getAutonolasTokenUri } from './utils';
 import { MiddleContent, SectionHeader, Sections } from '../styles';
-import { BuOlasContainer, WriteFunctionalityContainer } from './styles';
+import { MintNftContainer, WriteFunctionalityContainer } from './styles';
 
-const BuOlas = ({ account, chainId }) => {
+const MintNft = ({ account, chainId }) => {
   // balances
   const [isLoading, setIsLoading] = useState(true);
-  const [mappedBalances, setMappedBalances] = useState(null);
-  const [releasableAmount, setReleasableAmount] = useState(null);
+  const [nftDetails, setNftDetails] = useState(null);
 
   // withdraw
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
@@ -26,17 +23,13 @@ const BuOlas = ({ account, chainId }) => {
       if (account && chainId) {
         setIsLoading(true);
         try {
-          const values = await fetchMapLockedBalances({
-            account,
-            chainId,
-          });
-          setMappedBalances(values);
-
-          const rAmount = await fetchReleasableAmount({
-            account,
-            chainId,
-          });
-          setReleasableAmount(rAmount);
+          const { isFound, response } = await getLatestMintedNft(account);
+          if (isFound) {
+            const details = await fetch(response);
+            console.log(details);
+            const json = await details.json();
+            setNftDetails(json);
+          }
         } catch (error) {
           window.console.error(error);
         } finally {
@@ -51,7 +44,7 @@ const BuOlas = ({ account, chainId }) => {
     if (account && chainId) {
       setIsWithdrawLoading(true);
       try {
-        await withdraw({ account, chainId });
+        // await withdraw({ account, chainId });
       } catch (error) {
         window.console.error(error);
       } finally {
@@ -60,66 +53,49 @@ const BuOlas = ({ account, chainId }) => {
     }
   };
 
-  const {
-    amount, startTime, endTime, transferredAmount,
-  } = mappedBalances || {};
+  const image = get(nftDetails, 'image');
 
   return (
-    <BuOlasContainer>
+    <MintNftContainer>
       <div className="left-content">
         <MiddleContent className="balance-container">
           <SectionHeader>Locked Balances</SectionHeader>
           <Sections>
-            {getToken({
+            {/* {getToken({
               tokenName: 'Amount',
               token: amount || '--',
               isLoading,
-            })}
-            {getToken({
-              tokenName: 'Transferred Amount',
-              token: transferredAmount || '--',
-              isLoading,
-            })}
-            {getToken({
-              tokenName: 'Start Time',
-              token: startTime ? new Date(startTime).toLocaleString() : '--',
-              isLoading,
-            })}
-            {getToken({
-              tokenName: 'Eend Time',
-              token: endTime ? new Date(endTime).toLocaleString() : '--',
-              isLoading,
-            })}
-          </Sections>
-        </MiddleContent>
-
-        <MiddleContent className="balance-container">
-          <SectionHeader>Releasable Amount</SectionHeader>
-          <Sections>
-            {getToken({
-              tokenName: 'Amount',
-              token: releasableAmount || '--',
-              isLoading,
-            })}
+            })} */}
           </Sections>
         </MiddleContent>
       </div>
 
       <WriteFunctionalityContainer>
         <Button type="primary" onClick={onWithdraw} loading={isWithdrawLoading}>
-          Withdraw
+          Mint Badge
         </Button>
+
+        {image && (
+          <Image
+            src={getAutonolasTokenUri(image)}
+            alt="NFT"
+            width={400}
+            height={400}
+            // onError={() => setImageSize(SMALL_SIZE)}
+            data-testid="nft-image"
+          />
+        )}
       </WriteFunctionalityContainer>
-    </BuOlasContainer>
+    </MintNftContainer>
   );
 };
 
-BuOlas.propTypes = {
+MintNft.propTypes = {
   account: PropTypes.string,
   chainId: PropTypes.number,
 };
 
-BuOlas.defaultProps = {
+MintNft.defaultProps = {
   account: null,
   chainId: null,
 };
@@ -129,4 +105,4 @@ const mapStateToProps = (state) => {
   return { account, chainId };
 };
 
-export default connect(mapStateToProps, null)(BuOlas);
+export default connect(mapStateToProps, null)(MintNft);

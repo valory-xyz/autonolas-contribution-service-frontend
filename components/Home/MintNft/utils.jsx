@@ -1,55 +1,72 @@
 import { getMintContract } from 'common-util/Contracts';
-import { formatToEth } from 'common-util/functions';
+import { findLastIndex, toLower } from 'lodash';
+import { GATEWAY_URL } from 'util/constants';
 
-export const fetchMapLockedBalances = ({ account, chainId }) => new Promise((resolve, reject) => {
-  const contract = getMintContract(window.MODAL_PROVIDER, chainId);
+const pattern = /ipfs:\/\/+/g;
+
+export const getAutonolasTokenUri = (tokenUri) => (tokenUri || '').replace(pattern, GATEWAY_URL);
+
+export const getLatestMintedNft = (account) => new Promise((resolve, reject) => {
+  const contract = getMintContract();
 
   contract.methods
-    .mapLockedBalances(account)
+    .totalSupply()
     .call()
-    .then((response) => {
-      // multiplied by 1000 to convert to milliseconds
-      resolve({
-        amount: formatToEth(response.totalAmount),
-        startTime: response.startTime * 1000,
-        endTime: response.endTime * 1000,
-        transferredAmount: response.transferredAmount,
+    .then((total) => {
+      const nftImages = [];
+      for (let i = 1; i <= total; i += 1) {
+        const result = contract.methods.ownerOf(`${i}`).call();
+        nftImages.push(result);
+      }
+
+      Promise.all(nftImages).then(async (ownerList) => {
+        /**
+           * find the element in reverse order to fetch the latest
+           */
+        const lastIndex = findLastIndex(
+          ownerList,
+          (e) => toLower(e) === toLower(account),
+        );
+        if (lastIndex !== -1) {
+          const infoUrl = await contract.methods
+            .tokenURI(`${Number(lastIndex) + 1}`)
+            .call();
+
+          resolve({ isFound: true, response: infoUrl });
+        } else {
+          resolve({ isFound: false, response: null });
+        }
       });
     })
     .catch((e) => {
-      window.console.log('Error occured on fetching MapLockedBalances:');
+      console.error(e);
       reject(e);
     });
-});
 
-export const fetchReleasableAmount = ({ account, chainId }) => new Promise((resolve, reject) => {
-  const contract = getMintContract(window.MODAL_PROVIDER, chainId);
+  // try {
+  //   Promise.allSettled(nftImages).then(async (existsResult) => {
+  //     // filter services which don't exists (deleted or destroyed)
+  //     const validTokenIds = [];
+  //     existsResult.forEach((item, index) => {
+  //       const serviceId = `${first + index}`;
+  //       if (item.status === 'fulfilled' && !!item.value) {
+  //         validTokenIds.push(serviceId);
+  //       }
+  //     });
 
-  contract.methods
-    .releasableAmount(account)
-    .call()
-    .then((response) => {
-      resolve(formatToEth(response));
-    })
-    .catch((e) => {
-      window.console.log('Error occured on fetching ReleasableAmount:');
-      reject(e);
-    });
-});
+  //     // list of promises of valid service
+  //     const results = await Promise.all(
+  //       validTokenIds.map(async (id) => {
+  //         const info = await getServiceDetails(id);
+  //         const owner = await getServiceOwner(id);
+  //         return { ...info, id, owner };
+  //       }),
+  //     );
 
-// Create lock
-export const withdraw = ({
-  account, chainId,
-}) => new Promise((resolve, reject) => {
-  const contract = getMintContract(window.MODAL_PROVIDER, chainId);
-
-  contract.methods
-    .withdraw()
-    .send({ from: account })
-    .once('transactionHash', (hash) => resolve(hash))
-    .then((response) => resolve(response?.transactionHash))
-    .catch((e) => {
-      window.console.log('Error occured on creating lock:');
-      reject(e);
-    });
+  //     resolve(results);
+  //   });
+  // } catch (e) {
+  //   console.error(e);
+  //   reject(e);
+  // }
 });

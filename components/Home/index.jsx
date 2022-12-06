@@ -1,6 +1,7 @@
 import {
   Alert, Col, Row, Button,
 } from 'antd/lib';
+import MintNft from './MintNft';
 
 const Home = () => {
   const onClose = () => {
@@ -21,7 +22,8 @@ const Home = () => {
           {/* <div style={{ border: '1px solid red', height: '400px' }} /> */}
         </Col>
         <Col xs={24} lg={4} className="arrow-image-container">
-          {/* <Button type="primary">Mint Badge</Button> */}
+          <Button type="primary">Mint Badge</Button>
+          <MintNft />
         </Col>
       </Row>
     </>

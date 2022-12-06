@@ -6,9 +6,18 @@ import {
   MINT_NFT_CONTRACT_ABI_MAINNET,
 } from 'common-util/AbiAndAddresses';
 
-export const getMintContract = (p, chainId) => {
-  const web3 = new Web3(p);
+const getWeb3Details = () => {
+  /**
+   * provider = wallect-connect provider or currentProvider by metamask
+   */
+  const web3 = new Web3(window.WEB3_PROVIDER || window.web3.currentProvider);
+  const chainId = Number(window.ethereum.chainId);
 
+  return { web3, chainId };
+};
+
+export const getMintContract = () => {
+  const { web3, chainId } = getWeb3Details();
   const contract = new web3.eth.Contract(
     chainId === 5
       ? MINT_NFT_CONTRACT_ABI_GOERLI
