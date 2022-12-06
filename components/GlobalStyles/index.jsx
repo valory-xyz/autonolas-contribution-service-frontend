@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { MEDIA_QUERY, COLOR } from 'util/theme';
+import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 // const GlobalStyles = styled.div`
 const GlobalStyle = createGlobalStyle`
@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {
-      color: ${COLOR.WALLECT_CONNECT_BLUE} !important;
+      color: #1890FF !important;
     }
   }
   .ant-alert {

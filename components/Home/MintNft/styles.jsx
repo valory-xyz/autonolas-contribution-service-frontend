@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { COLOR } from 'util/theme';
-// import { COLOR, MEDIA_QUERY } from 'util/theme';
+import { COLOR } from '@autonolas/frontend-library';
 
 export const MintNftContainer = styled.div`
   display: flex;
