@@ -10,8 +10,26 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* common */
+  .m-0 {
+    margin: 0 !important;
+  }
+  .mb-12 {
+    margin-bottom: 12px;
+  }
+  .mb-0 {
+    margin-bottom: 0px;
+  }
   .mb-8 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
+  }
+  .mb-12 {
+    margin-bottom: 12px;
+  }
+  .mt-8 {
+    margin-top: 8px;
+  }
+  .mt-12 {
+    margin-top: 12px;
   }
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {

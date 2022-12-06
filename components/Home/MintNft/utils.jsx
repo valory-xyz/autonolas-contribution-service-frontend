@@ -1,6 +1,9 @@
 import { getMintContract } from 'common-util/Contracts';
-import { findLastIndex, toLower } from 'lodash';
+import { findIndex, toLower } from 'lodash';
 import { GATEWAY_URL } from 'util/constants';
+
+// TODO: replace with findLastIndex
+const findLastIndex = findIndex;
 
 const pattern = /ipfs:\/\/+/g;
 

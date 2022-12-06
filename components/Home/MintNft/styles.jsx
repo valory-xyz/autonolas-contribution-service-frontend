@@ -1,13 +1,28 @@
 import styled from 'styled-components';
+import { COLOR } from 'util/theme';
 // import { COLOR, MEDIA_QUERY } from 'util/theme';
 
 export const MintNftContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  max-width: 980px;
-  .balance-container {
-    width: 320px;
-    margin: 0.25rem 3rem 1rem 0;
+  flex-direction: column;
+  .connect-wallet-info {
+    margin: 1rem 0;
+    .ant-alert-message {
+      p {
+        margin: 0;
+      }
+    }
+  }
+  .nft-image {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid ${COLOR.GREY_1};
+  }
+  .ant-btn-link {
+    padding: 0;
+    line-height: normal;
+    height: fit-content;
   }
 `;
 
