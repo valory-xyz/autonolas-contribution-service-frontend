@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {
-      color: #1890FF !important;
+      color: #1890ff !important;
     }
   }
   .ant-alert {
@@ -89,6 +89,16 @@ const GlobalStyle = createGlobalStyle`
     }
     .hide-only-sm {
       display: none;
+    }
+  }
+
+  /* title */
+  .custom-text-secondary {
+    display: inline-block;
+    max-width: 400px;
+    margin-bottom: 12px;
+    svg {
+      color: ${COLOR.BORDER_GREY};
     }
   }
 `;

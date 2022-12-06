@@ -1,4 +1,6 @@
 import { Grid, Typography } from 'antd/lib';
+import { LinkOutlined } from '@ant-design/icons';
+import { COLOR } from '@autonolas/frontend-library';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
@@ -28,11 +30,11 @@ const Leaderboard = () => {
     <>
       <LeaderboardContent className="section">
         <Title level={2}>Leaderboard</Title>
-        <Text type="secondary" className="mb-12">
+        <Text type="secondary" className="custom-text-secondary">
           Climb the leaderboard by completing actions that contribute to
           Autonolas’ success.&nbsp;
           <a
-            href="https://www.autonolas.network/"
+            href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
             target="_blank"
             rel="noreferrer"
           >
@@ -42,7 +44,7 @@ const Leaderboard = () => {
 
         <div className="leaderboard-table">
           <iframe
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginTop: '12px' }}
             height={height}
             title="leaderboard"
             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSuZsLhPIkleGOd4LIQL6gmJuZhsF0-6JcsqsVkZ08W5AAmIxkxO41aSUi5Csssf2z9IhfXspYCAy1o/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false"
@@ -58,20 +60,34 @@ const Leaderboard = () => {
           >
             Link your Discord
           </a>
+          .
         </Text>
 
-        <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>Actions</Title>
-        <Text type="secondary" className="mb-12">
+        <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
+          Actions
+        </Title>
+        <Text type="secondary" className="custom-text-secondary">
           Complete actions to earn points, climb the leaderboard and upgrade
           your badge.&nbsp;
           <a
-            href="https://www.autonolas.network/"
+            href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
             target="_blank"
             rel="noreferrer"
           >
             Learn more
           </a>
         </Text>
+
+        <Title level={5} style={{ marginTop: 12, marginBottom: 4 }}>
+          <a
+            href="https://discord.gg/4xhAHuy4Y3"
+            target="_blank"
+            rel="noreferrer"
+          >
+            See all actions&nbsp;
+            <LinkOutlined color={COLOR.BORDER_GREY} />
+          </a>
+        </Title>
       </LeaderboardContent>
     </>
   );

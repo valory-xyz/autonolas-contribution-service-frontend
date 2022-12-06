@@ -20,6 +20,9 @@ export const CustomLayout = styled(Layout)`
       padding-left: 16px;
     }
   }
+  .footer-center {
+    display: none !important;
+  }
 `;
 
 export const Logo = styled.div`
@@ -39,22 +42,6 @@ export const RightMenu = styled.div`
   align-items: center;
 `;
 
-export const FooterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 1rem 50px;
-  .socials {
-    display: flex;
-    column-gap: 28px;
-  }
-  .footer {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
-  }
-`;
-
 export const ContractsInfoContainer = styled.div`
   font-size: 16px;
   display: flex;
@@ -68,12 +55,13 @@ export const ContractsInfoContainer = styled.div`
   }
 `;
 
-export const SupportOnlyDesktop = styled.div`
-  margin: 4rem 0;
-`;
-
 export const Hr = styled.hr`
   border-color: ${COLOR.BORDER_GREY};
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
+`;
+
+export const PoweredByLogo = styled.div`
+  display: flex;
+  margin-right: 1rem;
 `;

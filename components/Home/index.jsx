@@ -14,7 +14,20 @@ const Home = () => {
   return (
     <>
       <Alert
-        message="To earn your first points, feature on the leaderboard and activate your badge, link your Discord."
+        message={(
+          <>
+            To earn your first points, feature on the leaderboard and activate
+            your badge,&nbsp;
+            <a
+              href="https://discord.gg/4xhAHuy4Y3"
+              target="_blank"
+              rel="noreferrer"
+            >
+              link your Discord
+            </a>
+            .
+          </>
+        )}
         type="info"
         closable
         onClose={onClose}

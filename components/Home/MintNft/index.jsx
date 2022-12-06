@@ -79,11 +79,11 @@ const MintNft = ({ account, chainId }) => {
   return (
     <MintNftContainer>
       <Title level={2}>Badge</Title>
-      <Text type="secondary" className="mb-12">
+      <Text type="secondary" className="custom-text-secondary">
         Show off your leaderboard rank and promote Autonolas with a badge that
         evolves as you contribute.&nbsp;
         <a
-          href="https://www.autonolas.network/"
+          href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
           target="_blank"
           rel="noreferrer"
         >
@@ -113,11 +113,11 @@ const MintNft = ({ account, chainId }) => {
                     className="nft-image"
                     preview={false}
                   />
-                  <Text type="secondary" className="mb-12 mt-12">
+                  <Text type="secondary" className="custom-text-secondary mt-12">
                     Your badge automatically updates as you complete actions and
                     earn points!
                   </Text>
-                  <Text type="secondary">
+                  <Text type="secondary" className="custom-text-secondary">
                     Set your NFT as your PFP on social apps like Twitter, Lens,
                     Farcaster and Orbis.
                   </Text>
