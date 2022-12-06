@@ -13,7 +13,7 @@ export const CustomLayout = styled(Layout)`
     background-color: ${COLOR.WHITE};
   }
   .site-layout {
-    padding: 0 1rem;
+    padding: 0 3rem;
   }
   .site-layout-background {
     min-height: calc(100vh - 8.5rem);

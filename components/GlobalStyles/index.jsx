@@ -8,15 +8,6 @@ const GlobalStyle = createGlobalStyle`
   :before {
     box-sizing: border-box;
   }
-  body {
-    padding: 1rem 2rem;
-  }
-  
-  ${MEDIA_QUERY.tablet} {
-    body {
-      padding: 1rem
-    }
-  }
 
   /* common */
   .mb-8 {

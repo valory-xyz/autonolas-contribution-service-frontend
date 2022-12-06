@@ -54,13 +54,6 @@ const Actions = () => (
     ))}
 
     <br />
-    <div className="img-wrapper">
-      <img
-        src="/images/Documentation/el-col-how-it-works.png"
-        alt="How El Collectooorr works"
-        loading="lazy"
-      />
-    </div>
     <br />
     <br />
   </div>
