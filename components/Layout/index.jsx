@@ -34,7 +34,7 @@ const NavigationBar = ({ children }) => {
   };
 
   const logo = (
-    <Logo onClick={() => router.push('/')} data-testid="protocol-logo">
+    <Logo onClick={() => router.push('/')}>
       <LogoSvg />
     </Logo>
   );
