@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { notification } from 'antd/lib';
-import { COLOR } from 'util/theme';
 
 export const getBalance = (account, p) => new Promise((resolve, reject) => {
   p.eth

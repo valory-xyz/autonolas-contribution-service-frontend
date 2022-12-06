@@ -71,3 +71,9 @@ export const ContractsInfoContainer = styled.div`
 export const SupportOnlyDesktop = styled.div`
   margin: 4rem 0;
 `;
+
+export const Hr = styled.hr`
+  border-color: ${COLOR.BORDER_GREY};
+  width: 100%;
+  margin-bottom: 1.5rem;
+`;

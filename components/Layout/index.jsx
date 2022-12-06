@@ -3,7 +3,7 @@ import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-// import Footer from './Footer';
+import Footer from './Footer';
 import Login from '../Login';
 import { CustomLayout, Logo, RightMenu } from './styles';
 
@@ -71,7 +71,7 @@ const NavigationBar = ({ children }) => {
         <div className="site-layout-background">{children}</div>
       </Content>
 
-      {/* <Footer /> */}
+      <Footer />
     </CustomLayout>
   );
 };

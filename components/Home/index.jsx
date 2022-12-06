@@ -6,6 +6,7 @@ import MintNft from './MintNft';
 const Leaderboard = dynamic(() => import('./Leaderboard'));
 
 const Home = () => {
+  // TODO: store in localstorage
   const onClose = () => {
     console.log('HI');
   };
