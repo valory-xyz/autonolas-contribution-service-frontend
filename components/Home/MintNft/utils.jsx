@@ -1,12 +1,12 @@
 import { getMintContract } from 'common-util/Contracts';
-import { findIndex, toLower } from 'lodash';
+import { notifySuccess } from 'common-util/functions';
+import { findIndex, toLower, get } from 'lodash';
 import { GATEWAY_URL } from 'util/constants';
 
 // TODO: replace with findLastIndex
 const findLastIndex = findIndex;
 
 const pattern = /ipfs:\/\/+/g;
-
 export const getAutonolasTokenUri = (tokenUri) => (tokenUri || '').replace(pattern, GATEWAY_URL);
 
 export const getLatestMintedNft = (account) => new Promise((resolve, reject) => {
@@ -45,31 +45,54 @@ export const getLatestMintedNft = (account) => new Promise((resolve, reject) => 
       console.error(e);
       reject(e);
     });
-
-  // try {
-  //   Promise.allSettled(nftImages).then(async (existsResult) => {
-  //     // filter services which don't exists (deleted or destroyed)
-  //     const validTokenIds = [];
-  //     existsResult.forEach((item, index) => {
-  //       const serviceId = `${first + index}`;
-  //       if (item.status === 'fulfilled' && !!item.value) {
-  //         validTokenIds.push(serviceId);
-  //       }
-  //     });
-
-  //     // list of promises of valid service
-  //     const results = await Promise.all(
-  //       validTokenIds.map(async (id) => {
-  //         const info = await getServiceDetails(id);
-  //         const owner = await getServiceOwner(id);
-  //         return { ...info, id, owner };
-  //       }),
-  //     );
-
-  //     resolve(results);
-  //   });
-  // } catch (e) {
-  //   console.error(e);
-  //   reject(e);
-  // }
 });
+
+export const mintNft = (account) => new Promise((resolve, reject) => {
+  const contract = getMintContract();
+
+  contract.methods
+    .mint()
+    .send({ from: account })
+    // .once('transactionHash', (hash) => resolve(hash))
+    .then((response) => {
+      notifySuccess('Successfully Minted');
+      const id = get(response, 'events.Transfer.returnValues.id');
+      resolve(id);
+    })
+    .catch((e) => {
+      window.console.log('Error occured on minting NFT');
+      reject(e);
+    });
+});
+
+export async function pollNftDetails(id) {
+  const contract = getMintContract();
+  const infoUrl = await contract.methods
+    .tokenURI(`${id}`)
+    .call();
+
+  return new Promise((resolve, reject) => {
+    /* eslint-disable-next-line consistent-return */
+    const interval = setInterval(async () => {
+      window.console.log('Fetching NFT details...');
+
+      try {
+        const response = await fetch(infoUrl);
+
+        // poll until the URL is resolved
+        if (response.status === 200) {
+          const json = await response.json();
+          const image = get(json, 'image');
+
+          if (image) {
+            window.console.log('NFT details: ', json);
+            clearInterval(interval);
+            resolve(json);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    }, 4000);
+  });
+}

@@ -24,13 +24,11 @@ export const formatToEth = (value, dv = 0) => (+ethers.utils.formatEther(value))
 
 export const notifyError = (message = 'Some error occured') => notification.error({
   message,
-  style: { border: `1px solid ${COLOR.PRIMARY}` },
 });
 
 export const notifySuccess = (message = 'Successfull', description = null) => notification.success({
   message,
   description,
-  style: { border: `1px solid ${COLOR.PRIMARY}` },
 });
 
 const getChainId = async () => {

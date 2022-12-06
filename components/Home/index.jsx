@@ -1,6 +1,9 @@
+import dynamic from 'next/dynamic';
 import { Alert, Col, Row } from 'antd/lib';
-import Leaderboard from './Leaderboard';
+// import Leaderboard from './Leaderboard';
 import MintNft from './MintNft';
+
+const Leaderboard = dynamic(() => import('./Leaderboard'));
 
 const Home = () => {
   const onClose = () => {

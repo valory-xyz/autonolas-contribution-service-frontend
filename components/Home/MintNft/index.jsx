@@ -4,18 +4,23 @@ import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
 import PropTypes from 'prop-types';
-// import get from 'lodash/get';
-import { get } from 'lodash';
-import { getLatestMintedNft, getAutonolasTokenUri } from './utils';
+import get from 'lodash/get';
+import {
+  getLatestMintedNft,
+  mintNft,
+  getAutonolasTokenUri,
+  pollNftDetails,
+} from './utils';
 import { MintNftContainer, WriteFunctionalityContainer } from './styles';
 
 const { Title, Text } = Typography;
 
 const MintNft = ({ account, chainId }) => {
-  const [isMintingLoading, setIsMintingLoading] = useState(true);
+  const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
   const [nftDetails, setNftDetails] = useState(null);
 
-  const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
+  // loader for minting
+  const [isMintingLoading, setIsMintingLoading] = useState(false);
 
   useEffect(() => {
     const fn = async () => {
@@ -45,8 +50,13 @@ const MintNft = ({ account, chainId }) => {
   const onMintBadge = async () => {
     if (account && chainId) {
       setIsMintingLoading(true);
+
       try {
-        // await withdraw({ account, chainId });
+        const id = await mintNft(account);
+
+        // once minted, poll the details
+        const response = await pollNftDetails(id);
+        setNftDetails(response);
       } catch (error) {
         window.console.error(error);
       } finally {
@@ -117,8 +127,8 @@ const MintNft = ({ account, chainId }) => {
                   <Button
                     type="primary"
                     onClick={onMintBadge}
-                    loading={isMintingLoading}
-                    disabled={isMintingLoading}
+                    loading={isNftFetchingLoading || isMintingLoading}
+                    disabled={isNftFetchingLoading || isMintingLoading}
                   >
                     Mint Badge
                   </Button>
