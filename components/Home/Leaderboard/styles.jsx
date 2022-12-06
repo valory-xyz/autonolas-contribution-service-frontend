@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import { MEDIA_QUERY } from 'util/theme';
-import { backgroundImage } from 'components/GlobalStyles';
 
 export const LeaderboardContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  ${backgroundImage('/images/1TheNewWay/background.webp')}
   .header {
     text-align: center;
   }

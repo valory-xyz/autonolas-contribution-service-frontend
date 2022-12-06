@@ -24,7 +24,7 @@ const NavigationBar = ({ children }) => {
   useEffect(() => {
     if (pathname) {
       const name = pathname.split('/')[1];
-      setSelectedMenu(name || null);
+      setSelectedMenu(name || 'homepage');
     }
   }, [pathname]);
 
@@ -53,12 +53,7 @@ const NavigationBar = ({ children }) => {
       <Header>
         {logo}
 
-        <Menu
-          theme="light"
-          mode="horizontal"
-          selectedKeys={[selectedMenu]}
-          defaultSelectedKeys={['homepage']}
-        >
+        <Menu theme="light" mode="horizontal" selectedKeys={[selectedMenu]}>
           <Menu.Item key="homepage" onClick={handleMenuItemClick}>
             Contribute
           </Menu.Item>

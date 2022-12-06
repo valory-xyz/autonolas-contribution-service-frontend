@@ -1,5 +1,5 @@
-import { Grid } from 'antd';
-import Button from 'common-util/Button';
+import { Grid, Button } from 'antd/lib';
+// import Button from 'common-util/Button';
 import { LeaderboardContent } from './styles';
 
 const { useBreakpoint } = Grid;
@@ -23,15 +23,14 @@ const getSize = (sizes) => {
 
 const Leaderboard = () => {
   const screens = useBreakpoint();
-  const { width, height } = getSize(screens);
+  const { height } = getSize(screens);
 
   return (
     <>
       <LeaderboardContent className="section">
         <div className="leaderboard-table">
           <iframe
-            style={width < 650 ? { width: '100%' } : {}}
-            width={width}
+            style={{ width: '100%' }}
             height={height}
             title="leaderboard"
             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSuZsLhPIkleGOd4LIQL6gmJuZhsF0-6JcsqsVkZ08W5AAmIxkxO41aSUi5Csssf2z9IhfXspYCAy1o/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false"
