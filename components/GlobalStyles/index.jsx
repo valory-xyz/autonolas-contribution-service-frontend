@@ -80,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .site-layout-background {
     padding: 24px 0;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 160px);
   }
 
   ${MEDIA_QUERY.mobileL} {

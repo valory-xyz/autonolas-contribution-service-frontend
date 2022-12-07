@@ -75,7 +75,7 @@ const Leaderboard = () => {
 
         <Title level={5} style={{ marginTop: 12, marginBottom: 4 }}>
           <a
-            href="https://discord.gg/4xhAHuy4Y3"
+            href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
             target="_blank"
             rel="noreferrer"
           >

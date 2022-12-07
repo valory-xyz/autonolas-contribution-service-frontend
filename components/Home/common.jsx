@@ -1,9 +1,8 @@
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 export const DiscordLink = ({ text }) => (
-  <a href="https://discord.gg/4xhAHuy4Y3" target="_blank" rel="noreferrer">
-    {text || 'Link your Discord'}
-  </a>
+  <Link href="/verification">{text || 'Complete Discord verification'}</Link>
 );
 
 DiscordLink.propTypes = {

@@ -5,6 +5,7 @@ import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
 import Login from '../Login';
 import Footer from './Footer';
+import { DiscordLink } from '../Home/common';
 import {
   CustomLayout, Logo, RightMenu, LoginXsContainer,
 } from './styles';
@@ -55,6 +56,10 @@ const NavigationBar = ({ children }) => {
 
         {!screens.xs && (
           <RightMenu>
+            <DiscordLink />
+            &nbsp;
+            &nbsp;
+            &nbsp;
             <Login />
           </RightMenu>
         )}
