@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
@@ -93,13 +94,7 @@ const MintNft = ({ account, chainId }) => {
       <Text type="secondary" className="custom-text-secondary">
         Show off your leaderboard rank and promote Autonolas with a badge that
         evolves as you contribute.&nbsp;
-        <a
-          href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Learn more
-        </a>
+        <Link href="/docs#section-badge">Learn more</Link>
       </Text>
 
       {isNftFetchingLoading ? (

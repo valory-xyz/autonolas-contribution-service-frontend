@@ -1,4 +1,5 @@
 import { Grid, Typography } from 'antd/lib';
+import Link from 'next/link';
 import { LinkOutlined } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
 import { DiscordLink } from '../common';
@@ -64,13 +65,7 @@ const Leaderboard = () => {
         <Text type="secondary" className="custom-text-secondary">
           Complete actions to earn points, climb the leaderboard and upgrade
           your badge.&nbsp;
-          <a
-            href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Learn more
-          </a>
+          <Link href="/docs#section-actions">Learn more</Link>
         </Text>
 
         <Title level={5} style={{ marginTop: 12, marginBottom: 4 }}>
