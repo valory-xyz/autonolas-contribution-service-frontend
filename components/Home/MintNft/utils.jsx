@@ -3,9 +3,6 @@ import { notifySuccess } from 'common-util/functions';
 import { findIndex, toLower, get } from 'lodash';
 import { GATEWAY_URL } from 'util/constants';
 
-// TODO: replace with findLastIndex
-const findLastIndex = findIndex;
-
 const pattern = /ipfs:\/\/+/g;
 export const getAutonolasTokenUri = (tokenUri) => (tokenUri || '').replace(pattern, GATEWAY_URL);
 
@@ -26,7 +23,7 @@ export const getLatestMintedNft = (account) => new Promise((resolve, reject) => 
         /**
            * find the element in reverse order to fetch the latest
            */
-        const lastIndex = findLastIndex(
+        const lastIndex = findIndex(
           ownerList,
           (e) => toLower(e) === toLower(account),
         );

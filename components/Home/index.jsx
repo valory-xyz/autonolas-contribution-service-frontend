@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { Alert, Col, Row } from 'antd/lib';
-// import Leaderboard from './Leaderboard';
 import MintNft from './MintNft';
+import { DiscordLink } from './common';
 
 const Leaderboard = dynamic(() => import('./Leaderboard'));
 
@@ -18,13 +18,7 @@ const Home = () => {
           <>
             To earn your first points, feature on the leaderboard and activate
             your badge,&nbsp;
-            <a
-              href="https://discord.gg/4xhAHuy4Y3"
-              target="_blank"
-              rel="noreferrer"
-            >
-              link your Discord
-            </a>
+            <DiscordLink />
             .
           </>
         )}

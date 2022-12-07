@@ -11,7 +11,12 @@ import {
   getAutonolasTokenUri,
   pollNftDetails,
 } from './utils';
-import { MintNftContainer, WriteFunctionalityContainer } from './styles';
+import { DiscordLink } from '../common';
+import {
+  IMAGE_SIZE,
+  MintNftContainer,
+  WriteFunctionalityContainer,
+} from './styles';
 
 const { Title, Text } = Typography;
 
@@ -92,13 +97,16 @@ const MintNft = ({ account, chainId }) => {
       </Text>
 
       {isNftFetchingLoading ? (
-        <Skeleton.Image
-          active
-          style={{
-            width: 300,
-            height: 300,
-          }}
-        />
+        <>
+          <Skeleton.Image active className="skeleton-image-loader" />
+          <Text type="secondary" className="custom-text-secondary mt-12">
+            Your badge is being generated. This can take up to 2 minutes.
+          </Text>
+          <Text type="secondary" className="custom-text-secondary">
+            <DiscordLink />
+            &nbsp;while you wait!
+          </Text>
+        </>
       ) : (
         <>
           {account ? (
@@ -108,12 +116,15 @@ const MintNft = ({ account, chainId }) => {
                   <Image
                     src={getAutonolasTokenUri(image)}
                     alt="NFT"
-                    width={300}
-                    height={300}
+                    width={IMAGE_SIZE}
+                    height={IMAGE_SIZE}
                     className="nft-image"
                     preview={false}
                   />
-                  <Text type="secondary" className="custom-text-secondary mt-12">
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
                     Your badge automatically updates as you complete actions and
                     earn points!
                   </Text>
@@ -132,6 +143,12 @@ const MintNft = ({ account, chainId }) => {
                   >
                     Mint Badge
                   </Button>
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
+                    Free to mint! Only cost is gas.
+                  </Text>
                 </>
               )}
             </>

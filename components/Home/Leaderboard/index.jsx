@@ -1,6 +1,7 @@
 import { Grid, Typography } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
+import { DiscordLink } from '../common';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
@@ -53,13 +54,7 @@ const Leaderboard = () => {
 
         <Text type="secondary" className="mb-12">
           Not showing on the leaderboard?&nbsp;
-          <a
-            href="https://discord.gg/4xhAHuy4Y3"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Link your Discord
-          </a>
+          <DiscordLink />
           .
         </Text>
 
