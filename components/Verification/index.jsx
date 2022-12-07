@@ -6,8 +6,9 @@ import {
 } from 'antd/lib';
 // import { CheckSquareOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
-import { notifySuccess } from 'common-util/functions';
+import { notifyError, notifySuccess } from 'common-util/functions';
 import Login from '../Login';
+import { verifyAddress } from './utils';
 import { Ol } from './styles';
 
 const { Title } = Typography;
@@ -21,7 +22,8 @@ const Verification = () => {
   // const checkmark = <CheckSquareOutlined twoToneColor={COLOR.PRIMARY} />;
   const checkmark = '✅';
 
-  const isValidId = !!get(router, 'query.[discord-id]');
+  const discordId = get(router, 'query.[discord-id]');
+  const isValidId = !!discordId;
 
   const isConnectWalletEnabled = !!account;
   const isLinkWalletEnabled = isConnectWalletEnabled && !isValidId;
@@ -80,14 +82,17 @@ const Verification = () => {
 
               <Button
                 type="primary"
-                onClick={() => {
+                onClick={async () => {
                   setIsVerifying(true);
-
-                  setTimeout(() => {
+                  try {
+                    await verifyAddress(account, discordId);
                     setIsVerifying(false);
                     setIsVerified(true);
                     notifySuccess('Verified Successfully!');
-                  }, 3000);
+                  } catch (error) {
+                    notifyError();
+                    console.error(error);
+                  }
                 }}
                 disabled={!isVerifyEnabled || isVerified}
                 loading={isVerifying}
