@@ -92,6 +92,15 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  ${MEDIA_QUERY.mobileM} {
+    .site-layout {
+      padding: 0 20px;
+    }
+    .site-layout-background {
+      padding: 8px 0;
+    }
+  }
+
   /* title */
   .custom-text-secondary {
     display: inline-block;

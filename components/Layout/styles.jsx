@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout } from 'antd/lib';
-import { COLOR } from '@autonolas/frontend-library';
+import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
   .registry-tabs {
@@ -19,6 +19,9 @@ export const CustomLayout = styled(Layout)`
     .ant-tabs-nav-wrap {
       padding-left: 16px;
     }
+  }
+  .footer-left-content {
+    width: 100%;
   }
   .footer-center {
     display: none !important;
@@ -53,6 +56,10 @@ export const ContractsInfoContainer = styled.div`
   img {
     margin-right: 8px;
   }
+
+  ${MEDIA_QUERY.mobileM} {
+    flex-direction: column;
+  }
 `;
 
 export const Hr = styled.hr`
@@ -64,4 +71,9 @@ export const Hr = styled.hr`
 export const PoweredByLogo = styled.div`
   display: flex;
   margin-right: 1rem;
+`;
+
+export const LoginXsContainer = styled.div`
+  text-align: center;
+  margin-bottom: 1rem;
 `;

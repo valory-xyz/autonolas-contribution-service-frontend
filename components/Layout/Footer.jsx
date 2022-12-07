@@ -62,8 +62,8 @@ const ContractInfo = () => {
             <a href={redirectTo} target="_blank" rel="noreferrer">
               {text}
             </a>
+            {index !== LIST.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
           </Text>
-          {index !== LIST.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
         </Fragment>
       ))}
     </ContractsInfoContainer>
