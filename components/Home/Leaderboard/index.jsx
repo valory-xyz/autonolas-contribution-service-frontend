@@ -1,5 +1,7 @@
 import { Grid, Typography } from 'antd/lib';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
+import get from 'lodash/get';
 import { LinkOutlined } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
 import { DiscordLink } from '../common';
@@ -27,7 +29,7 @@ const getSize = (sizes) => {
 const Leaderboard = () => {
   const screens = useBreakpoint();
   const { height } = getSize(screens);
-
+  const chainId = useSelector((state) => get(state, 'setup.chainId'));
   return (
     <>
       <LeaderboardContent className="section">
@@ -49,10 +51,13 @@ const Leaderboard = () => {
             style={{ width: '100%', marginTop: '12px' }}
             height={height}
             title="leaderboard"
-            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSuZsLhPIkleGOd4LIQL6gmJuZhsF0-6JcsqsVkZ08W5AAmIxkxO41aSUi5Csssf2z9IhfXspYCAy1o/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false"
+            src={
+              chainId === 1
+                ? 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSuZsLhPIkleGOd4LIQL6gmJuZhsF0-6JcsqsVkZ08W5AAmIxkxO41aSUi5Csssf2z9IhfXspYCAy1o/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false'
+                : 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT_qrm2EYkw-peFPNt0id1swzmT0ETDTzCw036lScnq-KvkQU7CP-yN6E76vUweWcBUm_lDi0z28cD6/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false'
+            }
           />
         </div>
-
         <Text type="secondary" className="mb-12">
           Not showing on the leaderboard?&nbsp;
           <DiscordLink />
