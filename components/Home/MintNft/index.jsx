@@ -27,6 +27,9 @@ const MintNft = ({ account, chainId }) => {
   // loader for minting
   const [isMintingLoading, setIsMintingLoading] = useState(false);
 
+  // loader for signing the mint (between mint start & complete)
+  const [isBadgePollLoading, setIsBadgePollLoading] = useState(false);
+
   useEffect(() => {
     const fn = async () => {
       if (account && chainId) {
@@ -60,12 +63,15 @@ const MintNft = ({ account, chainId }) => {
         const id = await mintNft(account);
 
         // once minted, poll the details
+        setIsBadgePollLoading(true);
         const response = await pollNftDetails(id);
         setNftDetails(response);
+        setIsBadgePollLoading(false);
       } catch (error) {
         window.console.error(error);
       } finally {
         setIsMintingLoading(false);
+        setIsBadgePollLoading(false);
       }
     }
   };
@@ -141,8 +147,17 @@ const MintNft = ({ account, chainId }) => {
                     loading={isNftFetchingLoading || isMintingLoading}
                     disabled={isNftFetchingLoading || isMintingLoading}
                   >
-                    Mint Badge
+                    {isBadgePollLoading ? 'Minting' : 'Mint Badge'}
                   </Button>
+                  {isBadgePollLoading && (
+                    <Text
+                      type="secondary"
+                      className="custom-text-secondary mt-12"
+                    >
+                      It will take a while to show your badge after you have
+                      signed the minting transaction.
+                    </Text>
+                  )}
                   <Text
                     type="secondary"
                     className="custom-text-secondary mt-12"

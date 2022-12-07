@@ -29,7 +29,7 @@ const NavigationBar = ({ children }) => {
   }, [pathname]);
 
   const handleMenuItemClick = ({ key }) => {
-    router.push(key === 'homepage' ? '' : `/${key}`);
+    router.push(key === 'homepage' ? '/' : `/${key}`);
     setSelectedMenu(key);
   };
 
@@ -57,7 +57,7 @@ const NavigationBar = ({ children }) => {
           <Menu.Item key="homepage" onClick={handleMenuItemClick}>
             Contribute
           </Menu.Item>
-          <Menu.Item key="docs" onClick={handleMenuItemClick} disabled>
+          <Menu.Item key="documentation" onClick={handleMenuItemClick} disabled>
             Docs
           </Menu.Item>
         </Menu>
