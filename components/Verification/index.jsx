@@ -23,6 +23,10 @@ const Verification = () => {
 
   const isValidId = !!get(router, 'query.[discord-id]');
 
+  const isConnectWalletEnabled = !!account;
+  const isLinkWalletEnabled = isConnectWalletEnabled && !isValidId;
+  const isVerifyEnabled = !!account && isValidId;
+
   return (
     <>
       <Title level={2}>Complete Discord Verification</Title>
@@ -33,14 +37,14 @@ const Verification = () => {
             {/* connect */}
             <li>
               <Title level={5}>
-                Connect wallet&nbsp;
-                {account && checkmark}
+                Connect Wallet&nbsp;
+                {isConnectWalletEnabled && checkmark}
               </Title>
 
               {account ? (
                 <>
                   <Button type="primary" disabled>
-                    Connect wallet
+                    Connect Wallet
                   </Button>
                 </>
               ) : (
@@ -51,16 +55,19 @@ const Verification = () => {
             {/* link */}
             <li>
               <Title level={5}>
-                Link wallet&nbsp;
+                Link Wallet&nbsp;
                 {isValidId && checkmark}
               </Title>
 
               <Button
                 type="primary"
-                onClick={() => window.open('https://discord.com/invite/mpBqEk6Aga')}
-                disabled={isValidId}
+                onClick={() => {
+                  window.open('https://discord.com/invite/mpBqEk6Aga');
+                  // router.push('/verification?discord-id=100'); // test
+                }}
+                disabled={!isLinkWalletEnabled}
               >
-                Link wallet
+                Link Wallet
               </Button>
             </li>
 
@@ -82,7 +89,7 @@ const Verification = () => {
                     notifySuccess('Verified Successfully!');
                   }, 3000);
                 }}
-                disabled={isVerified || !isValidId || !account}
+                disabled={!isVerifyEnabled || isVerified}
                 loading={isVerifying}
               >
                 Verify
