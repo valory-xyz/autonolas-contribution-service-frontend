@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { Alert, Col, Row } from 'antd/lib';
-// import Leaderboard from './Leaderboard';
 import MintNft from './MintNft';
+import { DiscordLink } from './common';
 
 const Leaderboard = dynamic(() => import('./Leaderboard'));
 
@@ -14,7 +14,14 @@ const Home = () => {
   return (
     <>
       <Alert
-        message="To earn your first points, feature on the leaderboard and activate your badge, link your Discord."
+        message={(
+          <>
+            To earn your first points, feature on the leaderboard and activate
+            your badge,&nbsp;
+            <DiscordLink />
+            .
+          </>
+        )}
         type="info"
         closable
         onClose={onClose}

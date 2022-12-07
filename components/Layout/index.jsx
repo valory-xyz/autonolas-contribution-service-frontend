@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Layout, Menu, Grid } from 'antd/lib';
-import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import Footer from './Footer';
+import { Layout, Menu, Grid } from 'antd/lib';
+import PropTypes from 'prop-types';
 import Login from '../Login';
-import { CustomLayout, Logo, RightMenu } from './styles';
+import Footer from './Footer';
+import { DiscordLink } from '../Home/common';
+import {
+  CustomLayout, Logo, RightMenu, LoginXsContainer,
+} from './styles';
 
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
 
@@ -14,8 +17,6 @@ const { useBreakpoint } = Grid;
 
 const NavigationBar = ({ children }) => {
   const screens = useBreakpoint();
-  const isMobile = !!screens.xs;
-
   const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState('homepage');
   const { pathname } = router;
@@ -29,7 +30,7 @@ const NavigationBar = ({ children }) => {
   }, [pathname]);
 
   const handleMenuItemClick = ({ key }) => {
-    router.push(key === 'homepage' ? '' : `/${key}`);
+    router.push(key === 'homepage' ? '/' : `/${key}`);
     setSelectedMenu(key);
   };
 
@@ -38,15 +39,6 @@ const NavigationBar = ({ children }) => {
       <LogoSvg />
     </Logo>
   );
-
-  // TODO: fix mobile responsiveness and remove the below component
-  if (isMobile) {
-    return (
-      <CustomLayout hasSider>
-        <Header>{logo}</Header>
-      </CustomLayout>
-    );
-  }
 
   return (
     <CustomLayout>
@@ -57,18 +49,31 @@ const NavigationBar = ({ children }) => {
           <Menu.Item key="homepage" onClick={handleMenuItemClick}>
             Contribute
           </Menu.Item>
-          <Menu.Item key="docs" onClick={handleMenuItemClick} disabled>
+          <Menu.Item key="documentation" onClick={handleMenuItemClick} disabled>
             Docs
           </Menu.Item>
         </Menu>
 
-        <RightMenu>
-          <Login />
-        </RightMenu>
+        {!screens.xs && (
+          <RightMenu>
+            <DiscordLink />
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <Login />
+          </RightMenu>
+        )}
       </Header>
 
       <Content className="site-layout">
-        <div className="site-layout-background">{children}</div>
+        <div className="site-layout-background">
+          {!!screens.xs && (
+            <LoginXsContainer>
+              <Login />
+            </LoginXsContainer>
+          )}
+          {children}
+        </div>
       </Content>
 
       <Footer />

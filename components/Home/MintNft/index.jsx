@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
@@ -11,7 +12,12 @@ import {
   getAutonolasTokenUri,
   pollNftDetails,
 } from './utils';
-import { MintNftContainer, WriteFunctionalityContainer } from './styles';
+import { DiscordLink } from '../common';
+import {
+  IMAGE_SIZE,
+  MintNftContainer,
+  WriteFunctionalityContainer,
+} from './styles';
 
 const { Title, Text } = Typography;
 
@@ -21,6 +27,9 @@ const MintNft = ({ account, chainId }) => {
 
   // loader for minting
   const [isMintingLoading, setIsMintingLoading] = useState(false);
+
+  // loader for signing the mint (between mint start & complete)
+  const [isBadgePollLoading, setIsBadgePollLoading] = useState(false);
 
   useEffect(() => {
     const fn = async () => {
@@ -55,12 +64,15 @@ const MintNft = ({ account, chainId }) => {
         const id = await mintNft(account);
 
         // once minted, poll the details
+        setIsBadgePollLoading(true);
         const response = await pollNftDetails(id);
         setNftDetails(response);
+        setIsBadgePollLoading(false);
       } catch (error) {
         window.console.error(error);
       } finally {
         setIsMintingLoading(false);
+        setIsBadgePollLoading(false);
       }
     }
   };
@@ -79,26 +91,23 @@ const MintNft = ({ account, chainId }) => {
   return (
     <MintNftContainer>
       <Title level={2}>Badge</Title>
-      <Text type="secondary" className="mb-12">
+      <Text type="secondary" className="custom-text-secondary">
         Show off your leaderboard rank and promote Autonolas with a badge that
         evolves as you contribute.&nbsp;
-        <a
-          href="https://www.autonolas.network/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Learn more
-        </a>
+        <Link href="/docs#section-badge">Learn more</Link>
       </Text>
 
       {isNftFetchingLoading ? (
-        <Skeleton.Image
-          active
-          style={{
-            width: 300,
-            height: 300,
-          }}
-        />
+        <>
+          <Skeleton.Image active className="skeleton-image-loader" />
+          <Text type="secondary" className="custom-text-secondary mt-12">
+            Your badge is being generated. This can take up to 2 minutes.
+          </Text>
+          <Text type="secondary" className="custom-text-secondary">
+            <DiscordLink />
+            &nbsp;while you wait!
+          </Text>
+        </>
       ) : (
         <>
           {account ? (
@@ -108,16 +117,19 @@ const MintNft = ({ account, chainId }) => {
                   <Image
                     src={getAutonolasTokenUri(image)}
                     alt="NFT"
-                    width={300}
-                    height={300}
+                    width={IMAGE_SIZE}
+                    height={IMAGE_SIZE}
                     className="nft-image"
                     preview={false}
                   />
-                  <Text type="secondary" className="mb-12 mt-12">
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
                     Your badge automatically updates as you complete actions and
                     earn points!
                   </Text>
-                  <Text type="secondary">
+                  <Text type="secondary" className="custom-text-secondary">
                     Set your NFT as your PFP on social apps like Twitter, Lens,
                     Farcaster and Orbis.
                   </Text>
@@ -130,8 +142,23 @@ const MintNft = ({ account, chainId }) => {
                     loading={isNftFetchingLoading || isMintingLoading}
                     disabled={isNftFetchingLoading || isMintingLoading}
                   >
-                    Mint Badge
+                    {isBadgePollLoading ? 'Minting' : 'Mint Badge'}
                   </Button>
+                  {isBadgePollLoading && (
+                    <Text
+                      type="secondary"
+                      className="custom-text-secondary mt-12"
+                    >
+                      It will take a while to show your badge after you have
+                      signed the minting transaction.
+                    </Text>
+                  )}
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
+                    Free to mint! Only cost is gas.
+                  </Text>
                 </>
               )}
             </>

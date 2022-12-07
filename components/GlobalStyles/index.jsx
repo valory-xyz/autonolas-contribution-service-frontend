@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {
-      color: #1890FF !important;
+      color: #1890ff !important;
     }
   }
   .ant-alert {
@@ -80,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .site-layout-background {
     padding: 24px 0;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 160px);
   }
 
   ${MEDIA_QUERY.mobileL} {
@@ -89,6 +89,25 @@ const GlobalStyle = createGlobalStyle`
     }
     .hide-only-sm {
       display: none;
+    }
+  }
+
+  ${MEDIA_QUERY.mobileM} {
+    .site-layout {
+      padding: 0 20px;
+    }
+    .site-layout-background {
+      padding: 8px 0;
+    }
+  }
+
+  /* title */
+  .custom-text-secondary {
+    display: inline-block;
+    max-width: 400px;
+    margin-bottom: 12px;
+    svg {
+      color: ${COLOR.BORDER_GREY};
     }
   }
 `;

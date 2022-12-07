@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout } from 'antd/lib';
-import { COLOR } from '@autonolas/frontend-library';
+import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
   .registry-tabs {
@@ -19,6 +19,12 @@ export const CustomLayout = styled(Layout)`
     .ant-tabs-nav-wrap {
       padding-left: 16px;
     }
+  }
+  .footer-left-content {
+    width: 100%;
+  }
+  .footer-center {
+    display: none !important;
   }
 `;
 
@@ -39,22 +45,6 @@ export const RightMenu = styled.div`
   align-items: center;
 `;
 
-export const FooterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 1rem 50px;
-  .socials {
-    display: flex;
-    column-gap: 28px;
-  }
-  .footer {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
-  }
-`;
-
 export const ContractsInfoContainer = styled.div`
   font-size: 16px;
   display: flex;
@@ -66,14 +56,24 @@ export const ContractsInfoContainer = styled.div`
   img {
     margin-right: 8px;
   }
-`;
 
-export const SupportOnlyDesktop = styled.div`
-  margin: 4rem 0;
+  ${MEDIA_QUERY.mobileM} {
+    flex-direction: column;
+  }
 `;
 
 export const Hr = styled.hr`
   border-color: ${COLOR.BORDER_GREY};
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
+`;
+
+export const PoweredByLogo = styled.div`
+  display: flex;
+  margin-right: 1rem;
+`;
+
+export const LoginXsContainer = styled.div`
+  text-align: center;
+  margin-bottom: 1rem;
 `;
