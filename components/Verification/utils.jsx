@@ -1,10 +1,8 @@
-export async function verifyAddress(account, id, chainId) {
-  const url = chainId === 1
-    ? 'https://contribution-service-backend.autonolas.tech/link'
-    : 'https://contribution-service-backend.staging.autonolas.tech/link';
+import { getUrl } from 'common-util/functions';
 
+export async function verifyAddress(account, id, chainId) {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`${getUrl(chainId)}/link`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
