@@ -19,3 +19,8 @@ export const setErrorMessage = (errorMessage) => ({
   type: syncTypes.SET_LOGIN_ERROR,
   data: { errorMessage },
 });
+
+export const setIsVerified = (isVerified) => ({
+  type: syncTypes.SET_WALLET_VERIFICATION,
+  data: { isVerified },
+});

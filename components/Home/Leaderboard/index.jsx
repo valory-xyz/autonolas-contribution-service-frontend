@@ -14,13 +14,7 @@ const columns = [
     dataIndex: 'name',
   },
   {
-    title: 'Cash Assets',
-    className: 'column-money',
-    dataIndex: 'money',
-    align: 'right',
-  },
-  {
-    title: 'Address',
+    title: 'Points Earned',
     dataIndex: 'pointsEarned',
   },
 ];
@@ -28,21 +22,39 @@ const list = [
   {
     key: '1',
     name: 'John Brown',
-    money: '￥300,000.00',
     pointsEarned: 5000.5,
   },
   {
     key: '2',
     name: 'Jim Green',
-    money: '￥1,256,000.00',
     pointsEarned: 2000,
   },
   {
     key: '3',
     name: 'Joe Black',
-    money: '￥120,000.00',
     pointsEarned: 1000,
   },
+  {
+    key: '4',
+    name: 'Joe Black',
+    pointsEarned: 1000,
+  },
+  {
+    key: '5',
+    name: 'Joe Black',
+    pointsEarned: 1000,
+  },
+  {
+    key: '6',
+    name: 'Joe Black',
+    pointsEarned: 1000,
+  },
+  {
+    key: '7',
+    name: 'Joe Black',
+    pointsEarned: 1000,
+  },
+
 ];
 const Leaderboard = () => {
   const [data, setData] = useState([]);
@@ -73,8 +85,11 @@ const Leaderboard = () => {
           <Table
             columns={columns}
             dataSource={data}
-            bordered
             loading={isLoading}
+            bordered
+            pagination={false}
+            scroll={{ y: 240 }}
+            className="mb-12"
           />
         </div>
         <Text type="secondary" className="mb-12">

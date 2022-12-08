@@ -18,3 +18,6 @@ export const isGoerli = async () => {
   const id = await getChainId();
   return id === 5;
 };
+export const getUrl = (chainId) => (chainId === 1
+  ? 'https://contribution-service-backend.autonolas.tech'
+  : 'https://contribution-service-backend.staging.autonolas.tech');
