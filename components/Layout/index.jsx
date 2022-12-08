@@ -37,7 +37,7 @@ const NavigationBar = ({ children }) => {
     const fn = async () => {
       if (account && chainId) {
         try {
-          const response = await getWalletStatus(account, chainId);
+          const response = await getWalletStatus(account);
           dispatch(setIsVerified(response));
         } catch (error) {
           window.console.error(error);
