@@ -27,11 +27,12 @@ const Leaderboard = () => {
   const chainId = useSelector((state) => state?.setup?.chainId);
 
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(true);
     const fn = async () => {
       try {
         const response = await getLeaderboardList(chainId);
         setData(response);
+        setIsLoading(false);
       } catch (error) {
         window.console.error(error);
       }
