@@ -37,7 +37,9 @@ const ContractInfo = () => {
         src="/images/powered-by.svg"
       /> */}
       <PoweredByLogo>
-        <PoweredBy />
+        <a href="https://autonolas.network" target="_blank" rel="noreferrer">
+          <PoweredBy />
+        </a>
       </PoweredByLogo>
 
       {LIST.map(({ id, text, redirectTo }, index) => (
