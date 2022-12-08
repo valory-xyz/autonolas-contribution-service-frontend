@@ -24,3 +24,8 @@ export const setIsVerified = (isVerified) => ({
   type: syncTypes.SET_WALLET_VERIFICATION,
   data: { isVerified },
 });
+
+export const setLogout = () => ({
+  type: syncTypes.SET_LOGOUT,
+  data: null,
+});
