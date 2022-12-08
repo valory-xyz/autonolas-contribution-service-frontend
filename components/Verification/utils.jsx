@@ -1,10 +1,6 @@
-export async function verifyAddress(account, id, chainId) {
-  const url = chainId === 1
-    ? 'https://contribution-service-backend.autonolas.tech/link'
-    : 'https://contribution-service-backend.staging.autonolas.tech/link';
-
+export async function verifyAddress(account, id) {
   try {
-    const response = await fetch(url, {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/link`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -13,8 +9,8 @@ export async function verifyAddress(account, id, chainId) {
       }),
     });
 
-    const json = await response.json();
-    return json;
+    // no need to return the response, if resolved then verified
+    return null;
   } catch (error) {
     console.error(error);
     return error;
