@@ -1,9 +1,5 @@
-import { getUrl, notifySuccess } from 'common-util/functions';
-import { get } from 'lodash';
-
-// LINKED = "linked"
-// UNLINKED = "unlinked"
-// LINKING = "linking"
+import get from 'lodash/get';
+import { notifySuccess } from 'common-util/functions';
 
 const WALLET_STATUS = {
   linked: 'linked',
@@ -11,12 +7,12 @@ const WALLET_STATUS = {
   linking: 'linking',
 };
 
-export async function getWalletStatus(address, chainId) {
+export async function getWalletStatus(address) {
   return new Promise((resolve, reject) => {
     const interval = setInterval(async () => {
       try {
-        const url = getUrl(chainId);
-        const response = await fetch(`${url}/address_status/${address}`);
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/address_status/${address}`;
+        const response = await fetch(url);
         const json = await response.json();
         const walletStatus = get(json, 'status');
 

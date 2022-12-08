@@ -1,8 +1,8 @@
-import { getUrl } from 'common-util/functions';
-
-export async function getLeaderboardList(chainId) {
+export async function getLeaderboardList() {
   try {
-    const response = await fetch(`${getUrl(chainId)}/leaderboard`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`,
+    );
     const json = await response.json();
     return json?.results || [];
   } catch (error) {
