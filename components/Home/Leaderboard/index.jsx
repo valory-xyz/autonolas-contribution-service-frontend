@@ -1,35 +1,58 @@
-import { Grid, Typography } from 'antd/lib';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { Typography, Table } from 'antd/lib';
 import Link from 'next/link';
-import get from 'lodash/get';
 import { LinkOutlined } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
 import { DiscordLink } from '../common';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
-const { useBreakpoint } = Grid;
 
-const getSize = (sizes) => {
-  if (sizes.lg) {
-    return { width: 920, height: 400 };
-  }
-
-  if (sizes.sm) {
-    return { width: 640, height: 500 };
-  }
-
-  if (sizes.xs) {
-    return { width: 320, height: 400 };
-  }
-
-  return { width: 920, height: 400 };
-};
-
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'Cash Assets',
+    className: 'column-money',
+    dataIndex: 'money',
+    align: 'right',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'pointsEarned',
+  },
+];
+const list = [
+  {
+    key: '1',
+    name: 'John Brown',
+    money: '￥300,000.00',
+    pointsEarned: 5000.5,
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    money: '￥1,256,000.00',
+    pointsEarned: 2000,
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    money: '￥120,000.00',
+    pointsEarned: 1000,
+  },
+];
 const Leaderboard = () => {
-  const screens = useBreakpoint();
-  const { height } = getSize(screens);
-  const chainId = useSelector((state) => get(state, 'setup.chainId'));
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setData(list);
+    setIsLoading(false);
+  }, []);
+
   return (
     <>
       <LeaderboardContent className="section">
@@ -47,15 +70,11 @@ const Leaderboard = () => {
         </Text>
 
         <div className="leaderboard-table">
-          <iframe
-            style={{ width: '100%', marginTop: '12px' }}
-            height={height}
-            title="leaderboard"
-            src={
-              chainId === 1
-                ? 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSuZsLhPIkleGOd4LIQL6gmJuZhsF0-6JcsqsVkZ08W5AAmIxkxO41aSUi5Csssf2z9IhfXspYCAy1o/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false'
-                : 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT_qrm2EYkw-peFPNt0id1swzmT0ETDTzCw036lScnq-KvkQU7CP-yN6E76vUweWcBUm_lDi0z28cD6/pubhtml?gid=659479338&amp;single=true&amp;widget=true&amp;headers=false'
-            }
+          <Table
+            columns={columns}
+            dataSource={data}
+            bordered
+            loading={isLoading}
           />
         </div>
         <Text type="secondary" className="mb-12">
