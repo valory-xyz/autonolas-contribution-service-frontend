@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 
-export const LeaderboardContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+export const LeaderboardContent = styled.div`
   .ant-table-thead > tr > th,
   .ant-table-tbody > tr > td,
   .ant-table tfoot > tr > th,
   .ant-table tfoot > tr > td {
-    padding: 8px 16px;
+    padding: 12px 16px;
   }
 
   /* TODO: check */
@@ -51,14 +47,5 @@ export const LeaderboardContainer = styled.div`
     background-clip: padding-box;
     border: solid transparent;
     border-width: 0 0 0 4px;
-  }
-`;
-
-export const LeaderboardContent = styled.div`
-  .leaderboard-table {
-    iframe {
-      margin: 0 auto 1rem auto;
-      display: flex;
-    }
   }
 `;

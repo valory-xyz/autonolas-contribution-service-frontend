@@ -1,9 +1,11 @@
+import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Typography, Table } from 'antd/lib';
 import Link from 'next/link';
 import { LinkOutlined } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
 import { DiscordLink } from '../common';
+import { getLeaderboardList } from './utils';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
@@ -15,55 +17,27 @@ const columns = [
   },
   {
     title: 'Points Earned',
-    dataIndex: 'pointsEarned',
+    dataIndex: 'points',
   },
 ];
-const list = [
-  {
-    key: '1',
-    name: 'John Brown',
-    pointsEarned: 5000.5,
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    pointsEarned: 2000,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    pointsEarned: 1000,
-  },
-  {
-    key: '4',
-    name: 'Joe Black',
-    pointsEarned: 1000,
-  },
-  {
-    key: '5',
-    name: 'Joe Black',
-    pointsEarned: 1000,
-  },
-  {
-    key: '6',
-    name: 'Joe Black',
-    pointsEarned: 1000,
-  },
-  {
-    key: '7',
-    name: 'Joe Black',
-    pointsEarned: 1000,
-  },
 
-];
 const Leaderboard = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const chainId = useSelector((state) => state?.setup?.chainId);
 
   useEffect(() => {
-    setData(list);
     setIsLoading(false);
-  }, []);
+    const fn = async () => {
+      try {
+        const response = await getLeaderboardList(chainId);
+        setData(response);
+      } catch (error) {
+        window.console.error(error);
+      }
+    };
+    fn();
+  }, [chainId]);
 
   return (
     <>
