@@ -25,6 +25,7 @@ const Leaderboard = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const chainId = useSelector((state) => state?.setup?.chainId);
+  const isVerified = useSelector((state) => state?.setup?.isVerified);
 
   useEffect(() => {
     setIsLoading(true);
@@ -67,11 +68,13 @@ const Leaderboard = () => {
             className="mb-12"
           />
         </div>
-        <Text type="secondary" className="mb-12">
-          Not showing on the leaderboard?&nbsp;
-          <DiscordLink />
-          .
-        </Text>
+        {!isVerified && (
+          <Text type="secondary" className="mb-12">
+            Not showing on the leaderboard?&nbsp;
+            <DiscordLink />
+            .
+          </Text>
+        )}
 
         <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
           Actions
