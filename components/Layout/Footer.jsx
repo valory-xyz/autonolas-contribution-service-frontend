@@ -30,12 +30,6 @@ const ContractInfo = () => {
 
   return (
     <ContractsInfoContainer>
-      {/* <img
-        alt="Etherscan link"
-        width={18}
-        height={18}
-        src="/images/powered-by.svg"
-      /> */}
       <PoweredByLogo>
         <a href="https://autonolas.network" target="_blank" rel="noreferrer">
           <PoweredBy />

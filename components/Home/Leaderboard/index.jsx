@@ -85,7 +85,7 @@ const Leaderboard = () => {
           <Link href="/docs#section-actions">Learn more</Link>
         </Text>
 
-        <Title level={5} style={{ marginTop: 12, marginBottom: 4 }}>
+        <Text style={{ marginTop: 12, marginBottom: 4, display: 'block' }}>
           <a
             href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
             target="_blank"
@@ -94,7 +94,7 @@ const Leaderboard = () => {
             See all actions&nbsp;
             <LinkOutlined color={COLOR.BORDER_GREY} />
           </a>
-        </Title>
+        </Text>
       </LeaderboardContent>
     </>
   );

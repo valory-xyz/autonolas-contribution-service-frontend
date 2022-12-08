@@ -5,6 +5,7 @@ const initialState = {
   balance: null,
   chainId: null,
   errorMessage: null,
+  isVerified: false,
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +23,16 @@ export default (state = initialState, action) => {
     case syncTypes.SET_WALLET_VERIFICATION:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
+    }
+
+    case syncTypes.SET_LOGOUT: {
+      return {
+        ...state,
+        account: null,
+        balance: null,
+        errorMessage: null,
+        isVerified: false,
+      };
     }
 
     default:

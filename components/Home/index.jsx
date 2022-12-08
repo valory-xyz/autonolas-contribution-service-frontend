@@ -23,7 +23,7 @@ const Home = () => {
               <>
                 To earn your first points, feature on the leaderboard and
                 activate your badge,&nbsp;
-                <DiscordLink />
+                <DiscordLink text="complete Discord verification" />
                 .
               </>
             )}

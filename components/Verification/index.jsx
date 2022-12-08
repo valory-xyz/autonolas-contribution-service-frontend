@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Typography, Col, Row, Button,
@@ -11,7 +12,7 @@ import Login from '../Login';
 import { verifyAddress } from './utils';
 import { Ol } from './styles';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Verification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
@@ -57,7 +58,7 @@ const Verification = () => {
             {/* link */}
             <li>
               <Title level={5}>
-                Link Wallet&nbsp;
+                Link wallet to Discord&nbsp;
                 {isValidId && checkmark}
               </Title>
 
@@ -69,7 +70,7 @@ const Verification = () => {
                 }}
                 disabled={!isLinkWalletEnabled}
               >
-                Link Wallet
+                Link wallet to Discord
               </Button>
             </li>
 
@@ -99,6 +100,16 @@ const Verification = () => {
               >
                 Verify
               </Button>
+            </li>
+
+            {/* After verification message */}
+            <li>
+              <Title level={5}>View your activated badge</Title>
+              <Text type="secondary" className="custom-text-secondary">
+                <Link href="/">Return to homepage</Link>
+                &nbsp;and see your badge update! Note it may take a minute to
+                sync.
+              </Text>
             </li>
           </Ol>
         </Col>
