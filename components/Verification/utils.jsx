@@ -1,8 +1,6 @@
-import { getUrl } from 'common-util/functions';
-
-export async function verifyAddress(account, id, chainId) {
+export async function verifyAddress(account, id) {
   try {
-    const response = await fetch(`${getUrl(chainId)}/link`, {
+    const response = await fetch(`${process.env.NODE_ENV}/link`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
