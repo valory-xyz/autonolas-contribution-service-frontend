@@ -7,6 +7,7 @@ import {
   setUserBalance as setUserBalanceFn,
   setChainId as setChainIdFn,
   setErrorMessage as setErrorMessageFn,
+  setLogout as setLogoutFn,
 } from 'store/setup/actions';
 
 const Container = styled.div``;
@@ -22,6 +23,7 @@ const Login = ({
   setUserBalance,
   setChainId,
   setErrorMessage,
+  setLogout,
 }) => {
   const onConnect = (response) => {
     setUserAccount(response.address);
@@ -30,10 +32,7 @@ const Login = ({
   };
 
   const onDisconnect = () => {
-    setUserAccount(null);
-    setUserBalance(null);
-    setErrorMessage(null);
-    setChainId(null);
+    setLogout();
   };
 
   const onError = (error) => {
@@ -57,6 +56,7 @@ Login.propTypes = {
   setUserBalance: PropTypes.func.isRequired,
   setChainId: PropTypes.func.isRequired,
   setErrorMessage: PropTypes.func.isRequired,
+  setLogout: PropTypes.func.isRequired,
 };
 
 Login.defaultProps = {};
@@ -66,6 +66,7 @@ const mapDispatchToProps = {
   setUserBalance: setUserBalanceFn,
   setChainId: setChainIdFn,
   setErrorMessage: setErrorMessageFn,
+  setLogout: setLogoutFn,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
