@@ -72,7 +72,7 @@ const NavigationBar = ({ children }) => {
       label: 'Contribute',
     },
     {
-      key: 'documentation',
+      key: 'docs',
       label: 'Docs',
       disabled: true,
     },
