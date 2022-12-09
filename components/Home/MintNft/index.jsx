@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
+import { LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {
@@ -20,8 +21,10 @@ import {
 } from './styles';
 
 const { Title, Text } = Typography;
+const IMAGE_URL = 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8';
 
 const MintNft = ({ account, chainId }) => {
+  const [tokenId, setTokenId] = useState(null);
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
   const [nftDetails, setNftDetails] = useState(null);
 
@@ -37,10 +40,16 @@ const MintNft = ({ account, chainId }) => {
         setNftFetchingLoading(true);
 
         try {
-          const { isFound, response } = await getLatestMintedNft(account);
+          const {
+            isFound,
+            response,
+            tokenId: id,
+          } = await getLatestMintedNft(account);
+
           if (isFound) {
             const details = await fetch(response);
             const json = await details.json();
+            setTokenId(id);
             setNftDetails(json);
           }
         } catch (error) {
@@ -122,6 +131,18 @@ const MintNft = ({ account, chainId }) => {
                     className="nft-image"
                     preview={false}
                   />
+                  {tokenId && (
+                    <Text className="mt-12">
+                      <a
+                        href={`${IMAGE_URL}/${tokenId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View on OpenSea&nbsp;
+                        <LinkOutlined />
+                      </a>
+                    </Text>
+                  )}
                   <Text
                     type="secondary"
                     className="custom-text-secondary mt-12"

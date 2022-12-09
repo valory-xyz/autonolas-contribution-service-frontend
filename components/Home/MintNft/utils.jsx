@@ -28,11 +28,10 @@ export const getLatestMintedNft = (account) => new Promise((resolve, reject) => 
           (e) => toLower(e) === toLower(account),
         );
         if (lastIndex !== -1) {
-          const infoUrl = await contract.methods
-            .tokenURI(`${Number(lastIndex) + 1}`)
-            .call();
+          const tokenId = `${Number(lastIndex) + 1}`;
+          const infoUrl = await contract.methods.tokenURI(tokenId).call();
 
-          resolve({ isFound: true, response: infoUrl });
+          resolve({ isFound: true, response: infoUrl, tokenId });
         } else {
           resolve({ isFound: false, response: null });
         }
@@ -50,7 +49,6 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
   contract.methods
     .mint()
     .send({ from: account })
-    // .once('transactionHash', (hash) => resolve(hash))
     .then((response) => {
       notifySuccess('Successfully Minted');
       const id = get(response, 'events.Transfer.returnValues.id');
@@ -64,9 +62,7 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
 
 export async function pollNftDetails(id) {
   const contract = getMintContract();
-  const infoUrl = await contract.methods
-    .tokenURI(`${id}`)
-    .call();
+  const infoUrl = await contract.methods.tokenURI(`${id}`).call();
 
   return new Promise((resolve, reject) => {
     /* eslint-disable-next-line consistent-return */
