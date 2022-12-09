@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Typography, Table } from 'antd/lib';
 import Link from 'next/link';
 import { LinkOutlined } from '@ant-design/icons';
-import { COLOR } from '@autonolas/frontend-library';
 import { DiscordLink } from '../common';
 import { getLeaderboardList } from './utils';
 import { LeaderboardContent } from './styles';
@@ -92,7 +91,7 @@ const Leaderboard = () => {
             rel="noreferrer"
           >
             See all actions&nbsp;
-            <LinkOutlined color={COLOR.BORDER_GREY} />
+            <LinkOutlined />
           </a>
         </Text>
       </LeaderboardContent>
