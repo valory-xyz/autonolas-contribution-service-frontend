@@ -163,7 +163,7 @@ const MintNft = ({ account, chainId }) => {
                     loading={isNftFetchingLoading || isMintingLoading}
                     disabled={isNftFetchingLoading || isMintingLoading}
                   >
-                    {isBadgePollLoading ? 'Minting' : 'Mint Badge'}
+                    {isBadgePollLoading ? 'Generating' : 'Mint Badge'}
                   </Button>
                   {isBadgePollLoading && (
                     <Text
