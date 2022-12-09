@@ -1,10 +1,11 @@
 import { Typography } from 'antd/lib';
+import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
 
 const Overview = () => (
   <>
-    <div id="section-overview">
+    <div id={DOCS_SECTIONS.overview}>
       <Title level={2}>Overview</Title>
       <Paragraph>
         Autonolas Contribute is a system for coordinating work in the Autonolas
@@ -14,7 +15,7 @@ const Overview = () => (
       <Paragraph>
         <ul>
           <li>
-            <Text strong>Idle</Text>
+            <Text strong>Actions</Text>
             &nbsp;– tasks defined by the DAO. When community members complete
             tasks they earn points.
           </li>

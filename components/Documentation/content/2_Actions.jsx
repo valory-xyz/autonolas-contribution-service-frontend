@@ -1,9 +1,10 @@
 import { Typography } from 'antd/lib';
+import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
 
 const Actions = () => (
-  <div id="section-actions">
+  <div id={DOCS_SECTIONS.actions}>
     <Title level={2}>Actions</Title>
     <Paragraph>
       Actions are tasks that are designed by the DAO to maximize impact for
@@ -24,7 +25,15 @@ const Actions = () => (
         <li>
           <Text strong>Instructions</Text>
           &nbsp;– Finish one of the tasks between modules and send a screenshot
-          using the claim form.
+          using the&nbsp;
+          <a
+            href="https://forms.gle/vuVNa5823CUMr4Ho6"
+            target="_blank"
+            rel="noreferrer"
+          >
+            claim form
+          </a>
+          .
         </li>
         <li>
           <Text strong>Points</Text>

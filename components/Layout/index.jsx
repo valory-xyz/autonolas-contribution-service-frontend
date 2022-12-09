@@ -74,7 +74,6 @@ const NavigationBar = ({ children }) => {
     {
       key: 'docs',
       label: 'Docs',
-      disabled: true,
     },
   ];
 

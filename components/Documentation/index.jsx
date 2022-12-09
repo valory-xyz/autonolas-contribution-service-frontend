@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Anchor, Typography, Grid } from 'antd/lib';
-import { kebabCase, get } from 'lodash';
+import { get } from 'lodash';
 import Overview from './content/1_Overview';
 import Actions from './content/2_Actions';
 import Badge from './content/3_Badge';
@@ -27,18 +27,7 @@ const Documentation = () => {
   useEffect(() => {
     const { asPath } = router;
     const afterHash = asPath.split('#')[1];
-
-    if (!afterHash && !activeNav) {
-      // on load, set first key as active & opened by default
-      const firstKey = kebabCase(get(DOC_NAV, `[${0}].id`) || '');
-      setActiveNav(firstKey);
-    } else {
-      // if we want to point specific Id, the URL will have #
-      // eg. #user-flow
-      for (let i = 0; i < DOC_NAV.length; i += 1) {
-        setActiveNav(DOC_NAV[i].id);
-      }
-    }
+    setActiveNav(afterHash || get(DOC_NAV, `[${0}].id`) || '');
   }, []);
 
   return (
@@ -55,9 +44,7 @@ const Documentation = () => {
                 className={`custom-nav-anchor ${
                   key === activeNav ? 'custom-nav-anchor-active' : ''
                 }`}
-                onClick={() => {
-                  setActiveNav(key);
-                }}
+                onClick={() => setActiveNav(key)}
               >
                 <Link href={`#${key}`} title={title} />
               </Anchor>

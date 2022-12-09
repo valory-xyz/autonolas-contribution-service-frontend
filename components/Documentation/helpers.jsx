@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { WrapperDiv } from './styles';
 
-export const SECTIONS = {
+export const DOCS_SECTIONS = {
   overview: 'section-overview',
   actions: 'section-actions',
   badge: 'section-badge',
@@ -15,23 +15,23 @@ export const SECTIONS = {
  */
 export const DOC_NAV = [
   {
-    id: SECTIONS.overview,
+    id: DOCS_SECTIONS.overview,
     title: 'Overview',
   },
   {
-    id: SECTIONS.actions,
+    id: DOCS_SECTIONS.actions,
     title: 'Actions',
   },
   {
-    id: SECTIONS.badge,
+    id: DOCS_SECTIONS.badge,
     title: 'Badge',
   },
   {
-    id: SECTIONS.leaderboard,
+    id: DOCS_SECTIONS.leaderboard,
     title: 'Leaderboard',
   },
   {
-    id: SECTIONS['how-it-works'],
+    id: DOCS_SECTIONS['how-it-works'],
     title: 'How It Works',
   },
 ];

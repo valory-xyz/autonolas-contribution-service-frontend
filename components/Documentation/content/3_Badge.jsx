@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import { Typography } from 'antd/lib';
+import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
 const Badge = () => (
-  <div id="section-badge">
+  <div id={DOCS_SECTIONS.badge}>
     <Title level={2}>Badge</Title>
     <Paragraph>
       Community members’ points will start showing up on the leaderboard after
@@ -23,7 +25,11 @@ const Badge = () => (
     <Title level={5}>Mint your badge</Title>
     <Paragraph>
       <ol>
-        <li>Go to the homepage.</li>
+        <li>
+          Go to the&nbsp;
+          <Link href="/">homepage</Link>
+          .
+        </li>
         <li>
           Connect a Web3 wallet. The website supports MetaMask and
           WalletConnect-enabled wallets.

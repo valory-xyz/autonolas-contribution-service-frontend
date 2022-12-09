@@ -1,9 +1,10 @@
 import { Typography } from 'antd/lib';
+import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
 const Leaderboard = () => (
-  <div id="section-leaderboard">
+  <div id={DOCS_SECTIONS.leaderboard}>
     <Title level={2}>Leaderboard</Title>
     <Paragraph>Coming soon</Paragraph>
 
