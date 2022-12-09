@@ -62,10 +62,11 @@ export const ContractsInfoContainer = styled.div`
   }
 `;
 
-export const Hr = styled.hr`
-  border-color: ${COLOR.BORDER_GREY};
+export const Hr = styled.div`
+  background-color: #f0f0f0;
   width: 100%;
   margin-bottom: 0;
+  height: 2px;
 `;
 
 export const PoweredByLogo = styled.div`

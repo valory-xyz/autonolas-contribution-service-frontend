@@ -4,8 +4,10 @@ import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
+import { LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import {
   getLatestMintedNft,
   mintNft,
@@ -20,8 +22,10 @@ import {
 } from './styles';
 
 const { Title, Text } = Typography;
+const IMAGE_URL = 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8';
 
 const MintNft = ({ account, chainId }) => {
+  const [tokenId, setTokenId] = useState(null);
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
   const [nftDetails, setNftDetails] = useState(null);
 
@@ -37,11 +41,20 @@ const MintNft = ({ account, chainId }) => {
         setNftFetchingLoading(true);
 
         try {
-          const { isFound, response } = await getLatestMintedNft(account);
+          const {
+            isFound,
+            response,
+            tokenId: id,
+          } = await getLatestMintedNft(account);
+
           if (isFound) {
             const details = await fetch(response);
             const json = await details.json();
+            setTokenId(id);
             setNftDetails(json);
+          } else {
+            setTokenId(null);
+            setNftDetails(null);
           }
         } catch (error) {
           window.console.error(error);
@@ -94,7 +107,7 @@ const MintNft = ({ account, chainId }) => {
       <Text type="secondary" className="custom-text-secondary">
         Show off your leaderboard rank and promote Autonolas with a badge that
         evolves as you contribute.&nbsp;
-        <Link href="/docs#section-badge">Learn more</Link>
+        <Link href={`/docs#${DOCS_SECTIONS.badge}`}>Learn more</Link>
       </Text>
 
       {isNftFetchingLoading ? (
@@ -122,6 +135,18 @@ const MintNft = ({ account, chainId }) => {
                     className="nft-image"
                     preview={false}
                   />
+                  {tokenId && (
+                    <Text type="secondary" className="mt-12">
+                      <a
+                        href={`${IMAGE_URL}/${tokenId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View on OpenSea&nbsp;
+                        <LinkOutlined />
+                      </a>
+                    </Text>
+                  )}
                   <Text
                     type="secondary"
                     className="custom-text-secondary mt-12"
@@ -142,7 +167,7 @@ const MintNft = ({ account, chainId }) => {
                     loading={isNftFetchingLoading || isMintingLoading}
                     disabled={isNftFetchingLoading || isMintingLoading}
                   >
-                    {isBadgePollLoading ? 'Minting' : 'Mint Badge'}
+                    {isBadgePollLoading ? 'Generating' : 'Mint Badge'}
                   </Button>
                   {isBadgePollLoading && (
                     <Text

@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Typography, Table } from 'antd/lib';
-import Link from 'next/link';
 import { LinkOutlined } from '@ant-design/icons';
-import { COLOR } from '@autonolas/frontend-library';
+import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { DiscordLink } from '../common';
 import { getLeaderboardList } from './utils';
 import { LeaderboardContent } from './styles';
@@ -48,13 +48,7 @@ const Leaderboard = () => {
         <Text type="secondary" className="custom-text-secondary">
           Climb the leaderboard by completing actions that contribute to
           Autonolas’ success.&nbsp;
-          <a
-            href="https://www.autonolas.network/blog/introducing-the-community-leaderboard-program"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Learn more
-          </a>
+          <Link href={`/docs#${DOCS_SECTIONS.leaderboard}`}>Learn more</Link>
         </Text>
 
         <div className="leaderboard-table">
@@ -82,7 +76,7 @@ const Leaderboard = () => {
         <Text type="secondary" className="custom-text-secondary">
           Complete actions to earn points, climb the leaderboard and upgrade
           your badge.&nbsp;
-          <Link href="/docs#section-actions">Learn more</Link>
+          <Link href={`/docs#${DOCS_SECTIONS.actions}`}>Learn more</Link>
         </Text>
 
         <Text style={{ marginTop: 12, marginBottom: 4, display: 'block' }}>
@@ -92,7 +86,7 @@ const Leaderboard = () => {
             rel="noreferrer"
           >
             See all actions&nbsp;
-            <LinkOutlined color={COLOR.BORDER_GREY} />
+            <LinkOutlined />
           </a>
         </Text>
       </LeaderboardContent>

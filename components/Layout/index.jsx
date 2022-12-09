@@ -8,7 +8,7 @@ import get from 'lodash/get';
 import { setIsVerified } from 'store/setup/actions';
 import Login from '../Login';
 import Footer from './Footer';
-import { getWalletStatus } from './utils';
+import { getAddressStatus } from './utils';
 import { DiscordLink } from '../Home/common';
 import {
   CustomLayout, Logo, RightMenu, LoginXsContainer,
@@ -37,7 +37,7 @@ const NavigationBar = ({ children }) => {
     const fn = async () => {
       if (account && chainId) {
         try {
-          const response = await getWalletStatus(account);
+          const response = await getAddressStatus(account);
           dispatch(setIsVerified(response));
         } catch (error) {
           window.console.error(error);
@@ -66,19 +66,29 @@ const NavigationBar = ({ children }) => {
     </Logo>
   );
 
+  const menuItems = [
+    {
+      key: 'homepage',
+      label: 'Contribute',
+    },
+    {
+      key: 'docs',
+      label: 'Docs',
+    },
+  ];
+
   return (
     <CustomLayout>
       <Header>
         {logo}
 
-        <Menu theme="light" mode="horizontal" selectedKeys={[selectedMenu]}>
-          <Menu.Item key="homepage" onClick={handleMenuItemClick}>
-            Contribute
-          </Menu.Item>
-          <Menu.Item key="documentation" onClick={handleMenuItemClick} disabled>
-            Docs
-          </Menu.Item>
-        </Menu>
+        <Menu
+          theme="light"
+          mode="horizontal"
+          selectedKeys={[selectedMenu]}
+          items={menuItems}
+          onClick={handleMenuItemClick}
+        />
 
         {!screens.xs && (
           <RightMenu>
