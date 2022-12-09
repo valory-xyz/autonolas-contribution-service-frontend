@@ -110,6 +110,18 @@ const GlobalStyle = createGlobalStyle`
       color: ${COLOR.BORDER_GREY};
     }
   }
+
+  /* hyperlinks */
+  a.ant-typography,
+  .ant-typography a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    &:hover,
+    &:active {
+      color: inherit;
+    }
+  }
 `;
 
 export default GlobalStyle;

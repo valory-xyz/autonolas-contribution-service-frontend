@@ -132,7 +132,7 @@ const MintNft = ({ account, chainId }) => {
                     preview={false}
                   />
                   {tokenId && (
-                    <Text className="mt-12">
+                    <Text type="secondary" className="mt-12">
                       <a
                         href={`${IMAGE_URL}/${tokenId}`}
                         target="_blank"
