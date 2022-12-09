@@ -7,6 +7,7 @@ import {
 import { LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import {
   getLatestMintedNft,
   mintNft,
@@ -51,6 +52,9 @@ const MintNft = ({ account, chainId }) => {
             const json = await details.json();
             setTokenId(id);
             setNftDetails(json);
+          } else {
+            setTokenId(null);
+            setNftDetails(null);
           }
         } catch (error) {
           window.console.error(error);
@@ -103,7 +107,7 @@ const MintNft = ({ account, chainId }) => {
       <Text type="secondary" className="custom-text-secondary">
         Show off your leaderboard rank and promote Autonolas with a badge that
         evolves as you contribute.&nbsp;
-        <Link href="/docs#section-badge">Learn more</Link>
+        <Link href={`/docs#${DOCS_SECTIONS.badge}`}>Learn more</Link>
       </Text>
 
       {isNftFetchingLoading ? (

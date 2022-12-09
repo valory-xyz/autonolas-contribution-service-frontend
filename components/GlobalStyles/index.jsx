@@ -119,6 +119,7 @@ const GlobalStyle = createGlobalStyle`
     text-underline-offset: 4px;
     &:hover,
     &:active {
+      text-decoration: underline;
       color: inherit;
     }
   }
