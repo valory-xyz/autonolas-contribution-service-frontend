@@ -51,6 +51,9 @@ const MintNft = ({ account, chainId }) => {
             const json = await details.json();
             setTokenId(id);
             setNftDetails(json);
+          } else {
+            setTokenId(null);
+            setNftDetails(null);
           }
         } catch (error) {
           window.console.error(error);
