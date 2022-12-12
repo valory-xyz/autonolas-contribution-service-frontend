@@ -174,16 +174,12 @@ const MintNft = ({ account, chainId }) => {
                       type="secondary"
                       className="custom-text-secondary mt-12"
                     >
-                      It will take a while to show your badge after you have
-                      signed the minting transaction.
+                      Your badge can take a while to generate. While you
+                      wait,&nbsp;
+                      <DiscordLink text="complete Discord verification" />
+                      &nbsp;to activate it
                     </Text>
                   )}
-                  <Text
-                    type="secondary"
-                    className="custom-text-secondary mt-12"
-                  >
-                    Free to mint! Only cost is gas.
-                  </Text>
                 </>
               )}
             </>

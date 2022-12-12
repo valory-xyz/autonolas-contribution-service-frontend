@@ -32,8 +32,11 @@ class MyApp extends App {
       <>
         <GlobalStyle />
         <Head>
-          <title>Autonolas Contribution Service</title>
-          <meta name="description" content="Contribution Service" />
+          <title>Autonolas Contribute</title>
+          <meta
+            name="description"
+            content="Contribute to the Autonolas DAO by completing actions, earning points, climbing the rankings and upgrading your badge"
+          />
         </Head>
         <Web3DataProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
