@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import orderBy from 'lodash/orderBy';
+import lowerCase from 'lodash/lowerCase';
 import { Typography, Table } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
@@ -11,18 +13,13 @@ import { LeaderboardContent } from './styles';
 const { Title, Text } = Typography;
 
 const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Points Earned',
-    dataIndex: 'points',
-  },
+  { title: 'Rank', dataIndex: 'rank' },
+  { title: 'Name', dataIndex: 'name' },
+  { title: 'Points Earned', dataIndex: 'points' },
 ];
 
 const Leaderboard = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const chainId = useSelector((state) => state?.setup?.chainId);
   const isVerified = useSelector((state) => state?.setup?.isVerified);
@@ -41,6 +38,30 @@ const Leaderboard = () => {
     fn();
   }, [chainId]);
 
+  const sortedColumns = () => {
+    const values = orderBy(data, [(e) => parseInt(e.points, 10), (e) => lowerCase(e.name)]);
+
+    const rankedValues = [];
+    values.forEach((e, index) => {
+      // setting rank for the first index
+      if (index === 0) {
+        rankedValues.push({ ...e, rank: 1 });
+      } else {
+        const previousMember = rankedValues[index - 1];
+        // if points are same as previous member, then same rank else add 1
+        rankedValues.push({
+          ...e,
+          rank:
+            previousMember.points === e.points
+              ? previousMember.rank
+              : previousMember.rank + 1,
+        });
+      }
+    });
+
+    return rankedValues;
+  };
+
   return (
     <>
       <LeaderboardContent className="section">
@@ -54,7 +75,7 @@ const Leaderboard = () => {
         <div className="leaderboard-table">
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={sortedColumns()}
             loading={isLoading}
             bordered
             pagination={false}

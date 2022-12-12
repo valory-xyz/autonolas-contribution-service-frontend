@@ -64,9 +64,7 @@ export const DocSection = styled.div`
 
   /* custom nav-anchor */
   .custom-nav-anchor {
-    border-bottom: 1px solid ${COLOR.BLACK};
     font-size: 18px;
-    text-transform: uppercase;
     padding: 6px 40px 6px 0px;
     padding-left: ${({ isMobile }) => (isMobile ? '16px' : '0')};
     a.ant-anchor-link-title {
