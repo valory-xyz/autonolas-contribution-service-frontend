@@ -18,6 +18,30 @@ const columns = [
   { title: 'Points Earned', dataIndex: 'points' },
 ];
 
+const Actions = () => (
+  <>
+    <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
+      Actions
+    </Title>
+    <Text type="secondary" className="custom-text-secondary">
+      Complete actions to earn points, climb the leaderboard and upgrade your
+      badge.&nbsp;
+      <Link href={`/docs#${DOCS_SECTIONS.actions}`}>Learn more</Link>
+    </Text>
+
+    <Text style={{ display: 'block' }}>
+      <a
+        href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
+        target="_blank"
+        rel="noreferrer"
+      >
+        See all actions&nbsp;
+        <LinkOutlined />
+      </a>
+    </Text>
+  </>
+);
+
 const Leaderboard = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -69,6 +93,10 @@ const Leaderboard = () => {
   return (
     <>
       <LeaderboardContent className="section">
+        {/* actions */}
+        <Actions />
+
+        {/* leaderboard */}
         <Title level={2}>Leaderboard</Title>
         <Text type="secondary" className="custom-text-secondary">
           Climb the leaderboard by completing actions that contribute to
@@ -83,7 +111,6 @@ const Leaderboard = () => {
             loading={isLoading}
             bordered
             pagination={false}
-            scroll={{ y: 240 }}
             className="mb-12"
           />
         </div>
@@ -94,26 +121,6 @@ const Leaderboard = () => {
             .
           </Text>
         )}
-
-        <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
-          Actions
-        </Title>
-        <Text type="secondary" className="custom-text-secondary">
-          Complete actions to earn points, climb the leaderboard and upgrade
-          your badge.&nbsp;
-          <Link href={`/docs#${DOCS_SECTIONS.actions}`}>Learn more</Link>
-        </Text>
-
-        <Text style={{ marginTop: 12, marginBottom: 4, display: 'block' }}>
-          <a
-            href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
-            target="_blank"
-            rel="noreferrer"
-          >
-            See all actions&nbsp;
-            <LinkOutlined />
-          </a>
-        </Text>
       </LeaderboardContent>
     </>
   );
