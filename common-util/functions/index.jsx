@@ -9,4 +9,4 @@ export const notifySuccess = (message = 'Successfull', description = null) => no
   description,
 });
 
-export const isGoerli = (id) => id !== 5;
+export const isGoerli = (id) => id === 5;

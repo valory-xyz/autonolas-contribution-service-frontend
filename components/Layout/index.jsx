@@ -130,6 +130,10 @@ const NavigationBar = ({ children }) => {
         </div>
       </Content>
 
+      <br />
+      <br />
+      <br />
+      <br />
       <Footer />
     </CustomLayout>
   );

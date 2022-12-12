@@ -60,17 +60,24 @@ export const ContractsInfoContainer = styled.div`
   img {
     margin-right: 8px;
   }
+  .dot {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+  .dot-online {
+    background-color: #42ff00;
+  }
+  .dot-offline {
+    background-color: #ff8a00;
+  }
 
   ${MEDIA_QUERY.mobileM} {
     flex-direction: column;
   }
-`;
-
-export const Hr = styled.div`
-  background-color: #f0f0f0;
-  width: 100%;
-  margin-bottom: 0;
-  height: 2px;
 `;
 
 export const PoweredByLogo = styled.div`
@@ -85,4 +92,25 @@ export const LoginXsContainer = styled.div`
 
 export const SupportOnlyDesktop = styled.div`
   margin: 4rem 0;
+`;
+
+export const NextUpdateTimer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  .ant-statistic {
+    color: inherit;
+  }
+  .ant-statistic-content {
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+`;
+
+export const FixedFooter = styled.div`
+  position: fixed;
+  bottom: 0;
+  background: white;
+  width: 100%;
+  border-top: 1px solid #f0f0f0;
 `;
