@@ -32,7 +32,7 @@ const Documentation = () => {
 
   return (
     <Container>
-      <Title>Documentation</Title>
+      <Title>Docs</Title>
 
       <DocSection isMobile={isMobile}>
         <NavWrapper isMobile={isMobile}>

@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { Layout, Menu, Grid } from 'antd/lib';
+import {
+  Layout, Menu, Grid, Result,
+} from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { setIsVerified } from 'store/setup/actions';
@@ -11,7 +13,11 @@ import Footer from './Footer';
 import { getAddressStatus } from './utils';
 import { DiscordLink } from '../Home/common';
 import {
-  CustomLayout, Logo, RightMenu, LoginXsContainer,
+  CustomLayout,
+  Logo,
+  RightMenu,
+  LoginXsContainer,
+  SupportOnlyDesktop,
 } from './styles';
 
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
@@ -66,6 +72,20 @@ const NavigationBar = ({ children }) => {
     </Logo>
   );
 
+  if (screens.xs) {
+    return (
+      <CustomLayout hasSider>
+        <Header>{logo}</Header>
+        <SupportOnlyDesktop>
+          <Result
+            status="warning"
+            title="Not supported on mobile, please switch to desktop"
+          />
+        </SupportOnlyDesktop>
+      </CustomLayout>
+    );
+  }
+
   const menuItems = [
     {
       key: 'homepage',
@@ -110,6 +130,10 @@ const NavigationBar = ({ children }) => {
         </div>
       </Content>
 
+      <br />
+      <br />
+      <br />
+      <br />
       <Footer />
     </CustomLayout>
   );
