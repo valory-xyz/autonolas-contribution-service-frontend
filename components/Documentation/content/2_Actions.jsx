@@ -48,7 +48,15 @@ const Actions = () => (
 
     <Paragraph>
       Actions change regularly – new ones are added, some are removed, points
-      and instructions change etc. See the current set of actions here.
+      and instructions change etc. See the current set of actions&nbsp;
+      <a
+        href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
+        target="_blank"
+        rel="noreferrer"
+      >
+        here
+      </a>
+      .
     </Paragraph>
     <br />
     <br />

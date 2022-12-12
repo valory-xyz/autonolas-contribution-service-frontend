@@ -43,6 +43,10 @@ export const Logo = styled.div`
 export const RightMenu = styled.div`
   display: flex;
   align-items: center;
+
+  ${MEDIA_QUERY.tablet} {
+    line-height: normal;
+  }
 `;
 
 export const ContractsInfoContainer = styled.div`
@@ -77,4 +81,8 @@ export const PoweredByLogo = styled.div`
 export const LoginXsContainer = styled.div`
   text-align: center;
   margin-bottom: 1rem;
+`;
+
+export const SupportOnlyDesktop = styled.div`
+  margin: 4rem 0;
 `;

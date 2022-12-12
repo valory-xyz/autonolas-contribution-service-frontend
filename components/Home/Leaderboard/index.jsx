@@ -39,7 +39,11 @@ const Leaderboard = () => {
   }, [chainId]);
 
   const sortedColumns = () => {
-    const values = orderBy(data, [(e) => parseInt(e.points, 10), (e) => lowerCase(e.name)]);
+    // orderBy (sort) 1. points, 2. name
+    const values = orderBy(data, [
+      (e) => parseInt(e.points, 10),
+      (e) => lowerCase(e.name),
+    ]);
 
     const rankedValues = [];
     values.forEach((e, index) => {
@@ -48,10 +52,10 @@ const Leaderboard = () => {
         rankedValues.push({ ...e, rank: 1 });
       } else {
         const previousMember = rankedValues[index - 1];
-        // if points are same as previous member, then same rank else add 1
         rankedValues.push({
           ...e,
           rank:
+            // if points are same as previous member, then same rank else add 1
             previousMember.points === e.points
               ? previousMember.rank
               : previousMember.rank + 1,

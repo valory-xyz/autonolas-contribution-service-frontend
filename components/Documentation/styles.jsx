@@ -95,7 +95,8 @@ export const DocSection = styled.div`
       max-width: 100%;
     }
     .reading-section {
-      padding: 0 1rem;
+      margin-top: 2rem;
+      padding: 0;
     }
   }
 `;
