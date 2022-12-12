@@ -9,12 +9,4 @@ export const notifySuccess = (message = 'Successfull', description = null) => no
   description,
 });
 
-const getChainId = async () => {
-  const id = await window.WEB3_PROVIDER.eth.getChainId();
-  return id;
-};
-
-export const isGoerli = async () => {
-  const id = await getChainId();
-  return id === 5;
-};
+export const isGoerli = (id) => id !== 5;

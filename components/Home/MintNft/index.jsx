@@ -7,6 +7,7 @@ import {
 import { LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { isGoerli } from 'common-util/functions';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import {
   getLatestMintedNft,
@@ -22,7 +23,6 @@ import {
 } from './styles';
 
 const { Title, Text } = Typography;
-const IMAGE_URL = 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8';
 
 const MintNft = ({ account, chainId }) => {
   const [tokenId, setTokenId] = useState(null);
@@ -34,6 +34,9 @@ const MintNft = ({ account, chainId }) => {
 
   // loader for signing the mint (between mint start & complete)
   const [isBadgePollLoading, setIsBadgePollLoading] = useState(false);
+  const openSeaUrl = isGoerli(chainId)
+    ? 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8'
+    : 'https://opensea.io/assets/ethereum/0x02c26437b292d86c5f4f21bbcce0771948274f84';
 
   useEffect(() => {
     const fn = async () => {
@@ -138,7 +141,7 @@ const MintNft = ({ account, chainId }) => {
                   {tokenId && (
                     <Text type="secondary" className="mt-12">
                       <a
-                        href={`${IMAGE_URL}/${tokenId}`}
+                        href={`${openSeaUrl}/${tokenId}`}
                         target="_blank"
                         rel="noreferrer"
                       >
