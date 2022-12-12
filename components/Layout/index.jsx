@@ -79,7 +79,7 @@ const NavigationBar = ({ children }) => {
         <SupportOnlyDesktop>
           <Result
             status="warning"
-            title="Oops, Mobile & Tablet devices are not supported."
+            title="Not supported on mobile, please switch to desktop"
           />
         </SupportOnlyDesktop>
       </CustomLayout>
