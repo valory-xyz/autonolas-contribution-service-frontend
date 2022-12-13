@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Typography, Col, Row, Button,
 } from 'antd/lib';
-// import { CheckSquareOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { notifyError, notifySuccess } from 'common-util/functions';
+import { setIsVerified } from 'store/setup/actions';
 import Login from '../Login';
+import { getAddressStatus } from '../Layout/utils';
 import { verifyAddress } from './utils';
 import { Ol } from './styles';
 
@@ -18,9 +19,9 @@ const Verification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isWalletVerified, setIsWalletVerified] = useState(false);
   const account = useSelector((state) => get(state, 'setup.account'));
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  // const checkmark = <CheckSquareOutlined twoToneColor={COLOR.PRIMARY} />;
   const checkmark = '✅';
 
   const discordId = get(router, 'query.[discord-id]');
@@ -64,10 +65,7 @@ const Verification = () => {
 
               <Button
                 type="primary"
-                onClick={() => {
-                  window.open('https://discord.com/invite/mpBqEk6Aga');
-                  // router.push('/verification?discord-id=100'); // test
-                }}
+                onClick={() => window.open('https://discord.com/invite/mpBqEk6Aga')}
                 disabled={!isLinkWalletEnabled}
               >
                 Link wallet to Discord
@@ -90,6 +88,9 @@ const Verification = () => {
                     setIsVerifying(false);
                     setIsWalletVerified(true);
                     notifySuccess('Verified Successfully!');
+
+                    const response = await getAddressStatus(account);
+                    dispatch(setIsVerified(response));
                   } catch (error) {
                     notifyError();
                     console.error(error);
