@@ -93,6 +93,9 @@ const MintNft = ({ account, chainId }) => {
     }
   };
 
+  // TODO: to be button
+  const connectButton = 'connect wallet';
+
   const image = get(nftDetails, 'image');
 
   return (
@@ -174,6 +177,12 @@ const MintNft = ({ account, chainId }) => {
                       &nbsp;to activate it
                     </Text>
                   )}
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
+                    Free to mint! Only cost is gas.
+                  </Text>
                 </>
               )}
             </>
@@ -185,9 +194,19 @@ const MintNft = ({ account, chainId }) => {
                 message={(
                   <div>
                     <p>NEW: Mint your Autonolas Badge!</p>
+                    <p style={{ display: 'inline-block' }}>
+                      To get started,&nbsp;
+                      {connectButton}
+                      .
+                    </p>
                   </div>
                 )}
               />
+              <Text type="secondary">
+                To mint or see your badge,&nbsp;
+                {connectButton}
+                .
+              </Text>
             </>
           )}
         </>

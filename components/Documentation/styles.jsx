@@ -24,7 +24,6 @@ export const WrapperDiv = styled.div`
 export const DocSection = styled.div`
   display: flex;
   align-items: flex-start;
-  font-size: 16px;
   .navigation-section {
     position: sticky;
     top: 64px;
