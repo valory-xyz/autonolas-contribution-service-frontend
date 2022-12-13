@@ -16,7 +16,7 @@ const { Title, Text } = Typography;
 
 const Verification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isWalletVerified, setIsWalletVerified] = useState(false);
   const account = useSelector((state) => get(state, 'setup.account'));
   const router = useRouter();
 
@@ -78,7 +78,7 @@ const Verification = () => {
             <li>
               <Title level={5}>
                 Verify&nbsp;
-                {isVerified && checkmark}
+                {isWalletVerified && checkmark}
               </Title>
 
               <Button
@@ -88,14 +88,14 @@ const Verification = () => {
                   try {
                     await verifyAddress(account, discordId);
                     setIsVerifying(false);
-                    setIsVerified(true);
+                    setIsWalletVerified(true);
                     notifySuccess('Verified Successfully!');
                   } catch (error) {
                     notifyError();
                     console.error(error);
                   }
                 }}
-                disabled={!isVerifyEnabled || isVerified}
+                disabled={!isVerifyEnabled || isWalletVerified}
                 loading={isVerifying}
               >
                 Verify

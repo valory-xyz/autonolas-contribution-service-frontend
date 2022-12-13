@@ -21,26 +21,26 @@ const ContractInfo = () => {
   const deadline = Date.now() + 30 * 1000;
 
   // TODO
-  const isOperational = false;
+  // const isOperational = false;
   const LIST = [
-    {
-      id: 'health',
-      component: (
-        <>
-          {isOperational ? (
-            <>
-              <span className="dot dot-online" />
-              &nbsp; Operational
-            </>
-          ) : (
-            <>
-              <span className="dot dot-offline" />
-              &nbsp; Disrupted
-            </>
-          )}
-        </>
-      ),
-    },
+  //   {
+  //     id: 'health',
+  //     component: (
+  //       <>
+  //         {isOperational ? (
+  //           <>
+  //             <span className="dot dot-online" />
+  //             &nbsp; Operational
+  //           </>
+  //         ) : (
+  //           <>
+  //             <span className="dot dot-offline" />
+  //             &nbsp; Disrupted
+  //           </>
+  //         )}
+  //       </>
+  //     ),
+  //   },
     {
       id: 'next-update',
       component: (
@@ -65,7 +65,7 @@ const ContractInfo = () => {
     {
       id: 'service-code',
       text: 'Service code',
-      redirectTo: null,
+      redirectTo: 'https://github.com/valory-xyz/contribution-service',
     },
     {
       id: '2',
