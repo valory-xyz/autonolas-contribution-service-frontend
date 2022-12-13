@@ -25,6 +25,11 @@ export const setIsVerified = (isVerified) => ({
   data: { isVerified },
 });
 
+export const setLeaderboard = (leaderboard) => ({
+  type: syncTypes.SET_LEADERBOARD,
+  data: { leaderboard },
+});
+
 export const setHealthcheck = (healthcheck) => ({
   type: syncTypes.SET_HEALTH_CHECK,
   data: { healthcheck },

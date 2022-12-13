@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
-import orderBy from 'lodash/orderBy';
-import lowerCase from 'lodash/lowerCase';
 import { Typography, Table } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
+
+import { setLeaderboard } from 'store/setup/actions';
+import { getLeaderboardList } from 'common-util/api';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { DiscordLink } from '../common';
-import { getLeaderboardList } from './utils';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
@@ -43,17 +43,18 @@ const Actions = () => (
 );
 
 const Leaderboard = () => {
-  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const chainId = useSelector((state) => state?.setup?.chainId);
   const isVerified = useSelector((state) => state?.setup?.isVerified);
+  const data = useSelector((state) => state?.setup?.leaderboard);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
     const fn = async () => {
       try {
         const response = await getLeaderboardList();
-        setData(response);
+        dispatch(setLeaderboard(response));
         setIsLoading(false);
       } catch (error) {
         window.console.error(error);
@@ -61,34 +62,6 @@ const Leaderboard = () => {
     };
     fn();
   }, [chainId]);
-
-  const sortedColumns = () => {
-    // orderBy (sort) 1. points, 2. name
-    const values = orderBy(data, [
-      (e) => parseInt(e.points, 10),
-      (e) => lowerCase(e.name),
-    ]);
-
-    const rankedValues = [];
-    values.forEach((e, index) => {
-      // setting rank for the first index
-      if (index === 0) {
-        rankedValues.push({ ...e, rank: 1 });
-      } else {
-        const previousMember = rankedValues[index - 1];
-        rankedValues.push({
-          ...e,
-          rank:
-            // if points are same as previous member, then same rank else add 1
-            previousMember.points === e.points
-              ? previousMember.rank
-              : previousMember.rank + 1,
-        });
-      }
-    });
-
-    return rankedValues;
-  };
 
   return (
     <>
@@ -107,7 +80,7 @@ const Leaderboard = () => {
         <div className="leaderboard-table">
           <Table
             columns={columns}
-            dataSource={sortedColumns()}
+            dataSource={data}
             loading={isLoading}
             bordered
             pagination={false}

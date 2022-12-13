@@ -54,7 +54,12 @@ const ContractInfo = () => {
             value={deadline}
             format="ss"
             suffix="s"
-            // onFinish={() => console.log('DONE')}
+            onFinish={async () => {
+              // update leaderboard
+
+              // update badge
+
+            }}
           />
         </NextUpdateTimer>
       ),
