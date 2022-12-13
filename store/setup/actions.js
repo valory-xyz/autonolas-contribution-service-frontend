@@ -30,6 +30,11 @@ export const setLeaderboard = (leaderboard) => ({
   data: { leaderboard },
 });
 
+export const setNftDetails = (nftDetails) => ({
+  type: syncTypes.SET_NFT_DETAILS,
+  data: { nftDetails },
+});
+
 export const setHealthcheck = (healthcheck) => ({
   type: syncTypes.SET_HEALTH_CHECK,
   data: { healthcheck },

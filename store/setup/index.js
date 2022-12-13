@@ -13,6 +13,7 @@ const initialState = {
    */
   isVerified: true,
   leaderboard: [],
+  nftDetails: null,
   healthcheck: {
     seconds_since_last_reset: 12,
     healthy: true,
@@ -34,6 +35,7 @@ export default (state = initialState, action) => {
     case syncTypes.SET_CHAIND_ID:
     case syncTypes.SET_WALLET_VERIFICATION:
     case syncTypes.SET_HEALTH_CHECK:
+    case syncTypes.SET_NFT_DETAILS:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
     }

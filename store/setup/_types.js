@@ -12,6 +12,7 @@ export const syncTypes = {
   SET_WALLET_VERIFICATION: `${reducerName}/Set wallet verification`,
   SET_LOGOUT: `${reducerName}/Set logout`,
   SET_LEADERBOARD: `${reducerName}/Set leaderboard`,
+  SET_NFT_DETAILS: `${reducerName}/Set NFT details`,
   SET_HEALTH_CHECK: `${reducerName}/Set healthcheck`,
   SET_STORE_STATE: `${reducerName}/Set Store State`,
 };

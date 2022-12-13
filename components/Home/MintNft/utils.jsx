@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getMintContract } from 'common-util/Contracts';
 import { notifySuccess } from 'common-util/functions';
 import { findIndex, toLower, get } from 'lodash';
@@ -30,10 +31,14 @@ export const getLatestMintedNft = (account) => new Promise((resolve, reject) => 
         if (lastIndex !== -1) {
           const tokenId = `${Number(lastIndex) + 1}`;
           const infoUrl = await contract.methods.tokenURI(tokenId).call();
-
-          resolve({ isFound: true, response: infoUrl, tokenId });
+          if (infoUrl) {
+            const value = await axios.get(infoUrl);
+            resolve({ details: value.data, tokenId });
+          } else {
+            resolve({ details: null, tokenId: null });
+          }
         } else {
-          resolve({ isFound: false, response: null });
+          resolve({ details: null, tokenId: null });
         }
       });
     })
