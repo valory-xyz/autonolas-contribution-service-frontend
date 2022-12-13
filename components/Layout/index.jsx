@@ -25,6 +25,11 @@ const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
 const { Header, Content } = Layout;
 const { useBreakpoint } = Grid;
 
+const menuItems = [
+  { key: 'homepage', label: 'Contribute' },
+  { key: 'docs', label: 'Docs' },
+];
+
 const NavigationBar = ({ children }) => {
   const screens = useBreakpoint();
   const router = useRouter();
@@ -85,17 +90,6 @@ const NavigationBar = ({ children }) => {
       </CustomLayout>
     );
   }
-
-  const menuItems = [
-    {
-      key: 'homepage',
-      label: 'Contribute',
-    },
-    {
-      key: 'docs',
-      label: 'Docs',
-    },
-  ];
 
   return (
     <CustomLayout>
