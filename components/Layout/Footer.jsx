@@ -1,9 +1,6 @@
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Typography,
-  // Statistic
-} from 'antd/lib';
+import { Typography, Statistic } from 'antd/lib';
 import Link from 'next/link';
 import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import PoweredBy from 'common-util/SVGs/powered-by';
@@ -13,51 +10,55 @@ import {
   FixedFooter,
   ContractsInfoContainer,
   PoweredByLogo,
-  // NextUpdateTimer,
+  NextUpdateTimer,
 } from './styles';
 
 const { Text } = Typography;
-// const { Countdown } = Statistic;
+const { Countdown } = Statistic;
 
 const ContractInfo = () => {
   const chainId = useSelector((state) => state?.setup?.chainId);
-  // const deadline = Date.now() + 30 * 1000;
+  const isHealthy = useSelector(
+    (state) => !!state?.setup?.healthcheck?.healthy,
+  );
+  const secondsLeft = useSelector(
+    (state) => state?.setup?.healthcheck?.seconds_untime_next_update,
+  );
+  const deadline = Date.now() + secondsLeft * 1000;
 
-  // TODO
-  // const isOperational = false;
   const LIST = [
-    //   {
-    //     id: 'health',
-    //     component: (
-    //       <>
-    //         {isOperational ? (
-    //           <>
-    //             <span className="dot dot-online" />
-    //             &nbsp; Operational
-    //           </>
-    //         ) : (
-    //           <>
-    //             <span className="dot dot-offline" />
-    //             &nbsp; Disrupted
-    //           </>
-    //         )}
-    //       </>
-    //     ),
-    //   },
-    // {
-    //   id: 'next-update',
-    //   component: (
-    //     <NextUpdateTimer>
-    //       Next Update:&nbsp;
-    //       <Countdown
-    //         value={deadline}
-    //         format="ss"
-    //         suffix="s"
-    //         // onFinish={() => console.log('DONE')}
-    //       />
-    //     </NextUpdateTimer>
-    //   ),
-    // },
+    {
+      id: 'health',
+      component: (
+        <>
+          {isHealthy ? (
+            <>
+              <span className="dot dot-online" />
+              &nbsp; Operational
+            </>
+          ) : (
+            <>
+              <span className="dot dot-offline" />
+              &nbsp; Disrupted
+            </>
+          )}
+        </>
+      ),
+    },
+    {
+      id: 'next-update',
+      component: (
+        <NextUpdateTimer>
+          Next Update:&nbsp;
+          <Countdown
+            value={deadline}
+            format="ss"
+            suffix="s"
+            // onFinish={() => console.log('DONE')}
+          />
+        </NextUpdateTimer>
+      ),
+    },
     {
       id: 'contract-code',
       text: 'Contracts',

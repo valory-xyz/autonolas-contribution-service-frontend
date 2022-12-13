@@ -25,6 +25,11 @@ export const setIsVerified = (isVerified) => ({
   data: { isVerified },
 });
 
+export const setHealthcheck = (healthcheck) => ({
+  type: syncTypes.SET_HEALTH_CHECK,
+  data: { healthcheck },
+});
+
 export const setLogout = () => ({
   type: syncTypes.SET_LOGOUT,
   data: null,

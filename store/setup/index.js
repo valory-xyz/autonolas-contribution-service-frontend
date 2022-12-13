@@ -10,6 +10,11 @@ const initialState = {
    * (util the API is completed)
    */
   isVerified: true,
+  healthcheck: {
+    seconds_since_last_reset: 12,
+    healthy: true,
+    seconds_untime_next_update: 18,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -25,6 +30,7 @@ export default (state = initialState, action) => {
     case syncTypes.SET_LOGIN_ERROR:
     case syncTypes.SET_CHAIND_ID:
     case syncTypes.SET_WALLET_VERIFICATION:
+    case syncTypes.SET_HEALTH_CHECK:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
     }

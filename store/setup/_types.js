@@ -11,5 +11,6 @@ export const syncTypes = {
   SET_LOGIN_ERROR: `${reducerName}/Set error`,
   SET_WALLET_VERIFICATION: `${reducerName}/Set wallet verification`,
   SET_LOGOUT: `${reducerName}/Set logout`,
+  SET_HEALTH_CHECK: `${reducerName}/Set healthcheck`,
   SET_STORE_STATE: `${reducerName}/Set Store State`,
 };
