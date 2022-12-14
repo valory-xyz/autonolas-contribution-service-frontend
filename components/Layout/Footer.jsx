@@ -31,7 +31,7 @@ const ContractInfo = () => {
     (state) => !!state?.setup?.healthcheck?.healthy,
   );
   const secondsLeftReceived = useSelector(
-    (state) => state?.setup?.healthcheck?.seconds_untime_next_update,
+    (state) => state?.setup?.healthcheck?.seconds_until_next_update,
   );
 
   useEffect(() => {
@@ -46,12 +46,12 @@ const ContractInfo = () => {
           {isHealthy ? (
             <>
               <span className="dot dot-online" />
-              &nbsp; Operational
+              &nbsp;Operational
             </>
           ) : (
             <>
               <span className="dot dot-offline" />
-              &nbsp; Disrupted
+              &nbsp;Disrupted
             </>
           )}
         </>
