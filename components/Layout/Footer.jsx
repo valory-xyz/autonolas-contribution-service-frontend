@@ -32,12 +32,9 @@ const ContractInfo = () => {
   const dispatch = useDispatch();
   const chainId = useSelector((state) => state?.setup?.chainId);
   const account = useSelector((state) => state?.setup?.account);
-  const isHealthy = useSelector(
-    (state) => !!state?.setup?.healthcheck?.healthy,
-  );
-  const secondsLeftReceived = useSelector(
-    (state) => state?.setup?.healthcheck?.seconds_until_next_update,
-  );
+  const healthDetails = useSelector((state) => state?.setup?.healthcheck);
+  const isHealthy = !!healthDetails?.healthy;
+  const secondsLeftReceived = healthDetails?.seconds_until_next_update;
 
   // fetch healthcheck on first render
   useEffect(() => {
@@ -84,10 +81,18 @@ const ContractInfo = () => {
           ) : (
             <Countdown
               key={myKey}
-              value={Date.now() + seconds * 1000}
+              value={Date.now() + Math.round(seconds) * 1000}
               format="ss"
               suffix="s"
               onFinish={async () => {
+                // update the timer in redux
+                dispatch(
+                  setHealthcheck({
+                    ...(healthDetails || {}),
+                    seconds_until_next_update: null,
+                  }),
+                );
+
                 // once the timer is completed, fetch the health checkup again
                 getHealthcheck()
                   .then(async (response) => {
@@ -96,10 +101,12 @@ const ContractInfo = () => {
 
                     const timer = response.seconds_until_next_update;
                     const tenPercentExtra = 0.1 * timer; // 10% extra to be added
-                    dispatch(setHealthcheck({
-                      ...response,
-                      seconds_until_next_update: Math.round(timer + tenPercentExtra),
-                    }));
+                    dispatch(
+                      setHealthcheck({
+                        ...response,
+                        seconds_until_next_update: timer + tenPercentExtra,
+                      }),
+                    );
 
                     // update leaderboard
                     const list = await getLeaderboardList();
