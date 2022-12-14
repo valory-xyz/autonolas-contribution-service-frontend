@@ -56,7 +56,7 @@ const pollHealthCheckup = async (urlPassed) => new Promise((resolve, reject) => 
 
       // if healthcheck is returned false or positive seconds, stop polling
       const canStopPoll = response?.data?.healthcheck === false
-          || response?.data?.seconds_until_next_update > 0;
+          || response?.data?.seconds_until_next_update > 1;
 
       if (canStopPoll) {
         clearInterval(interval);
