@@ -93,14 +93,8 @@ const MintNft = ({ account, chainId }) => {
     }
   };
 
-  // TODO:
-  const handleConnectWallet = () => {};
-
-  const connectButton = (
-    <Button type="link" onClick={handleConnectWallet}>
-      connect wallet
-    </Button>
-  );
+  // TODO: to be button
+  const connectButton = 'connect wallet';
 
   const image = get(nftDetails, 'image');
 
@@ -183,6 +177,12 @@ const MintNft = ({ account, chainId }) => {
                       &nbsp;to activate it
                     </Text>
                   )}
+                  <Text
+                    type="secondary"
+                    className="custom-text-secondary mt-12"
+                  >
+                    Free to mint! Only cost is gas.
+                  </Text>
                 </>
               )}
             </>

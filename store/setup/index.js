@@ -5,7 +5,11 @@ const initialState = {
   balance: null,
   chainId: null,
   errorMessage: null,
-  isVerified: false,
+  /**
+   * initially set to true to avoid glitch
+   * (util the API is completed)
+   */
+  isVerified: true,
 };
 
 export default (state = initialState, action) => {

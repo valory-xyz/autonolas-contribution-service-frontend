@@ -42,6 +42,16 @@ const NavigationBar = ({ children }) => {
   const isVerified = useSelector((state) => get(state, 'setup.isVerified'));
 
   /**
+   * on first render, if there is no account (ie. wallet not connected),
+   * mark as not verified
+   */
+  useEffect(() => {
+    if (!account) {
+      dispatch(setIsVerified(false));
+    }
+  }, []);
+
+  /**
    * fetch if wallet is verified on page load
    */
   useEffect(() => {
