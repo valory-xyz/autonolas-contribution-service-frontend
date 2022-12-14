@@ -1,5 +1,5 @@
 # Contribution service frontend
-This repository contains code for the [Contribution service App](https://contribution.autonolas.network/) frontend.
+This repository contains code for the [Contribution service App](https://contribution.autonolas.network/) frontend. Find the backend repository [here](https://github.com/valory-xyz/contribution-service).
 
 ## Tech Stack
 - web3.js
