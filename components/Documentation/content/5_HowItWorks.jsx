@@ -30,17 +30,18 @@ const HowItWorks = () => (
       the NFTs display a new image when visualized on NFT platforms such as
       Opensea.
     </Paragraph>
-    <Paragraph>
-      Going into more technical detail. The service is built using a finite
-      state machine (FSM) architecture, enabling maximum composability. The FSM
-      composed of several rounds, namely:
-    </Paragraph>
 
     <img
       src="/images/autonomous-service.jpg"
       alt="Autonomous Service"
       style={{ width: '100%', height: '100%', marginBottom: '2rem' }}
     />
+
+    <Paragraph>
+      Going into more technical detail. The service is built using a finite
+      state machine (FSM) architecture, enabling maximum composability. The FSM
+      composed of several rounds, namely:
+    </Paragraph>
 
     <Paragraph>
       <ul>

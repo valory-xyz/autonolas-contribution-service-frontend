@@ -52,7 +52,8 @@ const Badge = () => (
       <ol>
         <li>
           <Text strong>Idle</Text>
-          &nbsp;– badge is not activated. Register your profile to activate.
+          &nbsp;–  0 - 100 points. Badge is not activated. Register your profile
+          to activate.
         </li>
         <li>
           <Text strong>Basic</Text>
