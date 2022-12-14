@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import { MORE_COLOR } from 'util/constants';
 
 // const GlobalStyles = styled.div`
 const GlobalStyle = createGlobalStyle`
@@ -79,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
     margin-top: 64px;
   }
   .site-layout-background {
-    padding: 24px 0;
+    padding: 8px 0;
     min-height: calc(100vh - 160px);
   }
 
@@ -108,6 +109,20 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 12px;
     svg {
       color: ${COLOR.BORDER_GREY};
+    }
+  }
+
+  h2.ant-typography {
+    margin-bottom: 8px;
+  }
+
+  /* alert */
+  .custom-alert-secondary {
+    background-color: ${COLOR.WHITE};
+    border-color: ${MORE_COLOR.SECONDARY_GRAY};
+    .custom-text-secondary {
+      margin: 0;
+      max-width: 100%;
     }
   }
 

@@ -20,7 +20,7 @@ const columns = [
 
 const Actions = () => (
   <>
-    <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
+    <Title level={2}>
       Actions
     </Title>
     <Text type="secondary" className="custom-text-secondary">
