@@ -20,9 +20,7 @@ const columns = [
 
 const Actions = () => (
   <>
-    <Title level={2}>
-      Actions
-    </Title>
+    <Title level={2}>Actions</Title>
     <Text type="secondary" className="custom-text-secondary">
       Complete actions to earn points, climb the leaderboard and upgrade your
       badge.&nbsp;
@@ -85,6 +83,7 @@ const Leaderboard = () => {
             bordered
             pagination={false}
             className="mb-12"
+            rowKey="address"
           />
         </div>
         {!isVerified && (
