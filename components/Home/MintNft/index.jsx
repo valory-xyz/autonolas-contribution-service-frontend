@@ -1,20 +1,17 @@
 import { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { isGoerli } from 'common-util/functions';
+import { getLatestMintedNft } from 'common-util/api';
+
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
-import {
-  getLatestMintedNft,
-  mintNft,
-  getAutonolasTokenUri,
-  pollNftDetails,
-} from './utils';
+import { setNftDetails } from 'store/setup/actions';
+import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import {
   IMAGE_SIZE,
@@ -24,10 +21,12 @@ import {
 
 const { Title, Text } = Typography;
 
-const MintNft = ({ account, chainId }) => {
-  const [tokenId, setTokenId] = useState(null);
+const MintNft = () => {
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
-  const [nftDetails, setNftDetails] = useState(null);
+  const account = useSelector((state) => state?.setup?.account);
+  const chainId = useSelector((state) => state?.setup?.chainId);
+  const nftDetails = useSelector((state) => state?.setup?.nftDetails);
+  const dispatch = useDispatch();
 
   // loader for minting
   const [isMintingLoading, setIsMintingLoading] = useState(false);
@@ -44,21 +43,8 @@ const MintNft = ({ account, chainId }) => {
         setNftFetchingLoading(true);
 
         try {
-          const {
-            isFound,
-            response,
-            tokenId: id,
-          } = await getLatestMintedNft(account);
-
-          if (isFound) {
-            const details = await fetch(response);
-            const json = await details.json();
-            setTokenId(id);
-            setNftDetails(json);
-          } else {
-            setTokenId(null);
-            setNftDetails(null);
-          }
+          const { details, tokenId } = await getLatestMintedNft(account);
+          dispatch(setNftDetails({ tokenId, ...(details || {}) }));
         } catch (error) {
           window.console.error(error);
         } finally {
@@ -132,10 +118,10 @@ const MintNft = ({ account, chainId }) => {
                     className="nft-image"
                     preview={false}
                   />
-                  {tokenId && (
+                  {nftDetails?.tokenId && (
                     <Text type="secondary" className="mt-12">
                       <a
-                        href={`${openSeaUrl}/${tokenId}`}
+                        href={`${openSeaUrl}/${nftDetails.tokenId}`}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -217,19 +203,4 @@ const MintNft = ({ account, chainId }) => {
   );
 };
 
-MintNft.propTypes = {
-  account: PropTypes.string,
-  chainId: PropTypes.number,
-};
-
-MintNft.defaultProps = {
-  account: null,
-  chainId: null,
-};
-
-const mapStateToProps = (state) => {
-  const { account, chainId } = state.setup;
-  return { account, chainId };
-};
-
-export default connect(mapStateToProps, null)(MintNft);
+export default MintNft;

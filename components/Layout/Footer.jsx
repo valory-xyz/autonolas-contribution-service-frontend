@@ -1,63 +1,97 @@
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  Typography,
-  // Statistic
-} from 'antd/lib';
+import { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Typography, Statistic } from 'antd/lib';
 import Link from 'next/link';
+import isNil from 'lodash/isNil';
 import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import PoweredBy from 'common-util/SVGs/powered-by';
 import { isGoerli } from 'common-util/functions';
+import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
+import { setLeaderboard, setNftDetails } from 'store/setup/actions';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import {
   FixedFooter,
   ContractsInfoContainer,
   PoweredByLogo,
-  // NextUpdateTimer,
+  NextUpdateTimer,
 } from './styles';
 
 const { Text } = Typography;
-// const { Countdown } = Statistic;
+const { Countdown } = Statistic;
 
 const ContractInfo = () => {
-  const chainId = useSelector((state) => state?.setup?.chainId);
-  // const deadline = Date.now() + 30 * 1000;
+  const [seconds, setSeconds] = useState(null);
+  const [myKey, setMykey] = useState('1');
 
-  // TODO
-  // const isOperational = false;
+  // selectors & dispatch
+  const dispatch = useDispatch();
+  const chainId = useSelector((state) => state?.setup?.chainId);
+  const account = useSelector((state) => state?.setup?.account);
+  const isHealthy = useSelector(
+    (state) => !!state?.setup?.healthcheck?.healthy,
+  );
+  const secondsLeftReceived = useSelector(
+    (state) => state?.setup?.healthcheck?.seconds_until_next_update,
+  );
+
+  useEffect(() => {
+    setSeconds(secondsLeftReceived);
+  }, [secondsLeftReceived]);
+
   const LIST = [
-    //   {
-    //     id: 'health',
-    //     component: (
-    //       <>
-    //         {isOperational ? (
-    //           <>
-    //             <span className="dot dot-online" />
-    //             &nbsp; Operational
-    //           </>
-    //         ) : (
-    //           <>
-    //             <span className="dot dot-offline" />
-    //             &nbsp; Disrupted
-    //           </>
-    //         )}
-    //       </>
-    //     ),
-    //   },
-    // {
-    //   id: 'next-update',
-    //   component: (
-    //     <NextUpdateTimer>
-    //       Next Update:&nbsp;
-    //       <Countdown
-    //         value={deadline}
-    //         format="ss"
-    //         suffix="s"
-    //         // onFinish={() => console.log('DONE')}
-    //       />
-    //     </NextUpdateTimer>
-    //   ),
-    // },
+    {
+      id: 'health',
+      component: (
+        <>
+          {isHealthy ? (
+            <>
+              <span className="dot dot-online" />
+              &nbsp;Operational
+            </>
+          ) : (
+            <>
+              <span className="dot dot-offline" />
+              &nbsp;Disrupted
+            </>
+          )}
+        </>
+      ),
+    },
+    {
+      id: 'next-update',
+      component: (
+        <NextUpdateTimer>
+          Next Update:&nbsp;
+          {isNil(seconds) ? (
+            '--'
+          ) : (
+            <Countdown
+              key={myKey}
+              value={Date.now() + seconds * 1000}
+              format="ss"
+              suffix="s"
+              onFinish={async () => {
+                // update leaderboard
+                const response = await getLeaderboardList();
+                dispatch(setLeaderboard(response));
+
+                if (account) {
+                  // update badge
+                  const { details, tokenId } = await getLatestMintedNft(
+                    account,
+                  );
+                  dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+                }
+
+                // start the timer again
+                setSeconds(secondsLeftReceived);
+                setMykey((c) => `${Number(c) + 1}`);
+              }}
+            />
+          )}
+        </NextUpdateTimer>
+      ),
+    },
     {
       id: 'contract-code',
       text: 'Contracts',

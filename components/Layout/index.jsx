@@ -7,11 +7,11 @@ import {
 } from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { setIsVerified } from 'store/setup/actions';
+import { setIsVerified, setHealthcheck } from 'store/setup/actions';
+import { DiscordLink } from '../Home/common';
 import Login from '../Login';
 import Footer from './Footer';
-import { getAddressStatus } from './utils';
-import { DiscordLink } from '../Home/common';
+import { getAddressStatus, getHealthcheck } from './utils';
 import {
   CustomLayout,
   Logo,
@@ -41,14 +41,21 @@ const NavigationBar = ({ children }) => {
   const chainId = useSelector((state) => get(state, 'setup.chainId'));
   const isVerified = useSelector((state) => get(state, 'setup.isVerified'));
 
-  /**
-   * on first render, if there is no account (ie. wallet not connected),
-   * mark as not verified
-   */
   useEffect(() => {
+    // on first render, if there is no account (ie. wallet not connected),
+    // mark as not verified
     if (!account) {
       dispatch(setIsVerified(false));
     }
+
+    // fetch healthcheck
+    getHealthcheck()
+      .then((response) => {
+        dispatch(setHealthcheck(response));
+      })
+      .catch((error) => {
+        window.console.error(error);
+      });
   }, []);
 
   /**
