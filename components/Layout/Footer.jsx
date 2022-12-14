@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Statistic } from 'antd/lib';
 import Link from 'next/link';
+import isNil from 'lodash/isNil';
 import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import PoweredBy from 'common-util/SVGs/powered-by';
 import { isGoerli } from 'common-util/functions';
@@ -19,7 +20,7 @@ const { Text } = Typography;
 const { Countdown } = Statistic;
 
 const ContractInfo = () => {
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(null);
   const [myKey, setMykey] = useState('1');
 
   // selectors & dispatch
@@ -61,27 +62,33 @@ const ContractInfo = () => {
       component: (
         <NextUpdateTimer>
           Next Update:&nbsp;
-          <Countdown
-            key={myKey}
-            value={Date.now() + seconds * 1000}
-            format="ss"
-            suffix="s"
-            onFinish={async () => {
-              // update leaderboard
-              const response = await getLeaderboardList();
-              dispatch(setLeaderboard(response));
+          {isNil(seconds) ? (
+            '--'
+          ) : (
+            <Countdown
+              key={myKey}
+              value={Date.now() + seconds * 1000}
+              format="ss"
+              suffix="s"
+              onFinish={async () => {
+                // update leaderboard
+                const response = await getLeaderboardList();
+                dispatch(setLeaderboard(response));
 
-              if (account) {
-                // update badge
-                const { details, tokenId } = await getLatestMintedNft(account);
-                dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-              }
+                if (account) {
+                  // update badge
+                  const { details, tokenId } = await getLatestMintedNft(
+                    account,
+                  );
+                  dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+                }
 
-              // start the timer again
-              setSeconds(secondsLeftReceived);
-              setMykey((c) => `${Number(c) + 1}`);
-            }}
-          />
+                // start the timer again
+                setSeconds(secondsLeftReceived);
+                setMykey((c) => `${Number(c) + 1}`);
+              }}
+            />
+          )}
         </NextUpdateTimer>
       ),
     },

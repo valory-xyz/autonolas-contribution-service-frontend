@@ -49,16 +49,15 @@ export async function getAddressStatus(address) {
 /**
  * healthcheck
  */
-export async function getHealthcheck() {
-  return new Promise((resolve, reject) => {
-    try {
-      const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
+export const getHealthcheck = async () => new Promise((resolve, reject) => {
+  const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
 
-      axios.get(url).then((response) => {
-        resolve(response?.data);
-      });
-    } catch (error) {
+  axios
+    .get(url)
+    .then((response) => {
+      resolve(response?.data);
+    })
+    .catch((error) => {
       reject(error);
-    }
-  });
-}
+    });
+});

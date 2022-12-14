@@ -14,11 +14,7 @@ const initialState = {
   isVerified: true,
   leaderboard: [],
   nftDetails: null,
-  healthcheck: {
-    seconds_since_last_reset: 12,
-    healthy: true,
-    seconds_untime_next_update: 18,
-  },
+  healthcheck: null,
 };
 
 export default (state = initialState, action) => {
