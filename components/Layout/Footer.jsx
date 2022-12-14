@@ -95,7 +95,7 @@ const ContractInfo = () => {
                     setSeconds(0);
 
                     const timer = response.seconds_until_next_update;
-                    const tenPercentExtra = 0.1 * 10; // 10% extra to be added
+                    const tenPercentExtra = 0.1 * timer; // 10% extra to be added
                     dispatch(setHealthcheck({
                       ...response,
                       seconds_until_next_update: Math.round(timer + tenPercentExtra),
