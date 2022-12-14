@@ -6,7 +6,7 @@ export const MORE_COLOR = {
   SECONDARY_GRAY: '#f0f0f0',
 };
 
-export const SITE_URL = 'https://contribute.autonolas.network/';
+export const SITE_URL = 'https://contribute.autonolas.network';
 export const SITE_TITLE = 'Autonolas Contribute';
 export const SITE_DESCRIPTION = 'Contribute to the Autonolas DAO by completing actions, earning points, climbing the rankings and upgrading your badge';
 export const SITE_METATAG_IMAGE = `${SITE_URL}/images/site-metadata/site-metatag.jpg`;
