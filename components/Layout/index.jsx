@@ -7,11 +7,11 @@ import {
 } from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { setIsVerified, setHealthcheck } from 'store/setup/actions';
+import { setIsVerified } from 'store/setup/actions';
 import { DiscordLink } from '../Home/common';
 import Login from '../Login';
 import Footer from './Footer';
-import { getAddressStatus, getHealthcheck } from './utils';
+import { getAddressStatus } from './utils';
 import {
   CustomLayout,
   Logo,
@@ -47,15 +47,6 @@ const NavigationBar = ({ children }) => {
     if (!account) {
       dispatch(setIsVerified(false));
     }
-
-    // fetch healthcheck
-    getHealthcheck()
-      .then((response) => {
-        dispatch(setHealthcheck(response));
-      })
-      .catch((error) => {
-        window.console.error(error);
-      });
   }, []);
 
   /**
