@@ -7,8 +7,13 @@ import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import PoweredBy from 'common-util/SVGs/powered-by';
 import { isGoerli } from 'common-util/functions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
-import { setLeaderboard, setNftDetails } from 'store/setup/actions';
+import {
+  setLeaderboard,
+  setNftDetails,
+  setHealthcheck,
+} from 'store/setup/actions';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
+import { getHealthcheck } from './utils';
 import {
   FixedFooter,
   ContractsInfoContainer,
@@ -34,6 +39,18 @@ const ContractInfo = () => {
     (state) => state?.setup?.healthcheck?.seconds_until_next_update,
   );
 
+  // fetch healthcheck on first render
+  useEffect(() => {
+    getHealthcheck()
+      .then((response) => {
+        dispatch(setHealthcheck(response));
+      })
+      .catch((error) => {
+        window.console.error(error);
+      });
+  }, []);
+
+  // update the timer seconds when time is updated from BE
   useEffect(() => {
     setSeconds(secondsLeftReceived);
   }, [secondsLeftReceived]);
@@ -71,21 +88,39 @@ const ContractInfo = () => {
               format="ss"
               suffix="s"
               onFinish={async () => {
-                // update leaderboard
-                const response = await getLeaderboardList();
-                dispatch(setLeaderboard(response));
+                // once the timer is completed, fetch the health checkup again
+                getHealthcheck()
+                  .then(async (response) => {
+                    // reseting timer to 0 as it is finished
+                    setSeconds(0);
 
-                if (account) {
-                  // update badge
-                  const { details, tokenId } = await getLatestMintedNft(
-                    account,
-                  );
-                  dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-                }
+                    const timer = response.seconds_until_next_update;
+                    const tenPercentExtra = 0.1 * 10; // 10% extra to be added
+                    dispatch(setHealthcheck({
+                      ...response,
+                      seconds_until_next_update: Math.round(timer + tenPercentExtra),
+                    }));
 
-                // start the timer again
-                setSeconds(secondsLeftReceived);
-                setMykey((c) => `${Number(c) + 1}`);
+                    // update leaderboard
+                    const list = await getLeaderboardList();
+                    dispatch(setLeaderboard(list));
+
+                    // update badge if the user is logged-in
+                    if (account) {
+                      const { details, tokenId } = await getLatestMintedNft(
+                        account,
+                      );
+                      dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+                    }
+
+                    // start the timer again
+                    // setSeconds(secondsLeftReceived);
+                    setMykey((c) => `${Number(c) + 1}`);
+                  })
+                  .catch((error) => {
+                    window.console.log('Error after timer complete.');
+                    window.console.error(error);
+                  });
               }}
             />
           )}
