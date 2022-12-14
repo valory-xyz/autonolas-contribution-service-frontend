@@ -7,14 +7,11 @@ import {
 import { LinkOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { isGoerli } from 'common-util/functions';
+import { getLatestMintedNft } from 'common-util/api';
+
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { setNftDetails } from 'store/setup/actions';
-import {
-  getLatestMintedNft,
-  mintNft,
-  getAutonolasTokenUri,
-  pollNftDetails,
-} from './utils';
+import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import {
   IMAGE_SIZE,

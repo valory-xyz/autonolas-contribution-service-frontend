@@ -1,10 +1,12 @@
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Statistic } from 'antd/lib';
 import Link from 'next/link';
 import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import PoweredBy from 'common-util/SVGs/powered-by';
 import { isGoerli } from 'common-util/functions';
+import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
+import { setLeaderboard, setNftDetails } from 'store/setup/actions';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import {
   FixedFooter,
@@ -17,14 +19,24 @@ const { Text } = Typography;
 const { Countdown } = Statistic;
 
 const ContractInfo = () => {
+  const [seconds, setSeconds] = useState(0);
+
+  // selectors & dispatch
+  const dispatch = useDispatch();
   const chainId = useSelector((state) => state?.setup?.chainId);
+  const account = useSelector((state) => state?.setup?.account);
   const isHealthy = useSelector(
     (state) => !!state?.setup?.healthcheck?.healthy,
   );
-  const secondsLeft = useSelector(
+  const secondsLeftReceived = useSelector(
     (state) => state?.setup?.healthcheck?.seconds_untime_next_update,
   );
-  const deadline = Date.now() + secondsLeft * 1000;
+
+  useEffect(() => {
+    setSeconds(secondsLeftReceived);
+  }, [secondsLeftReceived]);
+
+  console.log(seconds);
 
   const LIST = [
     {
@@ -51,15 +63,31 @@ const ContractInfo = () => {
         <NextUpdateTimer>
           Next Update:&nbsp;
           <Countdown
-            value={deadline}
+            key={`countdown-${seconds}`}
+            value={Date.now() + seconds * 1000}
             format="ss"
             suffix="s"
             onFinish={async () => {
+              console.log(secondsLeftReceived, ' eee');
+
+              // start the timer again
+              setTimeout(() => setSeconds(secondsLeftReceived), 2000);
+              setSeconds(secondsLeftReceived);
+
               // update leaderboard
+              const response = await getLeaderboardList();
+              dispatch(setLeaderboard(response));
 
               // update badge
-
+              const { details, tokenId } = await getLatestMintedNft(account);
+              dispatch(setNftDetails({ tokenId, ...(details || {}) }));
             }}
+            // onChange={(value) => {
+            //   if (value <= 0) {
+            //     console.log(secondsLeftReceived, 'eee');
+            //     setSeconds(secondsLeftReceived);
+            //   }
+            // }}
           />
         </NextUpdateTimer>
       ),
