@@ -24,7 +24,6 @@ export const WrapperDiv = styled.div`
 export const DocSection = styled.div`
   display: flex;
   align-items: flex-start;
-  font-size: 16px;
   .navigation-section {
     position: sticky;
     top: 64px;
@@ -64,9 +63,7 @@ export const DocSection = styled.div`
 
   /* custom nav-anchor */
   .custom-nav-anchor {
-    border-bottom: 1px solid ${COLOR.BLACK};
     font-size: 18px;
-    text-transform: uppercase;
     padding: 6px 40px 6px 0px;
     padding-left: ${({ isMobile }) => (isMobile ? '16px' : '0')};
     a.ant-anchor-link-title {
@@ -97,7 +94,8 @@ export const DocSection = styled.div`
       max-width: 100%;
     }
     .reading-section {
-      padding: 0 1rem;
+      margin-top: 2rem;
+      padding: 0;
     }
   }
 `;

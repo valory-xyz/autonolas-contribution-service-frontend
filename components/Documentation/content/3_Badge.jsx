@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Typography } from 'antd/lib';
 import { DOCS_SECTIONS } from '../helpers';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const Badge = () => (
   <div id={DOCS_SECTIONS.badge}>
@@ -51,11 +51,26 @@ const Badge = () => (
     <Paragraph>
       <ol>
         <li>
-          Idle – badge is not activated. Register your profile to activate.
+          <Text strong>Idle</Text>
+          &nbsp;–  0 - 100 points. Badge is not activated. Register your profile
+          to activate.
         </li>
-        <li>Basic – 0 – 50k points</li>
-        <li>Legendary – 50k – 100k points</li>
-        <li>Epic – 100k+ points</li>
+        <li>
+          <Text strong>Basic</Text>
+          &nbsp;– 0 – 50k points
+        </li>
+        <li>
+          <Text strong>Legendary</Text>
+          &nbsp;– 50k – 100k points
+        </li>
+        <li>
+          <Text strong>Epic</Text>
+          &nbsp;– 100k - 150k points
+        </li>
+        <li>
+          <Text strong>Super Epic</Text>
+          &nbsp;– 150k+ points
+        </li>
       </ol>
     </Paragraph>
     <br />

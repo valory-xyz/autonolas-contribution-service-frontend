@@ -25,6 +25,21 @@ export const setIsVerified = (isVerified) => ({
   data: { isVerified },
 });
 
+export const setLeaderboard = (leaderboard) => ({
+  type: syncTypes.SET_LEADERBOARD,
+  data: { leaderboard },
+});
+
+export const setNftDetails = (nftDetails) => ({
+  type: syncTypes.SET_NFT_DETAILS,
+  data: { nftDetails },
+});
+
+export const setHealthcheck = (healthcheck) => ({
+  type: syncTypes.SET_HEALTH_CHECK,
+  data: { healthcheck },
+});
+
 export const setLogout = () => ({
   type: syncTypes.SET_LOGOUT,
   data: null,

@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import {
   Alert, Button, Image, Typography, Skeleton,
 } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { isGoerli } from 'common-util/functions';
+import { getLatestMintedNft } from 'common-util/api';
+
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
-import {
-  getLatestMintedNft,
-  mintNft,
-  getAutonolasTokenUri,
-  pollNftDetails,
-} from './utils';
+import { setNftDetails } from 'store/setup/actions';
+import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import {
   IMAGE_SIZE,
@@ -22,18 +20,22 @@ import {
 } from './styles';
 
 const { Title, Text } = Typography;
-const IMAGE_URL = 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8';
 
-const MintNft = ({ account, chainId }) => {
-  const [tokenId, setTokenId] = useState(null);
+const MintNft = () => {
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
-  const [nftDetails, setNftDetails] = useState(null);
+  const account = useSelector((state) => state?.setup?.account);
+  const chainId = useSelector((state) => state?.setup?.chainId);
+  const nftDetails = useSelector((state) => state?.setup?.nftDetails);
+  const dispatch = useDispatch();
 
   // loader for minting
   const [isMintingLoading, setIsMintingLoading] = useState(false);
 
   // loader for signing the mint (between mint start & complete)
   const [isBadgePollLoading, setIsBadgePollLoading] = useState(false);
+  const openSeaUrl = isGoerli(chainId)
+    ? 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8'
+    : 'https://opensea.io/assets/ethereum/0x02c26437b292d86c5f4f21bbcce0771948274f84';
 
   useEffect(() => {
     const fn = async () => {
@@ -41,21 +43,8 @@ const MintNft = ({ account, chainId }) => {
         setNftFetchingLoading(true);
 
         try {
-          const {
-            isFound,
-            response,
-            tokenId: id,
-          } = await getLatestMintedNft(account);
-
-          if (isFound) {
-            const details = await fetch(response);
-            const json = await details.json();
-            setTokenId(id);
-            setNftDetails(json);
-          } else {
-            setTokenId(null);
-            setNftDetails(null);
-          }
+          const { details, tokenId } = await getLatestMintedNft(account);
+          dispatch(setNftDetails({ tokenId, ...(details || {}) }));
         } catch (error) {
           window.console.error(error);
         } finally {
@@ -90,14 +79,8 @@ const MintNft = ({ account, chainId }) => {
     }
   };
 
-  // TODO:
-  const handleConnectWallet = () => {};
-
-  const connectButton = (
-    <Button type="link" onClick={handleConnectWallet}>
-      connect wallet
-    </Button>
-  );
+  // TODO: to be button
+  const connectButton = 'connect wallet';
 
   const image = get(nftDetails, 'image');
 
@@ -135,10 +118,10 @@ const MintNft = ({ account, chainId }) => {
                     className="nft-image"
                     preview={false}
                   />
-                  {tokenId && (
+                  {nftDetails?.tokenId && (
                     <Text type="secondary" className="mt-12">
                       <a
-                        href={`${IMAGE_URL}/${tokenId}`}
+                        href={`${openSeaUrl}/${nftDetails.tokenId}`}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -174,8 +157,10 @@ const MintNft = ({ account, chainId }) => {
                       type="secondary"
                       className="custom-text-secondary mt-12"
                     >
-                      It will take a while to show your badge after you have
-                      signed the minting transaction.
+                      Your badge can take a while to generate. While you
+                      wait,&nbsp;
+                      <DiscordLink text="complete Discord verification" />
+                      &nbsp;to activate it
                     </Text>
                   )}
                   <Text
@@ -218,19 +203,4 @@ const MintNft = ({ account, chainId }) => {
   );
 };
 
-MintNft.propTypes = {
-  account: PropTypes.string,
-  chainId: PropTypes.number,
-};
-
-MintNft.defaultProps = {
-  account: null,
-  chainId: null,
-};
-
-const mapStateToProps = (state) => {
-  const { account, chainId } = state.setup;
-  return { account, chainId };
-};
-
-export default connect(mapStateToProps, null)(MintNft);
+export default MintNft;

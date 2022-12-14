@@ -1,38 +1,60 @@
-import { useSelector } from 'react-redux';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Link from 'next/link';
 import { Typography, Table } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
+
+import { setLeaderboard } from 'store/setup/actions';
+import { getLeaderboardList } from 'common-util/api';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { DiscordLink } from '../common';
-import { getLeaderboardList } from './utils';
 import { LeaderboardContent } from './styles';
 
 const { Title, Text } = Typography;
 
 const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Points Earned',
-    dataIndex: 'points',
-  },
+  { title: 'Rank', dataIndex: 'rank' },
+  { title: 'Name', dataIndex: 'name' },
+  { title: 'Points Earned', dataIndex: 'points' },
 ];
 
+const Actions = () => (
+  <>
+    <Title level={2}>
+      Actions
+    </Title>
+    <Text type="secondary" className="custom-text-secondary">
+      Complete actions to earn points, climb the leaderboard and upgrade your
+      badge.&nbsp;
+      <Link href={`/docs#${DOCS_SECTIONS.actions}`}>Learn more</Link>
+    </Text>
+
+    <Text style={{ display: 'block' }}>
+      <a
+        href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
+        target="_blank"
+        rel="noreferrer"
+      >
+        See all actions&nbsp;
+        <LinkOutlined />
+      </a>
+    </Text>
+  </>
+);
+
 const Leaderboard = () => {
-  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const chainId = useSelector((state) => state?.setup?.chainId);
   const isVerified = useSelector((state) => state?.setup?.isVerified);
+  const data = useSelector((state) => state?.setup?.leaderboard);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
     const fn = async () => {
       try {
         const response = await getLeaderboardList();
-        setData(response);
+        dispatch(setLeaderboard(response));
         setIsLoading(false);
       } catch (error) {
         window.console.error(error);
@@ -44,6 +66,10 @@ const Leaderboard = () => {
   return (
     <>
       <LeaderboardContent className="section">
+        {/* actions */}
+        <Actions />
+
+        {/* leaderboard */}
         <Title level={2}>Leaderboard</Title>
         <Text type="secondary" className="custom-text-secondary">
           Climb the leaderboard by completing actions that contribute to
@@ -58,7 +84,6 @@ const Leaderboard = () => {
             loading={isLoading}
             bordered
             pagination={false}
-            scroll={{ y: 240 }}
             className="mb-12"
           />
         </div>
@@ -69,26 +94,6 @@ const Leaderboard = () => {
             .
           </Text>
         )}
-
-        <Title level={2} style={{ marginTop: 12, marginBottom: 4 }}>
-          Actions
-        </Title>
-        <Text type="secondary" className="custom-text-secondary">
-          Complete actions to earn points, climb the leaderboard and upgrade
-          your badge.&nbsp;
-          <Link href={`/docs#${DOCS_SECTIONS.actions}`}>Learn more</Link>
-        </Text>
-
-        <Text style={{ marginTop: 12, marginBottom: 4, display: 'block' }}>
-          <a
-            href="https://discord.com/channels/899649805582737479/1030087446882418688/1034340826718937159"
-            target="_blank"
-            rel="noreferrer"
-          >
-            See all actions&nbsp;
-            <LinkOutlined />
-          </a>
-        </Text>
       </LeaderboardContent>
     </>
   );
