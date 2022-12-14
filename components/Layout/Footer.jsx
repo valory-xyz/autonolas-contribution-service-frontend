@@ -71,9 +71,11 @@ const ContractInfo = () => {
               const response = await getLeaderboardList();
               dispatch(setLeaderboard(response));
 
-              // update badge
-              const { details, tokenId } = await getLatestMintedNft(account);
-              dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+              if (account) {
+                // update badge
+                const { details, tokenId } = await getLatestMintedNft(account);
+                dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+              }
 
               // start the timer again
               setSeconds(secondsLeftReceived);
