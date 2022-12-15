@@ -20,9 +20,7 @@ const columns = [
 
 const Actions = () => (
   <>
-    <Title level={2}>
-      Actions
-    </Title>
+    <Title level={2}>Actions</Title>
     <Text type="secondary" className="custom-text-secondary">
       Complete actions to earn points, climb the leaderboard and upgrade your
       badge.&nbsp;
@@ -85,13 +83,24 @@ const Leaderboard = () => {
             bordered
             pagination={false}
             className="mb-12"
+            rowKey="address"
           />
         </div>
         {!isVerified && (
           <Text type="secondary" className="mb-12">
-            Not showing on the leaderboard?&nbsp;
-            <DiscordLink />
-            .
+            If you had points on the old leaderboard your points should
+            automatically migrate after you&nbsp;
+            <DiscordLink text="complete Discord verification" />
+            . If they
+            don’t,&nbsp;
+            <a
+              href="https://discord.com/invite/z2PT65jKqQ"
+              target="_blank"
+              rel="noreferrer"
+            >
+              join the Discord
+            </a>
+            &nbsp;and let us know.
           </Text>
         )}
       </LeaderboardContent>
