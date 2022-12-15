@@ -46,6 +46,8 @@ const Login = ({
         onConnect={onConnect}
         onDisconnect={onDisconnect}
         onError={onError}
+        isDapp={false}
+        backendUrl={process.env.NEXT_PUBLIC_BACKEND_URL}
       />
     </Container>
   );

@@ -55,11 +55,12 @@
     lodash "^4.17.21"
     resize-observer-polyfill "^1.5.1"
 
-"@autonolas/frontend-library@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@autonolas/frontend-library/-/frontend-library-0.1.0.tgz#997c6798b1b93934d1b8c4ce6d5898db5288da19"
-  integrity sha512-oOeu1tQ9uD5c0QQxISibT81gUooUOOJ24NqMV2pa1kFYQ/+YiITTc9EpiEr1agP6PJW1QZIr1xVHeE2ecI2bmQ==
+"@autonolas/frontend-library@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@autonolas/frontend-library/-/frontend-library-0.2.0.tgz#61c56f4e4ba55183cf971c916cf1d3b23a3a0e65"
+  integrity sha512-IgN38iO5kcFcvUZA8Gd0vaBWE9c67MT4+HYR5+QQ4gPL9fePN+RmmxWkAqwEubP/Y+EbTWR4R7jv5ZsuWPVLCw==
   dependencies:
+    "@ant-design/icons" "^4.8.0"
     "@walletconnect/web3-provider" "^1.8.0"
     "@web3-react/core" "^6.1.9"
     antd "^4.12.3"

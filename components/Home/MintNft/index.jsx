@@ -152,7 +152,7 @@ const MintNft = () => {
                   >
                     {isBadgePollLoading ? 'Generating' : 'Mint Badge'}
                   </Button>
-                  {isBadgePollLoading && (
+                  {isBadgePollLoading ? (
                     <Text
                       type="secondary"
                       className="custom-text-secondary mt-12"
@@ -162,13 +162,14 @@ const MintNft = () => {
                       <DiscordLink text="complete Discord verification" />
                       &nbsp;to activate it
                     </Text>
+                  ) : (
+                    <Text
+                      type="secondary"
+                      className="custom-text-secondary mt-12"
+                    >
+                      Free to mint! Only cost is gas.
+                    </Text>
                   )}
-                  <Text
-                    type="secondary"
-                    className="custom-text-secondary mt-12"
-                  >
-                    Free to mint! Only cost is gas.
-                  </Text>
                 </>
               )}
             </>
