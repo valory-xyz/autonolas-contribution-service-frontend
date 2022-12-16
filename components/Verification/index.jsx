@@ -10,10 +10,12 @@ import { notifyError, notifySuccess } from 'common-util/functions';
 import { setIsVerified } from 'store/setup/actions';
 import Login from '../Login';
 import { getAddressStatus } from '../Layout/utils';
-import { verifyAddress } from './utils';
+import { verifyAddress, isRouteValid} from './utils';
 import { Ol } from './styles';
 
 const { Title, Text } = Typography;
+
+
 
 const Verification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
@@ -25,13 +27,22 @@ const Verification = () => {
   const checkmark = '✅';
 
   const discordId = get(router, 'query.[discord-id]');
+  const linkExpiration = get(router, 'query.[link-expiration]');
+  const signature = get(router, 'query.[signature]');
+  
+
+
   const isValidId = !!discordId;
 
   const isConnectWalletEnabled = !!account;
   const isLinkWalletEnabled = isConnectWalletEnabled && !isValidId;
   const isVerifyEnabled = !!account && isValidId;
 
-  return (
+
+
+
+  return  (
+     isRouteValid(linkExpiration, signature, discordId) ? (
     <>
       <Title level={2}>Complete Discord Verification</Title>
 
@@ -116,6 +127,9 @@ const Verification = () => {
         </Col>
       </Row>
     </>
+     ) : (
+        <p> Invalid Verification Link. Please try again!</p>
+     )
   );
 };
 
