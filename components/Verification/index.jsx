@@ -37,9 +37,16 @@ const Verification = () => {
   if (!isRouteValid(linkExpiration, signature, discordId)) {
     return (
       <Alert
-        type="warning"
+        type="error"
         showIcon
-        message="Invalid Verification Link. Please try again!"
+        message={(
+          <Text>
+            Invalid verification link. Please
+            {' '}
+            <a href="/verification">try again</a>
+            .
+          </Text>
+)}
         style={{ marginTop: '2rem' }}
       />
     );
