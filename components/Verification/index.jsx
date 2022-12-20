@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
-  Typography, Col, Row, Button,
+  Typography, Col, Row, Button, Alert,
 } from 'antd/lib';
 import get from 'lodash/get';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { setIsVerified } from 'store/setup/actions';
 import Login from '../Login';
 import { getAddressStatus } from '../Layout/utils';
-import { verifyAddress } from './utils';
+import { verifyAddress, isRouteValid } from './utils';
 import { Ol } from './styles';
 
 const { Title, Text } = Typography;
@@ -25,11 +25,32 @@ const Verification = () => {
   const checkmark = '✅';
 
   const discordId = get(router, 'query.[discord-id]');
+  const linkExpiration = get(router, 'query.[link-expiration]');
+  const signature = get(router, 'query.[signature]');
+
   const isValidId = !!discordId;
 
   const isConnectWalletEnabled = !!account;
   const isLinkWalletEnabled = isConnectWalletEnabled && !isValidId;
   const isVerifyEnabled = !!account && isValidId;
+
+  if (!isRouteValid(linkExpiration, signature, discordId)) {
+    return (
+      <Alert
+        type="error"
+        showIcon
+        message={(
+          <Text>
+            Invalid verification link. Please
+            {' '}
+            <a href="/verification">try again</a>
+            .
+          </Text>
+)}
+        style={{ marginTop: '2rem' }}
+      />
+    );
+  }
 
   return (
     <>
