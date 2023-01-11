@@ -20,7 +20,7 @@ const Meta = ({ meta }) => {
 
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={metaInfo.siteUrl} />
-      <meta property="twitter:title" content={metaInfo.description} />
+      <meta property="twitter:title" content={metaInfo.title} />
       <meta property="twitter:description" content={metaInfo.description} />
       <meta property="twitter:image" content={metaInfo.image} />
     </Head>
