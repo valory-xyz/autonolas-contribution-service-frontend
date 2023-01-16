@@ -108,9 +108,19 @@ export const NextUpdateTimer = styled.div`
 `;
 
 export const FixedFooter = styled.div`
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   background: white;
   width: 100%;
   border-top: 1px solid #f0f0f0;
+`;
+
+export const ExtraContent = styled.div`
+  display: flex;
+  align-items: center;
+  > div {
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
 `;

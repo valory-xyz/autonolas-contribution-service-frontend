@@ -13,6 +13,7 @@ import {
   setHealthcheck,
 } from 'store/setup/actions';
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
+import { ServiceStatusInfo } from './ServiceStatusInfo';
 import { getHealthcheck } from './utils';
 import {
   FixedFooter,
@@ -26,7 +27,7 @@ const { Countdown } = Statistic;
 
 const ContractInfo = () => {
   const [seconds, setSeconds] = useState(null);
-  const [myKey, setMykey] = useState('1');
+  // const [myKey, setMykey] = useState('1');
 
   // selectors & dispatch
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const ContractInfo = () => {
     setSeconds(secondsLeftReceived);
   }, [secondsLeftReceived]);
 
-  const LIST = [
+  const LIST_1 = [
     {
       id: 'health',
       component: (
@@ -80,7 +81,7 @@ const ContractInfo = () => {
             '--'
           ) : (
             <Countdown
-              key={myKey}
+              // key={myKey}
               value={Date.now() + Math.round(seconds) * 1000}
               format="ss"
               suffix="s"
@@ -122,7 +123,7 @@ const ContractInfo = () => {
 
                     // start the timer again
                     // setSeconds(secondsLeftReceived);
-                    setMykey((c) => `${Number(c) + 1}`);
+                    // setMykey((c) => `${Number(c) + 1}`);
                   })
                   .catch((error) => {
                     window.console.log('Error after timer complete.');
@@ -134,6 +135,9 @@ const ContractInfo = () => {
         </NextUpdateTimer>
       ),
     },
+  ];
+
+  const LIST = [
     {
       id: 'contract-code',
       text: 'Contracts',
@@ -160,42 +164,59 @@ const ContractInfo = () => {
     },
   ];
 
-  return (
-    <ContractsInfoContainer>
-      <PoweredByLogo>
-        <a href="https://autonolas.network" target="_blank" rel="noreferrer">
-          <PoweredBy />
-        </a>
-      </PoweredByLogo>
-
-      {LIST.map(({
-        id, text, redirectTo, isInternal, component,
-      }, index) => (
-        <Fragment key={id}>
-          <Text type="secondary">
-            {component || (
+  const getList = (myList) => myList.map(({
+    id, text, redirectTo, isInternal, component,
+  }, index) => (
+    <Fragment key={id}>
+      <Text type="secondary">
+        {component || (
+        <>
+          {redirectTo ? (
             <>
-              {redirectTo ? (
-                <>
-                  {isInternal ? (
-                    <Link href={redirectTo}>{text}</Link>
-                  ) : (
-                    <a href={redirectTo} target="_blank" rel="noreferrer">
-                      {text}
-                    </a>
-                  )}
-                </>
+              {isInternal ? (
+                <Link href={redirectTo}>{text}</Link>
               ) : (
-                <>{`${text} (link coming soon)`}</>
+                <a href={redirectTo} target="_blank" rel="noreferrer">
+                  {text}
+                </a>
               )}
             </>
-            )}
+          ) : (
+            <>{`${text} (link coming soon)`}</>
+          )}
+        </>
+        )}
 
-            {index !== LIST.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
-          </Text>
-        </Fragment>
-      ))}
-    </ContractsInfoContainer>
+        {index !== LIST.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
+      </Text>
+    </Fragment>
+  ));
+
+  return (
+    <>
+      <ContractsInfoContainer>
+        <PoweredByLogo>
+          <a href="https://autonolas.network" target="_blank" rel="noreferrer">
+            <PoweredBy />
+          </a>
+        </PoweredByLogo>
+        {getList([...LIST_1, ...LIST])}
+      </ContractsInfoContainer>
+
+      <ServiceStatusInfo
+        isHealthy={isHealthy}
+        // isHealthy={undefined}
+        secondsLeftReceived={seconds}
+        extra={(
+          <div>
+            <Text className="row-1">CODE</Text>
+            {getList(LIST)}
+          </div>
+        )}
+        extraMd={<div>{getList(LIST)}</div>}
+        onMinimizeToggle={(isMinimized) => console.log({ isMinimized })}
+      />
+    </>
   );
 };
 
