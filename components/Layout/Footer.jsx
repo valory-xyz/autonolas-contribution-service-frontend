@@ -1,10 +1,7 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Statistic } from 'antd/lib';
+import { Typography } from 'antd/lib';
 import Link from 'next/link';
-import isNil from 'lodash/isNil';
-import { Footer as CommonFooter } from '@autonolas/frontend-library';
-import PoweredBy from 'common-util/SVGs/powered-by';
 import { isGoerli } from 'common-util/functions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
 import {
@@ -15,20 +12,11 @@ import {
 import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { ServiceStatusInfo } from './ServiceStatusInfo';
 import { getHealthcheck } from './utils';
-import {
-  FixedFooter,
-  ContractsInfoContainer,
-  PoweredByLogo,
-  NextUpdateTimer,
-} from './styles';
+import { ExtraContent } from './styles';
 
 const { Text } = Typography;
-const { Countdown } = Statistic;
 
-const ContractInfo = () => {
-  const [seconds, setSeconds] = useState(null);
-  // const [myKey, setMykey] = useState('1');
-
+const Footer = () => {
   // selectors & dispatch
   const dispatch = useDispatch();
   const chainId = useSelector((state) => state?.setup?.chainId);
@@ -48,96 +36,7 @@ const ContractInfo = () => {
       });
   }, []);
 
-  // update the timer seconds when time is updated from BE
-  useEffect(() => {
-    setSeconds(secondsLeftReceived);
-  }, [secondsLeftReceived]);
-
-  const LIST_1 = [
-    {
-      id: 'health',
-      component: (
-        <>
-          {isHealthy ? (
-            <>
-              <span className="dot dot-online" />
-              &nbsp;Operational
-            </>
-          ) : (
-            <>
-              <span className="dot dot-offline" />
-              &nbsp;Disrupted
-            </>
-          )}
-        </>
-      ),
-    },
-    {
-      id: 'next-update',
-      component: (
-        <NextUpdateTimer>
-          Next Update:&nbsp;
-          {isNil(seconds) ? (
-            '--'
-          ) : (
-            <Countdown
-              // key={myKey}
-              value={Date.now() + Math.round(seconds) * 1000}
-              format="ss"
-              suffix="s"
-              onFinish={async () => {
-                // update the timer in redux
-                dispatch(
-                  setHealthcheck({
-                    ...(healthDetails || {}),
-                    seconds_until_next_update: null,
-                  }),
-                );
-
-                // once the timer is completed, fetch the health checkup again
-                getHealthcheck()
-                  .then(async (response) => {
-                    // reseting timer to 0 as it is finished
-                    setSeconds(0);
-
-                    const timer = response.seconds_until_next_update;
-                    const tenPercentExtra = 0.1 * timer; // 10% extra to be added
-                    dispatch(
-                      setHealthcheck({
-                        ...response,
-                        seconds_until_next_update: timer + tenPercentExtra,
-                      }),
-                    );
-
-                    // update leaderboard
-                    const list = await getLeaderboardList();
-                    dispatch(setLeaderboard(list));
-
-                    // update badge if the user is logged-in
-                    if (account) {
-                      const { details, tokenId } = await getLatestMintedNft(
-                        account,
-                      );
-                      dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-                    }
-
-                    // start the timer again
-                    // setSeconds(secondsLeftReceived);
-                    // setMykey((c) => `${Number(c) + 1}`);
-                  })
-                  .catch((error) => {
-                    window.console.log('Error after timer complete.');
-                    window.console.error(error);
-                  });
-              }}
-            />
-          )}
-        </NextUpdateTimer>
-      ),
-    },
-  ];
-
-  const LIST = [
+  const LIST_DOCS = [
     {
       id: 'contract-code',
       text: 'Contracts',
@@ -156,12 +55,17 @@ const ContractInfo = () => {
       redirectTo: `/docs#${DOCS_SECTIONS['how-it-works']}`,
       isInternal: true,
     },
-    {
-      id: '3',
-      text: 'Build your own',
-      // redirectTo: 'https://www.autonolas.network/coordinationkit',
-      redirectTo: null,
-    },
+  ];
+
+  const DOCS_URL = 'https://docs.autonolas.network/product/autonolas-contribute';
+  const LIST_CODE = [
+    { text: 'What is this?', redirectTo: DOCS_URL },
+    { text: 'Run the Code', redirectTo: `${DOCS_URL}#run-the-code` },
+    { text: 'Build your own', redirectTo: `${DOCS_URL}#build-your-own` },
+  ];
+  const LIST_CODE_MOBILE = [
+    { text: 'Run Code', redirectTo: `${DOCS_URL}#run-the-code` },
+    { text: 'Build', redirectTo: `${DOCS_URL}#build-your-own` },
   ];
 
   const getList = (myList) => myList.map(({
@@ -187,43 +91,70 @@ const ContractInfo = () => {
         </>
         )}
 
-        {index !== LIST.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
+        {index !== myList.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
       </Text>
     </Fragment>
   ));
 
   return (
-    <>
-      <ContractsInfoContainer>
-        <PoweredByLogo>
-          <a href="https://autonolas.network" target="_blank" rel="noreferrer">
-            <PoweredBy />
-          </a>
-        </PoweredByLogo>
-        {getList([...LIST_1, ...LIST])}
-      </ContractsInfoContainer>
+    <ServiceStatusInfo
+      isHealthy={isHealthy}
+      // isHealthy={undefined}
+      secondsLeftReceived={secondsLeftReceived}
+      extra={(
+        <ExtraContent>
+          {[
+            { id: 'docs', name: 'DOCS', list: LIST_DOCS },
+            { id: 'code', name: 'CODE', list: LIST_CODE },
+          ].map((e) => (
+            <div key={e.id}>
+              <div>
+                <Text className="status-sub-header">{e.name}</Text>
+              </div>
+              <div className="status-sub-content">{getList(e.list)}</div>
+            </div>
+          ))}
+        </ExtraContent>
+      )}
+      extraMd={<div>{getList(LIST_CODE_MOBILE)}</div>}
+      onTimerFinish={async () => {
+        // update the timer in redux
+        dispatch(
+          setHealthcheck({
+            ...(healthDetails || {}),
+            seconds_until_next_update: null,
+          }),
+        );
 
-      <ServiceStatusInfo
-        isHealthy={isHealthy}
-        // isHealthy={undefined}
-        secondsLeftReceived={seconds}
-        extra={(
-          <div>
-            <Text className="row-1">CODE</Text>
-            {getList(LIST)}
-          </div>
-        )}
-        extraMd={<div>{getList(LIST)}</div>}
-        onMinimizeToggle={(isMinimized) => console.log({ isMinimized })}
-      />
-    </>
+        // once the timer is completed, fetch the health checkup again
+        getHealthcheck()
+          .then(async (response) => {
+            const timer = response.seconds_until_next_update;
+            const tenPercentExtra = 0.1 * timer; // 10% extra to be added
+            dispatch(
+              setHealthcheck({
+                ...response,
+                seconds_until_next_update: timer + tenPercentExtra,
+              }),
+            );
+
+            // update leaderboard
+            const list = await getLeaderboardList();
+            dispatch(setLeaderboard(list));
+
+            // update badge if the user is logged-in
+            if (account) {
+              const { details, tokenId } = await getLatestMintedNft(account);
+              dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+            }
+          })
+          .catch((error) => {
+            window.console.log('Error after timer complete.');
+            window.console.error(error);
+          });
+      }}
+    />
   );
 };
-
-const Footer = () => (
-  <FixedFooter>
-    <CommonFooter leftContent={<ContractInfo />} />
-  </FixedFooter>
-);
 
 export default Footer;
