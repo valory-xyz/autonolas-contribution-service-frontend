@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const StickyContainer = styled.div`
-  /* position: fixed; */
+  position: fixed;
   bottom: 1rem;
   left: 1rem;
   line-height: normal;
@@ -37,8 +37,11 @@ export const OffChainContainer = styled.div`
 export const MobileOffChainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  div:first-child {
-    margin-bottom: 2px;
+  div:nth-child(1) {
+    margin-bottom: 4px;
+  }
+  div:nth-child(2) {
+    font-size: 16px
   }
 `;
 
@@ -51,27 +54,31 @@ export const ContractsInfoContainer = styled(StickyContainer)`
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   font-size: 16px;
-  padding: 20px;
+  padding: ${({ canMinimize }) => (canMinimize ? '12px' : '20px')};
   transition: all 0.3s;
   .status-sub-header {
     text-transform: uppercase;
     font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.04em;
   }
   .status-sub-content {
     display: flex;
     align-items: center;
     line-height: 1.75;
+    font-size: 18px;
   }
   .dot {
     display: inline-block;
     position: relative;
-    top: -2px;
+    top: -3px;
     width: 5px;
     height: 5px;
     border-radius: 50%;
   }
   .dot-online {
-    background-color: ${COLOR.GREEN_2};
+    background-color: #33FF00;
+    /* background-color: ${COLOR.GREEN_1}; */
   }
   .dot-offline {
     background-color: ${COLOR.ORANGE};
@@ -96,7 +103,7 @@ export const Badge = styled.div`
   margin-right: 1rem;
   a {
     line-height: normal;
-    height: 56px;
+    height: ${({ canMinimize }) => (canMinimize ? '58px' : '72px')};
   }
 
   ${MEDIA_QUERY.mobileL} {

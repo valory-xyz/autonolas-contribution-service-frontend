@@ -5,7 +5,7 @@ import {
 } from 'antd';
 import { ShrinkOutlined } from '@ant-design/icons';
 import { isUndefined, isNil } from 'lodash';
-import { PoweredBy } from './helpers/PoweredBySvg';
+import { PoweredBy, PoweredByForSmallDevice } from './helpers/PoweredBySvg';
 import { MinimizedStatus } from './helpers/MinimizedStatus';
 import {
   ContractsInfoContainer,
@@ -21,6 +21,11 @@ const { useBreakpoint } = Grid;
 
 const DotSpace = () => <>&nbsp;&nbsp;•&nbsp;&nbsp;</>;
 
+const timerStyle = { minWidth: '36px' };
+const Dash = () => (
+  <span style={{ display: 'inline-block', ...timerStyle }}>--</span>
+);
+
 export const ServiceStatusInfo = ({
   isHealthy,
   secondsLeftReceived,
@@ -30,7 +35,7 @@ export const ServiceStatusInfo = ({
   onMinimizeToggle,
 }) => {
   const screens = useBreakpoint();
-  const isMobile = (screens.xs || screens.sm) && !screens.md;
+  const canMinimize = !screens.xl;
   const [isMinimized, setIsMinimized] = useState(false);
   const [seconds, setSeconds] = useState(0);
 
@@ -45,6 +50,7 @@ export const ServiceStatusInfo = ({
       value={Date.now() + Math.round(seconds || 0) * 1000}
       format="s"
       suffix="s"
+      onChange={(e) => setSeconds(parseInt(`${e / 1000}`, 10))}
       onFinish={async () => {
         window.console.log('timer completed!');
 
@@ -53,7 +59,7 @@ export const ServiceStatusInfo = ({
 
         if (onTimerFinish) onTimerFinish({ setSeconds });
       }}
-      onChange={(e) => setSeconds(parseInt(`${e / 1000}`, 10))}
+      style={timerStyle}
     />
   );
 
@@ -89,15 +95,15 @@ export const ServiceStatusInfo = ({
   }
 
   return (
-    <ContractsInfoContainer className="serive-status-maximized">
-      <Badge>
+    <ContractsInfoContainer className="service-status-maximized" canMinimize={canMinimize}>
+      <Badge canMinimize={canMinimize}>
         <a href="https://autonolas.network" target="_blank" rel="noreferrer">
-          <PoweredBy />
+          {canMinimize ? <PoweredByForSmallDevice /> : <PoweredBy />}
         </a>
       </Badge>
 
       {/* status (green/orange dot) & timers */}
-      {isMobile ? (
+      {canMinimize ? (
         <MobileOffChainContainer>
           {!isUndefined(isHealthy) && <div>{actualStatus}</div>}
           <div>{extraMd || extra}</div>
@@ -106,7 +112,9 @@ export const ServiceStatusInfo = ({
         <>
           {showOperationStatus && (
             <OffChainContainer>
-              <Text className="status-sub-header">Off-chain Service Status</Text>
+              <Text className="status-sub-header">
+                Off-chain Service Status
+              </Text>
               <div className="status-sub-content">
                 {!isUndefined(isHealthy) && (
                   <div>
@@ -118,7 +126,7 @@ export const ServiceStatusInfo = ({
                 {!isUndefined(secondsLeftReceived) && (
                   <NextUpdateTimer>
                     Next update:&nbsp;
-                    {isNil(seconds) ? '--' : timerCountdown}
+                    {isNil(seconds) ? <Dash /> : timerCountdown}
                   </NextUpdateTimer>
                 )}
               </div>
@@ -130,7 +138,6 @@ export const ServiceStatusInfo = ({
 
       <Button
         type="link"
-        size="small"
         icon={<ShrinkOutlined />}
         onClick={() => {
           setIsMinimized(true);
@@ -138,7 +145,7 @@ export const ServiceStatusInfo = ({
         }}
         className="minimize-btn"
       >
-        {isMobile ? '' : 'Minimize'}
+        {canMinimize ? '' : 'Minimize'}
       </Button>
     </ContractsInfoContainer>
   );

@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography } from 'antd/lib';
-import Link from 'next/link';
 // import { ServiceStatusInfo } from '@autonolas/frontend-library';
 import { isGoerli } from 'common-util/functions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
@@ -10,12 +9,22 @@ import {
   setNftDetails,
   setHealthcheck,
 } from 'store/setup/actions';
-import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { ServiceStatusInfo } from './ServiceStatusInfo';
 import { getHealthcheck } from './utils';
 import { ExtraContent } from './styles';
 
 const { Text } = Typography;
+
+const COORDTINATION_KIT_URL = 'https://docs.autonolas.network/product/coordinationkit/';
+
+const BuildWith = (
+  <>
+    BUILD WITH&nbsp;
+    <a href={COORDTINATION_KIT_URL} rel="noreferrer">
+      CONTRIBUTIONKIT
+    </a>
+  </>
+);
 
 const Footer = () => {
   // selectors & dispatch
@@ -39,11 +48,10 @@ const Footer = () => {
 
   const LIST_DOCS = [
     {
-      id: 'contract-code',
-      text: 'Contracts',
-      redirectTo: isGoerli(chainId)
-        ? 'https://goerli.etherscan.io/address/0x7C3B976434faE9986050B26089649D9f63314BD8'
-        : 'https://etherscan.io/address/0x02c26437b292d86c5f4f21bbcce0771948274f84',
+      id: 'live-service',
+      text: 'Live service',
+      redirectTo: 'https://protocol.autonolas.network/services',
+      isInternal: true,
     },
     {
       id: 'service-code',
@@ -51,62 +59,70 @@ const Footer = () => {
       redirectTo: 'https://github.com/valory-xyz/contribution-service',
     },
     {
-      id: '2',
-      text: 'Learn more',
-      redirectTo: `/docs#${DOCS_SECTIONS['how-it-works']}`,
-      isInternal: true,
+      id: 'contract-code',
+      text: 'Contracts',
+      redirectTo: isGoerli(chainId)
+        ? 'https://goerli.etherscan.io/address/0x7C3B976434faE9986050B26089649D9f63314BD8'
+        : 'https://etherscan.io/address/0x02c26437b292d86c5f4f21bbcce0771948274f84',
     },
   ];
 
-  const DOCS_URL = 'https://docs.autonolas.network/product/autonolas-contribute';
   const LIST_CODE = [
-    { text: 'What is this?', redirectTo: DOCS_URL },
-    { text: 'Run the Code', redirectTo: `${DOCS_URL}#run-the-code` },
-    { text: 'Build your own', redirectTo: `${DOCS_URL}#build-your-own` },
+    { text: 'Run demo code', redirectTo: `${COORDTINATION_KIT_URL}#demo` },
+    {
+      text: 'Get help building',
+      redirectTo: 'https://propel.valory.xyz',
+      isInternal: false,
+    },
   ];
   const LIST_CODE_MOBILE = [
-    { text: 'Run Code', redirectTo: `${DOCS_URL}#run-the-code` },
-    { text: 'Build', redirectTo: `${DOCS_URL}#build-your-own` },
+    { text: 'Run demo code', redirectTo: `${COORDTINATION_KIT_URL}#demo` },
+    {
+      text: 'Get help',
+      redirectTo: 'https://propel.valory.xyz',
+      isInternal: false,
+    },
   ];
 
-  const getList = (myList) => myList.map(({
-    id, text, redirectTo, isInternal, component,
-  }, index) => (
-    <Fragment key={id}>
-      <Text type="secondary">
-        {component || (
-        <>
-          {redirectTo ? (
-            <>
-              {isInternal ? (
-                <Link href={redirectTo}>{text}</Link>
-              ) : (
-                <a href={redirectTo} target="_blank" rel="noreferrer">
+  const getList = (myList) => myList.map(
+    ({
+      id, text, redirectTo, isInternal = true, component,
+    }, index) => (
+      <Fragment key={id}>
+        <Text type="secondary">
+          {component || (
+          <>
+            {redirectTo ? (
+              <>
+                <a
+                  href={redirectTo}
+                  target={isInternal ? '_self' : '_blank'}
+                  rel="noreferrer"
+                >
                   {text}
                 </a>
-              )}
-            </>
-          ) : (
-            <>{`${text} (link coming soon)`}</>
+              </>
+            ) : (
+              <>{`${text} (link coming soon)`}</>
+            )}
+          </>
           )}
-        </>
-        )}
 
-        {index !== myList.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
-      </Text>
-    </Fragment>
-  ));
+          {index !== myList.length - 1 && <>&nbsp;&nbsp;•&nbsp;&nbsp;</>}
+        </Text>
+      </Fragment>
+    ),
+  );
 
   return (
     <ServiceStatusInfo
       isHealthy={isHealthy}
-      // isHealthy={undefined}
       secondsLeftReceived={secondsLeftReceived}
       extra={(
         <ExtraContent>
           {[
-            { id: 'docs', name: 'DOCS', list: LIST_DOCS },
-            { id: 'code', name: 'CODE', list: LIST_CODE },
+            { id: 'code', name: BuildWith, list: LIST_CODE },
+            { id: 'docs', name: 'CODE', list: LIST_DOCS },
           ].map((e) => (
             <div key={e.id}>
               <div>
