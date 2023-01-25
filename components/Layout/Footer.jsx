@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography } from 'antd/lib';
-// import { ServiceStatusInfo } from '@autonolas/frontend-library';
+import { ServiceStatusInfo } from '@autonolas/frontend-library';
 import { isGoerli } from 'common-util/functions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
 import {
@@ -9,7 +9,6 @@ import {
   setNftDetails,
   setHealthcheck,
 } from 'store/setup/actions';
-import { ServiceStatusInfo } from './ServiceStatusInfo';
 import { getHealthcheck } from './utils';
 import { ExtraContent } from './styles';
 
