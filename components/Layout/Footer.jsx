@@ -18,7 +18,7 @@ const COORDTINATION_KIT_URL = 'https://docs.autonolas.network/product/coordinati
 
 const BuildWith = (
   <>
-    BUILD WITH&nbsp;
+    BUILT WITH&nbsp;
     <a href={COORDTINATION_KIT_URL} rel="noreferrer">
       CONTRIBUTIONKIT
     </a>
