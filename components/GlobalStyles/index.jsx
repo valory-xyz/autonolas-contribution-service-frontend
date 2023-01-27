@@ -76,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* layout */
   .site-layout {
-    padding: 0 50px 140px 50px;
+    padding: 0 50px 160px 50px;
     margin-top: 64px;
   }
   .site-layout-background {
