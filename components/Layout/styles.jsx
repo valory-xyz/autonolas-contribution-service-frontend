@@ -49,42 +49,6 @@ export const RightMenu = styled.div`
   }
 `;
 
-export const ContractsInfoContainer = styled.div`
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  .registry-contract {
-    display: flex;
-    align-items: center;
-  }
-  img {
-    margin-right: 8px;
-  }
-  .dot {
-    display: inline-block;
-    position: relative;
-    top: -2px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-  }
-  .dot-online {
-    background-color: #42ff00;
-  }
-  .dot-offline {
-    background-color: #ff8a00;
-  }
-
-  ${MEDIA_QUERY.mobileM} {
-    flex-direction: column;
-  }
-`;
-
-export const PoweredByLogo = styled.div`
-  display: flex;
-  margin-right: 1rem;
-`;
-
 export const LoginXsContainer = styled.div`
   text-align: center;
   margin-bottom: 1rem;
@@ -107,10 +71,12 @@ export const NextUpdateTimer = styled.div`
   }
 `;
 
-export const FixedFooter = styled.div`
-  position: fixed;
-  bottom: 0;
-  background: white;
-  width: 100%;
-  border-top: 1px solid #f0f0f0;
+export const ExtraContent = styled.div`
+  display: flex;
+  align-items: center;
+  > div {
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
 `;
