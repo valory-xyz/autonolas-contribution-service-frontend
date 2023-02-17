@@ -70,13 +70,3 @@ export const NextUpdateTimer = styled.div`
     color: inherit;
   }
 `;
-
-export const ExtraContent = styled.div`
-  display: flex;
-  align-items: center;
-  > div {
-    &:not(:last-child) {
-      margin-right: 1.5rem;
-    }
-  }
-`;
