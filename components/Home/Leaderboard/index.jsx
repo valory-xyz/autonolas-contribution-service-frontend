@@ -14,7 +14,7 @@ const { Title, Text } = Typography;
 
 const columns = [
   { title: 'Rank', dataIndex: 'rank' },
-  { title: 'Name', dataIndex: 'name' },
+  { title: 'Twitter Handle', dataIndex: 'twitter_handle' },
   { title: 'Points Earned', dataIndex: 'points' },
 ];
 
@@ -83,7 +83,7 @@ const Leaderboard = () => {
             bordered
             pagination={false}
             className="mb-12"
-            rowKey="address"
+            rowKey="rowKeyUi"
           />
         </div>
         {!isVerified && (
