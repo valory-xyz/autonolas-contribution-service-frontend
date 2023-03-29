@@ -14,7 +14,16 @@ const { Title, Text } = Typography;
 
 const columns = [
   { title: 'Rank', dataIndex: 'rank' },
-  { title: 'Twitter Handle', dataIndex: 'twitter_handle' },
+  {
+    title: 'Twitter Handle',
+    dataIndex: 'twitter_handle',
+    render: (text) => text || '--',
+  },
+  {
+    title: 'Discord Name',
+    dataIndex: 'discord_handle',
+    render: (text) => text || '--',
+  },
   { title: 'Points Earned', dataIndex: 'points' },
 ];
 
