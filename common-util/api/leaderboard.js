@@ -7,11 +7,7 @@ const API_URL = 'https://ceramic-clay.3boxlabs.com';
 export const getLeaderboardList = async () => {
   const ceramic = new CeramicClient(API_URL);
 
-  const streamId = process.env.NEXT_PUBLIC_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_STREAM_ID_PRODUCTION
-    : process.env.NEXT_PUBLIC_STREAM_ID_STAGING;
-
-  const response = await TileDocument.load(ceramic, streamId);
+  const response = await TileDocument.load(ceramic, process.env.NEXT_PUBLIC_STREAM_ID);
   const users = get(response, 'content.users') || [];
 
   const usersList = users.map((user, index) => ({
