@@ -46,7 +46,7 @@ const Verification = () => {
             <a href="/verification">try again</a>
             .
           </Text>
-)}
+        )}
         style={{ marginTop: '2rem' }}
       />
     );
@@ -136,6 +136,23 @@ const Verification = () => {
           </Ol>
         </Col>
       </Row>
+
+      <Alert
+        className="custom-alert-secondary"
+        message={(
+          <Text type="secondary" className="custom-text-secondary">
+            <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
+            By connecting and/or verifying your information (including your
+            Discord, Twitter and wallet address details) you are creating public
+            information. Public information is publicly accessible, including
+            for example via this site&apos;s leaderboard functionality
+            (displaying a link between your provided Discord and Twitter
+            handles), as well as public blockchain explorers (linking your badge
+            and wallet address to information shared with this site).
+          </Text>
+        )}
+        type="info"
+      />
     </>
   );
 };
