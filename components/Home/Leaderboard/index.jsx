@@ -17,11 +17,13 @@ const columns = [
   {
     title: 'Twitter Handle',
     dataIndex: 'twitter_handle',
+    width: 250,
     render: (text) => text || '--',
   },
   {
     title: 'Discord Name',
     dataIndex: 'discord_handle',
+    width: 250,
     render: (text) => text || '--',
   },
   { title: 'Points Earned', dataIndex: 'points' },
