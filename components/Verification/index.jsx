@@ -144,11 +144,8 @@ const Verification = () => {
             <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
             By connecting and/or verifying your information (including your
             Discord, Twitter and wallet address details) you are creating public
-            information. Public information is publicly accessible, including
-            for example via this site&apos;s leaderboard functionality
-            (displaying a link between your provided Discord and Twitter
-            handles), as well as public blockchain explorers (linking your badge
-            and wallet address to information shared with this site).
+            information. In particular, the leaderboard functionality will
+            display a link between your provided Discord and Twitter handles.
           </Text>
         )}
         type="info"
