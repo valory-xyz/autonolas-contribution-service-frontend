@@ -32,7 +32,7 @@ const Footer = () => {
     <ServiceStatusInfo
       isHealthy={isHealthy}
       secondsLeftReceived={secondsLeftReceived}
-      appType="contributionkit"
+      appType="iekit"
       onTimerFinish={async () => {
         // update the timer in redux
         dispatch(
