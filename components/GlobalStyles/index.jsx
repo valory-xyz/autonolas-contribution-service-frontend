@@ -23,9 +23,6 @@ const GlobalStyle = createGlobalStyle`
   .mb-8 {
     margin-bottom: 8px;
   }
-  .mb-12 {
-    margin-bottom: 12px;
-  }
   .mt-8 {
     margin-top: 8px;
   }
