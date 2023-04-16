@@ -23,10 +23,10 @@ const pollStatus = async (url) => new Promise((resolve, reject) => {
   }, 4000);
 });
 
-export async function getAddressStatus(address) {
+export async function getAddressStatus(account) {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/address_status/${address}`;
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/address_status/${account}`;
 
       axios.get(url).then((response) => {
         const walletStatus = response?.data?.status;

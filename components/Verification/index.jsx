@@ -46,7 +46,7 @@ const Verification = () => {
             <a href="/verification">try again</a>
             .
           </Text>
-)}
+        )}
         style={{ marginTop: '2rem' }}
       />
     );
@@ -54,6 +54,20 @@ const Verification = () => {
 
   return (
     <>
+      <Alert
+        className="custom-alert-secondary mb-12"
+        message={(
+          <Text type="secondary" className="custom-text-secondary">
+            <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
+            By connecting and/or verifying your information (including your
+            Discord, Twitter and wallet address details) you are creating public
+            information. In particular, the leaderboard functionality will
+            display a link between your provided Discord and Twitter handles.
+          </Text>
+        )}
+        type="info"
+      />
+
       <Title level={2}>Complete Discord Verification</Title>
 
       <Row gutter={[32, 8]}>
