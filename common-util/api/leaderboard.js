@@ -2,7 +2,7 @@ import { CeramicClient } from '@ceramicnetwork/http-client';
 import { TileDocument } from '@ceramicnetwork/stream-tile';
 import { get } from 'lodash';
 
-const API_URL = 'https://ceramic-clay.3boxlabs.com';
+const API_URL = 'https://ceramic-valory.hirenodes.io';
 
 export const getLeaderboardList = async () => {
   const ceramic = new CeramicClient(API_URL);

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Card } from 'antd/lib';
 import { COLOR } from '@autonolas/frontend-library';
 
 export const IMAGE_SIZE = 300;
@@ -36,3 +37,7 @@ export const MintNftContainer = styled.div`
 `;
 
 export const WriteFunctionalityContainer = styled.div``;
+
+export const MintBadgeCardContainer = styled(Card)`
+  width: 300px;
+`;
