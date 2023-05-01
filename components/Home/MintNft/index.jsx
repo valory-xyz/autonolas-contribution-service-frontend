@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import {
-  Alert, Button, Image, Typography, Skeleton,
+  Button, Image, Typography, Skeleton,
 } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
@@ -13,6 +13,7 @@ import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { setNftDetails } from 'store/setup/actions';
 import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
+import { MintBadgeCard } from './helpers';
 import {
   IMAGE_SIZE,
   MintNftContainer,
@@ -78,9 +79,6 @@ const MintNft = () => {
       }
     }
   };
-
-  // TODO: to be button
-  const connectButton = 'connect wallet';
 
   const image = get(nftDetails, 'image');
 
@@ -174,27 +172,7 @@ const MintNft = () => {
               )}
             </>
           ) : (
-            <>
-              <Alert
-                type="info"
-                className="connect-wallet-info"
-                message={(
-                  <div>
-                    <p>NEW: Mint your Autonolas Badge!</p>
-                    <p style={{ display: 'inline-block' }}>
-                      To get started,&nbsp;
-                      {connectButton}
-                      .
-                    </p>
-                  </div>
-                )}
-              />
-              <Text type="secondary">
-                To mint or see your badge,&nbsp;
-                {connectButton}
-                .
-              </Text>
-            </>
+            <MintBadgeCard />
           )}
         </>
       )}
