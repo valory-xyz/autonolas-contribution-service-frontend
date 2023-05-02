@@ -1,20 +1,11 @@
-import { CeramicClient } from '@ceramicnetwork/http-client';
-import { TileDocument } from '@ceramicnetwork/stream-tile';
-import { get } from 'lodash';
+import axios from 'axios';
 
-const API_URL = 'https://ceramic-valory.hirenodes.io';
-
-export const getLeaderboardList = async () => {
-  const ceramic = new CeramicClient(API_URL);
-
-  const response = await TileDocument.load(ceramic, process.env.NEXT_PUBLIC_STREAM_ID);
-  const users = get(response, 'content.users') || [];
-
-  const usersList = users.filter((e) => !!e.wallet_address).map((user, index) => ({
-    ...user,
-    // adding a unique key to each user
-    rowKeyUi: `${user.twitter_handle}-${user.discord_id}-${index}`,
-  }));
-
-  return usersList;
-};
+export async function getLeaderboardList() {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`);
+    return response?.data?.results || [];
+  } catch (error) {
+    console.error(error);
+  }
+  return null;
+}
