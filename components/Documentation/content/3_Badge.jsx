@@ -6,7 +6,7 @@ const { Title, Paragraph, Text } = Typography;
 
 const BADGES_EXAMPLE = [
   {
-    url: 'badges-example-1.png',
+    url: 'badges-example.png',
     alt: 'Badge example 1',
   },
 ];
