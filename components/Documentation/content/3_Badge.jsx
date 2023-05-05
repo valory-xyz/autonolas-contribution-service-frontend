@@ -9,14 +9,6 @@ const BADGES_EXAMPLE = [
     url: 'badges-example-1.png',
     alt: 'Badge example 1',
   },
-  {
-    url: 'badges-example-2.png',
-    alt: 'Badge example 2',
-  },
-  {
-    url: 'badges-example-3.png',
-    alt: 'Badge example 3',
-  },
 ];
 
 const Badge = () => (

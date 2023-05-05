@@ -43,7 +43,7 @@ export const DocSection = styled.div`
       font-family: "minecraft", sans-serif;
     }
     img.badges-example {
-      width: 65%;
+      width: 75%;
       height: 100%;
       margin-bottom: 2rem;
     }
