@@ -42,11 +42,6 @@ export const DocSection = styled.div`
       color: ${COLOR.PRIMARY};
       font-family: "minecraft", sans-serif;
     }
-    img.badges-example {
-      width: 75%;
-      height: 100%;
-      margin-bottom: 2rem;
-    }
   }
   .ant-anchor {
     padding-left: 4px;
@@ -87,9 +82,6 @@ export const DocSection = styled.div`
   ${MEDIA_QUERY.tabletL} {
     .reading-section {
       padding: 0 2rem;
-      img.badges-example {
-        width: 100%;
-      }
     }
   }
 

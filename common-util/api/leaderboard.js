@@ -10,11 +10,13 @@ export const getLeaderboardList = async () => {
   const response = await TileDocument.load(ceramic, process.env.NEXT_PUBLIC_STREAM_ID);
   const users = get(response, 'content.users') || [];
 
-  const usersList = users.filter((e) => !!e.token_id).map((user, index) => ({
-    ...user,
-    // adding a unique key to each user
-    rowKeyUi: `${user.twitter_handle}-${user.discord_id}-${index}`,
-  }));
+  const usersList = users.filter((e) => !!e.token_id)
+    .filter((e) => e.points !== 0)
+    .map((user, index) => ({
+      ...user,
+      // adding a unique key to each user
+      rowKeyUi: `${user.twitter_handle}-${user.discord_id}-${index}`,
+    }));
 
   return usersList;
 };
