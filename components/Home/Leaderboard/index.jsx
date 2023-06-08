@@ -75,16 +75,11 @@ const Leaderboard = () => {
   return (
     <>
       <LeaderboardContent className="section">
-        {/* actions */}
-        <Actions />
-
-        {/* leaderboard */}
-        <Title level={2}>Leaderboard</Title>
-        <Text type="secondary" className="custom-text-secondary">
-          Climb the leaderboard by completing actions that contribute to
-          Autonolas’ success.&nbsp;
-          <Link href={`/docs#${DOCS_SECTIONS.leaderboard}`}>Learn more</Link>
-        </Text>
+        <EducationTitle
+          title="Leaderboard"
+          level={3}
+          educationItemSlug="leaderboard"
+        />
 
         <div className="leaderboard-table">
           <Table
