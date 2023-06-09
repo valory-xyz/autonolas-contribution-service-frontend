@@ -11,7 +11,7 @@ const { Title, Text } = Typography;
 
 const PopoverContent = ({ educationItem }) => (
   <>
-    <Text>{educationItem?.text}</Text>
+    <Text>{educationItem?.text || '--'}</Text>
     {educationItem?.docsLink && (
       <>
         <br />
