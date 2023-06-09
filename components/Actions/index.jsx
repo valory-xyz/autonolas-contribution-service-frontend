@@ -24,9 +24,7 @@ const Actions = () => (
             className="mr-48"
           />
           <div>
-            Points:
-            {' '}
-            {item.points}
+            {`Points: ${item.points}`}
           </div>
         </List.Item>
       )}
