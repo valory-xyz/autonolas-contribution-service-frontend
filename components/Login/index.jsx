@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Login as LoginComponent } from '@autonolas/frontend-library';
+import { useAccount, useNetwork, useBalance } from 'wagmi';
+import { LoginV2 as LoginComponent } from 'common-util/Login';
 import {
   setUserAccount as setUserAccountFn,
   setUserBalance as setUserBalanceFn,
@@ -10,14 +11,6 @@ import {
   setLogout as setLogoutFn,
 } from 'store/setup/actions';
 
-const Container = styled.div``;
-
-const rpc = {
-  1: process.env.NEXT_PUBLIC_MAINNET_URL,
-  5: process.env.NEXT_PUBLIC_GOERLI_URL,
-  31337: process.env.NEXT_PUBLIC_AUTONOLAS_URL,
-};
-
 const Login = ({
   setUserAccount,
   setUserBalance,
@@ -25,6 +18,21 @@ const Login = ({
   setErrorMessage,
   setLogout,
 }) => {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const chainId = chain?.id;
+  const { data } = useBalance({ address, chainId: chain?.id });
+
+  useEffect(() => {
+    if (address) {
+      setUserAccount(address);
+      setUserBalance(data?.formatted);
+      setChainId(chainId);
+    } else {
+      setLogout();
+    }
+  }, [address]);
+
   const onConnect = (response) => {
     setUserAccount(response.address);
     setUserBalance(response.balance);
@@ -40,16 +48,13 @@ const Login = ({
   };
 
   return (
-    <Container>
+    <div>
       <LoginComponent
-        rpc={rpc}
         onConnect={onConnect}
         onDisconnect={onDisconnect}
         onError={onError}
-        isDapp={false}
-        backendUrl={process.env.NEXT_PUBLIC_BACKEND_URL}
       />
-    </Container>
+    </div>
   );
 };
 
