@@ -4,6 +4,13 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
 
+const BADGES_EXAMPLE = [
+  {
+    url: 'badges-example.png',
+    alt: 'Badge example 1',
+  },
+];
+
 const Badge = () => (
   <div id={DOCS_SECTIONS.badge}>
     <Title level={2}>Badge</Title>
@@ -73,6 +80,18 @@ const Badge = () => (
         </li>
       </ol>
     </Paragraph>
+    <Paragraph>
+      These examples represent how your Autonolas Badge will change over time as
+      you earn more points and move through the tiers.
+    </Paragraph>
+    {BADGES_EXAMPLE.map((badge) => (
+      <img
+        key={badge.url}
+        src={`/images/${badge.url}`}
+        alt={badge.alt}
+        className="badges-example"
+      />
+    ))}
     <br />
     <br />
     <br />
