@@ -3,18 +3,15 @@ import App from 'next/app';
 import { createWrapper } from 'next-redux-wrapper';
 import PropTypes from 'prop-types';
 
-import Web3 from 'web3';
-import { Web3ReactProvider } from '@web3-react/core';
+import { WagmiConfig } from 'wagmi';
 
-import { Web3DataProvider } from '@autonolas/frontend-library';
 import Meta from 'common-util/meta';
 import GlobalStyle from 'components/GlobalStyles';
 import Layout from 'components/Layout';
+import { wagmiConfig } from 'common-util/Login/config';
 import initStore from '../store';
 
 require('../styles/antd.less');
-
-const getLibrary = (provider) => new Web3(provider);
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -32,13 +29,11 @@ class MyApp extends App {
       <>
         <GlobalStyle />
         <Meta />
-        <Web3DataProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </Web3ReactProvider>
-        </Web3DataProvider>
+        <WagmiConfig config={wagmiConfig}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </WagmiConfig>
       </>
     );
   }
@@ -49,10 +44,6 @@ MyApp.propTypes = {
     .isRequired,
   pageProps: PropTypes.shape({}).isRequired,
 };
-
-/* MyApp.defaultProps = {
-  resetOnModalCloseFn: () => {},
-}; */
 
 const wrapper = createWrapper(initStore);
 export default wrapper.withRedux(MyApp);
