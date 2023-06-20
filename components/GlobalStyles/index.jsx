@@ -73,12 +73,18 @@ const GlobalStyle = createGlobalStyle`
 
   /* layout */
   .site-layout {
-    padding: 0 50px 160px 50px;
+    padding: 0 50px 140px 50px;
     margin-top: 64px;
+    .contribute-footer {
+      > div {
+        height: 100px;
+        align-items: center;
+      }
+    }
   }
   .site-layout-background {
     padding: 8px 0;
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 140px);
   }
 
   ${MEDIA_QUERY.mobileL} {
