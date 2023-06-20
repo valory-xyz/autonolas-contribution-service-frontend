@@ -20,12 +20,6 @@ export const CustomLayout = styled(Layout)`
       padding-left: 16px;
     }
   }
-  .footer-left-content {
-    width: 100%;
-  }
-  .footer-center {
-    display: none !important;
-  }
 `;
 
 export const Logo = styled.div`

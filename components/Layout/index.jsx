@@ -11,6 +11,7 @@ import { setIsVerified } from 'store/setup/actions';
 import { DiscordLink } from '../Home/common';
 import Login from '../Login';
 import Footer from './Footer';
+import ServiceStatus from './ServiceStatus';
 import { getAddressStatus } from './utils';
 import {
   CustomLayout,
@@ -130,9 +131,12 @@ const NavigationBar = ({ children }) => {
           )}
           {children}
         </div>
+        <div className="contribute-footer">
+          <Footer />
+        </div>
       </Content>
 
-      <Footer />
+      <ServiceStatus />
     </CustomLayout>
   );
 };
