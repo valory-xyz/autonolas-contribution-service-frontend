@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@autonolas/frontend-library": "^0.3.14",
+    "@autonolas/frontend-library": "^0.3.15",
     "@ethersproject/providers": "^5.6.8",
     "@walletconnect/web3-provider": "^1.7.8",
     "@ceramicnetwork/http-client": "^2.20.0",
