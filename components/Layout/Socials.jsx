@@ -9,7 +9,7 @@ const Socials = () => {
     const currentUrl = window.location.origin;
 
     // if not localhost or vercel, remove subdomain
-    // example: https://member.olas.network -> https://olas.network
+    // example: https://contribute.olas.network -> https://olas.network
     if (!['localhost', 'vercel'].some((e) => currentUrl.includes(e))) {
       setUrl(removeSubdomainFrom());
     }
@@ -22,7 +22,7 @@ const Socials = () => {
     },
     {
       type: 'github',
-      url: 'https://github.com/valory-xyz/autonolas-member-frontend',
+      url: 'https://github.com/valory-xyz/autonolas-contribute-frontend',
     },
     {
       type: 'twitter',
