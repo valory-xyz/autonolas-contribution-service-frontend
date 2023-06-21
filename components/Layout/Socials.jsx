@@ -22,7 +22,7 @@ const Socials = () => {
     },
     {
       type: 'github',
-      url: 'https://github.com/valory-xyz/autonolas-contribute-frontend',
+      url: 'https://github.com/valory-xyz/autonolas-contribution-service-frontend',
     },
     {
       type: 'twitter',
