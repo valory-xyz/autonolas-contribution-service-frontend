@@ -145,7 +145,7 @@ const Leaderboard = () => {
             </List.Item>
             <List.Item>
               <Text strong>Step 2:</Text>
-              <Text>Wait 30–60 seconds for your account to be linked</Text>
+              <Text>Wait up to 5 minutes, then refresh the page</Text>
             </List.Item>
           </List>
         </Modal>
