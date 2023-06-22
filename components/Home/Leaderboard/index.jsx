@@ -29,7 +29,7 @@ const Leaderboard = () => {
 
   const handleCreateTweet = () => {
     window.open(
-      `https://twitter.com/intent/tweet?text=I'm linking my wallet to @Autonolas Contribute:%0A${currentWallet}%0A%0ALearn more—${encodeURIComponent(
+      `https://twitter.com/intent/tweet?text=I'm linking my wallet to @Autonolas Contribute:%0A${currentWallet} #Autonolas%0A%0ALearn more—${encodeURIComponent(
         'https://contribute.autonolas.network',
       )}`,
       '_blank',
