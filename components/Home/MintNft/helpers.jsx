@@ -18,7 +18,7 @@ export const MintBadgeCard = () => (
         />
       </Space>
 
-      <Text strong>
+      <Text>
         Mint your Autonolas badge, watch it evolve as you contribute
       </Text>
       <Text type="secondary">To mint, connect a wallet.</Text>

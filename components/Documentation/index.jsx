@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import { Anchor, Typography, Grid } from 'antd/lib';
 import { get } from 'lodash';
 import Overview from './content/1_Overview';
-import Actions from './content/2_Actions';
 import Badge from './content/3_Badge';
 import Leaderboard from './content/4_Leaderboard';
 import HowItWorks from './content/5_HowItWorks';
 import { DOC_NAV, NavWrapper } from './helpers';
 import { Container, DocSection } from './styles';
+import ActionsDocs from './content/2_Actions';
 
 const { Title } = Typography;
 const { Link } = Anchor;
@@ -54,7 +54,7 @@ const Documentation = () => {
 
         <div className="reading-section">
           <Overview />
-          <Actions />
+          <ActionsDocs />
           <Badge />
           <Leaderboard />
           <HowItWorks />

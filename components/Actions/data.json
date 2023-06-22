@@ -1,0 +1,62 @@
+[
+  {
+      "name": "Invite a new member to our Discord",
+      "description": "Invite someone using your invite link, and we’ll use InviteLogger to identify your invitees",
+      "points": 250
+  },
+  {
+      "name": "Provide actionable feedback that improves the running of the community",
+      "description": "Help us identify a community-focused improvement that we implement",
+      "points": 1500
+  },
+  {
+      "name": "Contribute original art, design or writing to Alter Orbis",
+      "description": "Share your original Alter Orbis related work with us",
+      "points": 1000
+  },
+  {
+      "name": "Complete an Academy Task",
+      "description": "Finish one of the tasks between modules and send a screenshot using the claim form (https://forms.gle/vuVNa5823CUMr4Ho6)",
+      "points": 4000
+  },
+  {
+      "name": "Help us identify a reproducible coding error in the documentation",
+      "description": "Help us find bugs and mistakes we can reproduce in the documentation at docs.autonolas.network. To claim, open an issue on open-autonomy (https://github.com/valory-xyz/open-autonomy) referencing your Discord username.",
+      "points": 5000
+  },
+  {
+      "name": "Help us identify a non-code error in the documentation",
+      "description": "Find a typo, broken link, etc on docs.autonolas.network and open an issue on open-autonomy (https://github.com/valory-xyz/open-autonomy) referencing your Discord username.",
+      "points": 2500
+  },
+  {
+      "name": "RT or QT a selected tweet",
+      "description": "100 points for every 100 followers + bonuses",
+      "points": "Varies"
+  },
+  {
+      "name": "Tag a friend who should follow us on Twitter",
+      "description": "Help us grow our community on Twitter by @mentioning a friend",
+      "points": 250
+  },
+  {
+      "name": "Create a thread about Autonolas",
+      "description": "Help us explain what we're doing with a Twitter thread in your own words--copy editing help is available, just DM @maybrier#3883 on Discord",
+      "points": 4500
+  },
+  {
+      "name": "Take the Community Survey",
+      "description": "Answer 5 short questions about your experience here: https://forms.gle/xB3v3odqPG2n4XYK8",
+      "points": 500
+  },
+  {
+      "name": "Write something about us on your own platform",
+      "description": "Write and publish an original article - and if you share with us before you publish, we can help with editing.",
+      "points": 5000
+  },
+  {
+      "name": "Create an Autonolas meme",
+      "description": "Post your best Autonolas meme in #🫡-memez channel on Autonolas Discord.",
+      "points": 200
+  }
+]
