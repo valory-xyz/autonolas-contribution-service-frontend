@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'next/link';
 import {
   Button, Image, Typography, Skeleton,
 } from 'antd/lib';
@@ -8,9 +7,8 @@ import { LinkOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import { isGoerli } from 'common-util/functions';
 import { getLatestMintedNft } from 'common-util/api';
-
-import { DOCS_SECTIONS } from 'components/Documentation/helpers';
 import { setNftDetails } from 'store/setup/actions';
+import { EducationTitle } from 'components/Education';
 import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import { MintBadgeCard } from './helpers';
@@ -20,7 +18,7 @@ import {
   WriteFunctionalityContainer,
 } from './styles';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const MintNft = () => {
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
@@ -84,12 +82,7 @@ const MintNft = () => {
 
   return (
     <MintNftContainer>
-      <Title level={2}>Badge</Title>
-      <Text type="secondary" className="custom-text-secondary">
-        Show off your leaderboard rank and promote Autonolas with a badge that
-        evolves as you contribute.&nbsp;
-        <Link href={`/docs#${DOCS_SECTIONS.badge}`}>Learn more</Link>
-      </Text>
+      <EducationTitle title="Badge" level={3} educationItemSlug="badge" />
 
       {isNftFetchingLoading ? (
         <>

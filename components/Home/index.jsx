@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import {
   Alert, Col, Row, Typography,
 } from 'antd/lib';
+import Actions from 'components/Actions';
 import MintNft from './MintNft';
 import { DiscordLink } from './common';
 
@@ -12,9 +13,8 @@ const Leaderboard = dynamic(() => import('./Leaderboard'));
 const Home = () => {
   const isVerified = useSelector((state) => state?.setup?.isVerified);
 
-  // TODO: store in localstorage
   const onClose = () => {
-    console.log('HI');
+    // TODO: store in localstorage
   };
 
   return (
@@ -25,7 +25,7 @@ const Home = () => {
             className="custom-alert-secondary"
             message={(
               <>
-                <Text type="secondary" className="custom-text-secondary">
+                <Text className="custom-alert-text-secondary">
                   To earn your first points, feature on the leaderboard and
                   activate your badge,&nbsp;
                   <DiscordLink text="complete Discord verification" />
@@ -45,7 +45,10 @@ const Home = () => {
           <Leaderboard />
         </Col>
         <Col xs={24} lg={10}>
-          <MintNft />
+          <div className="mb-48">
+            <MintNft />
+          </div>
+          <Actions />
         </Col>
       </Row>
     </>
