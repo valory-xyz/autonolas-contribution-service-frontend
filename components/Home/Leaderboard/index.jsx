@@ -28,10 +28,10 @@ const Leaderboard = () => {
   };
 
   const handleCreateTweet = () => {
+    const tweetText = `I'm linking my wallet to @Autonolas Contribute:\n${currentWallet}\n\nStart contributing to #Autonolas: https://contribute.autonolas.network`;
+    const encodedTweetText = encodeURIComponent(tweetText).replace(/%0D%0A/g, '%0A');
     window.open(
-      `https://twitter.com/intent/tweet?text=I'm linking my wallet to @Autonolas Contribute:%0A${currentWallet} #Autonolas%0A%0ALearn more—${encodeURIComponent(
-        'https://contribute.autonolas.network',
-      )}`,
+      `https://twitter.com/intent/tweet?text=${encodedTweetText}`,
       '_blank',
     );
   };
