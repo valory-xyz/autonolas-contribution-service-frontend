@@ -18,7 +18,6 @@ const Footer = () => {
   const account = useSelector((state) => state?.setup?.account);
   const healthDetails = useSelector((state) => state?.setup?.healthcheck);
   const isHealthy = !!healthDetails?.healthy;
-  const secondsLeftReceived = healthDetails?.seconds_until_next_update;
 
   // fetch healthcheck on first render
   useEffect(() => {
@@ -34,7 +33,6 @@ const Footer = () => {
   return (
     <ServiceStatusInfo
       isHealthy={isHealthy}
-      secondsLeftReceived={secondsLeftReceived}
       appType="iekit"
       onTimerFinish={async () => {
         // update the timer in redux

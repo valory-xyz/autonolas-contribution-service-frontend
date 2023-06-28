@@ -30,7 +30,6 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 24px !important;
   }
 
-
   .mb-48 {
     margin-bottom: 48px !important;
   }
@@ -42,7 +41,7 @@ const GlobalStyle = createGlobalStyle`
   .mr-48 {
     margin-right: 48px !important;
   }
-  
+
   .mt-8 {
     margin-top: 8px;
   }
@@ -93,18 +92,20 @@ const GlobalStyle = createGlobalStyle`
 
   /* layout */
   .site-layout {
-    padding: 0 50px 140px 50px;
+    padding: 0 50px 120px 50px;
     margin-top: 64px;
     .contribute-footer {
       > div {
         height: 100px;
         align-items: center;
+        padding-left: 0;
+        padding-right: 0;
       }
     }
   }
   .site-layout-background {
     padding: 8px 0;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 120px);
   }
 
   ${MEDIA_QUERY.mobileL} {
@@ -144,10 +145,10 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${COLOR.WHITE};
     border-color: ${COLOR.GREY_4};
     padding: 20px;
-    
+
     .custom-alert-text-secondary {
       margin: 0;
-      color: ${COLOR.GREY_4}
+      color: ${COLOR.GREY_4};
       max-width: 100%;
     }
   }
