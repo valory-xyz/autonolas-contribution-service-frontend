@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import { Alert } from 'antd';
 
 // const GlobalStyles = styled.div`
 const GlobalStyle = createGlobalStyle`
@@ -26,6 +27,10 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 12px;
   }
 
+  .mb-16 {
+    margin-bottom: 16px;
+  }
+
   .mb-24 {
     margin-bottom: 24px !important;
   }
@@ -48,6 +53,7 @@ const GlobalStyle = createGlobalStyle`
   .mt-12 {
     margin-top: 12px;
   }
+  
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {
       color: #1890ff !important;
@@ -93,7 +99,7 @@ const GlobalStyle = createGlobalStyle`
   /* layout */
   .site-layout {
     padding: 0 50px 120px 50px;
-    margin-top: 64px;
+    margin-top: 6rem;
     .contribute-footer {
       > div {
         height: 100px;
@@ -138,19 +144,6 @@ const GlobalStyle = createGlobalStyle`
 
   h2.ant-typography {
     margin-bottom: 8px;
-  }
-
-  /* alert */
-  .custom-alert-secondary {
-    background-color: ${COLOR.WHITE};
-    border-color: ${COLOR.GREY_4};
-    padding: 20px;
-
-    .custom-alert-text-secondary {
-      margin: 0;
-      color: ${COLOR.GREY_4};
-      max-width: 100%;
-    }
   }
 
   /* hyperlinks */

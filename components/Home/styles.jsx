@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import { Alert } from 'antd/lib';
 
 export const HomeContainer = styled.div``;
 
@@ -63,4 +64,15 @@ export const SectionFooter = styled.div`
 export const CreateLockContainer = styled.div`
   max-width: 300px;
   margin: 0 auto;
+`;
+
+export const CustomAlert = styled(Alert)`
+  border-color: ${COLOR.BORDER_GREY};
+  padding: 2rem;
+  background: linear-gradient(
+    339.03deg,
+    rgba(216, 180, 254, 0.7) -8.56%,
+    rgba(255, 255, 255, 0) 43.4%
+  );
+  margin-bottom: 48px;
 `;

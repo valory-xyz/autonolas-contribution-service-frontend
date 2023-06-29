@@ -11,4 +11,12 @@ module.exports = {
     },
   }),
   publicRuntimeConfig: {},
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'gateway.autonolas.tech',
+      },
+    ],
+  },
 };

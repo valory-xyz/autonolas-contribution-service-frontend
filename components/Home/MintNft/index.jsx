@@ -9,6 +9,7 @@ import { isGoerli } from 'common-util/functions';
 import { getLatestMintedNft } from 'common-util/api';
 import { setNftDetails } from 'store/setup/actions';
 import { EducationTitle } from 'components/Education';
+import ShowBadge from 'components/ShowBadge';
 import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import { MintBadgeCard } from './helpers';
@@ -32,9 +33,6 @@ const MintNft = () => {
 
   // loader for signing the mint (between mint start & complete)
   const [isBadgePollLoading, setIsBadgePollLoading] = useState(false);
-  const openSeaUrl = isGoerli(chainId)
-    ? 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8'
-    : 'https://opensea.io/assets/ethereum/0x02c26437b292d86c5f4f21bbcce0771948274f84';
 
   useEffect(() => {
     const fn = async () => {
@@ -101,37 +99,7 @@ const MintNft = () => {
             <>
               {image ? (
                 <>
-                  <Image
-                    src={getAutonolasTokenUri(image)}
-                    alt="NFT"
-                    width={IMAGE_SIZE}
-                    height={IMAGE_SIZE}
-                    className="nft-image"
-                    preview={false}
-                  />
-                  {nftDetails?.tokenId && (
-                    <Text type="secondary" className="mt-12">
-                      <a
-                        href={`${openSeaUrl}/${nftDetails.tokenId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        View on OpenSea&nbsp;
-                        <LinkOutlined />
-                      </a>
-                    </Text>
-                  )}
-                  <Text
-                    type="secondary"
-                    className="custom-text-secondary mt-12"
-                  >
-                    Your badge automatically updates as you complete actions and
-                    earn points!
-                  </Text>
-                  <Text type="secondary" className="custom-text-secondary">
-                    Set your NFT as your PFP on social apps like Twitter, Lens,
-                    Farcaster and Orbis.
-                  </Text>
+                  <ShowBadge image={image} nftDetails={nftDetails} />
                 </>
               ) : (
                 <>

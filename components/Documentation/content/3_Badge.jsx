@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Typography } from 'antd/lib';
+import Image from 'next/image';
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
@@ -47,7 +48,15 @@ const Badge = () => (
       </ol>
     </Paragraph>
     <Title level={5}>Badge tiers</Title>
-    There are several badge tiers, and each has a different shape:
+    <Image
+      priority
+      src="/images/badge-evolution.png"
+      alt="Mint NFT"
+      width={444}
+      height={208}
+      className="mint-nft-image"
+    />
+    <Paragraph>There are several badge tiers, and each has a different shape:</Paragraph>
     <Paragraph>
       <ol>
         <li>
@@ -67,12 +76,9 @@ const Badge = () => (
           <Text strong>Epic</Text>
           &nbsp;– 100k - 150k points
         </li>
-        <li>
-          <Text strong>Super Epic</Text>
-          &nbsp;– 150k+ points
-        </li>
       </ol>
     </Paragraph>
+    <Paragraph>What comes after Epic? Get there first and find out!</Paragraph>
     <br />
     <br />
     <br />

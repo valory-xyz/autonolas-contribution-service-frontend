@@ -1,13 +1,14 @@
 import { useSelector } from 'react-redux';
 import dynamic from 'next/dynamic';
 import {
-  Alert, Col, Row, Typography,
+  Col, Row, Typography,
 } from 'antd/lib';
 import Actions from 'components/Actions';
+import { CustomAlert } from './styles';
 import MintNft from './MintNft';
-import { DiscordLink } from './common';
+import ConnectTwitterModal from '../ConnectTwitter/Modal';
 
-const { Text } = Typography;
+const { Title } = Typography;
 const Leaderboard = dynamic(() => import('./Leaderboard'));
 
 const Home = () => {
@@ -21,16 +22,13 @@ const Home = () => {
     <>
       {!isVerified && (
         <>
-          <Alert
-            className="custom-alert-secondary"
+          <CustomAlert
             message={(
               <>
-                <Text className="custom-alert-text-secondary">
-                  To earn your first points, feature on the leaderboard and
-                  activate your badge,&nbsp;
-                  <DiscordLink text="complete Discord verification" />
-                  .
-                </Text>
+                <Title level={2} className="mb-24">
+                  Start earning contribution points
+                </Title>
+                <ConnectTwitterModal />
               </>
             )}
             type="info"
@@ -40,7 +38,7 @@ const Home = () => {
         </>
       )}
 
-      <Row gutter={[32, 8]} style={{ marginTop: 12 }}>
+      <Row gutter={[96, 8]} style={{ marginTop: 12 }}>
         <Col xs={24} lg={14}>
           <Leaderboard />
         </Col>
