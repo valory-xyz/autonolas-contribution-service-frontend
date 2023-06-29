@@ -1,5 +1,4 @@
 import {
-  Card,
   Col,
   List,
   Row,
@@ -15,6 +14,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { BadgeCard, IMAGE_SIZE } from './styles';
 
 const { Title, Text } = Typography;
@@ -97,6 +97,24 @@ const ProfileBody = ({ profile }) => {
       </Row>
     </>
   );
+};
+
+ProfileBody.propTypes = {
+  profile: PropTypes.shape({
+    wallet_address: PropTypes.string,
+    discord_handle: PropTypes.string,
+    twitter_id: PropTypes.string,
+    points: PropTypes.number,
+  }),
+};
+
+ProfileBody.defaultProps = {
+  profile: {
+    wallet_address: '',
+    discord_handle: '',
+    twitter_id: '',
+    points: 0,
+  },
 };
 
 const Profile = () => {

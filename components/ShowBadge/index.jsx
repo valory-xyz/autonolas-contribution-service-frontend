@@ -1,7 +1,7 @@
 import { IMAGE_SIZE } from 'components/Home/MintNft/styles';
 import { getAutonolasTokenUri } from 'components/Home/MintNft/utils';
 import {
-  Button, Image, Typography, Skeleton,
+  Image, Typography,
 } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';

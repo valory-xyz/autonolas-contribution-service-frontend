@@ -1,20 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, Image, Typography, Skeleton,
+  Button, Typography, Skeleton,
 } from 'antd/lib';
-import { LinkOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
-import { isGoerli } from 'common-util/functions';
 import { getLatestMintedNft } from 'common-util/api';
 import { setNftDetails } from 'store/setup/actions';
 import { EducationTitle } from 'components/Education';
 import ShowBadge from 'components/ShowBadge';
-import { mintNft, getAutonolasTokenUri, pollNftDetails } from './utils';
+import { mintNft, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import { MintBadgeCard } from './helpers';
 import {
-  IMAGE_SIZE,
   MintNftContainer,
   WriteFunctionalityContainer,
 } from './styles';

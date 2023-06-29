@@ -52,7 +52,7 @@ const ConnectTwitterModal = () => {
           Post tweet
         </Button>
         <br />
-        <Text type="secondary">Don't change the tweet – it contains a unique code that links your wallet to your Twitter account.</Text>
+        <Text type="secondary">Don&apos;t change the tweet – it contains a unique code that links your wallet to your Twitter account.</Text>
         <br />
         <br />
         <Title className="mb-0" level={5}>Step 3:</Title>

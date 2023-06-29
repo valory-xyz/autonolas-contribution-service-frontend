@@ -1,5 +1,3 @@
-import { COLOR } from '@autonolas/frontend-library';
-
 export const Logo = () => (
   <svg width="313" height="88" viewBox="0 0 313 88" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_i_299_5)">

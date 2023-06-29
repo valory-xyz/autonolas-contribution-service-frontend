@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Typography, Table, Button, Modal, List, Alert,
+  Typography, Table,
 } from 'antd/lib';
 import { setLeaderboard } from 'store/setup/actions';
 import { getLeaderboardList } from 'common-util/api';
@@ -12,14 +12,12 @@ import { getName, getTier } from 'common-util/functions';
 import { COLOR } from '@autonolas/frontend-library';
 import { LeaderboardContent } from './styles';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Leaderboard = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [currentWallet, setCurrentWallet] = useState(null);
 
   const chainId = useSelector((state) => state?.setup?.chainId);
-  const account = useSelector((state) => state?.setup?.account);
   const data = useSelector((state) => state?.setup?.leaderboard);
   const dispatch = useDispatch();
 

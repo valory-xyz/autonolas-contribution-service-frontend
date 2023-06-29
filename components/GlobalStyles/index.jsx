@@ -1,6 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
-import { Alert } from 'antd';
 
 // const GlobalStyles = styled.div`
 const GlobalStyle = createGlobalStyle`
