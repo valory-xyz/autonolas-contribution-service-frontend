@@ -29,7 +29,7 @@ export const getTier = (points) => {
   }
 };
 
-export const getName = (profile) => profile.twitter_id
+export const getName = (profile) => profile.twitter_handle
 || profile.discord_handle
 || profile.wallet_address
 || 'Unknown name';
