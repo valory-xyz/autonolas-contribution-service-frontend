@@ -103,7 +103,7 @@ ProfileBody.propTypes = {
   profile: PropTypes.shape({
     wallet_address: PropTypes.string,
     discord_handle: PropTypes.string,
-    twitter_id: PropTypes.string,
+    twitter_handle: PropTypes.string,
     points: PropTypes.number,
   }),
 };
@@ -112,7 +112,7 @@ ProfileBody.defaultProps = {
   profile: {
     wallet_address: '',
     discord_handle: '',
-    twitter_id: '',
+    twitter_handle: '',
     points: 0,
   },
 };
