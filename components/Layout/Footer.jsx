@@ -4,7 +4,14 @@ import Socials from './Socials';
 
 const Footer = () => (
   <CommonFooter
-    rightContent={<Socials />}
+    rightContent={(
+      <>
+        <br />
+        <br />
+        <br />
+        <Socials />
+      </>
+    )}
     centerContent={(
       <>
         ©&nbsp;Autonolas DAO&nbsp;

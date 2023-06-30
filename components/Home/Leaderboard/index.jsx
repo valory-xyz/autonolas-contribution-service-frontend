@@ -116,8 +116,8 @@ const Leaderboard = () => {
     {
       title: 'Tier',
       dataIndex: 'points',
-
       render: (points) => getTier(points),
+      responsive: ['md'],
     },
   ];
 

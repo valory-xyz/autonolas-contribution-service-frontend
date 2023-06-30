@@ -1,5 +1,3 @@
-// import { COLOR } from '@autonolas/frontend-library';
-
 export const PoweredBy = () => (
   <svg
     width="150"

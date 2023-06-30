@@ -1,20 +1,18 @@
 import {
-  Col,
-  List,
-  Row,
-  Skeleton,
-  Statistic,
-  Typography,
+  Col, List, Row, Skeleton, Statistic, Typography,
 } from 'antd/lib';
-import { getLatestMintedNft } from 'common-util/api';
+import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import ConnectTwitterModal from 'components/ConnectTwitter/Modal';
 import { getAutonolasTokenUri } from 'components/Home/MintNft/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import TruncatedEthereumLink from 'components/TruncatedEthereumLink';
+import { DiscordLink } from 'components/Home/common';
+import { setLeaderboard } from 'store/setup/actions';
 import { BadgeCard, IMAGE_SIZE } from './styles';
 
 const { Title, Text } = Typography;
@@ -36,7 +34,7 @@ const ProfileBody = ({ profile }) => {
       <Title>{name}</Title>
 
       <Row gutter={48}>
-        <Col>
+        <Col className="mb-48">
           <Title level={4}>Badge</Title>
           <BadgeCard>
             {details?.image ? (
@@ -48,9 +46,11 @@ const ProfileBody = ({ profile }) => {
                 className="nft-image"
                 preview={false}
               />
-            ) : <Skeleton.Image active className="skeleton-image-loader" />}
+            ) : (
+              <Skeleton active />
+            )}
           </BadgeCard>
-          {(details && !details.image) && <Text>Badge not minted yet</Text>}
+          {details && !details.image && <Text>Badge not minted yet</Text>}
         </Col>
         <Col xl={12}>
           <div className="mb-48">
@@ -76,19 +76,31 @@ const ProfileBody = ({ profile }) => {
               <List.Item>
                 <List.Item.Meta
                   title="Wallet Address"
-                  description={profile.wallet_address || 'n/a'}
+                  description={<Text type="secondary"><TruncatedEthereumLink text={profile.wallet_address} /></Text> || 'n/a'}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
                   title="Discord Handle"
-                  description={profile.discord_handle || ((account && account === profile.wallet_address) ? 'Link Discord' : 'n/a')}
+                  description={
+                    <Text type="secondary">{profile.discord_handle}</Text>
+                    || (account && account === profile.wallet_address
+                      ? <DiscordLink text="Connect Discord" />
+                      : 'n/a')
+                  }
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
                   title="Twitter Handle"
-                  description={profile.twitter_handle || ((account && account === profile.wallet_address) ? <ConnectTwitterModal /> : 'n/a')}
+                  description={
+                    profile.twitter_handle
+                    || (account && account === profile.wallet_address ? (
+                      <ConnectTwitterModal />
+                    ) : (
+                      'n/a'
+                    ))
+                  }
                 />
               </List.Item>
             </List>
@@ -119,9 +131,23 @@ ProfileBody.defaultProps = {
 
 const Profile = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const { id } = router.query;
   const data = useSelector((state) => state?.setup?.leaderboard);
   const profile = data.find((item) => item.wallet_address === id);
+
+  useEffect(() => {
+    const fn = async () => {
+      try {
+        const response = await getLeaderboardList();
+        dispatch(setLeaderboard(response));
+      } catch (error) {
+        window.console.error(error);
+      }
+    };
+    fn();
+  }, []);
 
   return (
     <>
