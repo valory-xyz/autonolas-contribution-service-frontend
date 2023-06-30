@@ -88,7 +88,7 @@ const ProfileBody = ({ profile }) => {
               <List.Item>
                 <List.Item.Meta
                   title="Twitter Handle"
-                  description={profile.twitter_id || ((account && account === profile.wallet_address) ? <ConnectTwitterModal /> : 'n/a')}
+                  description={profile.twitter_handle || ((account && account === profile.wallet_address) ? <ConnectTwitterModal /> : 'n/a')}
                 />
               </List.Item>
             </List>
