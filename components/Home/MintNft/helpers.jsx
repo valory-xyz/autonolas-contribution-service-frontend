@@ -10,18 +10,18 @@ export const MintBadgeCard = () => (
       <Space style={{ display: 'flex', flexDirection: 'column' }}>
         <Image
           priority
-          src="/images/showcase-nft.png"
+          src="/images/badge-evolution.png"
           alt="Mint NFT"
-          width={220}
-          height={180}
+          width={444}
+          height={208}
           className="mint-nft-image"
         />
       </Space>
 
       <Text>
-        Mint your Autonolas badge, watch it evolve as you contribute
+        Mint your badge, watch it evolve as you contribute
       </Text>
-      <Text type="secondary">To mint, connect a wallet.</Text>
+      <Text type="secondary">To mint, connect a wallet</Text>
     </Space>
   </MintBadgeCardContainer>
 );

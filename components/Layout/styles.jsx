@@ -23,12 +23,13 @@ export const CustomLayout = styled(Layout)`
 `;
 
 export const Logo = styled.div`
-  width: 48px;
+  width: 175px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: left;
   margin-left: 0.5rem;
+  margin-right: 1rem;
   span {
     margin-left: 0.5rem;
   }
@@ -63,4 +64,13 @@ export const NextUpdateTimer = styled.div`
     font-size: inherit;
     color: inherit;
   }
+`;
+
+export const CustomHeader = styled(Layout.Header)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem 3rem;
+  background-color: ${COLOR.WHITE};
+  border-bottom: 1px solid ${COLOR.BORDER_GREY};
 `;

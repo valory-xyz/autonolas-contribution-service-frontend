@@ -39,5 +39,5 @@ export const MintNftContainer = styled.div`
 export const WriteFunctionalityContainer = styled.div``;
 
 export const MintBadgeCardContainer = styled(Card)`
-  width: 300px;
+  // width: 300px;
 `;

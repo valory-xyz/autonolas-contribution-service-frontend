@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import {
-  Layout, Menu, Grid, Result,
+  Layout, Menu, Grid,
 } from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { setIsVerified } from 'store/setup/actions';
-import { DiscordLink } from '../Home/common';
 import Login from '../Login';
 import Footer from './Footer';
 import ServiceStatus from './ServiceStatus';
@@ -18,16 +17,15 @@ import {
   Logo,
   RightMenu,
   LoginXsContainer,
-  SupportOnlyDesktop,
+  CustomHeader,
 } from './styles';
 
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const menuItems = [
-  { key: 'homepage', label: 'Contribute' },
   { key: 'docs', label: 'Docs' },
 ];
 
@@ -40,7 +38,6 @@ const NavigationBar = ({ children }) => {
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
   const chainId = useSelector((state) => get(state, 'setup.chainId'));
-  const isVerified = useSelector((state) => get(state, 'setup.isVerified'));
 
   useEffect(() => {
     // on first render, if there is no account (ie. wallet not connected),
@@ -86,23 +83,9 @@ const NavigationBar = ({ children }) => {
     </Logo>
   );
 
-  if (screens.xs) {
-    return (
-      <CustomLayout hasSider>
-        <Header>{logo}</Header>
-        <SupportOnlyDesktop>
-          <Result
-            status="warning"
-            title="Not supported on mobile, please switch to desktop"
-          />
-        </SupportOnlyDesktop>
-      </CustomLayout>
-    );
-  }
-
   return (
     <CustomLayout>
-      <Header>
+      <CustomHeader>
         {logo}
 
         <Menu
@@ -115,12 +98,10 @@ const NavigationBar = ({ children }) => {
 
         {!screens.xs && (
           <RightMenu>
-            {!isVerified && <DiscordLink />}
-            &nbsp; &nbsp; &nbsp;
             <Login />
           </RightMenu>
         )}
-      </Header>
+      </CustomHeader>
 
       <Content className="site-layout">
         <div className="site-layout-background">
