@@ -1,24 +1,10 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import { removeSubdomainFrom } from '@autonolas/frontend-library';
 
 const Socials = () => {
-  const [url, setUrl] = useState('https://autonolas.network');
-
-  useEffect(() => {
-    const currentUrl = window.location.origin;
-
-    // if not localhost or vercel, remove subdomain
-    // example: https://contribute.olas.network -> https://olas.network
-    if (!['localhost', 'vercel'].some((e) => currentUrl.includes(e))) {
-      setUrl(removeSubdomainFrom());
-    }
-  }, []);
-
   const SOCIALS = [
     {
       type: 'web',
-      url,
+      url: 'https://contribute.olas.network/',
     },
     {
       type: 'github',
