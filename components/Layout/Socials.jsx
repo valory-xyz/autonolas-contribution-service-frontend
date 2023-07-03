@@ -4,7 +4,7 @@ const Socials = () => {
   const SOCIALS = [
     {
       type: 'web',
-      url: 'https://contribute.olas.network/',
+      url: 'https://olas.network/',
     },
     {
       type: 'github',
