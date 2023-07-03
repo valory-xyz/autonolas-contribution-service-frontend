@@ -9,13 +9,9 @@ const Badge = () => (
   <div id={DOCS_SECTIONS.badge}>
     <Title level={2}>Badge</Title>
     <Paragraph>
-      Community members’ points will start showing up on the leaderboard after
-      they have registered.
-    </Paragraph>
-    <Paragraph>
-      Community members can mint an Autonolas Badge. Badges are fun visual
+      Community members can mint an Contribute Badge. Badges are a fun visual
       representation of community contributions. Badges are NFTs following the
-      ERC-721 standard. Badges update when community members earn points. This
+      ERC-721 standard. They update when community members earn points. This
       happens automatically at regular intervals. The updates are done by a
       decentralized, off-chain service powered by Autonolas.
     </Paragraph>
@@ -47,7 +43,7 @@ const Badge = () => (
         <li>You should now see your badge on the website.</li>
       </ol>
     </Paragraph>
-    <Title level={5}>Badge tiers</Title>
+    <Title level={5}>Progression and tiers</Title>
     <Image
       priority
       src="/images/badge-evolution.png"
