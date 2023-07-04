@@ -16,7 +16,7 @@ const ConnectTwitterModal = () => {
   };
 
   const handleCreateTweet = () => {
-    const tweetText = `I'm linking my wallet to @Autonolas Contribute:\n${account}\n\nStart contributing to #OLAS: https://contribute.olas.network`;
+    const tweetText = `I'm linking my wallet to @Autonolas Contribute:\n${account}\n\nStart contributing to #OlasNetwork: https://contribute.olas.network`;
     const encodedTweetText = encodeURIComponent(tweetText).replace(
       /%0D%0A/g,
       '%0A',
@@ -60,7 +60,7 @@ const ConnectTwitterModal = () => {
         <br />
         <br />
         <Title className="mb-0" level={5}>Step 4:</Title>
-        <Text>@-mention Autonolas or use the #OLAS hashtag to start receiving rewards.</Text>
+        <Text>@-mention Autonolas or use the #OlasNetwork hashtag to start receiving rewards.</Text>
       </Modal>
     </>
   );
