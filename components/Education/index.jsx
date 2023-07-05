@@ -28,12 +28,14 @@ PopoverContent.propTypes = {
   }).isRequired,
 };
 
-export const EducationTitle = ({ title, level, educationItemSlug }) => {
+export const EducationTitle = ({
+  title, level, educationItemSlug, marginBottom,
+}) => {
   const educationItem = getEducationItemByComponent(educationItemSlug);
 
   return (
     <>
-      <Row gutter={8} align="middle" className="mb-12">
+      <Row gutter={8} align="middle" className={`${marginBottom}`}>
         <Col>
           <Title level={level} className="mb-0">
             {title}
@@ -57,8 +59,10 @@ EducationTitle.propTypes = {
   title: PropTypes.string.isRequired,
   educationItemSlug: PropTypes.string.isRequired,
   level: PropTypes.number,
+  marginBottom: PropTypes.string,
 };
 
 EducationTitle.defaultProps = {
   level: 4,
+  marginBottom: 'mb-12',
 };

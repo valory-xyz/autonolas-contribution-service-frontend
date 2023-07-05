@@ -18,6 +18,14 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 0px !important;
   }
 
+  .mb-2 {
+    margin-bottom: 2px !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 4px !important;
+  }
+
   .mb-8 {
     margin-bottom: 8px !important;
   }
