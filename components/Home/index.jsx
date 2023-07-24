@@ -3,10 +3,10 @@ import dynamic from 'next/dynamic';
 import {
   Col, Row, Typography,
 } from 'antd/lib';
-import Actions from 'components/Actions';
-import { CustomAlert } from './styles';
+import Actions from './Actions';
 import MintNft from './MintNft';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
+import { CustomAlert } from './styles';
 
 const { Title } = Typography;
 const Leaderboard = dynamic(() => import('./Leaderboard'));
