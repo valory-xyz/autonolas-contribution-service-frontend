@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import {
-  Layout, Menu, Grid,
-} from 'antd/lib';
+import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { setIsVerified } from 'store/setup/actions';
@@ -26,6 +24,7 @@ const { Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const menuItems = [
+  { key: 'coordinate', label: 'Coordinate' },
   { key: 'docs', label: 'Docs' },
 ];
 
