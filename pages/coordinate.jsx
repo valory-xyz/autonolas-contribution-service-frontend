@@ -1,3 +1,3 @@
-import { CoOrdinate } from 'components/coordinate';
+import { CoOrdinate } from 'components/CoOrdinate';
 
 export default CoOrdinate;
