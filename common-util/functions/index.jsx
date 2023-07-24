@@ -1,5 +1,5 @@
 import { notification } from 'antd/lib';
-import data from '../../components/Education/data.json';
+import data from '../../components/Home/MintNft/Education/data.json';
 
 export const notifyError = (message = 'Some error occured') => notification.error({
   message,
