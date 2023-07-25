@@ -3,21 +3,38 @@ import { Layout } from 'antd/lib';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
-  .registry-tabs {
-    .ant-tabs-extra-content {
-      &:not(:last-child) {
-        .ant-typography {
-          color: ${COLOR.PRIMARY};
-          margin: 0 12px 0 0;
-        }
-      }
-      &:last-child {
-        gap: 12px;
-        display: flex;
+  .site-layout {
+    padding: ${({ isCoordinatePage }) => (isCoordinatePage ? '0' : ' 0 50px 120px 50px;')};
+    margin-top: 6rem;
+    .contribute-footer {
+      > div {
+        height: 100px;
+        align-items: center;
+        padding-left: 0;
+        padding-right: 0;
       }
     }
-    .ant-tabs-nav-wrap {
-      padding-left: 16px;
+    .site-layout-background {
+      padding: ${({ isCoordinatePage }) => (isCoordinatePage ? '0' : '8px 0;')};
+      min-height: calc(100vh - 120px);
+    }
+  }
+
+  ${MEDIA_QUERY.mobileL} {
+    .show-only-sm {
+      display: initial;
+    }
+    .hide-only-sm {
+      display: none;
+    }
+  }
+
+  ${MEDIA_QUERY.mobileM} {
+    .site-layout {
+      padding: 0 20px;
+    }
+    .site-layout-background {
+      padding: 8px 0;
     }
   }
 `;

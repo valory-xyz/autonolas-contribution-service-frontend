@@ -10,55 +10,86 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* common */
-  .m-0 {
-    margin: 0 !important;
-  }
-
-  .mb-0 {
-    margin-bottom: 0px !important;
-  }
-
   .mb-2 {
     margin-bottom: 2px !important;
   }
-
   .mb-4 {
     margin-bottom: 4px !important;
   }
-
-  .mb-8 {
-    margin-bottom: 8px !important;
-  }
-
-  .mb-12 {
-    margin-bottom: 12px;
-  }
-
-  .mb-16 {
-    margin-bottom: 16px;
-  }
-
-  .mb-24 {
-    margin-bottom: 24px !important;
-  }
-
   .mb-48 {
     margin-bottom: 48px !important;
   }
-
   .mr-12 {
     margin-right: 12px !important;
   }
-
   .mr-48 {
     margin-right: 48px !important;
   }
-
+  .mt-8 {
+    margin-top: 8px;
+  }
+  .mb-0 {
+    margin-bottom: 0px !important;
+  }
+  .m-0 {
+    margin: 0 !important;
+  }
+  .m-24 {
+    margin: 24px !important;
+  }
+  .mb-8 {
+    margin-bottom: 8px;
+  }
+  .mb-12 {
+    margin-bottom: 12px;
+  }
+  .mb-16 {
+    margin-bottom: 16px;
+  }
+  .mb-24 {
+    margin-bottom: 24px;
+  }
+  .mr-8 {
+    margin-right: 8px;
+  }
+  .mr-24 {
+    margin-right: 24px;
+  }
   .mt-8 {
     margin-top: 8px;
   }
   .mt-12 {
     margin-top: 12px;
+  }
+  .ml-12 {
+    margin-left: 12px;
+  }
+  .mr-12 {
+    margin-right: 12px;
+  }
+  .w-100 {
+    width: 100%;
+  }
+  .text-right {
+    float: right;
+  }
+  .text-small {
+    font-size: 14px;
+  }
+  .bg-shaded {
+    background-color: ${COLOR.GREY_3};
+  }
+  .border-bottom {
+    border-bottom: 1px solid ${COLOR.BORDER_GREY};
+  }
+  .border-top {
+    border-top: 1px solid ${COLOR.BORDER_GREY};
+  }
+  .border-left {
+    border-left: 1px solid ${COLOR.BORDER_GREY};
+  }
+  .border-right {
+    border-left: 1px solid ${COLOR.BORDER_GREY};
   }
   
   .walletconnect-modal__base {
@@ -103,42 +134,6 @@ const GlobalStyle = createGlobalStyle`
     text-align: center;
   }
 
-  /* layout */
-  .site-layout {
-    padding: 0 50px 120px 50px;
-    margin-top: 6rem;
-    .contribute-footer {
-      > div {
-        height: 100px;
-        align-items: center;
-        padding-left: 0;
-        padding-right: 0;
-      }
-    }
-  }
-  .site-layout-background {
-    padding: 8px 0;
-    min-height: calc(100vh - 120px);
-  }
-
-  ${MEDIA_QUERY.mobileL} {
-    .show-only-sm {
-      display: initial;
-    }
-    .hide-only-sm {
-      display: none;
-    }
-  }
-
-  ${MEDIA_QUERY.mobileM} {
-    .site-layout {
-      padding: 0 20px;
-    }
-    .site-layout-background {
-      padding: 8px 0;
-    }
-  }
-
   /* title */
   .custom-text-secondary {
     display: inline-block;
@@ -164,6 +159,17 @@ const GlobalStyle = createGlobalStyle`
       text-decoration: underline;
       color: inherit;
     }
+  }
+
+    // Group Chat
+    .chat-bubble {
+    background-color: ${COLOR.WHITE};
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid ${COLOR.BORDER_GREY};
+    min-width: 100px;
+    max-width: 450px;
+    margin-bottom: 4px;
   }
 `;
 

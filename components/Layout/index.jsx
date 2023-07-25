@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { setIsVerified } from 'store/setup/actions';
+import { setIsVerified, setMemoryDetails } from 'store/setup/actions';
+import { getMemoryDetails } from 'common-util/api';
 import Login from '../Login';
 import Footer from './Footer';
 import ServiceStatus from './ServiceStatus';
@@ -28,6 +29,8 @@ const menuItems = [
   { key: 'docs', label: 'Docs' },
 ];
 
+const INTERVAL = 10000;
+
 const NavigationBar = ({ children }) => {
   const screens = useBreakpoint();
   const router = useRouter();
@@ -38,12 +41,30 @@ const NavigationBar = ({ children }) => {
   const account = useSelector((state) => get(state, 'setup.account'));
   const chainId = useSelector((state) => get(state, 'setup.chainId'));
 
+  const getMembers = async () => {
+    const { response } = await getMemoryDetails();
+    dispatch(setMemoryDetails(response));
+  };
+
   useEffect(() => {
     // on first render, if there is no account (ie. wallet not connected),
     // mark as not verified
     if (!account) {
       dispatch(setIsVerified(false));
     }
+
+    getMembers();
+  }, []);
+
+  // poll details
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getMembers();
+    }, INTERVAL);
+
+    return () => {
+      clearTimeout(interval);
+    };
   }, []);
 
   /**
@@ -82,8 +103,10 @@ const NavigationBar = ({ children }) => {
     </Logo>
   );
 
+  const isCoordinatePage = pathname.includes('coordinate');
+
   return (
-    <CustomLayout>
+    <CustomLayout isCoordinatePage={isCoordinatePage}>
       <CustomHeader>
         {logo}
 
@@ -111,12 +134,16 @@ const NavigationBar = ({ children }) => {
           )}
           {children}
         </div>
+
+        {!isCoordinatePage && (
+
         <div className="contribute-footer">
           <Footer />
         </div>
+        )}
       </Content>
 
-      <ServiceStatus />
+      {!isCoordinatePage && <ServiceStatus />}
     </CustomLayout>
   );
 };

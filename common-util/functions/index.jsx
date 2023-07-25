@@ -1,5 +1,6 @@
+import { toLower } from 'lodash';
 import { notification } from 'antd/lib';
-import data from '../../components/Home/MintNft/Education/data.json';
+import data from 'common-util/Education/data.json';
 
 export const notifyError = (message = 'Some error occured') => notification.error({
   message,
@@ -13,6 +14,8 @@ export const notifySuccess = (message = 'Successfull', description = null) => no
 export const isGoerli = (id) => id === 5;
 
 export const getEducationItemByComponent = (slug) => data.filter((item) => slug === item.slug)[0];
+
+export const areAddressesEqual = (a1, a2) => toLower(a1) === toLower(a2);
 
 export const getTier = (points) => {
   switch (true) {
@@ -33,3 +36,15 @@ export const getName = (profile) => profile.twitter_handle
 || profile.discord_handle
 || profile.wallet_address
 || 'Unknown name';
+
+// TODO: move to autonolas library
+/**
+ * returns hash from the url
+ * @example
+ * input: router-path (for example, /components#my-components)
+ * output: my-components
+ */
+export const getHash = (router) => router?.asPath?.split('#')[1] || '';
+
+export const isDevOrStaging = process.env.NODE_ENV === 'development'
+  || process.env.NODE_VERCEL_ENV === 'staging';
