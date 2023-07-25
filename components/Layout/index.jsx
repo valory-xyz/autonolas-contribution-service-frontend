@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
+import { get } from 'lodash';
 import { setIsVerified, setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails } from 'common-util/api';
 import Login from '../Login';
@@ -103,7 +103,7 @@ const NavigationBar = ({ children }) => {
     </Logo>
   );
 
-  const isCoordinatePage = pathname.includes('coordinate');
+  const isCoordinatePage = ['coordinate', 'member-chat'].some((e) => pathname.includes(e));
 
   return (
     <CustomLayout isCoordinatePage={isCoordinatePage}>
@@ -136,10 +136,9 @@ const NavigationBar = ({ children }) => {
         </div>
 
         {!isCoordinatePage && (
-
-        <div className="contribute-footer">
-          <Footer />
-        </div>
+          <div className="contribute-footer">
+            <Footer />
+          </div>
         )}
       </Content>
 

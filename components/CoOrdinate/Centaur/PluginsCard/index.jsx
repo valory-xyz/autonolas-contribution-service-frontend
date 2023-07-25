@@ -67,8 +67,7 @@ const PluginsCard = ({ currentCentaur }) => (
                       <br />
                       <Text type="secondary">
                         {' '}
-                        To enable or disable,
-                        &nbsp;
+                        To enable or disable,&nbsp;
                         <a
                           href="https://t.me/+IUnSDNblV6E0MTI0"
                           target="_blank"

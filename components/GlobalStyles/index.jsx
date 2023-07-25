@@ -10,6 +10,24 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* common */
+  .p-0 {
+    padding: 0 !important;
+  }
+  .px-24 {
+    padding: 0 24px !important;
+  }
+  .py-12 {
+    padding: 12px 0 !important;
+  }
+  .py-24 {
+    padding: 24px 0 !important;
+  }
+  .p-24 {
+    padding: 24px !important;
+  }
+  .pl-24 {
+    padding-left: 24px;
+  }
   .mb-2 {
     margin-bottom: 2px !important;
   }
@@ -91,7 +109,7 @@ const GlobalStyle = createGlobalStyle`
   .border-right {
     border-left: 1px solid ${COLOR.BORDER_GREY};
   }
-  
+
   .walletconnect-modal__base {
     .walletconnect-modal__mobile__toggle a {
       color: #1890ff !important;
@@ -151,7 +169,7 @@ const GlobalStyle = createGlobalStyle`
   /* hyperlinks */
   a.ant-typography,
   .ant-typography a {
-    color: inherit;
+    color: ${COLOR.PRIMARY};
     text-decoration: underline;
     text-underline-offset: 4px;
     &:hover,
@@ -161,8 +179,102 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-    // Group Chat
-    .chat-bubble {
+  .underline {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: ${COLOR.PRIMARY};
+  }
+
+  .disabled-link {
+    pointer-events: none;
+    color: #ccc !important;
+    text-decoration: line-through;
+  }
+
+  #conversations-list {
+    height: 55vh;
+    overflow: auto;
+    border: 1px solid ${COLOR.BORDER_GREY};
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  .innovataurs-card {
+    padding: 0;
+  }
+
+  .innovataurs-card-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .innovataurs-card-image {
+    width: 250px;
+  }
+
+  .innovataurs-card-text-container {
+    margin-left: 2rem;
+  }
+
+  .innovataurs-card-title {
+    margin-bottom: 8px;
+  }
+
+  .innovataurs-card-text {
+    margin-bottom: 8px;
+    max-width: 65ch;
+  }
+
+  .my-message {
+    float: right;
+    text-align: right;
+  }
+
+  .clear {
+    clear: both;
+  }
+  // Actions Card
+  .actions-card-body {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-top: 4px;
+  }
+
+  // Memory Card
+  .memory-list-item {
+    padding: 20px;
+  }
+
+  .memory-list-item-content {
+    margin-bottom: 0;
+  }
+
+  // Plugins Card
+  .plugins-card-list-item {
+    padding: 20px;
+  }
+
+  // Chatbot Card
+  .chatbot-card {
+    max-width: 800px;
+  }
+
+  .chatbot-body-container {
+    height: 80vh;
+    width: 100%;
+  }
+
+  // Member Chat Card
+  .member-chat-card {
+    max-width: 800px;
+  }
+
+  .member-chat-body-container {
+    width: 100%;
+  }
+
+  // Group Chat
+  .chat-bubble {
     background-color: ${COLOR.WHITE};
     padding: 8px 12px;
     border-radius: 4px;

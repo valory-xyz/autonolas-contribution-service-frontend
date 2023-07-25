@@ -5,7 +5,7 @@ import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 export const CustomLayout = styled(Layout)`
   .site-layout {
     padding: ${({ isCoordinatePage }) => (isCoordinatePage ? '0' : ' 0 50px 120px 50px;')};
-    margin-top: 6rem;
+    margin-top: 64px;
     .contribute-footer {
       > div {
         height: 100px;
@@ -15,8 +15,17 @@ export const CustomLayout = styled(Layout)`
       }
     }
     .site-layout-background {
-      padding: ${({ isCoordinatePage }) => (isCoordinatePage ? '0' : '8px 0;')};
+      padding: ${({ isCoordinatePage }) => (isCoordinatePage ? '0' : '24px 0;')};
       min-height: calc(100vh - 120px);
+    }
+  }
+
+  .ant-list-item.bot-chat {
+    text-align: right;
+    background-color: ${COLOR.GREY_3};
+    border-bottom: 1px solid ${COLOR.GREY_1};
+    .ant-list-item-meta-content {
+      padding: 0 1rem;
     }
   }
 
@@ -87,7 +96,6 @@ export const CustomHeader = styled(Layout.Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2.5rem 3rem;
   background-color: ${COLOR.WHITE};
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
 `;
