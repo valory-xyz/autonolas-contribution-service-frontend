@@ -14,6 +14,7 @@
     "@ceramicnetwork/http-client": "^2.20.0",
     "@ceramicnetwork/stream-tile": "^2.19.0",
     "@ethersproject/providers": "^5.6.8",
+    "@orbisclub/orbis-sdk": "^0.4.72",
     "@wagmi/core": "^1.0.5",
     "@walletconnect/web3-provider": "^1.7.8",
     "@web3modal/ethereum": "^2.4.1",
