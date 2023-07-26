@@ -9,7 +9,7 @@ const { Text } = Typography;
 export const LIST = [
   {
     id: '1',
-    title: 'Create your Centaur',
+    title: 'Create your Coordinate',
     description: 'Give it a name and a purpose.',
     imageUrl: '/images/image_2.png',
     imageDimensions: { width: 110, height: 115 },

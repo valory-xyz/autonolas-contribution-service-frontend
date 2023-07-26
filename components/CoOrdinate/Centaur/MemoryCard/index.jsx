@@ -45,7 +45,7 @@ const MemoryCard = ({
     // don't allow them to update the memory
     if (!isAddressPresent) {
       throw new Error(
-        'Only members can update the memory. To update, join this centaur.',
+        'Only members can update the memory. To update, join this coordinate.',
       );
     }
 
@@ -95,7 +95,7 @@ const MemoryCard = ({
   const removeMemoryItem = async (indexToRemove) => {
     if (!isAddressPresent) {
       throw new Error(
-        'Only members can modify the memory. To remove memory, join this centaur.',
+        'Only members can modify the memory. To remove memory, join this coordinate.',
       );
     }
     currentMemoryDetails.memory = currentMemoryDetails.memory.filter(
@@ -126,7 +126,7 @@ const MemoryCard = ({
   const clearMemory = async () => {
     if (!isAddressPresent) {
       throw new Error(
-        'Only members can modify the memory. To clear memory, join this centaur.',
+        'Only members can modify the memory. To clear memory, join this coordinate.',
       );
     }
     currentMemoryDetails.memory = [];
@@ -155,7 +155,7 @@ const MemoryCard = ({
   const handleUpdateMemory = async () => {
     try {
       if (!isAddressPresent) {
-        const errorMessage = 'Only members can modify the memory. To update memory, join this centaur.';
+        const errorMessage = 'Only members can modify the memory. To update memory, join this coordinate.';
         notifyError(errorMessage);
         throw new Error(errorMessage);
       }

@@ -72,7 +72,7 @@ export const Centaurs = () => {
         // stop loading & reset the state
         setOpen(false);
 
-        router.push(`/centaur/${newCentaurId}`);
+        router.push(`/coordinate/${newCentaurId}`);
       }
       setLoading(false);
     },
@@ -118,13 +118,13 @@ export const Centaurs = () => {
         <>
           <Button type="primary" onClick={showModal} className="mb-16 mt-12">
             <PlusOutlined />
-            &nbsp;Create Centaur (Free)
+            &nbsp;Create Coordinate (Free)
           </Button>
 
           {open && (
             <Modal
               visible={open}
-              title="Create Centaur"
+              title="Create Coordinate"
               onOk={handleOk}
               onCancel={handleCancel}
               confirmLoading={loading}
@@ -191,7 +191,7 @@ export const Centaurs = () => {
             key: 'name',
             width: 300,
             render: (name, row) => (
-              <Link href={`/centaur/${row.id}`}>
+              <Link href={`/coordinate/${row.id}`}>
                 <a>{name}</a>
               </Link>
             ),

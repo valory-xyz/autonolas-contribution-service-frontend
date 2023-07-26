@@ -76,7 +76,7 @@ const Centaur = () => {
     // Update the Ceramic stream
     // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
     await updateMemoryWithNewCentaur(updatedCentaur);
-    notification.success({ message: 'Joined centaur' });
+    notification.success({ message: 'Joined coordinate' });
 
     // Add action to the centaur
     // const action = {

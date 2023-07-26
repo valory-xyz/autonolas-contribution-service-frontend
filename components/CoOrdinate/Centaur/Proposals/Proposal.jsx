@@ -46,7 +46,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
   const onApprove = async () => {
     if (!isAddressPresent || !account) {
-      notifyError('Please connect your wallet and join the centaur to vote.');
+      notifyError('Please connect your wallet and join the coordinate to vote.');
       return;
     }
 
