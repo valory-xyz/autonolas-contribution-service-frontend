@@ -32,7 +32,7 @@
   {
     "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
     "component": "proposals",
-    "text": "Propose an action to the centaur. Vote for or against others' proposals.",
+    "text": "Propose an action. Vote for or against others' proposals.",
     "docsLink": "#proposals"
   }
 ]

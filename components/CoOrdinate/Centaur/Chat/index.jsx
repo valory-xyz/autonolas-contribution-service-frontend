@@ -18,8 +18,9 @@ export const Chat = ({ name, memory }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const apiKeyModalRef = useRef(null);
+
+  const isSendButtonDisabled = (memory || []).length === 0;
 
   useEffect(() => {
     // flatten memory array into a string to send to OpenAI
@@ -43,6 +44,10 @@ export const Chat = ({ name, memory }) => {
   };
 
   const handleSendMessage = async () => {
+    if (isSendButtonDisabled) {
+      return;
+    }
+
     if (!apiKey) {
       notifyError('Please provide your OpenAI API key.');
       return;
@@ -101,7 +106,9 @@ export const Chat = ({ name, memory }) => {
       <EducationTitle title="Chatbot" educationItem="chatbot" />
       <Space direction="vertical" className="chatbot-body-container">
         <List
-          locale={{ emptyText: `Send your first message to ${name}!` }}
+          locale={{
+            emptyText: `Send your first message${name ? ` to ${name}` : ''}!`,
+          }}
           dataSource={messages
             .filter((e) => e.role !== 'system')
             .map((e) => {
@@ -136,7 +143,7 @@ export const Chat = ({ name, memory }) => {
             type="primary"
             icon={<SendOutlined />}
             onClick={handleSendMessage}
-            disabled={(memory || []).length === 0}
+            disabled={isSendButtonDisabled}
           >
             Send
           </Button>
