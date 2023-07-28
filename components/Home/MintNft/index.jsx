@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Button, Typography, Skeleton,
-} from 'antd/lib';
+import { Button, Typography, Skeleton } from 'antd/lib';
 import get from 'lodash/get';
-import { getLatestMintedNft } from 'common-util/api';
 import { setNftDetails } from 'store/setup/actions';
-import { EducationTitle } from 'components/Education';
-import ShowBadge from 'components/ShowBadge';
+import { getLatestMintedNft } from 'common-util/api';
+import { EducationTitle } from './Education';
+import ShowBadge from './ShowBadge';
 import { mintNft, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import { MintBadgeCard } from './helpers';
-import {
-  MintNftContainer,
-  WriteFunctionalityContainer,
-} from './styles';
+import { MintNftContainer, WriteFunctionalityContainer } from './styles';
 
 const { Text } = Typography;
 

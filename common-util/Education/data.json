@@ -1,0 +1,38 @@
+[
+  {
+    "id": "9b939392-4b49-49de-87de-16d0ed479597",
+    "component": "memory",
+    "text": "Each CentaurBot has a store of memory. The bot can use it for many purposes – for example Chatbot uses the memory when people chat to it.",
+    "docsLink": "#memory"
+  },
+  {
+    "id": "9a1faaef-376c-4673-ad9d-95547b965cda",
+    "component": "plugins",
+    "text": "Plugins extend CentaurBot's abilities. They can be used to pull in data, use different AI models, and take action on protocols and web2 apps.",
+    "docsLink": "#plugins"
+  },
+  {
+    "id": "3393245f-ff66-46f3-9848-8504c1a365af",
+    "component": "centaurbot",
+    "text": "CentaurBot assists members by performing operational tasks and creating value for the coordinate.",
+    "docsLink": "#centaurbot"
+  },
+  {
+    "id": "e5642991-8b40-445b-8773-3c7e026d282a",
+    "component": "chatbot",
+    "text": "Build AI-powered chat experiences. Uses Memory for context.",
+    "docsLink": "#chatbot"
+  },
+  {
+    "id": "3d8f9590-9035-4a99-bbcf-c34896631db2",
+    "component": "social-poster",
+    "text": "Manual and automated tools to create social posts on Twitter and Orbis.",
+    "docsLink": "#social-poster"
+  },
+  {
+    "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
+    "component": "proposals",
+    "text": "Propose an action. Vote for or against others' proposals.",
+    "docsLink": "#proposals"
+  }
+]

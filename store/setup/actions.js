@@ -40,6 +40,11 @@ export const setHealthcheck = (healthcheck) => ({
   data: { healthcheck },
 });
 
+export const setMemoryDetails = (memoryDetails) => ({
+  type: syncTypes.SET_MEMORY_DETAILS,
+  data: { memoryDetails },
+});
+
 export const setLogout = () => ({
   type: syncTypes.SET_LOGOUT,
   data: null,

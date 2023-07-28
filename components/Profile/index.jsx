@@ -1,18 +1,19 @@
-import {
-  Col, List, Row, Skeleton, Statistic, Typography,
-} from 'antd/lib';
-import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
-import { getName, getTier } from 'common-util/functions';
-import ConnectTwitterModal from 'components/ConnectTwitter/Modal';
-import { getAutonolasTokenUri } from 'components/Home/MintNft/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Col, List, Row, Skeleton, Statistic, Typography,
+} from 'antd/lib';
 import PropTypes from 'prop-types';
-import TruncatedEthereumLink from 'components/TruncatedEthereumLink';
-import { DiscordLink } from 'components/Home/common';
 import { setLeaderboard } from 'store/setup/actions';
+import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
+import { getName, getTier } from 'common-util/functions';
+import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+
+import { DiscordLink } from '../Home/common';
+import { getAutonolasTokenUri } from '../Home/MintNft/utils';
+import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { BadgeCard, IMAGE_SIZE } from './styles';
 
 const { Title, Text } = Typography;
@@ -76,7 +77,13 @@ const ProfileBody = ({ profile }) => {
               <List.Item>
                 <List.Item.Meta
                   title="Wallet Address"
-                  description={<Text type="secondary"><TruncatedEthereumLink text={profile.wallet_address} /></Text> || 'n/a'}
+                  description={
+                    (
+                      <Text type="secondary">
+                        <TruncatedEthereumLink text={profile.wallet_address} />
+                      </Text>
+                    ) || 'n/a'
+                  }
                 />
               </List.Item>
               <List.Item>
@@ -84,9 +91,11 @@ const ProfileBody = ({ profile }) => {
                   title="Discord Handle"
                   description={
                     <Text type="secondary">{profile.discord_handle}</Text>
-                    || (account && account === profile.wallet_address
-                      ? <DiscordLink text="Connect Discord" />
-                      : 'n/a')
+                    || (account && account === profile.wallet_address ? (
+                      <DiscordLink text="Connect Discord" />
+                    ) : (
+                      'n/a'
+                    ))
                   }
                 />
               </List.Item>

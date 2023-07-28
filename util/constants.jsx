@@ -17,3 +17,5 @@ export const META_TAGS_INFO = {
   description: SITE_DESCRIPTION,
   image: SITE_METATAG_IMAGE,
 };
+
+export const DEFAULT_COORDINATE_ID = '2';

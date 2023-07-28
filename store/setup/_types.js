@@ -14,5 +14,9 @@ export const syncTypes = {
   SET_LEADERBOARD: `${reducerName}/Set leaderboard`,
   SET_NFT_DETAILS: `${reducerName}/Set NFT details`,
   SET_HEALTH_CHECK: `${reducerName}/Set healthcheck`,
+
+  // co-ordinate
+  SET_MEMORY_DETAILS: `${reducerName}/Set memory details`,
+
   SET_STORE_STATE: `${reducerName}/Set Store State`,
 };
