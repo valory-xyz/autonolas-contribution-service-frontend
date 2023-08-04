@@ -1,4 +1,5 @@
-import { toLower } from 'lodash';
+import ethers from 'ethers';
+import { toLower, isNil } from 'lodash';
 import { notification } from 'antd/lib';
 import data from 'common-util/Education/data.json';
 
@@ -48,3 +49,14 @@ export const getHash = (router) => router?.asPath?.split('#')[1] || '';
 
 export const isDevOrStaging = process.env.NODE_ENV === 'development'
   || process.env.NODE_VERCEL_ENV === 'staging';
+
+/**
+ *
+ * @param {BigNumebr} value value to be converted to Eth
+ * @param {Number} dv Default value to be returned
+ * @returns {String} with 2 decimal places
+ */
+export const formatToEth = (value, dv = 0) => {
+  if (isNil(value)) return dv || 0;
+  return (+ethers.utils.formatEther(value)).toFixed(2);
+};
