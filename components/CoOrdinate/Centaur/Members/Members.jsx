@@ -9,6 +9,7 @@ import {
 import { UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+import { fetchVeolasBalance } from './requests';
 
 const { Title, Text } = Typography;
 
@@ -30,6 +31,17 @@ export const Members = ({ members, addNewMember, memberWhitelist }) => {
       setJoinLoading(false);
     },
   });
+
+  const onJoin = async () => {
+    setJoinLoading(true);
+    const balance = await fetchVeolasBalance({ account });
+    if (Number(balance) === 0) {
+      notifyError('You need to have veOlas to join');
+      setJoinLoading(false);
+    } else {
+      signMessage();
+    }
+  };
 
   const columns = [
     {
@@ -101,10 +113,7 @@ export const Members = ({ members, addNewMember, memberWhitelist }) => {
             className="mr-12"
             disabled={!account}
             loading={joinLoading}
-            onClick={() => {
-              setJoinLoading(true);
-              signMessage();
-            }}
+            onClick={onJoin}
           >
             Join
           </Button>

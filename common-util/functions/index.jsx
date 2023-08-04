@@ -1,4 +1,4 @@
-import ethers from 'ethers';
+import { ethers } from 'ethers';
 import { toLower, isNil } from 'lodash';
 import { notification } from 'antd/lib';
 import data from 'common-util/Education/data.json';
