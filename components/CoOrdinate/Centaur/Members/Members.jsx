@@ -38,7 +38,7 @@ export const Members = ({ members, addNewMember }) => {
     if (Number(balance) === 0) {
       notifyError(
         <>
-          You must hold veOLAS to join.
+          You must hold veOLAS to join.&nbsp;
           <a
             href="https://member.olas.network/"
             target="_blank"
