@@ -8,7 +8,7 @@ const Overview = () => (
     <div id={DOCS_SECTIONS.overview}>
       <Title level={2}>Overview</Title>
       <Paragraph>
-        Autonolas Contribute is a system for coordinating work in the Autonolas
+        Olas Contribute is a system for coordinating work in the Olas
         DAO. It is made up of 3 main components:
       </Paragraph>
 
@@ -34,7 +34,7 @@ const Overview = () => (
       </Paragraph>
 
       <Paragraph>
-        Autonolas Contribute is powered by an autonomous service. This means it
+        Olas Contribute is powered by an autonomous service. This means it
         is able to automate complex operations in a fully decentralized way, for
         example:
         <ul>

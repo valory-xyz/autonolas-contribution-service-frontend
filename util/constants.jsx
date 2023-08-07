@@ -7,8 +7,8 @@ export const MORE_COLOR = {
 };
 
 export const SITE_URL = 'https://contribute.olas.network';
-export const SITE_TITLE = 'Autonolas Contribute';
-export const SITE_DESCRIPTION = 'Contribute to the Autonolas DAO by completing actions, earning points, climbing the rankings and upgrading your badge';
+export const SITE_TITLE = 'Olas Contribute';
+export const SITE_DESCRIPTION = 'Contribute to the Olas DAO by completing actions, earning points, climbing the rankings and upgrading your badge';
 export const SITE_METATAG_IMAGE = `${SITE_URL}/images/site-metadata/site-metatag.jpg`;
 
 export const META_TAGS_INFO = {

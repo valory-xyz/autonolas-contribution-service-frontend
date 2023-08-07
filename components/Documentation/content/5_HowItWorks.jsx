@@ -8,8 +8,8 @@ const HowItWorks = () => (
     <Title level={2}>How It Works</Title>
 
     <Paragraph>
-      Autonolas Contribute is an autonomous service that manages the updating of
-      Autonolas community non-fungible tokens (NFTs).&nbsp;
+      Olas Contribute is an autonomous service that manages the updating of
+      Olas community non-fungible tokens (NFTs).&nbsp;
       <a
         href="https://www.autonolas.network/education-articles/2"
         target="_blank"

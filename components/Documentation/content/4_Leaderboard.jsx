@@ -8,7 +8,7 @@ const Leaderboard = () => (
   <div id={DOCS_SECTIONS.leaderboard}>
     <Title level={2}>Leaderboard</Title>
     <Paragraph>
-      The Autonolas Contribute leaderboard ranks each community member according
+      The Olas Contribute leaderboard ranks each community member according
       to the number of points they have earned.
     </Paragraph>
 
