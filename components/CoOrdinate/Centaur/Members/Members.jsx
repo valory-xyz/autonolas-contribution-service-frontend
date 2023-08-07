@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
 import {
-  Table, Typography, Button, notification, Card, Alert,
+  Table, Typography, Button, notification, Card,
 } from 'antd/lib';
 import { UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from 'common-util/functions';
@@ -13,7 +13,7 @@ import { fetchVeolasBalance } from './requests';
 
 const { Title, Text } = Typography;
 
-export const Members = ({ members, addNewMember, memberWhitelist }) => {
+export const Members = ({ members, addNewMember }) => {
   const router = useRouter();
   const [joinLoading, setJoinLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
@@ -36,7 +36,18 @@ export const Members = ({ members, addNewMember, memberWhitelist }) => {
     setJoinLoading(true);
     const balance = await fetchVeolasBalance({ account });
     if (Number(balance) === 0) {
-      notifyError('You need to have veOlas to join');
+      notifyError(
+        <>
+          You must hold veOLAS to join.
+          <a
+            href="https://member.olas.network/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get veOLAS
+          </a>
+        </>,
+      );
       setJoinLoading(false);
     } else {
       signMessage();
@@ -130,14 +141,6 @@ export const Members = ({ members, addNewMember, memberWhitelist }) => {
         </Button>,
       ]}
     >
-      {memberWhitelist?.length > 0 && (
-        <Alert
-          className="mb-12"
-          message="Whitelist enabled: see members below"
-          type="info"
-          closable
-        />
-      )}
       <Table
         columns={columns}
         dataSource={members}
@@ -157,7 +160,6 @@ Members.propTypes = {
     }),
   ),
   addNewMember: PropTypes.func,
-  memberWhitelist: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 Members.defaultProps = {
