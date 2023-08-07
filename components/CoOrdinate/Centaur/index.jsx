@@ -6,20 +6,13 @@ import {
 import { useRouter } from 'next/router';
 import { cloneDeep } from 'lodash';
 
-import {
-  areAddressesEqual,
-  getHash,
-  isDevOrStaging,
-  notifyError,
-} from 'common-util/functions';
+import { areAddressesEqual, getHash, notifyError } from 'common-util/functions';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import WhitelistForm from './Members/WhitelistForm';
 import { Members } from './Members/Members';
 import GroupChat from './GroupChat';
 import { Chat } from './Chat';
 import MemoryCard from './MemoryCard';
 import PluginsCard from './PluginsCard';
-import MemberWhitelist from './Members/MemberWhitelist';
 import Proposals from './Proposals';
 import { SocialPoster } from './SocialPoster';
 import { menuItems } from './utils';
@@ -146,32 +139,12 @@ const Centaur = () => {
             )}
 
             {currentTab === 'members' && (
-              <>
-                <div className="mb-48">
-                  <Members
-                    members={membersOfCurrentCentaur}
-                    addNewMember={addNewMember}
-                    memberWhitelist={memberWhitelist}
-                  />
-                </div>
-
-                {memberWhitelist?.length >= 1 && (
-                  <div className="mb-48">
-                    <MemberWhitelist members={memberWhitelist} />
-                  </div>
-                )}
-
-                {isDevOrStaging && (
-                  <div className="mb-48">
-                    <WhitelistForm
-                      currentCentaur={currentMemoryDetails}
-                      centaursList={memoryDetailsList}
-                      centaurId={centaurId}
-                      isPermitted
-                    />
-                  </div>
-                )}
-              </>
+              <div className="mb-48">
+                <Members
+                  members={membersOfCurrentCentaur}
+                  addNewMember={addNewMember}
+                />
+              </div>
             )}
 
             {currentTab === 'plugins' && (
