@@ -9,11 +9,9 @@ import { cloneDeep } from 'lodash';
 import {
   areAddressesEqual,
   getHash,
-  isDevOrStaging,
   notifyError,
 } from 'common-util/functions';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import WhitelistForm from './Members/WhitelistForm';
 import { Members } from './Members/Members';
 import GroupChat from './GroupChat';
 import { Chat } from './Chat';
@@ -158,17 +156,6 @@ const Centaur = () => {
                 {memberWhitelist?.length >= 1 && (
                   <div className="mb-48">
                     <MemberWhitelist members={memberWhitelist} />
-                  </div>
-                )}
-
-                {isDevOrStaging && (
-                  <div className="mb-48">
-                    <WhitelistForm
-                      currentCentaur={currentMemoryDetails}
-                      centaursList={memoryDetailsList}
-                      centaurId={centaurId}
-                      isPermitted
-                    />
                   </div>
                 )}
               </>
