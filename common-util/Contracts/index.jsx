@@ -4,6 +4,15 @@ import {
   MINT_NFT_CONTRACT_ABI_GOERLI,
   MINT_NFT_CONTRACT_ADDRESS_MAINNET,
   MINT_NFT_CONTRACT_ABI_MAINNET,
+
+  // veOlas
+  VEOLAS_ADDRESS_GOERLI,
+  VEOLAS_ADDRESS_MAINNET,
+  VEOLAS_ABI,
+
+  // wveOlas
+  WVEOLAS_ADDRESS_MAINNET,
+  WVEOLAS_ABI_MAINNET,
 } from 'common-util/AbiAndAddresses';
 
 const getWeb3Details = () => {
@@ -26,6 +35,37 @@ export const getMintContract = () => {
       ? MINT_NFT_CONTRACT_ADDRESS_GOERLI
       : MINT_NFT_CONTRACT_ADDRESS_MAINNET,
   );
+  return contract;
+};
+
+export const getVeolasContract = (isViewOnly) => {
+  const { web3, chainId } = getWeb3Details();
+
+  const getAddressAndAbi = () => {
+    if (chainId === 1) {
+      // for view methods use wveolas abi and address
+      if (isViewOnly) {
+        return {
+          abi: WVEOLAS_ABI_MAINNET,
+          address: WVEOLAS_ADDRESS_MAINNET,
+        };
+      }
+
+      return {
+        abi: VEOLAS_ABI,
+        address: VEOLAS_ADDRESS_MAINNET,
+      };
+    }
+
+    return {
+      abi: VEOLAS_ABI,
+      address: VEOLAS_ADDRESS_GOERLI,
+    };
+  };
+
+  const { address, abi } = getAddressAndAbi();
+
+  const contract = new web3.eth.Contract(abi, address);
   return contract;
 };
 
