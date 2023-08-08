@@ -26,7 +26,7 @@ const Leaderboard = () => {
             message={(
               <>
                 <Title level={2} className="mb-24">
-                  Start earning contribution points
+                  Start earning points
                 </Title>
                 <ConnectTwitterModal />
               </>
