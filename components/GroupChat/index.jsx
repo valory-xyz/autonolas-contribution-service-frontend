@@ -2,6 +2,7 @@ import React, {
   Fragment, useEffect, useState, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Moment from 'react-moment';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import {
@@ -13,7 +14,7 @@ import { notifyError } from 'common-util/functions';
 import DisplayName from 'common-util/DisplayName';
 import { CENTAUR_BOT_ADDRESS } from 'util/constants';
 import { GroupChatContainer, StyledGroupChat } from './styles';
-import { useCentaursFunctionalities } from '../hooks';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { TextArea } = Input;
 const { Text } = Typography;
