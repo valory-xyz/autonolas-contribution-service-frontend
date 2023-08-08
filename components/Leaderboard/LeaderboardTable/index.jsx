@@ -6,7 +6,7 @@ import {
 } from 'antd/lib';
 import { setLeaderboard } from 'store/setup/actions';
 import { getLeaderboardList } from 'common-util/api';
-import { EducationTitle } from 'components/Home/MintNft/Education';
+import { EducationTitle } from 'components/Leaderboard/MintNft/Education';
 import Link from 'next/link';
 import { getName, getTier } from 'common-util/functions';
 import { COLOR } from '@autonolas/frontend-library';

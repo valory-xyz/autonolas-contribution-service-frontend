@@ -11,8 +11,8 @@ import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 
-import { DiscordLink } from '../Home/common';
-import { getAutonolasTokenUri } from '../Home/MintNft/utils';
+import { DiscordLink } from '../Leaderboard/common';
+import { getAutonolasTokenUri } from '../Leaderboard/MintNft/utils';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { BadgeCard, IMAGE_SIZE } from './styles';
 

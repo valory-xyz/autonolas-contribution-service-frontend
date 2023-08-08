@@ -9,9 +9,9 @@ import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { CustomAlert } from './styles';
 
 const { Title } = Typography;
-const Leaderboard = dynamic(() => import('./Leaderboard'));
+const LeaderboardTable = dynamic(() => import('./LeaderboardTable'));
 
-const Home = () => {
+const Leaderboard = () => {
   const isVerified = useSelector((state) => state?.setup?.isVerified);
 
   const onClose = () => {
@@ -40,7 +40,7 @@ const Home = () => {
 
       <Row gutter={[96, 8]} style={{ marginTop: 12 }}>
         <Col xs={24} lg={14}>
-          <Leaderboard />
+          <LeaderboardTable />
         </Col>
         <Col xs={24} lg={10}>
           <div className="mb-48">
@@ -53,4 +53,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Leaderboard;

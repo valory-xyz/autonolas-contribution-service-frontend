@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Typography, notification, Menu, Layout,
+  notification, Menu, Layout,
 } from 'antd/lib';
 import { useRouter } from 'next/router';
 import { cloneDeep } from 'lodash';
