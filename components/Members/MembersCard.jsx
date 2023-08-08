@@ -1,4 +1,3 @@
-import { UserAddOutlined } from '@ant-design/icons';
 import {
   Card, Statistic,
 } from 'antd/lib';
