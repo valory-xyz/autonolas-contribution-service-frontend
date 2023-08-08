@@ -1,3 +1,3 @@
-import Home from 'components/Home';
+import Leaderboard from 'components/Leaderboard';
 
-export default Home;
+export default Leaderboard;

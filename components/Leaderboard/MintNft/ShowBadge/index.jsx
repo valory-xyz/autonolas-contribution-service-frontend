@@ -1,5 +1,5 @@
-import { IMAGE_SIZE } from 'components/Home/MintNft/styles';
-import { getAutonolasTokenUri } from 'components/Home/MintNft/utils';
+import { IMAGE_SIZE } from 'components/Leaderboard/MintNft/styles';
+import { getAutonolasTokenUri } from 'components/Leaderboard/MintNft/utils';
 import {
   Image, Typography,
 } from 'antd/lib';
