@@ -4,6 +4,7 @@ import {
 import { getTier } from 'common-util/functions';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const { Text } = Typography;
 
@@ -50,6 +51,22 @@ const ProfileCard = ({ data, isLoading }) => {
       </Card>
     </>
   );
+};
+
+ProfileCard.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      wallet_address: PropTypes.string.isRequired,
+      rank: PropTypes.number,
+      points: PropTypes.number,
+    }),
+  ).isRequired,
+  isLoading: PropTypes.bool,
+};
+
+// Adding default props (optional)
+ProfileCard.defaultProps = {
+  isLoading: false,
 };
 
 export default ProfileCard;

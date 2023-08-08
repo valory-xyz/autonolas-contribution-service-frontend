@@ -1,10 +1,7 @@
 import { Card, Table } from 'antd/lib';
-import { getLeaderboardList } from 'common-util/api';
 import { getName } from 'common-util/functions';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLeaderboard } from 'store/setup/actions';
+import PropTypes from 'prop-types';
 
 const LeaderboardCard = ({ data, isLoading }) => {
   const limitedLeaderboardList = data.slice(0, 5);
@@ -36,4 +33,19 @@ const LeaderboardCard = ({ data, isLoading }) => {
   );
 };
 
+LeaderboardCard.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      wallet_address: PropTypes.string.isRequired,
+      rank: PropTypes.number,
+      points: PropTypes.number,
+    }),
+  ).isRequired,
+  isLoading: PropTypes.bool,
+};
+
+// Adding default props (optional)
+LeaderboardCard.defaultProps = {
+  isLoading: false,
+};
 export default LeaderboardCard;

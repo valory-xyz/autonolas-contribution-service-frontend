@@ -1,10 +1,8 @@
 import {
-  Card, Statistic, Typography,
+  Card, Statistic,
 } from 'antd/lib';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import Link from 'next/link';
-
-const { Text } = Typography;
 
 const MembersCard = () => {
   const { membersList } = useCentaursFunctionalities();

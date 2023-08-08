@@ -18,11 +18,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fn = async () => {
+      setIsLoading(true);
       try {
         const response = await getLeaderboardList();
         dispatch(setLeaderboard(response));
       } catch (error) {
         window.console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fn();
