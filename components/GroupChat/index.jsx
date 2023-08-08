@@ -107,7 +107,7 @@ const GroupChat = ({ displayName, chatEnabled }) => {
   const messageStream = buildMessageStream(currentMemoryDetails);
 
   return (
-    <GroupChatContainer>
+    <GroupChatContainer title="Members Chat">
       {messageStream.length ? (
         <div ref={messageWindowRef} className="group-chat-container">
           {isAddressPresent ? (

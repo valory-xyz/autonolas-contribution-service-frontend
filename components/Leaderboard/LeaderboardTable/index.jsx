@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Typography, Table,
+  Typography, Table, Card,
 } from 'antd/lib';
 import { setLeaderboard } from 'store/setup/actions';
 import { getLeaderboardList } from 'common-util/api';
@@ -144,17 +144,16 @@ const Leaderboard = () => {
           educationItemSlug="leaderboard"
         />
 
-        <div className="leaderboard-table">
+        <Card bodyStyle={{ padding: 0 }}>
           <Table
             columns={columns}
             dataSource={data}
             loading={isLoading}
-            bordered
             pagination={false}
             className="mb-12"
             rowKey="rowKeyUi"
           />
-        </div>
+        </Card>
       </LeaderboardContent>
     </>
   );
