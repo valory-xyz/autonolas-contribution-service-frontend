@@ -64,7 +64,6 @@ ProfileCard.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-// Adding default props (optional)
 ProfileCard.defaultProps = {
   isLoading: false,
 };

@@ -44,7 +44,6 @@ LeaderboardCard.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-// Adding default props (optional)
 LeaderboardCard.defaultProps = {
   isLoading: false,
 };
