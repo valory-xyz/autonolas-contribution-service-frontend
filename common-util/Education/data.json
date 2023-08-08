@@ -25,7 +25,7 @@
   },
   {
     "id": "3d8f9590-9035-4a99-bbcf-c34896631db2",
-    "component": "social-poster",
+    "component": "propose-a-tweet",
     "text": "Manual and automated tools to create social posts on Twitter and Orbis.",
     "docsLink": "#social-poster"
   },

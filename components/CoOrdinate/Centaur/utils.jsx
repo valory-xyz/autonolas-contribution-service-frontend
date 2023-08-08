@@ -2,45 +2,46 @@ import { lowerCase } from 'lodash';
 
 export const menuItems = [
   {
-    label: 'Home',
-    key: 'home',
-  },
-  {
-    label: 'Proposals',
-    key: 'proposals',
-  },
-  {
-    label: 'Plugins',
-    key: 'plugins',
+    label: 'Community Twitter',
+    key: 'community-twitter',
     children: [
+
       {
-        label: 'Chatbot',
-        key: 'chatbot',
-      },
-      {
-        label: 'Social Poster',
+        label: 'Propose a Tweet',
         key: 'social-poster',
       },
+      {
+        label: 'Tweet Proposals',
+        key: 'proposals',
+      },
     ],
+  },
+  {
+    label: 'Chatbot',
+    key: 'chatbot',
   },
   {
     label: 'Memory',
     key: 'memory',
   },
   {
-    label: 'Settings',
-    key: 'settings',
-    children: [
-      {
-        label: 'Members',
-        key: 'members',
-      },
-      {
-        label: 'Plugins',
-        key: 'plugins',
-      },
-    ],
+    label: 'Members',
+    key: 'members',
   },
+  {
+    label: 'Group Chat',
+    key: 'home',
+  },
+  // {
+  //   label: 'Settings',
+  //   key: 'settings',
+  //   children: [
+  //     {
+  //       label: 'Plugins',
+  //       key: 'plugins',
+  //     },
+  //   ],
+  // },
 ];
 
 /**

@@ -17,9 +17,8 @@ import Proposals from './Proposals';
 import { SocialPoster } from './SocialPoster';
 import { menuItems } from './utils';
 import { useCentaursFunctionalities } from './hooks';
-import { MainTitle, InnerLayoutContainer } from './styles';
+import { InnerLayoutContainer } from './styles';
 
-const { Title, Text } = Typography;
 const { Sider } = Layout;
 
 const Centaur = () => {
@@ -34,10 +33,10 @@ const Centaur = () => {
 
   const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
   const hash = getHash(router);
-  const [currentTab, setCurrentTab] = useState('home');
+  const [currentTab, setCurrentTab] = useState('propose-a-tweet');
 
   useEffect(() => {
-    setCurrentTab(hash || 'home');
+    setCurrentTab(hash || 'propose-a-tweet');
   }, []);
 
   const membersOfCurrentCentaur = currentMemoryDetails?.members || [];
@@ -86,22 +85,13 @@ const Centaur = () => {
 
   return (
     <>
-      <MainTitle className="py-12 border-bottom">
-        <Title level={4} className="mb-0 mr-12 pl-24">
-          {currentMemoryDetails.name}
-        </Title>
-        <Text type="secondary">
-          {` · ${currentMemoryDetails?.members?.length || 0} members`}
-        </Text>
-      </MainTitle>
-
       <Layout>
         <Sider width={250} className="border-right">
           <Menu
             items={menuItems}
             mode="inline"
             selectedKeys={[currentTab]}
-            defaultOpenKeys={['home', 'plugins']}
+            defaultOpenKeys={['community-twitter']}
             onClick={(e) => {
               setCurrentTab(e.key);
               router.push(`/coordinate/${centaurId}#${e.key}`);

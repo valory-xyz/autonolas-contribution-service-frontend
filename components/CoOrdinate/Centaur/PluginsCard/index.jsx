@@ -46,7 +46,7 @@ const PluginsCard = ({ currentCentaur }) => (
                 <>
                   <Text type="secondary">{plugin.description}</Text>
                   <br />
-                  {plugin.title === 'Social Poster' && currentCentaur && (
+                  {plugin.title === 'Propose a Tweet' && currentCentaur && (
                     <>
                       <br />
                       Enable daily posts:

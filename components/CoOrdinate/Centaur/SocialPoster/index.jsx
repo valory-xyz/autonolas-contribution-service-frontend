@@ -77,7 +77,7 @@ export const SocialPoster = ({ isAddressPresent }) => {
   return (
     <SocialPosterContainer>
       <div className="mb-12">
-        <EducationTitle title="Social Poster" educationItem="social-poster" />
+        <EducationTitle title="Propose a Tweet" educationItem="propose-a-tweet" />
       </div>
 
       <div className="mb-8">
