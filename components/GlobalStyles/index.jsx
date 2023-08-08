@@ -9,10 +9,6 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  .nextjs-portal {
-    display: none;
-  }
-
   /* common */
   .p-0 {
     padding: 0 !important;
