@@ -36,12 +36,12 @@ const buildMessageStream = (currentMemoryDetails) => {
   return messagesAndActions;
 };
 
-const GroupChat = ({ displayName, chatEnabled, isAddressPresent }) => {
+const GroupChat = ({ displayName, chatEnabled }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
-  const { currentMemoryDetails } = useCentaursFunctionalities();
+  const { currentMemoryDetails, isAddressPresent } = useCentaursFunctionalities();
   const [isSending, setIsSending] = useState(false);
 
   const centaurId = router?.query?.id;
@@ -140,9 +140,7 @@ const GroupChat = ({ displayName, chatEnabled, isAddressPresent }) => {
               </Fragment>
             ))
           ) : (
-            <Card>
-              To see messages, go to Members and join this centaur
-            </Card>
+            <Card>To see messages, first join Contribute</Card>
           )}
         </div>
       ) : (
@@ -183,7 +181,6 @@ const GroupChat = ({ displayName, chatEnabled, isAddressPresent }) => {
 GroupChat.propTypes = {
   displayName: PropTypes.string,
   chatEnabled: PropTypes.bool,
-  isAddressPresent: PropTypes.bool.isRequired,
 };
 
 GroupChat.defaultProps = {

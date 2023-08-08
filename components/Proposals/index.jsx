@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
 import { Alert, List } from 'antd/lib';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposal from './Proposal';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
-const Proposals = ({ isAddressPresent }) => {
-  const { currentMemoryDetails } = useCentaursFunctionalities();
+const Proposals = () => {
+  const { currentMemoryDetails, isAddressPresent } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
 
   return (
@@ -30,11 +29,5 @@ const Proposals = ({ isAddressPresent }) => {
     </>
   );
 };
-
-Proposals.propTypes = {
-  isAddressPresent: PropTypes.bool.isRequired,
-};
-
-Proposals.defaultProps = {};
 
 export default Proposals;
