@@ -72,6 +72,7 @@ export const useCentaursFunctionalities = () => {
    * checks if an address is present in the members list
    */
   const membersList = currentMemoryDetails?.members || [];
+  console.log('membersList', membersList);
   const isAddressPresent = (address) => membersList?.some((member) => {
     const isEqual = areAddressesEqual(member.address, address);
     return isEqual;
