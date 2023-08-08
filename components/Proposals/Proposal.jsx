@@ -10,7 +10,7 @@ import DisplayName from 'common-util/DisplayName';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { cloneDeep, set } from 'lodash';
-import { useCentaursFunctionalities } from '../hooks';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { Title, Text } = Typography;
 

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { uuid } from 'uuidv4';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposals from 'components/CoOrdinate/Centaur/Proposals';
+import Proposals from 'components/Proposals';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
