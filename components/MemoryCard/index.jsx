@@ -298,10 +298,6 @@ const MemoryCard = () => {
 };
 
 MemoryCard.propTypes = {
-  memoryDetailsList: PropTypes.arrayOf(PropTypes.string).isRequired,
-  fetchedUpdatedMemory: PropTypes.func.isRequired,
-  centaurId: PropTypes.string.isRequired,
-  isAddressPresent: PropTypes.bool.isRequired,
   currentMemoryDetails: PropTypes.shape({
     memory: PropTypes.arrayOf(PropTypes.string),
     members: PropTypes.arrayOf(PropTypes.string),

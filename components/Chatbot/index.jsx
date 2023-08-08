@@ -8,7 +8,6 @@ import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import MemoryCard from 'components/MemoryCard';
-import { isAddress } from 'viem';
 import { EducationTitle } from '../../common-util/Education/EducationTitle';
 import Thinking from './Thinking';
 import { ApiKeyModal } from './ApiKeyModal';

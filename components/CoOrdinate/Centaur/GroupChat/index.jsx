@@ -2,6 +2,7 @@ import React, {
   Fragment, useEffect, useState, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Moment from 'react-moment';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import {
