@@ -16,10 +16,16 @@ const LeaderboardCard = ({ data, isLoading }) => {
           {getName(record)}
         </Link>
       ) || '--',
-    }];
+    },
+  ];
 
   return (
-    <Card title="Leaderboard – Top 5" bodyStyle={{ padding: 0 }} extra={<Link href="/leaderboard">See all &rarr;</Link>} actions={[<Link href="/leaderboard">Start earning points</Link>]}>
+    <Card
+      title="Leaderboard – Top 5"
+      bodyStyle={{ padding: 0 }}
+      extra={<Link href="/leaderboard">See all &rarr;</Link>}
+      actions={[<Link href="/leaderboard">Start earning points</Link>]}
+    >
       <Table
         columns={columns}
         size="small"

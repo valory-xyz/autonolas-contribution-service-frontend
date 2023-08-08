@@ -72,7 +72,7 @@ export const CustomAlert = styled(Alert)`
   background: linear-gradient(
     339.03deg,
     rgba(216, 180, 254, 0.7) -8.56%,
-    rgba(255, 255, 255, 0) 43.4%
+    rgba(255, 255, 255, 1) 43.4%
   );
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 `;

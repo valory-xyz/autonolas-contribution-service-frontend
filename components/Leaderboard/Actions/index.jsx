@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Typography } from 'antd/lib';
+import { Card, List, Typography } from 'antd/lib';
 import { EducationTitle } from 'components/Leaderboard/MintNft/Education';
 import data from './data.json';
 
@@ -17,27 +17,29 @@ const Actions = () => (
         for ideas
       </Text>
     </div>
-    <List
-      bordered
-      itemLayout="horizontal"
-      dataSource={data}
-      renderItem={(item) => (
-        <List.Item>
-          <List.Item.Meta
-            title={item.name}
-            description={(
-              <Paragraph type="secondary" ellipsis={{ rows: 1, expandable: true, symbol: 'more' }} className="mb-0">
-                {item.description}
-              </Paragraph>
+    <Card bodyStyle={{ padding: 0 }}>
+      <List
+        itemLayout="horizontal"
+        bordered
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta
+              title={item.name}
+              description={(
+                <Paragraph type="secondary" ellipsis={{ rows: 1, expandable: true, symbol: 'more' }} className="mb-0">
+                  {item.description}
+                </Paragraph>
               )}
-            className="mr-48"
-          />
-          <div>
-            {`Points: ${item.points}`}
-          </div>
-        </List.Item>
-      )}
-    />
+              className="mr-48"
+            />
+            <div>
+              {`Points: ${item.points}`}
+            </div>
+          </List.Item>
+        )}
+      />
+    </Card>
   </>
 );
 

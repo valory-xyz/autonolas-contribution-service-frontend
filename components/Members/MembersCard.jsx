@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 const MembersCard = () => {
   const { membersList } = useCentaursFunctionalities();
-  console.log('membersList', membersList);
 
   return (
     <>
@@ -18,7 +17,9 @@ const MembersCard = () => {
         actions={
           [
             <Link href="/members">Join</Link>,
-            <Link href="/members">Invite</Link>,
+            <Link href="/members">
+              Invite
+            </Link>,
             <Link href="/members">Chat</Link>,
           ]
         }

@@ -1,6 +1,7 @@
+import { Card } from 'antd/lib';
 import styled from 'styled-components';
 
-export const GroupChatContainer = styled.div`
+export const GroupChatContainer = styled(Card)`
   position: relative;
   height: 100%;
   .group-chat-container {

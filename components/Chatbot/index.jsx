@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
-  Input, Button, List, Space, Drawer,
+  Input, Button, List, Space, Drawer, Card, Row, Col,
 } from 'antd/lib';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
@@ -104,77 +104,86 @@ const Chatbot = ({ name, memory }) => {
   };
 
   return (
-    <>
-      <EducationTitle title="Chatbot" educationItem="chatbot" />
-      <Space direction="vertical" className="chatbot-body-container">
-        <List
-          locale={{
-            emptyText: `Send your first message${name ? ` to ${name}` : ''}!`,
-          }}
-          dataSource={messages
-            .filter((e) => e.role !== 'system')
-            .map((e) => {
-              // change the user text to "You"
-              if (e.role === 'user') {
-                return { ...e, role: 'You' };
-              }
-              if (e.role === 'assistant') {
-                return { ...e, role: 'Bot' };
-              }
-              return e;
-            })}
-          renderItem={(item) => (
-            <List.Item className={item.role === 'You' ? 'bot-chat' : ''}>
-              <List.Item.Meta
-                title={item.role}
-                description={<ReactMarkdown>{item.content}</ReactMarkdown>}
-              />
-            </List.Item>
-          )}
-        />
-        {loading && <Thinking />}
-        <Input
-          placeholder="Enter message"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onPressEnter={handleSendMessage}
-        />
+    <Row>
+      <Col xs={24} md={12}>
+        <Card
+          title={<EducationTitle title="Chatbot" educationItem="chatbot" />}
+          extra={
+            <Button onClick={() => setDrawerOpen(true)}>Edit memory</Button>
+          }
+        >
+          <Space direction="vertical" className="chatbot-body-container">
+            <List
+              locale={{
+                emptyText: `Send your first message${
+                  name ? ` to ${name}` : ''
+                }!`,
+              }}
+              dataSource={messages
+                .filter((e) => e.role !== 'system')
+                .map((e) => {
+                  // change the user text to "You"
+                  if (e.role === 'user') {
+                    return { ...e, role: 'You' };
+                  }
+                  if (e.role === 'assistant') {
+                    return { ...e, role: 'Bot' };
+                  }
+                  return e;
+                })}
+              renderItem={(item) => (
+                <List.Item className={item.role === 'You' ? 'bot-chat' : ''}>
+                  <List.Item.Meta
+                    title={item.role}
+                    description={<ReactMarkdown>{item.content}</ReactMarkdown>}
+                  />
+                </List.Item>
+              )}
+            />
+            {loading && <Thinking />}
+            <Input
+              placeholder="Enter message"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onPressEnter={handleSendMessage}
+            />
 
-        <Space>
-          <Button
-            type="primary"
-            icon={<SendOutlined />}
-            onClick={handleSendMessage}
-            disabled={isSendButtonDisabled}
-          >
-            Send
-          </Button>
-          <Button
-            type="dashed"
-            icon={<SettingOutlined />}
-            onClick={() => apiKeyModalRef.current?.handleOpen()}
-          >
-            Set API Key
-          </Button>
-          <Button
-            type="dashed"
-            onClick={() => setDrawerOpen(true)}
-          >
-            Edit memory
-          </Button>
-        </Space>
+            <Space>
+              <Button
+                type="primary"
+                icon={<SendOutlined />}
+                onClick={handleSendMessage}
+                disabled={isSendButtonDisabled}
+              >
+                Send
+              </Button>
+              <Button
+                type="dashed"
+                icon={<SettingOutlined />}
+                onClick={() => apiKeyModalRef.current?.handleOpen()}
+              >
+                Set API Key
+              </Button>
+            </Space>
 
-        <ApiKeyModal
-          ref={apiKeyModalRef}
-          apiKey={apiKey}
-          onChange={handleApiKeyChange}
-          onSave={handleSaveApiKey}
-        />
-      </Space>
-      <Drawer placement="right" onClose={() => setDrawerOpen(false)} open={drawerOpen} size="large">
-        <MemoryCard />
-      </Drawer>
-    </>
+            <ApiKeyModal
+              ref={apiKeyModalRef}
+              apiKey={apiKey}
+              onChange={handleApiKeyChange}
+              onSave={handleSaveApiKey}
+            />
+          </Space>
+          <Drawer
+            placement="right"
+            onClose={() => setDrawerOpen(false)}
+            open={drawerOpen}
+            size="large"
+          >
+            <MemoryCard />
+          </Drawer>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 
