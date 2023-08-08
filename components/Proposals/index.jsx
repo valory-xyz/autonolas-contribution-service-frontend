@@ -3,7 +3,7 @@ import { Alert, List } from 'antd/lib';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposal from './Proposal';
-import { useCentaursFunctionalities } from '../hooks';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const Proposals = ({ isAddressPresent }) => {
   const { currentMemoryDetails } = useCentaursFunctionalities();

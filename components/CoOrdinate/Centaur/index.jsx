@@ -13,8 +13,6 @@ import GroupChat from './GroupChat';
 import { Chat } from './Chat';
 import MemoryCard from './MemoryCard';
 import PluginsCard from './PluginsCard';
-import Proposals from './Proposals';
-import { SocialPoster } from './SocialPoster';
 import { menuItems } from './utils';
 import { useCentaursFunctionalities } from './hooks';
 import { InnerLayoutContainer } from './styles';
@@ -109,23 +107,11 @@ const Centaur = () => {
               />
             )}
 
-            {currentTab === 'proposals' && (
-              <Proposals
-                centaur={currentMemoryDetails}
-                isAddressPresent={isAddressPresent}
-                fetchedUpdatedMemory={fetchedUpdatedMemory}
-              />
-            )}
-
             {currentTab === 'chatbot' && (
               <Chat
                 name={currentMemoryDetails.name}
                 memory={currentMemoryDetails.memory}
               />
-            )}
-
-            {currentTab === 'social-poster' && (
-              <SocialPoster isAddressPresent={isAddressPresent} />
             )}
 
             {currentTab === 'members' && (
