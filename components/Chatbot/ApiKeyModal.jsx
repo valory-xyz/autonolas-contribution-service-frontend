@@ -1,6 +1,8 @@
 import React, { useState, useImperativeHandle } from 'react';
-import { Input, Modal } from 'antd/lib';
+import { Input, Modal, Typography } from 'antd/lib';
 import PropTypes from 'prop-types';
+
+const { Text } = Typography;
 
 export const ApiKeyModal = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -36,7 +38,12 @@ export const ApiKeyModal = React.forwardRef((props, ref) => {
         placeholder="Enter your OpenAI API Key"
         value={props.apiKey}
         onChange={props.onChange}
+        className="mb-8"
       />
+      <Text type="secondary">
+        <a href="https://platform.openai.com/signup" rel="noopener noreferrer" target="_blank">Get your API key</a>
+        . Note you must have a payment card on file.
+      </Text>
     </Modal>
   );
 });

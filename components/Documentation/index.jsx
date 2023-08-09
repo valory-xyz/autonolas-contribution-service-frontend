@@ -9,6 +9,11 @@ import HowItWorks from './content/5_HowItWorks';
 import { DOC_NAV, NavWrapper } from './helpers';
 import { Container, DocSection } from './styles';
 import ActionsDocs from './content/2_Actions';
+import Members from './content/Members';
+import Chatbot from './content/Chatbot';
+import Memory from './content/Memory';
+import Tweet from './content/Tweet';
+import Proposals from './content/Proposals';
 
 const { Title } = Typography;
 const { Link } = Anchor;
@@ -54,9 +59,14 @@ const Documentation = () => {
 
         <div className="reading-section">
           <Overview />
+          <Leaderboard />
           <ActionsDocs />
           <Badge />
-          <Leaderboard />
+          <Members />
+          <Chatbot />
+          <Memory />
+          <Tweet />
+          <Proposals />
           <HowItWorks />
         </div>
       </DocSection>

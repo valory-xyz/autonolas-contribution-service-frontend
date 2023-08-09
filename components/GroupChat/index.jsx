@@ -88,7 +88,7 @@ const GroupChat = ({ chatEnabled }) => {
   const getAlignmentClass = (msg) => (displayName === msg.member ? 'my-message' : '');
 
   return (
-    <GroupChatContainer title="Members Chat" bodyStyle={{ paddingTop: 0 }}>
+    <GroupChatContainer title="Chat" bodyStyle={{ paddingTop: 0 }}>
       {currentMemoryDetails?.messages?.length ? (
         <div ref={messageWindowRef} className="group-chat-container">
           {isAddressPresent ? (

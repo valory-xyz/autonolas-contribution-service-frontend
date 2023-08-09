@@ -6,13 +6,13 @@ import { useRouter } from 'next/router';
 import {
   Table, Typography, Button, notification, Card,
 } from 'antd/lib';
-import { UserAddOutlined } from '@ant-design/icons';
+import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { fetchVeolasBalance } from './requests';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export const MembersList = ({ addNewMember }) => {
   const router = useRouter();
@@ -76,7 +76,6 @@ export const MembersList = ({ addNewMember }) => {
     //   align: 'right',
     // },
     {
-      title: 'Actions',
       dataIndex: 'actions',
       width: 100,
       render: (_text, record) => {
@@ -103,7 +102,9 @@ export const MembersList = ({ addNewMember }) => {
                   });
                 }}
               >
-                Chat
+                <MessageOutlined />
+                {' '}
+                Message
               </Button>
             )}
           </>
@@ -117,7 +118,6 @@ export const MembersList = ({ addNewMember }) => {
 
   return (
     <Card
-      title={<Title level={4}>Members</Title>}
       bodyStyle={{ padding: 10 }}
       extra={[
         !isMemberPresent && (
