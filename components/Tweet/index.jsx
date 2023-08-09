@@ -18,13 +18,14 @@ const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-const Tweet = ({ isAddressPresent }) => {
+const Tweet = () => {
   const account = useSelector((state) => state?.setup?.account);
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
     updateMemoryWithNewCentaur,
     triggerAction,
+    isAddressPresent,
   } = useCentaursFunctionalities();
 
   const [tweet, setTweet] = useState('');

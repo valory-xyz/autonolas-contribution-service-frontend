@@ -12,7 +12,7 @@ import { setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { notifyError } from 'common-util/functions';
 import DisplayName from 'common-util/DisplayName';
-import { CENTAUR_BOT_ADDRESS } from 'util/constants';
+import { CENTAUR_BOT_ADDRESS, DEFAULT_COORDINATE_ID } from 'util/constants';
 import { GroupChatContainer, StyledGroupChat } from './styles';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
@@ -36,15 +36,16 @@ const buildMessageStream = (currentMemoryDetails) => {
   return messagesAndActions;
 };
 
-const GroupChat = ({ displayName, chatEnabled }) => {
+const GroupChat = ({ chatEnabled }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
+  const displayName = account;
   const { currentMemoryDetails, isAddressPresent } = useCentaursFunctionalities();
   const [isSending, setIsSending] = useState(false);
 
-  const centaurId = router?.query?.id;
+  const centaurId = DEFAULT_COORDINATE_ID;
   const [form] = Form.useForm();
 
   const memoryDetailsList = useSelector(
@@ -64,6 +65,8 @@ const GroupChat = ({ displayName, chatEnabled }) => {
         newMessage,
       ];
 
+      console.log('updatedMessages', updatedMessages);
+
       const updatedMemoryDetails = memoryDetailsList.map((centaur) => {
         if (centaur.id === centaurId) {
           return { ...centaur, messages: updatedMessages };
@@ -71,9 +74,13 @@ const GroupChat = ({ displayName, chatEnabled }) => {
         return centaur;
       });
 
+      console.log('updatedMemoryDetails', updatedMemoryDetails);
+
       await updateMemoryDetails(updatedMemoryDetails);
 
       const { response } = await getMemoryDetails();
+
+      console.log('response', response);
       dispatch(setMemoryDetails(response));
     } catch (error) {
       notifyError('Error updating messages');
@@ -104,14 +111,14 @@ const GroupChat = ({ displayName, chatEnabled }) => {
 
   const getAlignmentClass = (msg) => (displayName === msg.member ? 'my-message' : '');
 
-  const messageStream = buildMessageStream(currentMemoryDetails);
+  console.log('currentMemoryDetails', currentMemoryDetails);
 
   return (
-    <GroupChatContainer title="Members Chat">
-      {messageStream.length ? (
+    <GroupChatContainer title="Members Chat" bodyStyle={{ paddingTop: 0 }}>
+      {currentMemoryDetails?.messages?.length ? (
         <div ref={messageWindowRef} className="group-chat-container">
           {isAddressPresent ? (
-            messageStream.map((msg) => (
+            currentMemoryDetails.messages.map((msg) => (
               <Fragment key={`${msg.sender}-${msg.timestamp}`}>
                 <div className={`${getAlignmentClass(msg)} mb-24`}>
                   {msg.member === account ? (
@@ -179,12 +186,10 @@ const GroupChat = ({ displayName, chatEnabled }) => {
 };
 
 GroupChat.propTypes = {
-  displayName: PropTypes.string,
   chatEnabled: PropTypes.bool,
 };
 
 GroupChat.defaultProps = {
-  displayName: '',
   chatEnabled: false,
 };
 

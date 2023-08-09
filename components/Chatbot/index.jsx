@@ -8,19 +8,23 @@ import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import MemoryCard from 'components/MemoryCard';
+import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { EducationTitle } from '../../common-util/Education/EducationTitle';
 import Thinking from './Thinking';
 import { ApiKeyModal } from './ApiKeyModal';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-const Chatbot = ({ name, memory }) => {
+const Chatbot = ({ name }) => {
   const [apiKey, setApiKey] = useState('');
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const apiKeyModalRef = useRef(null);
+  const { currentMemoryDetails } = useCentaursFunctionalities();
+
+  const { memory } = currentMemoryDetails;
 
   const isSendButtonDisabled = (memory || []).length === 0;
 
@@ -113,6 +117,31 @@ const Chatbot = ({ name, memory }) => {
           }
         >
           <Space direction="vertical" className="chatbot-body-container">
+            <Input
+              placeholder="Enter message"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onPressEnter={handleSendMessage}
+            />
+
+            <Space>
+              <Button
+                type="primary"
+                icon={<SendOutlined />}
+                onClick={handleSendMessage}
+                disabled={isSendButtonDisabled}
+                loading={loading}
+              >
+                Send
+              </Button>
+              <Button
+                type="dashed"
+                icon={<SettingOutlined />}
+                onClick={() => apiKeyModalRef.current?.handleOpen()}
+              >
+                Set API Key
+              </Button>
+            </Space>
             <List
               locale={{
                 emptyText: `Send your first message${
@@ -121,6 +150,7 @@ const Chatbot = ({ name, memory }) => {
               }}
               dataSource={messages
                 .filter((e) => e.role !== 'system')
+                .reverse()
                 .map((e) => {
                   // change the user text to "You"
                   if (e.role === 'user') {
@@ -135,36 +165,15 @@ const Chatbot = ({ name, memory }) => {
                 <List.Item className={item.role === 'You' ? 'bot-chat' : ''}>
                   <List.Item.Meta
                     title={item.role}
-                    description={<ReactMarkdown>{item.content}</ReactMarkdown>}
+                    description={(
+                      <ReactMarkdown>
+                        {item.content}
+                      </ReactMarkdown>
+)}
                   />
                 </List.Item>
               )}
             />
-            {loading && <Thinking />}
-            <Input
-              placeholder="Enter message"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onPressEnter={handleSendMessage}
-            />
-
-            <Space>
-              <Button
-                type="primary"
-                icon={<SendOutlined />}
-                onClick={handleSendMessage}
-                disabled={isSendButtonDisabled}
-              >
-                Send
-              </Button>
-              <Button
-                type="dashed"
-                icon={<SettingOutlined />}
-                onClick={() => apiKeyModalRef.current?.handleOpen()}
-              >
-                Set API Key
-              </Button>
-            </Space>
 
             <ApiKeyModal
               ref={apiKeyModalRef}
@@ -188,12 +197,10 @@ const Chatbot = ({ name, memory }) => {
 };
 
 Chatbot.propTypes = {
-  memory: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string,
 };
 
 Chatbot.defaultProps = {
-  memory: [],
   name: null,
 };
 

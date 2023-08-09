@@ -8,7 +8,7 @@ const Members = () => (
       <MembersList />
     </Col>
     <Col xs={24} md={24} lg={12} xl={12}>
-      <GroupChat />
+      <GroupChat chatEnabled />
     </Col>
   </Row>
 );
