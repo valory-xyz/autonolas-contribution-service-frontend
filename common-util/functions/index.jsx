@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { toLower, isNil } from 'lodash';
+import { toLower, isNil, lowerCase } from 'lodash';
 import { notification } from 'antd/lib';
 import data from 'common-util/Education/data.json';
 
@@ -53,11 +53,26 @@ export const isDevOrStaging = process.env.NODE_ENV === 'development'
 
 /**
  *
- * @param {BigNumebr} value value to be converted to Eth
+ * @param {BigNumber} value value to be converted to Eth
  * @param {Number} dv Default value to be returned
  * @returns {String} with 2 decimal places
  */
 export const formatToEth = (value, dv = 0) => {
   if (isNil(value)) return dv || 0;
   return (+ethers.utils.formatEther(value)).toFixed(2);
+};
+
+/**
+ * returns error message if user can't add memory message
+ * else returns null. If null, enable the button to add memory
+ */
+export const canAddMemoryMessaage = (list, account) => {
+  if (!account) return 'To add to memory, connect wallet';
+
+  const isPresent = list.some(
+    (item) => lowerCase(item.address) === lowerCase(account),
+  );
+  if (!isPresent) return 'To add to memory, join this centaur';
+
+  return null;
 };

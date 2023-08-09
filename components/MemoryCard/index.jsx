@@ -15,12 +15,11 @@ import { useSelector } from 'react-redux';
 import { updateMemoryDetails } from 'common-util/api';
 import addActionToCentaur from 'util/addActionToCentaur';
 import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
-import { notifyError } from 'common-util/functions';
+import { notifyError, canAddMemoryMessaage } from 'common-util/functions';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
 import { AddToMemory } from './AddToMemory';
-import { canAddMemoryMessaage } from './utils';
 
 const MemoryCard = () => {
   const [editingMemory, setEditingMemory] = useState(null);
