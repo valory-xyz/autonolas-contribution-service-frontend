@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import {
   Button, Input, Typography, notification, Row, Col,
 } from 'antd/lib';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
 
@@ -18,13 +17,14 @@ const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-const Tweet = ({ isAddressPresent }) => {
+const Tweet = () => {
   const account = useSelector((state) => state?.setup?.account);
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
     updateMemoryWithNewCentaur,
     triggerAction,
+    isAddressPresent,
   } = useCentaursFunctionalities();
 
   const [tweet, setTweet] = useState('');
@@ -114,10 +114,6 @@ const Tweet = ({ isAddressPresent }) => {
       </Col>
     </Row>
   );
-};
-
-Tweet.propTypes = {
-  isAddressPresent: PropTypes.bool.isRequired,
 };
 
 export default Tweet;

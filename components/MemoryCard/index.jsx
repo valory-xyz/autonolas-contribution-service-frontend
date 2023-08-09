@@ -180,16 +180,17 @@ const MemoryCard = () => {
         return centaur;
       });
 
-      const commitId = await updateMemoryDetails(updatedMemoryDetails);
+      await updateMemoryDetails(updatedMemoryDetails);
+      // const commitId = await updateMemoryDetails(updatedMemoryDetails);
 
       // Add action to the centaur
-      const action = {
-        actorAddress: account,
-        commitId,
-        description: 'updated a memory',
-        timestamp: Date.now(),
-      };
-      await addActionToCentaur(centaurId, action, memoryDetailsList);
+      // const action = {
+      //   actorAddress: account,
+      //   commitId,
+      //   description: 'updated a memory',
+      //   timestamp: Date.now(),
+      // };
+      // await addActionToCentaur(centaurId, action, memoryDetailsList);
 
       notification.success({ message: 'Memory updated' });
 

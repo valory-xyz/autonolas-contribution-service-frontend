@@ -262,7 +262,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
             onChange={onChange}
           />
         </Col>
-        <Col xs={10}>
+        <Col xs={19}>
           <div>{steps[current]?.content}</div>
         </Col>
       </Row>
