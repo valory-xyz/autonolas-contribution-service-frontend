@@ -1,4 +1,5 @@
 import { Typography } from 'antd/lib';
+import educationItems from 'common-util/Education/data.json';
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
@@ -8,39 +9,34 @@ const Overview = () => (
     <div id={DOCS_SECTIONS.overview}>
       <Title level={2}>Overview</Title>
       <Paragraph>
-        Olas Contribute is a system for coordinating work in the Olas
-        DAO. It is made up of 3 main components:
+        Olas Contribute is a system for coordinating work in Olas DAO. It is
+        made up of several main components:
       </Paragraph>
 
       <Paragraph>
         <ul>
-          <li>
-            <Text strong>Actions</Text>
-            &nbsp;– tasks defined by the DAO. When community members complete
-            tasks they earn points.
-          </li>
-          <li>
-            <Text strong>Badge</Text>
-            &nbsp;– everybody in the community has a profile. Profiles include a
-            badge which dynamically updates when community members complete
-            actions and earn points.
-          </li>
-          <li>
-            <Text strong>Leaderboard</Text>
-            &nbsp;– community members are ranked based on the points they’ve
-            earned by completing actions.
-          </li>
+          {educationItems.map((item) => (
+            <li key={item.id}>
+              <Text strong>
+                {item.component.charAt(0).toUpperCase()
+                  + item.component.slice(1)}
+              </Text>
+              &nbsp;–&nbsp;
+              {item.text}
+            </li>
+          ))}
         </ul>
       </Paragraph>
 
       <Paragraph>
-        Olas Contribute is powered by an autonomous service. This means it
-        is able to automate complex operations in a fully decentralized way, for
+        Olas Contribute is powered by an autonomous service. This means it is
+        able to automate complex operations in a fully decentralized way, for
         example:
         <ul>
           <li>processing actions</li>
           <li>aggregating points</li>
           <li>updating NFT metadata</li>
+          <li>automated evaluation of action using AI</li>
         </ul>
       </Paragraph>
 

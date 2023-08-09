@@ -4,9 +4,14 @@ import { WrapperDiv } from './styles';
 
 export const DOCS_SECTIONS = {
   overview: 'overview',
+  leaderboard: 'leaderboard',
   actions: 'actions',
   badge: 'badge',
-  leaderboard: 'leaderboard',
+  members: 'members',
+  chatbot: 'chatbot',
+  memory: 'memory',
+  tweet: 'tweet',
+  proposals: 'proposals',
   'how-it-works': 'how-it-works',
 };
 
@@ -19,6 +24,10 @@ export const DOC_NAV = [
     title: 'Overview',
   },
   {
+    id: DOCS_SECTIONS.leaderboard,
+    title: 'Leaderboard',
+  },
+  {
     id: DOCS_SECTIONS.actions,
     title: 'Actions',
   },
@@ -27,8 +36,24 @@ export const DOC_NAV = [
     title: 'Badge',
   },
   {
-    id: DOCS_SECTIONS.leaderboard,
-    title: 'Leaderboard',
+    id: DOCS_SECTIONS.members,
+    title: 'Members',
+  },
+  {
+    id: DOCS_SECTIONS.chatbot,
+    title: 'Chatbot',
+  },
+  {
+    id: DOCS_SECTIONS.memory,
+    title: 'Memory',
+  },
+  {
+    id: DOCS_SECTIONS.tweet,
+    title: 'Tweet',
+  },
+  {
+    id: DOCS_SECTIONS.proposals,
+    title: 'Proposals',
   },
   {
     id: DOCS_SECTIONS['how-it-works'],
