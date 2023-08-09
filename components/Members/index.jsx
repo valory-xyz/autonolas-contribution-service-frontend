@@ -9,7 +9,7 @@ const Members = () => (
       <EducationTitle title="Members" educationItem="members" />
     </div>
     <Row gutter={24}>
-      <Col xs={24} md={24} lg={6} xl={6} className="mb-24">
+      <Col xs={24} md={24} lg={12} xl={6} className="mb-24">
         <MembersList />
       </Col>
       <Col xs={24} md={24} lg={12} xl={12}>
