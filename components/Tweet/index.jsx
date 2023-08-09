@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import {
   Button, Input, Typography, notification, Row, Col,
 } from 'antd/lib';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
 
@@ -115,10 +114,6 @@ const Tweet = () => {
       </Col>
     </Row>
   );
-};
-
-Tweet.propTypes = {
-  isAddressPresent: PropTypes.bool.isRequired,
 };
 
 export default Tweet;
