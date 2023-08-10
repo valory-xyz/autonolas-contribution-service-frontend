@@ -23,7 +23,7 @@ const Dashboard = () => {
         const response = await getLeaderboardList();
         dispatch(setLeaderboard(response));
       } catch (error) {
-        window.console.error(error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
