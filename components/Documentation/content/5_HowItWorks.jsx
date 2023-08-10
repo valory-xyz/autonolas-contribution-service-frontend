@@ -5,11 +5,12 @@ const { Title, Paragraph, Text } = Typography;
 
 const HowItWorks = () => (
   <div id={DOCS_SECTIONS['how-it-works']}>
-    <Title level={2}>How It Works</Title>
+    <Title level={2}>How it works</Title>
 
     <Paragraph>
-      Autonolas Contribute is an autonomous service that manages the updating of
-      Autonolas community non-fungible tokens (NFTs).&nbsp;
+      Curious to understand how the leaderboard, actions and badges work
+      technically? Olas Contribute leaderboard is an autonomous service that
+      manages the updating of Olas community non-fungible tokens (NFTs).&nbsp;
       <a
         href="https://www.autonolas.network/education-articles/2"
         target="_blank"

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { toLower, isNil } from 'lodash';
+import { toLower, isNil, lowerCase } from 'lodash';
 import { notification } from 'antd/lib';
 import data from 'common-util/Education/data.json';
 
@@ -7,14 +7,15 @@ export const notifyError = (message = 'Some error occured') => notification.erro
   message,
 });
 
-export const notifySuccess = (message = 'Successfull', description = null) => notification.success({
+export const notifySuccess = (message = 'Successful', description = null) => notification.success({
   message,
   description,
 });
 
 export const isGoerli = (id) => id === 5;
 
-export const getEducationItemByComponent = (slug) => data.filter((item) => slug === item.slug)[0];
+// eslint-disable-next-line max-len
+export const getEducationItemByComponent = (component) => data.filter((item) => component === item.component)[0];
 
 export const areAddressesEqual = (a1, a2) => toLower(a1) === toLower(a2);
 
@@ -22,11 +23,11 @@ export const getTier = (points) => {
   switch (true) {
     case points >= 150000:
       return 'Super Epic';
-    case (points >= 100000 && points < 150000):
+    case points >= 100000 && points < 150000:
       return 'Epic';
-    case (points >= 50000 && points < 100000):
+    case points >= 50000 && points < 100000:
       return 'Legendary';
-    case (points >= 100 && points < 50000):
+    case points >= 100 && points < 50000:
       return 'Basic';
     default:
       return 'Idle';
@@ -34,9 +35,9 @@ export const getTier = (points) => {
 };
 
 export const getName = (profile) => profile.twitter_handle
-|| profile.discord_handle
-|| profile.wallet_address
-|| 'Unknown name';
+  || profile.discord_handle
+  || profile.wallet_address
+  || 'Unknown name';
 
 // TODO: move to autonolas library
 /**
@@ -52,11 +53,26 @@ export const isDevOrStaging = process.env.NODE_ENV === 'development'
 
 /**
  *
- * @param {BigNumebr} value value to be converted to Eth
+ * @param {BigNumber} value value to be converted to Eth
  * @param {Number} dv Default value to be returned
  * @returns {String} with 2 decimal places
  */
 export const formatToEth = (value, dv = 0) => {
   if (isNil(value)) return dv || 0;
   return (+ethers.utils.formatEther(value)).toFixed(2);
+};
+
+/**
+ * returns error message if user can't add memory message
+ * else returns null. If null, enable the button to add memory
+ */
+export const canAddMemoryMessaage = (list, account) => {
+  if (!account) return 'To add to memory, connect wallet';
+
+  const isPresent = list.some(
+    (item) => lowerCase(item.address) === lowerCase(account),
+  );
+  if (!isPresent) return 'To add to memory, join this centaur';
+
+  return null;
 };

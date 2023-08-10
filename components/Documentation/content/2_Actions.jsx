@@ -8,8 +8,8 @@ const ActionsDocs = () => (
     <Title level={2}>Actions</Title>
     <Paragraph>
       Actions are tasks that are designed by the DAO to maximize impact for
-      Autonolas’ success. When community members complete actions, they
-      contribute to the DAO’s progress.
+      Olas&apos; success. When community members complete actions, they
+      contribute to the DAO&apos;s progress.
     </Paragraph>
 
     <Paragraph>

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import { Card } from 'antd/lib';
 
-export const Container = styled.div``;
+export const Container = styled(Card)`
+`;
 
 export const WrapperDiv = styled.div`
   width: 100%;
@@ -64,7 +66,8 @@ export const DocSection = styled.div`
   /* custom nav-anchor */
   .custom-nav-anchor {
     font-size: 18px;
-    padding: 6px 40px 6px 0px;
+    padding: 0 40px 0 0;
+    font-weight: 600;
     padding-left: ${({ isMobile }) => (isMobile ? '16px' : '0')};
     a.ant-anchor-link-title {
       font-size: 18px;

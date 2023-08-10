@@ -9,11 +9,11 @@ const Badge = () => (
   <div id={DOCS_SECTIONS.badge}>
     <Title level={2}>Badge</Title>
     <Paragraph>
-      Community members can mint an Contribute Badge. Badges are a fun visual
+      Community members can mint a Contribute Badge. Badges are a fun visual
       representation of community contributions. Badges are NFTs following the
       ERC-721 standard. They update when community members earn points. This
       happens automatically at regular intervals. The updates are done by a
-      decentralized, off-chain service powered by Autonolas.
+      decentralized, off-chain service powered by Olas.
     </Paragraph>
     <Paragraph>
       If actions change, you do not lose points and your badge does not
@@ -24,11 +24,11 @@ const Badge = () => (
       <ol>
         <li>
           Go to the&nbsp;
-          <Link href="/">homepage</Link>
+          <Link href="/leaderboard">leaderboard page</Link>
           .
         </li>
         <li>
-          Connect a Web3 wallet. The website supports MetaMask and
+          Connect a wallet. The website supports MetaMask and
           WalletConnect-enabled wallets.
         </li>
         <li>Under “Badge”, click “Mint Badge”.</li>

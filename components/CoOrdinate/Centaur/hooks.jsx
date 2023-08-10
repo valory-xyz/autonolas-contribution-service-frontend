@@ -6,6 +6,7 @@ import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { setMemoryDetails } from 'store/setup/actions';
 import addActionToCentaur from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
+import { areAddressesEqual } from 'common-util/functions';
 
 export const useCentaursFunctionalities = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,15 @@ export const useCentaursFunctionalities = () => {
     await fetchedUpdatedMemory(); // Reload the updated data
   };
 
+  /**
+   * checks if an address is present in the members list
+   */
+  const membersList = currentMemoryDetails?.members || [];
+  const isAddressPresent = (address) => membersList?.some((member) => {
+    const isEqual = areAddressesEqual(member.address, address);
+    return isEqual;
+  });
+
   return {
     memoryDetailsList,
     currentMemoryDetails,
@@ -74,5 +84,7 @@ export const useCentaursFunctionalities = () => {
     fetchedUpdatedMemory,
     triggerAction,
     getUpdatedCentaurAfterTweetProposal,
+    isAddressPresent,
+    membersList,
   };
 };

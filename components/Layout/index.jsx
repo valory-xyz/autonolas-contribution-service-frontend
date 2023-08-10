@@ -25,7 +25,11 @@ const { Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const menuItems = [
-  { key: 'coordinate', label: 'Coordinate' },
+  { key: 'leaderboard', label: 'Leaderboard' },
+  // { key: 'coordinate', label: 'Coordinate' },
+  { key: 'tweet', label: 'Tweet' },
+  { key: 'chatbot', label: 'Chatbot' },
+  { key: 'members', label: 'Members' },
   { key: 'docs', label: 'Docs' },
 ];
 
