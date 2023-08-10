@@ -17,9 +17,8 @@ const Overview = () => (
         <ul>
           {educationItems.map((item) => (
             <li key={item.id}>
-              <Text strong>
-                {item.component.charAt(0).toUpperCase()
-                  + item.component.slice(1)}
+              <Text strong style={{ textTransform: 'capitalize' }}>
+                {item.component}
               </Text>
               &nbsp;–&nbsp;
               {item.text}
