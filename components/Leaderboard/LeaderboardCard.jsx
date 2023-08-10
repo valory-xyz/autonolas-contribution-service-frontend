@@ -22,7 +22,7 @@ const LeaderboardCard = ({ data, isLoading }) => {
 
   return (
     <Card
-      title={<EducationTitle title="Leaderboard – Top 5" educationItem="leaderboard" level={4} />}
+      title={<EducationTitle title="Leaderboard – Top 5" educationItem="leaderboard" level={5} />}
       bodyStyle={{ padding: 0 }}
       extra={<Link href="/leaderboard">See all &rarr;</Link>}
       actions={[<Link href="/leaderboard">Start earning points</Link>]}

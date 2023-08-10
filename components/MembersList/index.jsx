@@ -118,6 +118,7 @@ export const MembersList = ({ addNewMember }) => {
 
   return (
     <Card
+      title="List"
       bodyStyle={{ padding: 10 }}
       extra={[
         !isMemberPresent && (

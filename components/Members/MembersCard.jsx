@@ -1,6 +1,7 @@
 import {
   Card, Statistic,
 } from 'antd/lib';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Link from 'next/link';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
@@ -10,7 +11,7 @@ const MembersCard = () => {
   return (
     <>
       <Card
-        title="Members"
+        title={<EducationTitle title="Members" educationItem="members" level={5} />}
         extra={
           <Link href="/members">See all &rarr;</Link>
         }

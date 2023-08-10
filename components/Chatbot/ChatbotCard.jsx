@@ -3,10 +3,11 @@ import {
   Button,
   Card, Col, Row, Typography,
 } from 'antd/lib';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const ChatbotCard = () => (
   <Card>
@@ -15,7 +16,7 @@ const ChatbotCard = () => (
         <Image src="/images/chatbot.png" width={300} height={300} />
       </Col>
       <Col span={14}>
-        <Title level={5}>Olas Chatbot</Title>
+        <EducationTitle title="Olas Chatbot" educationItem="chatbot" level={5} />
         <Text type="secondary" className="text-center">
           AI-powered chatbot for learning about Olas. Member-managed memory.
         </Text>

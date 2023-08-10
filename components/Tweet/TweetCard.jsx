@@ -1,4 +1,5 @@
 import { Card, Statistic } from 'antd/lib';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import Link from 'next/link';
 
@@ -8,7 +9,7 @@ const TweetCard = () => {
 
   return (
     <Card
-      title="Tweet"
+      title={<EducationTitle title="Tweet" educationItem="tweet" level={5} />}
       actions={[
         <Link href="/tweet">Propose a tweet</Link>,
         <Link href="/tweet">Review proposals</Link>,
