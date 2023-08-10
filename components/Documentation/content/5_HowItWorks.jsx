@@ -9,7 +9,7 @@ const HowItWorks = () => (
 
     <Paragraph>
       Curious to understand how the leaderboard, actions and badges work
-      technicall? Olas Contribute leaderboard is an autonomous service that
+      technically? Olas Contribute leaderboard is an autonomous service that
       manages the updating of Olas community non-fungible tokens (NFTs).&nbsp;
       <a
         href="https://www.autonolas.network/education-articles/2"
