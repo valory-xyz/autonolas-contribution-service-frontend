@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, List, Typography } from 'antd/lib';
-import { EducationTitle } from 'components/Leaderboard/MintNft/Education';
+import { EducationTitle } from '../MintNft/Education';
 import data from './data.json';
 
 const { Text, Paragraph } = Typography;
