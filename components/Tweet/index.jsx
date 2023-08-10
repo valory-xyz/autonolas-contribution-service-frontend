@@ -77,12 +77,11 @@ const Tweet = () => {
 
   return (
     <>
-      <EducationTitle title="Tweet" educationItem="tweet" />
       <Row gutter={16}>
         <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
           <SocialPosterContainer>
-            <div className="mb-8">
-              <Text>Propose a tweet</Text>
+            <div className="mb-24">
+              <EducationTitle title="Tweet" educationItem="tweet" />
             </div>
             <Input.TextArea
               value={tweet}

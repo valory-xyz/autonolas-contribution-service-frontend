@@ -6,9 +6,6 @@ const Footer = () => (
   <CommonFooter
     rightContent={(
       <>
-        <br />
-        <br />
-        <br />
         <Socials />
       </>
     )}

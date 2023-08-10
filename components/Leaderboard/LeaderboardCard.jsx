@@ -1,4 +1,5 @@
 import { Card, Table } from 'antd/lib';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { getName } from 'common-util/functions';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -21,7 +22,7 @@ const LeaderboardCard = ({ data, isLoading }) => {
 
   return (
     <Card
-      title="Leaderboard – Top 5"
+      title={<EducationTitle title="Leaderboard – Top 5" educationItem="leaderboard" level={4} />}
       bodyStyle={{ padding: 0 }}
       extra={<Link href="/leaderboard">See all &rarr;</Link>}
       actions={[<Link href="/leaderboard">Start earning points</Link>]}

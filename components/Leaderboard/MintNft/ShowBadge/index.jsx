@@ -1,5 +1,3 @@
-import { IMAGE_SIZE } from 'components/Leaderboard/MintNft/styles';
-import { getAutonolasTokenUri } from 'components/Leaderboard/MintNft/utils';
 import {
   Image, Typography,
 } from 'antd/lib';
@@ -7,6 +5,8 @@ import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { IMAGE_SIZE } from '../styles';
+import { getAutonolasTokenUri } from '../utils';
 
 const { Text } = Typography;
 
