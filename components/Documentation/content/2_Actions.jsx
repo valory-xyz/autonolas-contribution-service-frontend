@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Typography } from 'antd/lib';
 import { DOCS_SECTIONS } from '../helpers';
 
@@ -13,9 +14,12 @@ const ActionsDocs = () => (
     </Paragraph>
 
     <Paragraph>
-      Each action has a name, instructions and points. When you complete an
-      action, it is automatically tracked and the corresponding points are added
-      to your profile.
+      Currently, there is one action: "Spread the word on Twitter". To complete
+      this, you must first connect to Twitter – you can do this via the
+      Leaderboard page. Once connected, tweet about Olas being sure to either
+      mention @autonolas, or use the hashtag #OlasNetwork. In the background, an
+      AI-powered Olas service will analyse your tweet based on quality and
+      relevance, and you'll be rewarded accordingly.
     </Paragraph>
     <br />
     <br />

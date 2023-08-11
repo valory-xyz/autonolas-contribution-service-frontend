@@ -27,7 +27,7 @@ const Actions = () => (
             <List.Item.Meta
               title={item.name}
               description={(
-                <Paragraph type="secondary" ellipsis={{ rows: 1, expandable: true, symbol: 'more' }} className="mb-0">
+                <Paragraph type="secondary" className="mb-0">
                   {item.description}
                 </Paragraph>
               )}

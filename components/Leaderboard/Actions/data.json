@@ -1,12 +1,7 @@
 [
   {
-      "name": "@-mention Autonolas on Twitter",
-      "description": "Help spread the word by posting about Autonolas and @-mentioning the Twitter account. Simply make a post and you will be automatically rewarded with points",
-      "points": 300
-  },
-  {
-      "name": "Use #OlasNetwork hashtag on Twitter",
-      "description": "Help spread the word about OLAS by using the hashtag #OlasNetwork in a message. Simply make a post and you will be automatically rewarded with points.",
-      "points": 300
+      "name": "Spread the word on Twitter",
+      "description": "Talk about Olas on Twitter and AI will analyse the quality and relevance of your tweets. Connect to Twitter, and mention @autonolas or #OlasNetwork in a tweet to get points. ",
+      "points": "Varies"
   }
 ]
