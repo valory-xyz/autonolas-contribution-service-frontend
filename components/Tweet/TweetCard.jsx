@@ -6,6 +6,11 @@ import Link from 'next/link';
 const TweetCard = () => {
   const { currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
+  const quorum = Math.ceil((currentMemoryDetails?.members.length / 3) * 2);
+
+  const filteredProposals = proposals.filter(
+    (proposal) => (proposal.voters.length < quorum) && !proposal.execute,
+  );
 
   return (
     <Card
@@ -15,7 +20,7 @@ const TweetCard = () => {
         <Link href="/tweet">Review proposals</Link>,
       ]}
     >
-      <Statistic title="Pending tweet proposals" value={proposals?.length || 'n/a'} />
+      <Statistic title="Pending tweet proposals" value={filteredProposals?.length || 'n/a'} />
     </Card>
   );
 };

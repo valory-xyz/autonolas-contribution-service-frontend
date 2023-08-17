@@ -25,6 +25,9 @@ const GlobalStyle = createGlobalStyle`
   .p-24 {
     padding: 24px !important;
   }
+  .pb-12 {
+    padding-bottom: 12px !important;
+  }
   .pl-24 {
     padding-left: 24px;
   }

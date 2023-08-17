@@ -10,9 +10,10 @@ import DisplayName from 'common-util/DisplayName';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { cloneDeep, set } from 'lodash';
+import dayjs from 'dayjs';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Proposal = ({ proposal, isAddressPresent }) => {
   const [isApproveLoading, setIsApproveLoading] = useState(false);
@@ -139,9 +140,6 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     <>
       <Card className="mb-12" bodyStyle={{ padding: 15 }}>
         <div className="mb-12">
-          <Text strong>Proposed tweet</Text>
-        </div>
-        <div className="mb-12">
           <Text>{proposal?.text || NA}</Text>
         </div>
         <Text type="secondary">
@@ -245,15 +243,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   };
 
   return (
-    <Card className="mb-24">
-      <div className="mb-24">
-        <Title level={5}>
-          <DisplayName actorAddress={proposal?.proposer} account={account} />
-          {' '}
-          proposed to send a tweet
-        </Title>
-      </div>
-      <Row gutter={24}>
+    <Card className="mb-24" bodyStyle={{ padding: 0 }}>
+      <Row gutter={24} className="p-24">
         <Col xs={5}>
           <Steps
             current={current}
@@ -266,6 +257,17 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           <div>{steps[current]?.content}</div>
         </Col>
       </Row>
+      <div className="p-24">
+        <Text type="secondary">
+          Proposed by:
+          {' '}
+          <DisplayName actorAddress={proposal?.proposer} account={account} />
+          {' '}
+          · Date:
+          {' '}
+          {proposal?.createdDate ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY') : '--'}
+        </Text>
+      </div>
     </Card>
   );
 };
