@@ -265,7 +265,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           {' '}
           · Date:
           {' '}
-          {dayjs.unix(proposal?.createdDate || 0).format('HH:mm DD/M/YY')}
+          {proposal?.createdDate ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY') : '--'}
         </Text>
       </div>
     </Card>
