@@ -1,4 +1,3 @@
-import { formatToEth } from 'common-util/functions';
 import { getVeolasContract } from 'common-util/Contracts';
 
 /**
@@ -11,7 +10,7 @@ export const fetchVeolasBalance = ({ account }) => new Promise((resolve, reject)
     .balanceOf(account)
     .call()
     .then((response) => {
-      resolve(formatToEth(response));
+      resolve(response);
     })
     .catch((error) => {
       reject(error);

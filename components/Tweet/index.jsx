@@ -9,6 +9,7 @@ import { uuid } from 'uuidv4';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from 'components/Proposals';
 import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { BigNumber } from 'ethers';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
@@ -36,7 +37,9 @@ const Tweet = () => {
 
     try {
       const balance = await fetchVeolasBalance({ account });
-      if (Number(balance) < 100000000000000000000000n) {
+      const bNBalance = BigNumber.from(balance);
+      const threshold = BigNumber.from('100000000000000000000000');
+      if (bNBalance.lt(threshold)) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
         );
