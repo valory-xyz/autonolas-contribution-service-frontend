@@ -6,7 +6,7 @@ import Link from 'next/link';
 const TweetCard = () => {
   const { currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
-  const quorum = Math.ceil((currentMemoryDetails?.members.length / 3) * 2);
+  const quorum = Math.ceil((currentMemoryDetails?.members?.length / 3) * 2);
 
   const filteredProposals = proposals.filter(
     (proposal) => (proposal?.voters?.length < quorum) && !proposal.execute,
