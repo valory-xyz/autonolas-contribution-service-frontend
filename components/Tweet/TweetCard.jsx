@@ -9,7 +9,7 @@ const TweetCard = () => {
   const quorum = Math.ceil((currentMemoryDetails?.members.length / 3) * 2);
 
   const filteredProposals = proposals.filter(
-    (proposal) => (proposal.voters.length < quorum) && !proposal.execute,
+    (proposal) => (proposal?.voters?.length < quorum) && !proposal.execute,
   );
 
   return (
