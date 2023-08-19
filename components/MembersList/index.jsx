@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
 import {
@@ -10,15 +9,43 @@ import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
+import { cloneDeep } from 'lodash';
 import { fetchVeolasBalance } from './requests';
 
 const { Text } = Typography;
 
-export const MembersList = ({ addNewMember }) => {
+export const MembersList = () => {
   const router = useRouter();
   const [joinLoading, setJoinLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
-  const { membersList } = useCentaursFunctionalities();
+  const {
+    membersList, currentMemoryDetails, updateMemoryWithNewCentaur, fetchedUpdatedMemory,
+  } = useCentaursFunctionalities();
+
+  const addNewMember = async () => {
+    const newMember = { address: account, ownership: 0 };
+    const updatedMembers = [...(membersList || []), newMember];
+    // update the members
+    const updatedCentaur = cloneDeep(currentMemoryDetails);
+    updatedCentaur.members = updatedMembers;
+
+    // Update the Ceramic stream
+    // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
+    await updateMemoryWithNewCentaur(updatedCentaur);
+    notification.success({ message: 'Joined centaur' });
+
+    // Add action to the centaur
+    // const action = {
+    //   actorAddress: account,
+    //   commitId,
+    //   description: 'joined the centaur',
+    //   timestamp: Date.now(),
+    // };
+
+    await fetchedUpdatedMemory();
+    // Commenting out until fixed
+    // await triggerAction(centaurId, action);
+  };
 
   const { signMessage } = useSignMessage({
     message: 'Sign this message to verify ownership over this address.',
@@ -50,6 +77,7 @@ export const MembersList = ({ addNewMember }) => {
           </a>
         </>,
       );
+
       setJoinLoading(false);
     } else {
       signMessage();
@@ -68,13 +96,6 @@ export const MembersList = ({ addNewMember }) => {
         </Text>
       ),
     },
-    // {
-    //   title: 'Ownership',
-    //   dataIndex: 'ownership',
-    //   width: 180,
-    //   render: (text) => <>{`${text}%`}</>,
-    //   align: 'right',
-    // },
     {
       dataIndex: 'actions',
       width: 100,
@@ -153,14 +174,6 @@ export const MembersList = ({ addNewMember }) => {
       />
     </Card>
   );
-};
-
-MembersList.propTypes = {
-  addNewMember: PropTypes.func,
-};
-
-MembersList.defaultProps = {
-  addNewMember: () => {},
 };
 
 export default MembersList;
