@@ -26,7 +26,7 @@ const Footer = () => {
         dispatch(setHealthcheck(response));
       })
       .catch((error) => {
-        window.console.error(error);
+        console.error(error);
       });
   }, []);
 

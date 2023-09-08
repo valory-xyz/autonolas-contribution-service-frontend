@@ -9,7 +9,6 @@ import { setIsVerified, setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails } from 'common-util/api';
 import Login from '../Login';
 import Footer from './Footer';
-import ServiceStatus from './ServiceStatus';
 import { getAddressStatus } from './utils';
 import {
   CustomLayout,
@@ -20,6 +19,7 @@ import {
 } from './styles';
 
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
+const ServiceStatus = dynamic(() => import('./ServiceStatus'), { ssr: false });
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
