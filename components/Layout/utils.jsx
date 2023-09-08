@@ -77,7 +77,7 @@ export const getHealthcheck = async () => new Promise((resolve, reject) => {
       // if we received negative value, poll health checkup
       if (response?.data?.seconds_until_next_update < 0) {
         window.console.warn(
-          `Healthcheck: seconds until is negative - ${response?.data?.seconds_until_next_update}, polling healthcheck`,
+          `Healthcheck: "seconds until next update" is negative - ${response?.data?.seconds_until_next_update}, polling healthcheck`,
         );
 
         pollHealthCheckup(url)
