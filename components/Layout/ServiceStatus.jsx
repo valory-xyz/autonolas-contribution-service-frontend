@@ -12,8 +12,7 @@ import {
 } from 'store/setup/actions';
 import { getHealthcheck } from './utils';
 
-const Footer = () => {
-  // selectors & dispatch
+const ServiceStatus = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state?.setup?.account);
   const healthDetails = useSelector((state) => state?.setup?.healthcheck);
@@ -74,4 +73,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default ServiceStatus;
