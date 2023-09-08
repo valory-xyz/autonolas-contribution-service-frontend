@@ -85,7 +85,8 @@ export const MembersList = () => {
         signMessage();
       }
     } catch (error) {
-      notifyError('Error while fetching veOlas balance');
+      notifyError('Join failed');
+      console.error(error);
     } finally {
       setJoinLoading(false);
     }
