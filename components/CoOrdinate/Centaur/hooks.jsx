@@ -11,6 +11,7 @@ import { areAddressesEqual } from 'common-util/functions';
 export const useCentaursFunctionalities = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const account = useSelector((state) => state?.setup?.account);
 
   const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
 
@@ -72,8 +73,8 @@ export const useCentaursFunctionalities = () => {
    * checks if an address is present in the members list
    */
   const membersList = currentMemoryDetails?.members || [];
-  const isAddressPresent = (address) => membersList?.some((member) => {
-    const isEqual = areAddressesEqual(member.address, address);
+  const isAddressPresent = membersList?.some((member) => {
+    const isEqual = areAddressesEqual(member.address, account);
     return isEqual;
   });
 

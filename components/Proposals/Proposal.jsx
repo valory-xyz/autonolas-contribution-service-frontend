@@ -149,11 +149,13 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           /280 characters
         </Text>
       </Card>
+
       <div className="mb-12">
         <Text>
           {`${forVotes} / ${centaur.members.length} members approved · Needs at least ${quorum} approvals to execute`}
         </Text>
       </div>
+
       {hasVoted ? (
         <Text>✅ You approved</Text>
       ) : (
@@ -163,7 +165,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
             type="primary"
             onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!isAddressPresent || !account}
+            disabled={!account || !isAddressPresent}
           >
             Approve this proposal
           </Button>
@@ -199,9 +201,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   ) : (
     <>
       {proposal.execute ? (
-        <>
-          <Text>Posting tweet...</Text>
-        </>
+        <Text>Posting tweet...</Text>
       ) : (
         <>
           <Button
