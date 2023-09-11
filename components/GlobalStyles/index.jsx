@@ -82,6 +82,9 @@ const GlobalStyle = createGlobalStyle`
   .mt-12 {
     margin-top: 12px;
   }
+  .mt-24 {
+    margin-top: 24px;
+  }
   .ml-12 {
     margin-left: 12px;
   }

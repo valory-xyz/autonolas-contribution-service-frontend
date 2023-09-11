@@ -5,6 +5,7 @@ import {
 } from 'antd/lib';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from 'components/Proposals';
@@ -17,6 +18,11 @@ const MAX_TWEET_LENGTH = 280;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
+`;
+
+const ProposalCountRow = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Tweet = () => {
@@ -87,27 +93,33 @@ const Tweet = () => {
     <Row gutter={16}>
       <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
         <SocialPosterContainer>
-          <div className="mb-24">
-            <EducationTitle title="Tweet" educationItem="tweet" />
-          </div>
+          <EducationTitle title="Tweet" educationItem="tweet" />
+
           <Input.TextArea
             value={tweet}
             onChange={(e) => setTweet(e.target.value)}
             maxLength={MAX_TWEET_LENGTH}
             rows={4}
+            className="mt-24 mb-12"
           />
-          <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
 
-          <div className="mt-12 mb-8">
-            <Button
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-              loading={isSubmitting}
-              type="primary"
-            >
-              Propose
+          <ProposalCountRow>
+            <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
+            <Button type="primary" ghost size="small">
+              <PlusCircleOutlined />
+              &nbsp;Add
             </Button>
-          </div>
+          </ProposalCountRow>
+
+          <Button
+            className="mt-12 mb-8"
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            loading={isSubmitting}
+            type="primary"
+          >
+            Propose
+          </Button>
         </SocialPosterContainer>
       </Col>
 
