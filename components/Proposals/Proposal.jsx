@@ -138,7 +138,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     }
   };
 
-  const ApproveStep = () => (
+  const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 15 }}>
         <div className="mb-12">
@@ -181,7 +181,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     </>
   );
 
-  const ExecuteStep = () => (proposal.posted ? (
+  const ExecuteStep = proposal.posted ? (
     <Result
       status="success"
       title="Tweet posted successfully!"
@@ -216,25 +216,25 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           </Button>
           <br />
           {!isExecutable && (
-          <Text text="secondary">
-            {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
-          </Text>
+            <Text text="secondary">
+              {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
+            </Text>
           )}
         </>
       )}
     </>
-  ));
+  );
 
   const steps = [
     {
       key: 'approve',
       title: 'Approve',
-      content: <ApproveStep />,
+      content: ApproveStep,
     },
     {
       key: 'execute',
       title: 'Execute',
-      content: <ExecuteStep />,
+      content: ExecuteStep,
     },
   ];
 
@@ -245,7 +245,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   return (
     <Card className="mb-24" bodyStyle={{ padding: 0 }}>
       <Row gutter={24} className="p-24">
-        <Col xs={5}>
+        <Col md={6} xs={24}>
           <Steps
             current={current}
             items={steps}
@@ -253,7 +253,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
             onChange={onChange}
           />
         </Col>
-        <Col xs={19}>
+        <Col md={18} xs={24}>
           <div>{steps[current]?.content}</div>
         </Col>
       </Row>

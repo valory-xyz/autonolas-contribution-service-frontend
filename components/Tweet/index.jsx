@@ -84,38 +84,37 @@ const Tweet = () => {
   const canSubmit = !isSubmitting && tweet.length > 0 && account && isAddressPresent;
 
   return (
-    <>
-      <Row gutter={16}>
-        <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
-          <SocialPosterContainer>
-            <div className="mb-24">
-              <EducationTitle title="Tweet" educationItem="tweet" />
-            </div>
-            <Input.TextArea
-              value={tweet}
-              onChange={(e) => setTweet(e.target.value)}
-              maxLength={MAX_TWEET_LENGTH}
-              rows={4}
-            />
-            <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
+    <Row gutter={16}>
+      <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
+        <SocialPosterContainer>
+          <div className="mb-24">
+            <EducationTitle title="Tweet" educationItem="tweet" />
+          </div>
+          <Input.TextArea
+            value={tweet}
+            onChange={(e) => setTweet(e.target.value)}
+            maxLength={MAX_TWEET_LENGTH}
+            rows={4}
+          />
+          <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
 
-            <div className="mt-12 mb-8">
-              <Button
-                onClick={handleSubmit}
-                disabled={!canSubmit}
-                loading={isSubmitting}
-                type="primary"
-              >
-                Propose
-              </Button>
-            </div>
-          </SocialPosterContainer>
-        </Col>
-        <Col xs={24} md={24} lg={12} xl={12}>
-          <Proposals isAddressPresent={isAddressPresent} />
-        </Col>
-      </Row>
-    </>
+          <div className="mt-12 mb-8">
+            <Button
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              loading={isSubmitting}
+              type="primary"
+            >
+              Propose
+            </Button>
+          </div>
+        </SocialPosterContainer>
+      </Col>
+
+      <Col xs={24} md={24} lg={12} xl={12}>
+        <Proposals isAddressPresent={isAddressPresent} />
+      </Col>
+    </Row>
   );
 };
 
