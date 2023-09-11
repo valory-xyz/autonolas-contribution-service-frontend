@@ -8,10 +8,12 @@ import { uuid } from 'uuidv4';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposals from 'components/Proposals';
 import { notifyError } from 'common-util/functions';
+
+import Proposals from '../Proposals';
 import { checkIfHas100kVeOlas } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import ThreadModal from './ThreadModal';
 
 const { Text } = Typography;
 const MAX_TWEET_LENGTH = 280;
@@ -26,7 +28,6 @@ const ProposalCountRow = styled.div`
 `;
 
 const Tweet = () => {
-  const account = useSelector((state) => state?.setup?.account);
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
@@ -34,9 +35,11 @@ const Tweet = () => {
     triggerAction,
     isAddressPresent,
   } = useCentaursFunctionalities();
+  const account = useSelector((state) => state?.setup?.account);
 
   const [tweet, setTweet] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -87,6 +90,10 @@ const Tweet = () => {
     }
   };
 
+  const closeThreadModal = () => {
+    setIsThreadModalVisible(false);
+  };
+
   const canSubmit = !isSubmitting && tweet.length > 0 && account && isAddressPresent;
 
   return (
@@ -105,10 +112,16 @@ const Tweet = () => {
 
           <ProposalCountRow>
             <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
-            <Button type="primary" ghost size="small">
+            <Button
+              type="primary"
+              ghost
+              size="small"
+              onClick={() => setIsThreadModalVisible(true)}
+            >
               <PlusCircleOutlined />
               &nbsp;Add
             </Button>
+            {isThreadModalVisible && <ThreadModal closeThreadModal={closeThreadModal} />}
           </ProposalCountRow>
 
           <Button
