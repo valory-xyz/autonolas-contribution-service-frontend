@@ -6,14 +6,42 @@ import {
   Typography, Col, Row, Button, Alert,
 } from 'antd/lib';
 import get from 'lodash/get';
-import { notifyError, notifySuccess } from 'common-util/functions';
+import styled from 'styled-components';
 import { setIsVerified } from 'store/setup/actions';
+import { notifyError, notifySuccess } from 'common-util/functions';
 import Login from '../Login';
 import { getAddressStatus } from '../Layout/utils';
 import { verifyAddress, isRouteValid } from './utils';
-import { Ol } from './styles';
 
 const { Title, Text } = Typography;
+
+export const Ol = styled.ol`
+  li {
+    margin-bottom: 1rem;
+  }
+`;
+
+const checkmark = '✅';
+
+const VerificationDisclaimer = () => (
+  <Text type="secondary" className="custom-text-secondary">
+    <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
+    By connecting and/or verifying your information (including your Discord,
+    Twitter and wallet address details) you are creating public information. In
+    particular, the leaderboard functionality will display a link between your
+    provided Discord and Twitter handles.
+  </Text>
+);
+
+const VerificationMessage = () => (
+  <>
+    <Title level={5}>View your activated badge</Title>
+    <Text type="secondary" className="custom-text-secondary">
+      <Link href="/">Return to homepage</Link>
+      &nbsp;and see your badge update! Note it may take a minute to sync.
+    </Text>
+  </>
+);
 
 const Verification = () => {
   const [isVerifying, setIsVerifying] = useState(false);
@@ -21,8 +49,6 @@ const Verification = () => {
   const account = useSelector((state) => get(state, 'setup.account'));
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const checkmark = '✅';
 
   const discordId = get(router, 'query.[discord-id]');
   const linkExpiration = get(router, 'query.[link-expiration]');
@@ -56,15 +82,7 @@ const Verification = () => {
     <>
       <Alert
         className="custom-alert-secondary mb-12"
-        message={(
-          <Text type="secondary" className="custom-text-secondary">
-            <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
-            By connecting and/or verifying your information (including your
-            Discord, Twitter and wallet address details) you are creating public
-            information. In particular, the leaderboard functionality will
-            display a link between your provided Discord and Twitter handles.
-          </Text>
-        )}
+        message={<VerificationDisclaimer />}
         type="info"
       />
 
@@ -81,11 +99,9 @@ const Verification = () => {
               </Title>
 
               {account ? (
-                <>
-                  <Button type="primary" disabled>
-                    Connect Wallet
-                  </Button>
-                </>
+                <Button type="primary" disabled>
+                  Connect Wallet
+                </Button>
               ) : (
                 <Login />
               )}
@@ -140,12 +156,7 @@ const Verification = () => {
 
             {/* After verification message */}
             <li>
-              <Title level={5}>View your activated badge</Title>
-              <Text type="secondary" className="custom-text-secondary">
-                <Link href="/">Return to homepage</Link>
-                &nbsp;and see your badge update! Note it may take a minute to
-                sync.
-              </Text>
+              <VerificationMessage />
             </li>
           </Ol>
         </Col>

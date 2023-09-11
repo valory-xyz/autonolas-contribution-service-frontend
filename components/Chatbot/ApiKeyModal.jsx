@@ -41,7 +41,13 @@ export const ApiKeyModal = React.forwardRef((props, ref) => {
         className="mb-8"
       />
       <Text type="secondary">
-        <a href="https://platform.openai.com/signup" rel="noopener noreferrer" target="_blank">Get your API key</a>
+        <a
+          href="https://platform.openai.com/signup"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Get your API key
+        </a>
         . Note you must have a payment card on file.
       </Text>
     </Modal>

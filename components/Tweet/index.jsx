@@ -8,8 +8,8 @@ import { uuid } from 'uuidv4';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from 'components/Proposals';
-import { fetchVeolasBalance } from 'components/MembersList/requests';
-import { BigNumber } from 'ethers';
+import { notifyError } from 'common-util/functions';
+import { checkIfHas100kVeOlas } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
@@ -36,10 +36,8 @@ const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const balance = await fetchVeolasBalance({ account });
-      const bNBalance = BigNumber.from(balance);
-      const threshold = BigNumber.from('100000000000000000000000');
-      if (bNBalance.lt(threshold)) {
+      const has100kVeOlas = await checkIfHas100kVeOlas({ account });
+      if (!has100kVeOlas) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
         );
@@ -77,9 +75,7 @@ const Tweet = () => {
       // reset form
       setTweet('');
     } catch (error) {
-      notification.error({
-        message: `Proposal failed: ${error.message}`,
-      });
+      notifyError(`Proposal failed: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }

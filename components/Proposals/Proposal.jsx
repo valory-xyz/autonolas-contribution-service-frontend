@@ -47,7 +47,9 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
   const onApprove = async () => {
     if (!isAddressPresent || !account) {
-      notifyError('Please connect your wallet and join the coordinate to vote.');
+      notifyError(
+        'Please connect your wallet and join the coordinate to vote.',
+      );
       return;
     }
 
@@ -147,11 +149,13 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           /280 characters
         </Text>
       </Card>
+
       <div className="mb-12">
         <Text>
           {`${forVotes} / ${centaur.members.length} members approved · Needs at least ${quorum} approvals to execute`}
         </Text>
       </div>
+
       {hasVoted ? (
         <Text>✅ You approved</Text>
       ) : (
@@ -161,16 +165,16 @@ const Proposal = ({ proposal, isAddressPresent }) => {
             type="primary"
             onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!isAddressPresent || !account}
+            disabled={!account || !isAddressPresent}
           >
             Approve this proposal
           </Button>
 
           {!account && (
-          <>
-            <br />
-            <Text type="secondary">To approve, connect your wallet</Text>
-          </>
+            <>
+              <br />
+              <Text type="secondary">To approve, connect your wallet</Text>
+            </>
           )}
         </>
       )}
@@ -196,32 +200,28 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     />
   ) : (
     <>
-      {
-        proposal.execute ? (
-          <>
-            <Text>Posting tweet...</Text>
-          </>
-        ) : (
-          <>
-            <Button
-              ghost
-              type="primary"
-              onClick={onExecute}
-              loading={isExecuteLoading}
-              disabled={!isAddressPresent || !account || !isExecutable}
-              className="mb-12"
-            >
-              Execute & post tweet
-            </Button>
-            <br />
-            {!isExecutable && (
-            <Text text="secondary">
-              {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
-            </Text>
-            )}
-          </>
-        )
-      }
+      {proposal.execute ? (
+        <Text>Posting tweet...</Text>
+      ) : (
+        <>
+          <Button
+            ghost
+            type="primary"
+            onClick={onExecute}
+            loading={isExecuteLoading}
+            disabled={!isAddressPresent || !account || !isExecutable}
+            className="mb-12"
+          >
+            Execute & post tweet
+          </Button>
+          <br />
+          {!isExecutable && (
+          <Text text="secondary">
+            {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
+          </Text>
+          )}
+        </>
+      )}
     </>
   ));
 
@@ -263,9 +263,12 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           {' '}
           <DisplayName actorAddress={proposal?.proposer} account={account} />
           {' '}
-          · Date:
+          ·
+          Date:
           {' '}
-          {proposal?.createdDate ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY') : '--'}
+          {proposal?.createdDate
+            ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY')
+            : '--'}
         </Text>
       </div>
     </Card>

@@ -1,7 +1,5 @@
 import { TwitterOutlined } from '@ant-design/icons';
-import {
-  Typography, Button, Modal,
-} from 'antd/lib';
+import { Typography, Button, Modal } from 'antd/lib';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -36,31 +34,58 @@ const ConnectTwitterModal = () => {
       </Button>
 
       <Modal
-        title={<Title level={4} className="mb-0">Connect Twitter</Title>}
+        title={(
+          <Title level={4} className="mb-0">
+            Connect Twitter
+          </Title>
+        )}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
       >
-        <Title className="mb-0" level={5}>Step 1:</Title>
+        <Title className="mb-0" level={5}>
+          Step 1:
+        </Title>
         <Text>Connect wallet</Text>
         <br />
         <br />
-        <Title className="mb-8" level={5}>Step 2:</Title>
-        <Button type="primary" onClick={handleCreateTweet} className="mb-8" disabled={!account} title={!account && 'Connect a wallet'}>
+        <Title className="mb-8" level={5}>
+          Step 2:
+        </Title>
+        <Button
+          type="primary"
+          onClick={handleCreateTweet}
+          className="mb-8"
+          disabled={!account}
+          title={!account && 'Connect a wallet'}
+        >
           <TwitterOutlined />
           {' '}
           Post tweet
         </Button>
         <br />
-        <Text type="secondary">Don&apos;t change the tweet – it contains a unique code that links your wallet to your Twitter account.</Text>
+        <Text type="secondary">
+          Don&apos;t change the tweet – it contains a unique code that links
+          your wallet to your Twitter account.
+        </Text>
         <br />
         <br />
-        <Title className="mb-0" level={5}>Step 3:</Title>
-        <Text>Wait up to 5 minutes – your Twitter account will be automatically linked.</Text>
+        <Title className="mb-0" level={5}>
+          Step 3:
+        </Title>
+        <Text>
+          Wait up to 5 minutes – your Twitter account will be automatically
+          linked.
+        </Text>
         <br />
         <br />
-        <Title className="mb-0" level={5}>Step 4:</Title>
-        <Text>@-mention Autonolas or use the #OlasNetwork hashtag to start receiving rewards.</Text>
+        <Title className="mb-0" level={5}>
+          Step 4:
+        </Title>
+        <Text>
+          @-mention Autonolas or use the #OlasNetwork hashtag to start receiving
+          rewards.
+        </Text>
       </Modal>
     </>
   );

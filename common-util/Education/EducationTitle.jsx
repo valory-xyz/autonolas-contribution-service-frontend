@@ -46,7 +46,7 @@ export const EducationTitle = ({ title, level, educationItem }) => {
       </Col>
       <Col>
         <Popover
-          content={<PopoverContent text={text} docsLink={docsLink} />}
+          content={<PopoverContent text={text || ''} docsLink={docsLink} />}
           placement="topLeft"
           overlayInnerStyle={{ maxWidth: 300 }}
         >
@@ -58,11 +58,12 @@ export const EducationTitle = ({ title, level, educationItem }) => {
 };
 
 EducationTitle.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   educationItem: PropTypes.string.isRequired,
   level: PropTypes.number,
 };
 
 EducationTitle.defaultProps = {
   level: 4,
+  title: '',
 };

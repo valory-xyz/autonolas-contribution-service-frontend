@@ -19,7 +19,10 @@ export const MembersList = () => {
   const [joinLoading, setJoinLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
   const {
-    membersList, currentMemoryDetails, updateMemoryWithNewCentaur, fetchedUpdatedMemory,
+    membersList,
+    currentMemoryDetails,
+    updateMemoryWithNewCentaur,
+    fetchedUpdatedMemory,
   } = useCentaursFunctionalities();
 
   const addNewMember = async () => {
@@ -63,24 +66,29 @@ export const MembersList = () => {
 
   const onJoin = async () => {
     setJoinLoading(true);
-    const balance = await fetchVeolasBalance({ account });
-    if (Number(balance) === 0) {
-      notifyError(
-        <>
-          You must hold veOLAS to join.&nbsp;
-          <a
-            href="https://member.olas.network/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Get veOLAS
-          </a>
-        </>,
-      );
-
+    try {
+      const balance = await fetchVeolasBalance({ account });
+      if (Number(balance) === 0) {
+        notifyError(
+          <>
+            You must hold veOLAS to join.&nbsp;
+            <a
+              href="https://member.olas.network/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get veOLAS
+            </a>
+          </>,
+        );
+      } else {
+        signMessage();
+      }
+    } catch (error) {
+      notifyError('Join failed');
+      console.error(error);
+    } finally {
       setJoinLoading(false);
-    } else {
-      signMessage();
     }
   };
 
