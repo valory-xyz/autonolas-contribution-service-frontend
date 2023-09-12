@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import {
   Modal, Button, Input, message, Steps, Row, Col,
 } from 'antd/lib';
@@ -10,6 +11,15 @@ import {
 } from '@ant-design/icons';
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { TweetLength, ProposalCountRow } from './utils';
+
+const EachThreadContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  /* align-items: center; */
+  justify-content: space-between;
+  .thread-col-2 {
+  }
+`;
 
 const ThreadModal = ({
   firstTweetInThread,
@@ -120,7 +130,29 @@ const ThreadModal = ({
             // current={
             //   tweet.trim() === '' ? thread.length - 2 : thread.length - 1
             // }
-            items={thread.map((e) => ({ title: e }))}
+            items={thread.map((e) => ({
+              title: (
+                <EachThreadContainer>
+                  <div>{e}</div>
+
+                  <div className="thread-col-2">
+                    {thread.length > 1 && (
+                      <Button
+                        ghost
+                        type="primary"
+                        size="small"
+                        icon={<CloseOutlined />}
+                        onClick={() => {
+                          const newThread = [...thread];
+                          newThread.splice(thread.indexOf(e), 1);
+                          setThread(newThread);
+                        }}
+                      />
+                    )}
+                  </div>
+                </EachThreadContainer>
+              ),
+            }))}
           />
         </Col>
       </Row>

@@ -286,6 +286,11 @@ const GlobalStyle = createGlobalStyle`
     max-width: 450px;
     margin-bottom: 4px;
   }
+
+  /* antd steps */
+  .ant-steps-item-title {
+    width: 100%;
+  }
 `;
 
 export default GlobalStyle;
