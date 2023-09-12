@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 
 export const ProposalPropTypes = PropTypes.shape({
   request_id: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
+  // tweet = the `text` is string
+  // thread = the `text` is array of string (array of thread)
+  text: PropTypes.oneOfType(
+    [PropTypes.string, PropTypes.arrayOf(PropTypes.string)],
+  ).isRequired,
   voters: PropTypes.arrayOf(PropTypes.string),
   posted: PropTypes.bool.isRequired,
   proposer: PropTypes.string.isRequired,
