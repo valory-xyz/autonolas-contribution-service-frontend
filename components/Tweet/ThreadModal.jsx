@@ -8,6 +8,7 @@ import {
   TwitterOutlined,
   CloseOutlined,
   PlusOutlined,
+  EditFilled,
 } from '@ant-design/icons';
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { TweetLength, ProposalCountRow } from './utils';
@@ -29,28 +30,18 @@ const ThreadModal = ({
 }) => {
   const [thread, setThread] = useState([]);
   const [tweet, setTweet] = useState('');
+  const [currentEditingIndex, setCurrentEditingIndex] = useState(-1);
 
   useEffect(() => {
     setThread([firstTweetInThread]);
   }, [firstTweetInThread]);
 
-  const handleOk = async () => {
-    if (thread.some((t) => t.trim() === '')) {
-      message.error('One or more tweets are empty. Please fill them all.');
-      return;
-    }
-
-    await addThread(thread);
-
-    closeThreadModal();
-    // Add logic to post the thread here
-  };
-
-  const handleCancel = () => {
+  const onModalClose = () => {
     closeThreadModal();
   };
 
-  const addTweet = () => {
+  // ADD the tweet to the thread
+  const onAddToThread = () => {
     if (tweet.trim() === '') {
       message.error('Tweet cannot be empty.');
       return;
@@ -65,25 +56,52 @@ const ThreadModal = ({
     setTweet('');
   };
 
-  // const isDisabled = thread.some((t) => t.trim() === '');
+  // EDIT the tweet in the thread
+  const onEditThread = (index) => {
+    const newThread = [...thread];
+    newThread[index] = tweet;
+    setThread(newThread);
+    setTweet(newThread[index]);
+    setCurrentEditingIndex(index);
+  };
+
+  // REMOVE the tweet from the thread
+  const onRemoveFromThread = (index) => {
+    const newThread = [...thread];
+    newThread.splice(index, 1);
+    setThread(newThread);
+  };
+
+  // POST the thread to the backend
+  const onPostThread = async () => {
+    if (thread.some((t) => t.trim() === '')) {
+      message.error('One or more tweets are empty. Please fill them all.');
+      return;
+    }
+
+    try {
+      // post the thread & close the modal
+      // await addThread(thread);
+
+      closeThreadModal();
+    } catch (error) {
+      message.error('Something went wrong. Please try again.');
+    }
+  };
 
   return (
     <Modal
       title="Twitter Thread"
       open
       width={900}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      onOk={onPostThread}
+      onCancel={onModalClose}
       footer={[
-        <Button key="back" icon={<CloseOutlined />} onClick={handleCancel}>
-          Cancel
-        </Button>,
         <Button
           key="submit"
           type="primary"
-          // disabled={isDisabled}
           loading={isSubmitting}
-          onClick={handleOk}
+          onClick={onPostThread}
           icon={<TwitterOutlined />}
         >
           Post Thread
@@ -99,8 +117,10 @@ const ThreadModal = ({
             maxLength={MAX_TWEET_LENGTH}
             onChange={(e) => setTweet(e.target.value)}
             onPressEnter={() => {
-              setThread([...thread, tweet]);
-              setTweet('');
+              if (tweet.trim() !== '') {
+                setThread([...thread, tweet]);
+                setTweet('');
+              }
             }}
           />
           <ProposalCountRow>
@@ -108,7 +128,7 @@ const ThreadModal = ({
             <Button
               type="primary"
               ghost
-              onClick={addTweet}
+              onClick={onAddToThread}
               disabled={tweet.trim() === ''}
               className="mt-12"
             >
@@ -130,23 +150,27 @@ const ThreadModal = ({
             // current={
             //   tweet.trim() === '' ? thread.length - 2 : thread.length - 1
             // }
-            items={thread.map((e) => ({
+            items={thread.map((e, index) => ({
               title: (
                 <EachThreadContainer>
                   <div>{e}</div>
 
                   <div className="thread-col-2">
+                    <Button
+                      ghost
+                      type="primary"
+                      size="small"
+                      icon={<EditFilled />}
+                      onClick={() => onEditThread(index)}
+                    />
+
                     {thread.length > 1 && (
                       <Button
-                        ghost
-                        type="primary"
+                        danger
+                        className="ml-8"
                         size="small"
                         icon={<CloseOutlined />}
-                        onClick={() => {
-                          const newThread = [...thread];
-                          newThread.splice(thread.indexOf(e), 1);
-                          setThread(newThread);
-                        }}
+                        onClick={() => onRemoveFromThread(index)}
                       />
                     )}
                   </div>
