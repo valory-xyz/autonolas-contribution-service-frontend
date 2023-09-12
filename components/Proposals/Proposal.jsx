@@ -139,13 +139,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     }
   };
 
-  // const tweetOrThread = proposal?.text || [];
-  const tweetOrThread = [
-    'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Incididunt ut labore et dolore magna aliqua aliqua.',
-    'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  ];
-
+  const tweetOrThread = proposal?.text || [];
   const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>

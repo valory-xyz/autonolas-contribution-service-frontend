@@ -57,8 +57,6 @@ const Tweet = () => {
         action_id: '',
       };
 
-      // console.log('tweetDetails', tweetDetails);
-
       const updatedCentaur = getUpdatedCentaurAfterTweetProposal(
         tweetDetails,
         currentMemoryDetails,

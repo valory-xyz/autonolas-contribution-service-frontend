@@ -51,16 +51,16 @@ const ThreadModal = ({
   };
 
   // EDIT the tweet in the thread
-  const onEditThread = (index) => {
+  const onEditThread = (threadIndex) => {
     const newThread = [...thread];
-    setTweet(newThread[index]);
-    setCurrentEditingIndex(index);
+    setTweet(newThread[threadIndex]);
+    setCurrentEditingIndex(threadIndex);
   };
 
   // REMOVE the tweet from the thread
-  const onRemoveFromThread = (index) => {
+  const onRemoveFromThread = (threadIndex) => {
     const newThread = [...thread];
-    newThread.splice(index, 1);
+    newThread.splice(threadIndex, 1);
     setThread(newThread);
   };
 
@@ -83,8 +83,8 @@ const ThreadModal = ({
 
   return (
     <Modal
-      title="Twitter Thread"
       open
+      title="Twitter Thread"
       width={900}
       onOk={onPostThread}
       onCancel={onModalClose}
