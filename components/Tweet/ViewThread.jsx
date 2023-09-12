@@ -1,5 +1,5 @@
 import PropTypes, { string } from 'prop-types';
-import { Button, Typography, Steps } from 'antd/lib';
+import { Button, Typography, Timeline } from 'antd/lib';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -10,16 +10,17 @@ const EachThreadContainer = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   .thread-col-2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 160px;
   }
 `;
 
 export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
-  <Steps
-    progressDot
-    direction="vertical"
-    current={thread.length - 1}
-    items={thread.map((e, threadIndex) => ({
-      title: (
+  <Timeline style={{ paddingTop: 10 }}>
+    {thread.map((e, threadIndex) => (
+      <Timeline.Item key={`thread-${threadIndex}`}>
         <EachThreadContainer>
           <Text style={{ whiteSpace: 'pre-wrap' }}>{e}</Text>
 
@@ -45,17 +46,19 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
             )}
           </div>
         </EachThreadContainer>
-      ),
-    }))}
-  />
+      </Timeline.Item>
+    ))}
+  </Timeline>
 );
 
 ViewThread.propTypes = {
   thread: PropTypes.arrayOf(string),
-  onEditThread: PropTypes.func.isRequired,
-  onRemoveFromThread: PropTypes.func.isRequired,
+  onEditThread: PropTypes.func,
+  onRemoveFromThread: PropTypes.func,
 };
 
 ViewThread.defaultProps = {
   thread: [],
+  onEditThread: null,
+  onRemoveFromThread: null,
 };

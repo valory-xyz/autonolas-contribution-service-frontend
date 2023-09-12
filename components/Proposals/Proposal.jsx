@@ -143,7 +143,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   const tweetOrThread = [
     'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'Incididunt ut labore et dolore magna aliqua aliqua.',
-    'One two',
+    'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   ];
 
   const ApproveStep = (
