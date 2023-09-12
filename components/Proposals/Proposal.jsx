@@ -139,21 +139,28 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     }
   };
 
+  // const tweetOrThread = proposal?.text || [];
+  const tweetOrThread = [
+    'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'Incididunt ut labore et dolore magna aliqua aliqua.',
+    'One two',
+  ];
+
   const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>
-        {typeof proposal?.text === 'string' ? (
+        {typeof tweetOrThread === 'string' ? (
           <>
             <div className="mb-12">
-              <Text>{proposal?.text || NA}</Text>
+              <Text>{tweetOrThread || NA}</Text>
             </div>
             <Text type="secondary">
-              {proposal?.text?.length || 0}
+              {tweetOrThread.length || 0}
               /280 characters
             </Text>
           </>
         ) : (
-          <ViewThread thread={proposal?.text || []} />
+          <ViewThread thread={tweetOrThread || []} />
         )}
       </Card>
 

@@ -7,7 +7,9 @@ import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 const Proposals = () => {
   const { currentMemoryDetails, isAddressPresent } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
-  const sortedProposals = proposals.sort((a, b) => b.createdDate - a.createdDate);
+  const sortedProposals = proposals.sort(
+    (a, b) => b.createdDate - a.createdDate,
+  );
 
   return (
     <>

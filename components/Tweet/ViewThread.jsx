@@ -1,5 +1,5 @@
 import PropTypes, { string } from 'prop-types';
-import { Button, Typography } from 'antd/lib';
+import { Button, Typography, Steps } from 'antd/lib';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -13,47 +13,49 @@ const EachThreadContainer = styled.div`
   }
 `;
 
-export const ViewThread = ({
-  thread,
-  threadIndex,
-  onEditThread,
-  onRemoveFromThread,
-}) => (
-  <EachThreadContainer>
-    <Text style={{ whiteSpace: 'pre-wrap' }}>{thread}</Text>
+export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
+  <Steps
+    progressDot
+    direction="vertical"
+    current={thread.length - 1}
+    items={thread.map((e, threadIndex) => ({
+      title: (
+        <EachThreadContainer>
+          <Text style={{ whiteSpace: 'pre-wrap' }}>{e}</Text>
 
-    <div className="thread-col-2">
-      {onEditThread && (
-        <Button
-          ghost
-          type="primary"
-          size="small"
-          icon={<EditFilled />}
-          onClick={() => onEditThread(threadIndex)}
-        />
-      )}
+          <div className="thread-col-2">
+            {onEditThread && (
+              <Button
+                ghost
+                type="primary"
+                size="small"
+                icon={<EditFilled />}
+                onClick={() => onEditThread(threadIndex)}
+              />
+            )}
 
-      {thread.length > 1 && onRemoveFromThread && (
-        <Button
-          danger
-          className="ml-8"
-          size="small"
-          icon={<CloseOutlined />}
-          onClick={() => onRemoveFromThread(threadIndex)}
-        />
-      )}
-    </div>
-  </EachThreadContainer>
+            {e.length > 1 && onRemoveFromThread && (
+              <Button
+                danger
+                className="ml-8"
+                size="small"
+                icon={<CloseOutlined />}
+                onClick={() => onRemoveFromThread(threadIndex)}
+              />
+            )}
+          </div>
+        </EachThreadContainer>
+      ),
+    }))}
+  />
 );
 
 ViewThread.propTypes = {
   thread: PropTypes.arrayOf(string),
-  threadIndex: PropTypes.number,
   onEditThread: PropTypes.func.isRequired,
   onRemoveFromThread: PropTypes.func.isRequired,
 };
 
 ViewThread.defaultProps = {
   thread: [],
-  threadIndex: -1,
 };

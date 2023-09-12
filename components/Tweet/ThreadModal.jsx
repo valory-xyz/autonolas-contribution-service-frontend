@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Modal, Button, Input, Steps, Row, Col, message,
+  Modal, Button, Input, Row, Col, message,
 } from 'antd/lib';
 import PropTypes from 'prop-types';
 import { TwitterOutlined, PlusOutlined } from '@ant-design/icons';
@@ -129,21 +129,10 @@ const ThreadModal = ({
           xs={24}
           style={{ maxHeight: '400px', minHeight: '300px', overflow: 'auto' }}
         >
-          <Steps
-            progressDot
-            direction="vertical"
-            current={thread.length - 1}
-            items={thread.map((e, index) => ({
-              title: (
-                <ViewThread
-                  key={`thread-${index}`}
-                  thread={e}
-                  threadIndex={index}
-                  onEditThread={onEditThread}
-                  onRemoveFromThread={onRemoveFromThread}
-                />
-              ),
-            }))}
+          <ViewThread
+            thread={thread}
+            onEditThread={onEditThread}
+            onRemoveFromThread={onRemoveFromThread}
           />
         </Col>
       </Row>
