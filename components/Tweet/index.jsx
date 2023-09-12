@@ -1,30 +1,24 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Button, Input, Typography, notification, Row, Col,
+  Button, Input, notification, Row, Col,
 } from 'antd/lib';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
+import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { notifyError } from 'common-util/functions';
 
 import Proposals from '../Proposals';
 import { checkIfHas100kVeOlas } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { TweetLength, ProposalCountRow } from './utils';
 import ThreadModal from './ThreadModal';
-
-const { Text } = Typography;
-const MAX_TWEET_LENGTH = 280;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
-`;
-
-const ProposalCountRow = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const Tweet = () => {
@@ -41,7 +35,7 @@ const Tweet = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (tweetOrThread) => {
     setIsSubmitting(true);
 
     try {
@@ -54,7 +48,7 @@ const Tweet = () => {
 
       const tweetDetails = {
         request_id: uuid(),
-        text: tweet,
+        text: tweetOrThread,
         voters: [], // initially no votes
         posted: false,
         proposer: account,
@@ -62,6 +56,8 @@ const Tweet = () => {
         execute: false,
         action_id: '',
       };
+
+      // console.log('tweetDetails', tweetDetails);
 
       const updatedCentaur = getUpdatedCentaurAfterTweetProposal(
         tweetDetails,
@@ -111,25 +107,33 @@ const Tweet = () => {
           />
 
           <ProposalCountRow>
-            <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
+            <TweetLength tweet={tweet} />
             <Button
               type="primary"
               ghost
               size="small"
+              disabled={!canSubmit}
               onClick={() => setIsThreadModalVisible(true)}
             >
               <PlusCircleOutlined />
               &nbsp;Add
             </Button>
-            {isThreadModalVisible && <ThreadModal closeThreadModal={closeThreadModal} />}
+            {isThreadModalVisible && (
+              <ThreadModal
+                firstTweetInThread={tweet}
+                isSubmitting={isSubmitting}
+                closeThreadModal={closeThreadModal}
+                addThread={handleSubmit}
+              />
+            )}
           </ProposalCountRow>
 
           <Button
             className="mt-12 mb-8"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            loading={isSubmitting}
             type="primary"
+            disabled={!canSubmit}
+            loading={isSubmitting && !isThreadModalVisible}
+            onClick={() => handleSubmit(tweet)}
           >
             Propose
           </Button>

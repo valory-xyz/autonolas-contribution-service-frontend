@@ -19,3 +19,5 @@ export const META_TAGS_INFO = {
 };
 
 export const DEFAULT_COORDINATE_ID = '2';
+
+export const MAX_TWEET_LENGTH = 280;
