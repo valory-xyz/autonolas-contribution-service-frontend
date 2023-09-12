@@ -1,35 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import {
-  Modal,
-  Button,
-  Input,
-  message,
-  Steps,
-  Row,
-  Col,
-  Typography,
+  Modal, Button, Input, Steps, Row, Col, message,
 } from 'antd/lib';
 import PropTypes from 'prop-types';
-import {
-  TwitterOutlined,
-  CloseOutlined,
-  PlusOutlined,
-  EditFilled,
-} from '@ant-design/icons';
+import { TwitterOutlined, PlusOutlined } from '@ant-design/icons';
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { TweetLength, ProposalCountRow } from './utils';
-
-const { Text } = Typography;
-
-const EachThreadContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  /* align-items: center; */
-  justify-content: space-between;
-  .thread-col-2 {
-  }
-`;
+import { ViewThread } from './ViewThread';
 
 const ThreadModal = ({
   firstTweetInThread,
@@ -142,7 +119,7 @@ const ThreadModal = ({
               className="mt-12"
             >
               <PlusOutlined />
-              Add to thread
+              {currentEditingIndex === -1 ? 'Add to thread' : 'Edit thread'}
             </Button>
           </ProposalCountRow>
         </Col>
@@ -158,29 +135,13 @@ const ThreadModal = ({
             current={thread.length - 1}
             items={thread.map((e, index) => ({
               title: (
-                <EachThreadContainer>
-                  <Text style={{ whiteSpace: 'pre-wrap' }}>{e}</Text>
-
-                  <div className="thread-col-2">
-                    <Button
-                      ghost
-                      type="primary"
-                      size="small"
-                      icon={<EditFilled />}
-                      onClick={() => onEditThread(index)}
-                    />
-
-                    {thread.length > 1 && (
-                      <Button
-                        danger
-                        className="ml-8"
-                        size="small"
-                        icon={<CloseOutlined />}
-                        onClick={() => onRemoveFromThread(index)}
-                      />
-                    )}
-                  </div>
-                </EachThreadContainer>
+                <ViewThread
+                  key={`thread-${index}`}
+                  thread={e}
+                  threadIndex={index}
+                  onEditThread={onEditThread}
+                  onRemoveFromThread={onRemoveFromThread}
+                />
               ),
             }))}
           />

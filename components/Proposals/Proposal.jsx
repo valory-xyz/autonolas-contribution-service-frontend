@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 import {
   Typography, Button, Card, Row, Col, Steps, Result,
 } from 'antd/lib';
+import { cloneDeep, set } from 'lodash';
+import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
-import { cloneDeep, set } from 'lodash';
-import dayjs from 'dayjs';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
 
@@ -140,14 +141,20 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
   const ApproveStep = (
     <>
-      <Card className="mb-12" bodyStyle={{ padding: 15 }}>
-        <div className="mb-12">
-          <Text>{proposal?.text || NA}</Text>
-        </div>
-        <Text type="secondary">
-          {proposal?.text?.length || 0}
-          /280 characters
-        </Text>
+      <Card className="mb-12" bodyStyle={{ padding: 16 }}>
+        {typeof proposal?.text === 'string' ? (
+          <>
+            <div className="mb-12">
+              <Text>{proposal?.text || NA}</Text>
+            </div>
+            <Text type="secondary">
+              {proposal?.text?.length || 0}
+              /280 characters
+            </Text>
+          </>
+        ) : (
+          <ViewThread thread={proposal?.text || []} />
+        )}
       </Card>
 
       <div className="mb-12">
@@ -242,6 +249,10 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     setCurrent(value);
   };
 
+  const proposedDate = proposal?.createdDate
+    ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY')
+    : '--';
+
   return (
     <Card className="mb-24" bodyStyle={{ padding: 0 }}>
       <Row gutter={24} className="p-24">
@@ -259,16 +270,9 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       </Row>
       <div className="p-24">
         <Text type="secondary">
-          Proposed by:
-          {' '}
+          {'Proposed by: '}
           <DisplayName actorAddress={proposal?.proposer} account={account} />
-          {' '}
-          ·
-          Date:
-          {' '}
-          {proposal?.createdDate
-            ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY')
-            : '--'}
+          {` · Date: ${proposedDate}`}
         </Text>
       </div>
     </Card>
