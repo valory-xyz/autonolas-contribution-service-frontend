@@ -96,7 +96,7 @@ const ThreadModal = ({
           onClick={onPostThread}
           icon={<TwitterOutlined />}
         >
-          Post Thread
+          Propose thread
         </Button>,
       ]}
     >
