@@ -107,7 +107,7 @@ const Tweet = () => {
           <ProposalCountRow>
             <TweetLength tweet={tweet} />
             <Button
-              type="primary"
+              type="link"
               size="small"
               disabled={!canSubmit}
               onClick={() => setIsThreadModalVisible(true)}
