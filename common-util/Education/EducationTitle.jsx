@@ -15,9 +15,7 @@ const PopoverContent = ({ text, docsLink }) => (
     {docsLink && (
       <>
         <br />
-        <Link href={`/docs${docsLink}`}>
-          Learn more
-        </Link>
+        <Link href={`/docs${docsLink}`}>Learn more</Link>
       </>
     )}
   </>
@@ -25,9 +23,16 @@ const PopoverContent = ({ text, docsLink }) => (
 
 PopoverContent.propTypes = {
   text: PropTypes.string.isRequired,
-  docsLink: PropTypes.string.isRequired,
+  docsLink: PropTypes.string,
 };
 
+PopoverContent.defaultProps = {
+  docsLink: '',
+};
+
+/**
+ * Education title component
+ */
 export const EducationTitle = ({ title, level, educationItem }) => {
   const [fullEducationItem, setFullEducationItem] = useState({});
   const { text, docsLink } = fullEducationItem;

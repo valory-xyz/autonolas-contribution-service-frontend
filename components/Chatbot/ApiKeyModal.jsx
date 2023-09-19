@@ -28,7 +28,7 @@ export const ApiKeyModal = React.forwardRef((props, ref) => {
   return (
     <Modal
       title="Set OpenAI API Key"
-      visible={visible}
+      open={visible}
       onCancel={handleCancel}
       onOk={handleSave}
       okButtonProps={{ disabled: !props.apiKey }}

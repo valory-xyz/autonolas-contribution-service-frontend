@@ -41,7 +41,7 @@ export const AddToMemory = ({
 
       {open && (
         <Modal
-          visible={open}
+          open={open}
           title="Add to memory"
           onOk={handleOk}
           onCancel={handleCancel}
