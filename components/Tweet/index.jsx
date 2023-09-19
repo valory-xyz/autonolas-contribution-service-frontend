@@ -114,7 +114,7 @@ const Tweet = () => {
               onClick={() => setIsThreadModalVisible(true)}
             >
               <PlusCircleOutlined />
-              &nbsp;Add
+              &nbsp;Start thread
             </Button>
             {isThreadModalVisible && (
               <ThreadModal
