@@ -271,7 +271,7 @@ const MemoryCard = () => {
 
       <Modal
         title="Edit Memory"
-        visible={!!editingMemory}
+        open={!!editingMemory}
         onCancel={() => setEditingMemory(null)}
         footer={[
           <Button key="cancel" onClick={() => setEditingMemory(null)}>

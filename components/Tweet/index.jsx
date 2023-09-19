@@ -1,26 +1,27 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Button, Input, Typography, notification, Row, Col,
+  Button, Input, notification, Row, Col,
 } from 'antd/lib';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
+import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposals from 'components/Proposals';
 import { notifyError } from 'common-util/functions';
+
+import Proposals from '../Proposals';
 import { checkIfHas100kVeOlas } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-
-const { Text } = Typography;
-const MAX_TWEET_LENGTH = 280;
+import { TweetLength, ProposalCountRow } from './utils';
+import ThreadModal from './ThreadModal';
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
 const Tweet = () => {
-  const account = useSelector((state) => state?.setup?.account);
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
@@ -28,11 +29,13 @@ const Tweet = () => {
     triggerAction,
     isAddressPresent,
   } = useCentaursFunctionalities();
+  const account = useSelector((state) => state?.setup?.account);
 
   const [tweet, setTweet] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (tweetOrThread) => {
     setIsSubmitting(true);
 
     try {
@@ -45,7 +48,7 @@ const Tweet = () => {
 
       const tweetDetails = {
         request_id: uuid(),
-        text: tweet,
+        text: tweetOrThread,
         voters: [], // initially no votes
         posted: false,
         proposer: account,
@@ -81,41 +84,62 @@ const Tweet = () => {
     }
   };
 
+  const closeThreadModal = () => {
+    setIsThreadModalVisible(false);
+  };
+
   const canSubmit = !isSubmitting && tweet.length > 0 && account && isAddressPresent;
 
   return (
-    <>
-      <Row gutter={16}>
-        <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
-          <SocialPosterContainer>
-            <div className="mb-24">
-              <EducationTitle title="Tweet" educationItem="tweet" />
-            </div>
-            <Input.TextArea
-              value={tweet}
-              onChange={(e) => setTweet(e.target.value)}
-              maxLength={MAX_TWEET_LENGTH}
-              rows={4}
-            />
-            <Text type="secondary">{`${tweet.length} / ${MAX_TWEET_LENGTH}`}</Text>
+    <Row gutter={16}>
+      <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
+        <SocialPosterContainer>
+          <EducationTitle title="Tweet" educationItem="tweet" />
 
-            <div className="mt-12 mb-8">
-              <Button
-                onClick={handleSubmit}
-                disabled={!canSubmit}
-                loading={isSubmitting}
-                type="primary"
-              >
-                Propose
-              </Button>
-            </div>
-          </SocialPosterContainer>
-        </Col>
-        <Col xs={24} md={24} lg={12} xl={12}>
-          <Proposals isAddressPresent={isAddressPresent} />
-        </Col>
-      </Row>
-    </>
+          <Input.TextArea
+            value={tweet}
+            onChange={(e) => setTweet(e.target.value)}
+            maxLength={MAX_TWEET_LENGTH}
+            rows={4}
+            className="mt-24 mb-12"
+          />
+
+          <ProposalCountRow>
+            <TweetLength tweet={tweet} />
+            <Button
+              type="link"
+              disabled={!canSubmit}
+              onClick={() => setIsThreadModalVisible(true)}
+            >
+              <PlusCircleOutlined />
+              &nbsp;Start thread
+            </Button>
+            {isThreadModalVisible && (
+              <ThreadModal
+                firstTweetInThread={tweet}
+                isSubmitting={isSubmitting}
+                closeThreadModal={closeThreadModal}
+                addThread={handleSubmit}
+              />
+            )}
+          </ProposalCountRow>
+
+          <Button
+            className="mt-12 mb-8"
+            type="primary"
+            disabled={!canSubmit}
+            loading={isSubmitting && !isThreadModalVisible}
+            onClick={() => handleSubmit(tweet)}
+          >
+            Propose
+          </Button>
+        </SocialPosterContainer>
+      </Col>
+
+      <Col xs={24} md={24} lg={12} xl={12}>
+        <Proposals isAddressPresent={isAddressPresent} />
+      </Col>
+    </Row>
   );
 };
 

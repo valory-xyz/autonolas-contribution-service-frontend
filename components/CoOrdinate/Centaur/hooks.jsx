@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { set } from 'lodash';
 
-import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { setMemoryDetails } from 'store/setup/actions';
 import addActionToCentaur from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
+import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { areAddressesEqual } from 'common-util/functions';
 
 export const useCentaursFunctionalities = () => {
@@ -13,12 +13,13 @@ export const useCentaursFunctionalities = () => {
   const router = useRouter();
   const account = useSelector((state) => state?.setup?.account);
 
-  const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
-
+  const isMemoryDetailsLoading = useSelector(
+    (state) => state?.setup?.isMemoryDetailsLoading,
+  );
   const memoryDetailsList = useSelector(
     (state) => state?.setup?.memoryDetails || [],
   );
-
+  const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
   const currentMemoryDetails = memoryDetailsList.find((c) => c.id === centaurId) || {};
 
   /**
@@ -79,6 +80,7 @@ export const useCentaursFunctionalities = () => {
   });
 
   return {
+    isMemoryDetailsLoading,
     memoryDetailsList,
     currentMemoryDetails,
     updateMemoryWithNewCentaur,

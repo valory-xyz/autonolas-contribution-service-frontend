@@ -17,6 +17,7 @@ export const syncTypes = {
 
   // co-ordinate
   SET_MEMORY_DETAILS: `${reducerName}/Set memory details`,
+  SET_MEMORY_DETAILS_LOADING: `${reducerName}/Set memory details loading`,
 
   SET_STORE_STATE: `${reducerName}/Set Store State`,
 };

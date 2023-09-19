@@ -40,6 +40,11 @@ export const setHealthcheck = (healthcheck) => ({
   data: { healthcheck },
 });
 
+export const setIsMemoryDetailsLoading = (isMemoryDetailsLoading) => ({
+  type: syncTypes.SET_MEMORY_DETAILS_LOADING,
+  data: { isMemoryDetailsLoading },
+});
+
 export const setMemoryDetails = (memoryDetails) => ({
   type: syncTypes.SET_MEMORY_DETAILS,
   data: { memoryDetails },

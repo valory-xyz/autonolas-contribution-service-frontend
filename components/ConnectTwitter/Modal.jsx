@@ -39,7 +39,7 @@ const ConnectTwitterModal = () => {
             Connect Twitter
           </Title>
         )}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleOk}
       >

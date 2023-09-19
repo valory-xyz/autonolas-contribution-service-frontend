@@ -5,8 +5,13 @@ import dynamic from 'next/dynamic';
 import { Layout, Menu, Grid } from 'antd/lib';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { setIsVerified, setMemoryDetails } from 'store/setup/actions';
+import {
+  setIsVerified,
+  setMemoryDetails,
+  setIsMemoryDetailsLoading,
+} from 'store/setup/actions';
 import { getMemoryDetails } from 'common-util/api';
+import { notifyError } from 'common-util/functions';
 import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
@@ -57,7 +62,18 @@ const NavigationBar = ({ children }) => {
       dispatch(setIsVerified(false));
     }
 
-    getMembers();
+    const getData = async () => {
+      try {
+        dispatch(setIsMemoryDetailsLoading(true));
+        await getMembers();
+      } catch (error) {
+        notifyError('Error fetching members');
+      } finally {
+        dispatch(setIsMemoryDetailsLoading(false));
+      }
+    };
+
+    getData();
   }, []);
 
   // poll details

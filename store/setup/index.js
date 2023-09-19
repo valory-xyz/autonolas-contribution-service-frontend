@@ -15,6 +15,9 @@ const initialState = {
   leaderboard: [],
   nftDetails: null,
   healthcheck: null,
+
+  // memory details
+  isMemoryDetailsLoading: true,
   memoryDetails: [],
 };
 
@@ -33,6 +36,7 @@ export default (state = initialState, action) => {
     case syncTypes.SET_WALLET_VERIFICATION:
     case syncTypes.SET_HEALTH_CHECK:
     case syncTypes.SET_NFT_DETAILS:
+    case syncTypes.SET_MEMORY_DETAILS_LOADING:
     case syncTypes.SET_MEMORY_DETAILS:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
