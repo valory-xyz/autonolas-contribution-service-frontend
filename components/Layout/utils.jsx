@@ -68,26 +68,19 @@ const pollHealthCheckup = async (urlPassed) => new Promise((resolve, reject) => 
   }, 2000);
 });
 
-export const getHealthcheck = async () => new Promise((resolve, reject) => {
+export const getHealthcheck = async () => {
   const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
 
-  axios
-    .get(url)
-    .then((response) => {
-      // if we received negative value, poll health checkup
-      if (response?.data?.seconds_until_next_update < 0) {
-        window.console.warn(
-          `Healthcheck: "seconds until next update" is negative - ${response?.data?.seconds_until_next_update}, polling healthcheck`,
-        );
+  const response = await axios.get(url);
+  // if we received negative value, poll health checkup
+  if (response?.data?.seconds_until_next_update < 0) {
+    window.console.warn(
+      `Healthcheck: "seconds until next update" is negative - ${response?.data?.seconds_until_next_update}, polling healthcheck`,
+    );
 
-        pollHealthCheckup(url)
-          .then((responseFromPolling) => resolve(responseFromPolling))
-          .catch((e) => reject(e));
-      } else {
-        resolve(response?.data);
-      }
-    })
-    .catch((error) => {
-      reject(error);
-    });
-});
+    const responseFromPolling = await pollHealthCheckup(url);
+    return responseFromPolling;
+  }
+
+  return response?.data;
+};
