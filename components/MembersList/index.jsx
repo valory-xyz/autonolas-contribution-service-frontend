@@ -120,7 +120,8 @@ export const MembersList = () => {
   const onJoin = async () => {
     setJoinLoading(true);
     const balance = await fetchVeolasBalance({ account });
-    if ((Number(balance) === 0) && !whitelist.includes(account)) {
+    const isWhitelisted = whitelist.some(e => areAddressesEqual(e, account));
+    if ((Number(balance) === 0) && !isWhitelisted) {
       notifyError(
         <>
           You must hold veOLAS to join.&nbsp;
