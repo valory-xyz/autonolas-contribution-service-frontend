@@ -108,7 +108,6 @@ const Tweet = () => {
             <TweetLength tweet={tweet} />
             <Button
               type="primary"
-              ghost
               size="small"
               disabled={!canSubmit}
               onClick={() => setIsThreadModalVisible(true)}
