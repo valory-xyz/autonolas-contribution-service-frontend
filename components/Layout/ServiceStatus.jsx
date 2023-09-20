@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ServiceStatusInfo } from '@autonolas/frontend-library';
 
-import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
 import {
   setLeaderboard,
   setNftDetails,
   setHealthcheck,
 } from 'store/setup/actions';
+import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
+import { notifyError } from 'common-util/functions';
 import { getHealthcheck } from './utils';
+
+const MINUTE = 60 * 1000;
 
 const ServiceStatus = () => {
   const dispatch = useDispatch();
@@ -18,13 +21,17 @@ const ServiceStatus = () => {
 
   // fetch healthcheck on first render
   useEffect(() => {
-    getHealthcheck()
-      .then((response) => {
+    const getData = async () => {
+      try {
+        const response = await getHealthcheck();
         dispatch(setHealthcheck(response));
-      })
-      .catch((error) => {
+      } catch (error) {
+        notifyError('Error on fetching healthcheck');
         console.error(error);
-      });
+      }
+    };
+
+    getData();
   }, []);
 
   // poll healthcheck every 1 minute
@@ -44,22 +51,16 @@ const ServiceStatus = () => {
           dispatch(setNftDetails({ tokenId, ...(details || {}) }));
         }
       } catch (error) {
-        window.console.warn('Error on fetching healthcheck');
-        window.console.error(error);
+        notifyError('Error on fetching healthcheck');
         dispatch(setHealthcheck(null));
+        console.error(error);
       }
-    }, 60000);
+    }, MINUTE);
 
     return () => clearInterval(interval);
   }, []);
 
-  return (
-    <ServiceStatusInfo
-      isHealthy={isHealthy}
-      appType="iekit"
-      isDefaultMaximized
-    />
-  );
+  return <ServiceStatusInfo isHealthy={isHealthy} appType="iekit" />;
 };
 
 export default ServiceStatus;

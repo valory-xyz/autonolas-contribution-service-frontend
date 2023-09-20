@@ -26,16 +26,16 @@ const pollStatus = async (url) => new Promise((resolve, reject) => {
 export async function getAddressStatus(account) {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/address_status/${account}`;
+      const URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/address_status/${account}`;
 
-      axios.get(url).then((response) => {
+      axios.get(URL).then((response) => {
         const walletStatus = response?.data?.status;
 
         // if `linking`, poll until linked or unlinked else resolve
         if (walletStatus !== WALLET_STATUS.linking) {
           resolve(walletStatus === WALLET_STATUS.linked);
         } else {
-          pollStatus(url).then((pollResponse) => {
+          pollStatus(URL).then((pollResponse) => {
             resolve(pollResponse);
           });
         }
@@ -46,20 +46,25 @@ export async function getAddressStatus(account) {
   });
 }
 
+const getHealthcheckData = async () => {
+  const URL = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
+  const response = await axios.get(URL);
+  return response?.data;
+};
+
 /**
- * polling healthcheck every 2 seconds
+ * polling healthcheck every 2 seconds when is_transitioning_fast is false
+ * ie. Backend is disrupted
  */
 const pollHealthCheckup = async (timeoutInSeconds) => new Promise((resolve, reject) => {
-  const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
-
   const interval = setInterval(async () => {
     try {
-      const response = await axios.get(url);
-      const isHealthy = !!response?.data?.is_transitioning_fast;
+      const data = await getHealthcheckData();
+      const isHealthy = !!data?.is_transitioning_fast;
 
       if (isHealthy) {
         clearInterval(interval);
-        resolve(response.data);
+        resolve(data);
       }
     } catch (error) {
       reject(error);
@@ -68,18 +73,15 @@ const pollHealthCheckup = async (timeoutInSeconds) => new Promise((resolve, reje
 });
 
 export const getHealthcheck = async () => {
-  console.log('get-health-checkup');
-  const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
-
-  const response = await axios.get(url);
-  const isHealthy = !!response?.data?.is_transitioning_fast;
+  const data = await getHealthcheckData();
+  const isHealthy = !!data?.is_transitioning_fast;
 
   if (isHealthy) {
-    return response?.data;
+    return data;
   }
 
   window.console.warn(
-    `Healthcheck: is_transitioning_fast is ${response?.data?.is_transitioning_fast?.toString()}, polling healthcheck`,
+    `Healthcheck: is_transitioning_fast is ${data?.is_transitioning_fast?.toString()}, polling healthcheck`,
   );
 
   const responseFromPolling = await pollHealthCheckup(2000);
