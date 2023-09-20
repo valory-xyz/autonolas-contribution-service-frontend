@@ -15,7 +15,7 @@ export const getLeaderboardList = async () => {
     .map((user, index) => ({
       ...user,
       // adding a unique key to each user
-      rowKeyUi: `${user.twitter_handle}-${user.discord_id}-${index}`,
+      rowKeyUi: `${user.wallet_address}-${user.discord_id}-${index}`,
     }));
 
   return usersList;

@@ -1,16 +1,15 @@
 /* eslint-disable camelcase */
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Typography, Table, Card,
-} from 'antd/lib';
+import { Typography, Table, Card } from 'antd/lib';
+import Link from 'next/link';
+import { COLOR, NA } from '@autonolas/frontend-library';
+
 import { setLeaderboard } from 'store/setup/actions';
 import { getLeaderboardList } from 'common-util/api';
-import Link from 'next/link';
 import { getName, getTier } from 'common-util/functions';
-import { COLOR } from '@autonolas/frontend-library';
-import { LeaderboardContent } from './styles';
 import { EducationTitle } from '../MintNft/Education';
+import { LeaderboardContent } from './styles';
 
 const { Text } = Typography;
 
@@ -35,7 +34,9 @@ const Leaderboard = () => {
     {
       title: 'Socials',
       render: (record) => {
-        const { wallet_address, twitter_handle, discord_id } = record;
+        const {
+          wallet_address, twitter_handle, discord_id, rowKeyUi,
+        } = record;
         const socials = [
           wallet_address && (
             <span className="mr-12">
@@ -97,18 +98,16 @@ const Leaderboard = () => {
           ),
         ];
 
-        return (
-          socials.length > 0
-          && socials.map((social) => (
-            <Text type="secondary">
-              {social}
-              {' '}
-            </Text>
-          ))
-        );
+        if (socials.length === 0) return NA;
+
+        return socials.map((social, index) => (
+          <Text type="secondary" key={`${rowKeyUi}-social-${index}`}>
+            {social}
+            {' '}
+          </Text>
+        ));
       },
     },
-
     {
       title: 'Points',
       dataIndex: 'points',
@@ -127,35 +126,34 @@ const Leaderboard = () => {
       try {
         const response = await getLeaderboardList();
         dispatch(setLeaderboard(response));
-        setIsLoading(false);
       } catch (error) {
         window.console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fn();
   }, [chainId]);
 
   return (
-    <>
-      <LeaderboardContent className="section">
-        <EducationTitle
-          title="Leaderboard"
-          level={3}
-          educationItemSlug="leaderboard"
-        />
+    <LeaderboardContent className="section">
+      <EducationTitle
+        title="Leaderboard"
+        level={3}
+        educationItemSlug="leaderboard"
+      />
 
-        <Card bodyStyle={{ padding: 0 }}>
-          <Table
-            columns={columns}
-            dataSource={data}
-            loading={isLoading}
-            pagination={false}
-            className="mb-12"
-            rowKey="rowKeyUi"
-          />
-        </Card>
-      </LeaderboardContent>
-    </>
+      <Card bodyStyle={{ padding: 0 }}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={isLoading}
+          pagination={false}
+          className="mb-12"
+          rowKey="rowKeyUi"
+        />
+      </Card>
+    </LeaderboardContent>
   );
 };
 

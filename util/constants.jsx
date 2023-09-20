@@ -21,8 +21,3 @@ export const META_TAGS_INFO = {
 export const DEFAULT_COORDINATE_ID = '2';
 
 export const MAX_TWEET_LENGTH = 280;
-
-/**
- * healthcheck timer and poll timer (30 seconds)
- */
-export const HEALTH_CHECK_TIMER_IN_SECONDS = 30;
