@@ -126,7 +126,7 @@ const NavigationBar = ({ children }) => {
   const isCoordinatePage = ['coordinate', 'member-chat'].some((e) => pathname.includes(e));
 
   return (
-    <CustomLayout isCoordinatePage={isCoordinatePage}>
+    <CustomLayout iscoordinatepage={isCoordinatePage.toString()}>
       <CustomHeader>
         {logo}
 

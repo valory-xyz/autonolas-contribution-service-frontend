@@ -47,40 +47,41 @@ export async function getAddressStatus(account) {
 }
 
 /**
- * healthcheck
+ * polling healthcheck every 2 seconds
  */
-const pollHealthCheckup = async (urlPassed) => new Promise((resolve, reject) => {
+const pollHealthCheckup = async (timeoutInSeconds) => new Promise((resolve, reject) => {
+  const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
+
   const interval = setInterval(async () => {
     try {
-      const response = await axios.get(urlPassed);
+      const response = await axios.get(url);
+      const isHealthy = !!response?.data?.is_transitioning_fast;
 
-      // if healthcheck is returned false or positive seconds, stop polling
-      const canStopPoll = response?.data?.healthcheck === false
-          || response?.data?.seconds_until_next_update > 1;
-
-      if (canStopPoll) {
+      if (isHealthy) {
         clearInterval(interval);
         resolve(response.data);
       }
     } catch (error) {
       reject(error);
     }
-  }, 2000);
+  }, timeoutInSeconds);
 });
 
 export const getHealthcheck = async () => {
+  console.log('get-health-checkup');
   const url = `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`;
 
   const response = await axios.get(url);
-  // if we received negative value, poll health checkup
-  if (response?.data?.seconds_until_next_update < 0) {
-    window.console.warn(
-      `Healthcheck: "seconds until next update" is negative - ${response?.data?.seconds_until_next_update}, polling healthcheck`,
-    );
+  const isHealthy = !!response?.data?.is_transitioning_fast;
 
-    const responseFromPolling = await pollHealthCheckup(url);
-    return responseFromPolling;
+  if (isHealthy) {
+    return response?.data;
   }
 
-  return response?.data;
+  window.console.warn(
+    `Healthcheck: is_transitioning_fast is ${response?.data?.is_transitioning_fast?.toString()}, polling healthcheck`,
+  );
+
+  const responseFromPolling = await pollHealthCheckup(2000);
+  return responseFromPolling;
 };

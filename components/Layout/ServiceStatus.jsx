@@ -27,30 +27,37 @@ const ServiceStatus = () => {
       });
   }, []);
 
+  // poll healthcheck every 1 minute
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await getHealthcheck();
+        dispatch(setHealthcheck(response));
+
+        // fetch leaderboard list
+        const list = await getLeaderboardList();
+        dispatch(setLeaderboard(list));
+
+        // update badge if the user is logged-in
+        if (account) {
+          const { details, tokenId } = await getLatestMintedNft(account);
+          dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+        }
+      } catch (error) {
+        window.console.warn('Error on fetching healthcheck');
+        window.console.error(error);
+        dispatch(setHealthcheck(null));
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <ServiceStatusInfo
       isHealthy={isHealthy}
       appType="iekit"
-      onTimerFinish={async () => {
-        // once the timer is completed, fetch the health checkup again
-        try {
-          const response = await getHealthcheck();
-          dispatch(setHealthcheck(response));
-
-          // fetch leaderboard list
-          const list = await getLeaderboardList();
-          dispatch(setLeaderboard(list));
-
-          // update badge if the user is logged-in
-          if (account) {
-            const { details, tokenId } = await getLatestMintedNft(account);
-            dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-          }
-        } catch (error) {
-          window.console.log('Error after timer completion');
-          window.console.error(error);
-        }
-      }}
+      isDefaultMaximized
     />
   );
 };
