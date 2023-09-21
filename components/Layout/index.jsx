@@ -31,10 +31,10 @@ const { useBreakpoint } = Grid;
 
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard' },
-  // { key: 'coordinate', label: 'Coordinate' },
   { key: 'tweet', label: 'Tweet' },
   { key: 'chatbot', label: 'Chatbot' },
   { key: 'members', label: 'Members' },
+  { key: 'predict', label: 'Predict' },
   { key: 'docs', label: 'Docs' },
 ];
 

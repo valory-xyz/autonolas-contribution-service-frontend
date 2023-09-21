@@ -45,5 +45,10 @@
     "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
     "component": "proposals",
     "text": "Members can vote to approve or reject tweet proposals. Approved tweets are automatically posted by an Olas-powered service."
+  },
+  {
+    "id": "e0cf5a7e-770d-4d13-9845-7b30ee66f223",
+    "component": "predict",
+    "text": "Request predictions about the future of the DAO."
   }
 ]
