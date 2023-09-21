@@ -22,6 +22,6 @@ export const DEFAULT_COORDINATE_ID = '2';
 
 export const MAX_TWEET_LENGTH = 280;
 
-export const PREDICT_BASE_URL = 'http://3.16.44.108:5000';
+export const PREDICT_BASE_URL = 'https://market-approval.staging.autonolas.tech';
 export const PREDICT_REQUEST_ENDPOINT = '/propose_market';
 export const PREDICT_GET_ALL_ENDPOINT = '/all_markets';
