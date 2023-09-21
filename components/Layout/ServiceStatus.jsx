@@ -8,57 +8,37 @@ import {
   setHealthcheck,
 } from 'store/setup/actions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
-import { notifyError } from 'common-util/functions';
-import { getHealthcheck } from './utils';
+import { useApiPolling } from 'common-util/api/useHealthCheckup';
 
 const MINUTE = 60 * 1000;
 
 const ServiceStatus = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state?.setup?.account);
-  const healthDetails = useSelector((state) => state?.setup?.healthcheck);
-  const isHealthy = !!healthDetails?.is_transitioning_fast;
 
-  // fetch healthcheck on first render
+  const pollingCallback = async () => {
+    // fetch leaderboard list
+    const list = await getLeaderboardList();
+    dispatch(setLeaderboard(list));
+
+    // update badge if the user is logged-in
+    if (account) {
+      const { details, tokenId } = await getLatestMintedNft(account);
+      dispatch(setNftDetails({ tokenId, ...(details || {}) }));
+    }
+  };
+
+  const { isHealthy, data } = useApiPolling(
+    `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`,
+    MINUTE,
+    pollingCallback,
+  );
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await getHealthcheck();
-        dispatch(setHealthcheck(response));
-      } catch (error) {
-        notifyError('Error on fetching healthcheck');
-        console.error(error);
-      }
-    };
-
-    getData();
-  }, []);
-
-  // poll healthcheck every 1 minute
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await getHealthcheck();
-        dispatch(setHealthcheck(response));
-
-        // fetch leaderboard list
-        const list = await getLeaderboardList();
-        dispatch(setLeaderboard(list));
-
-        // update badge if the user is logged-in
-        if (account) {
-          const { details, tokenId } = await getLatestMintedNft(account);
-          dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-        }
-      } catch (error) {
-        notifyError('Error on fetching healthcheck');
-        dispatch(setHealthcheck(null));
-        console.error(error);
-      }
-    }, MINUTE);
-
-    return () => clearInterval(interval);
-  }, []);
+    if (data) {
+      dispatch(setHealthcheck(data));
+    }
+  }, [data]);
 
   return <ServiceStatusInfo isHealthy={isHealthy} appType="iekit" />;
 };
