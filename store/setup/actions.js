@@ -35,11 +35,6 @@ export const setNftDetails = (nftDetails) => ({
   data: { nftDetails },
 });
 
-export const setHealthcheck = (healthcheck) => ({
-  type: syncTypes.SET_HEALTH_CHECK,
-  data: { healthcheck },
-});
-
 export const setIsMemoryDetailsLoading = (isMemoryDetailsLoading) => ({
   type: syncTypes.SET_MEMORY_DETAILS_LOADING,
   data: { isMemoryDetailsLoading },

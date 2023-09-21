@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ServiceStatusInfo } from '@autonolas/frontend-library';
 
-import {
-  setLeaderboard,
-  setNftDetails,
-  setHealthcheck,
-} from 'store/setup/actions';
+import { setLeaderboard, setNftDetails } from 'store/setup/actions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
-import { useApiPolling } from 'common-util/api/useHealthCheckup';
+import { useHealthCheckup } from 'common-util/hooks/useHealthCheckup';
 
 const MINUTE = 60 * 1000;
 
@@ -28,17 +23,11 @@ const ServiceStatus = () => {
     }
   };
 
-  const { isHealthy, data } = useApiPolling(
+  const [isHealthy] = useHealthCheckup(
     `${process.env.NEXT_PUBLIC_PFP_URL}/healthcheck`,
     MINUTE,
     pollingCallback,
   );
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setHealthcheck(data));
-    }
-  }, [data]);
 
   return <ServiceStatusInfo isHealthy={isHealthy} appType="iekit" />;
 };
