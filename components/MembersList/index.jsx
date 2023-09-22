@@ -177,7 +177,7 @@ export const MembersList = () => {
         columns={columns}
         dataSource={membersList}
         pagination={false}
-        rowKey="address"
+        rowKey={(record) => record.address}
         bordered
       />
     </Card>

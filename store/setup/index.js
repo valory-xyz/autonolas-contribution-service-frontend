@@ -14,7 +14,6 @@ const initialState = {
   isVerified: true,
   leaderboard: [],
   nftDetails: null,
-  healthcheck: null,
 
   // memory details
   isMemoryDetailsLoading: true,
@@ -34,7 +33,6 @@ export default (state = initialState, action) => {
     case syncTypes.SET_LOGIN_ERROR:
     case syncTypes.SET_CHAIND_ID:
     case syncTypes.SET_WALLET_VERIFICATION:
-    case syncTypes.SET_HEALTH_CHECK:
     case syncTypes.SET_NFT_DETAILS:
     case syncTypes.SET_MEMORY_DETAILS_LOADING:
     case syncTypes.SET_MEMORY_DETAILS:
