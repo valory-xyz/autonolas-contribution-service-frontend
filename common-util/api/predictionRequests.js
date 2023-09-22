@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PREDICT_BASE_URL, PREDICT_GET_ALL_ENDPOINT } from 'util/constants';
+import { PREDICT_BASE_URL, PREDICT_GET_ALL_ENDPOINT, PREDICT_REQUEST_ENDPOINT } from 'util/constants';
 
 export const getPredictionRequests = async () => {
   const response = await axios.get(PREDICT_BASE_URL + PREDICT_GET_ALL_ENDPOINT, {
@@ -20,4 +20,13 @@ export const getPredictionRequests = async () => {
   );
 
   return requests;
+};
+
+export const postPredictionRequest = async (payload) => {
+  await axios.post(PREDICT_BASE_URL + PREDICT_REQUEST_ENDPOINT, payload, {
+    headers: {
+      Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
+      'Content-Type': 'application/json',
+    },
+  });
 };

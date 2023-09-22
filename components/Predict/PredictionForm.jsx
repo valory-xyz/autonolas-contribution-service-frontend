@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import {
   Form, Input, Button, DatePicker,
 } from 'antd/lib';
-import axios from 'axios';
 import { uuid } from 'uuidv4';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { setPredictionRequests } from 'store/setup/actions';
-import { getPredictionRequests } from 'common-util/api/predictionRequests';
+import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { useDispatch } from 'react-redux';
-import { PREDICT_BASE_URL, PREDICT_REQUEST_ENDPOINT } from 'util/constants';
 
 const { TextArea } = Input;
 
@@ -32,20 +30,17 @@ const PredictionForm = () => {
     };
 
     try {
-      await axios.post(PREDICT_BASE_URL + PREDICT_REQUEST_ENDPOINT, payload, {
-        headers: {
-          Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
-          'Content-Type': 'application/json',
-        },
-      });
+      await postPredictionRequest(payload);
+
       const predictionRequests = await getPredictionRequests();
       dispatch(setPredictionRequests(predictionRequests));
+
       notifySuccess('Prediction requested');
+      form.resetFields();
     } catch (error) {
       notifyError('Request failed');
       console.error(error);
     } finally {
-      form.resetFields();
       setIsLoading(false);
     }
   };
