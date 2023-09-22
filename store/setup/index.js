@@ -18,6 +18,7 @@ const initialState = {
   // memory details
   isMemoryDetailsLoading: true,
   memoryDetails: [],
+  predictionRequests: [],
 };
 
 export default (state = initialState, action) => {
@@ -36,6 +37,7 @@ export default (state = initialState, action) => {
     case syncTypes.SET_NFT_DETAILS:
     case syncTypes.SET_MEMORY_DETAILS_LOADING:
     case syncTypes.SET_MEMORY_DETAILS:
+    case syncTypes.SET_PREDICTION_REQUESTS:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
     }

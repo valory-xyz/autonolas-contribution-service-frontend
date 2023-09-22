@@ -49,3 +49,8 @@ export const setLogout = () => ({
   type: syncTypes.SET_LOGOUT,
   data: null,
 });
+
+export const setPredictionRequests = (predictionRequests) => ({
+  type: syncTypes.SET_PREDICTION_REQUESTS,
+  data: { predictionRequests },
+});

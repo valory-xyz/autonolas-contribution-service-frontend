@@ -19,4 +19,6 @@ export const syncTypes = {
   SET_MEMORY_DETAILS_LOADING: `${reducerName}/Set memory details loading`,
 
   SET_STORE_STATE: `${reducerName}/Set Store State`,
+
+  SET_PREDICTION_REQUESTS: `${reducerName}/Set prediction reqeusts data`,
 };
