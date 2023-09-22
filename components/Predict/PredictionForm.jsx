@@ -43,7 +43,7 @@ const PredictionForm = () => {
       notifySuccess('Prediction requested');
     } catch (error) {
       notifyError('Request failed');
-      console.error('Error:', error);
+      console.error(error);
     } finally {
       form.resetFields();
       setIsLoading(false);
