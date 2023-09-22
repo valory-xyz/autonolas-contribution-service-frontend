@@ -18,7 +18,7 @@ const PredictionRequestsTable = () => {
         const predictionRequests = await getPredictionRequests();
         dispatch(setPredictionRequests(predictionRequests));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
