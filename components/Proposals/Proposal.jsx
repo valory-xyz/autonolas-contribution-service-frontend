@@ -9,17 +9,31 @@ import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import { notifyError, notifySuccess } from 'common-util/functions';
+import {
+  ethersToWei,
+  formatToEth,
+  notifyError,
+  notifySuccess,
+} from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
+import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { ethers } from 'ethers';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
+// const million in eth
+const ONE_MILLION = 1000000;
+const TWO_MILLION_IN_WEI = ethersToWei(`${ONE_MILLION * 2}`);
 
+const STEPS = {
+  APPROVE: 0,
+  EXECUTE: 1,
+};
 const Proposal = ({ proposal, isAddressPresent }) => {
   const [isApproveLoading, setIsApproveLoading] = useState(false);
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(STEPS.APPROVE);
 
   const {
     fetchedUpdatedMemory,
@@ -28,23 +42,31 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     triggerAction,
   } = useCentaursFunctionalities();
   const account = useSelector((state) => state?.setup?.account);
+  const votersAddress = proposal.voters?.map((voter) => Object.keys(voter)[0]);
 
-  const hasVoted = proposal.voters?.includes(account) || false;
-  const forVotes = proposal.voters?.length || 0;
-  const quorum = Math.ceil((centaur.members.length / 3) * 2);
-  const isExecutable = forVotes >= quorum;
+  const hasVoted = votersAddress?.includes(account) || false;
+  /**
+   * quorum in 2 million veolas in wei
+   */
+  const quorum = TWO_MILLION_IN_WEI;
 
-  const initStepState = () => {
-    if (isExecutable || proposal.posted) {
-      setCurrent(1);
-    } else {
-      setCurrent(0);
-    }
-  };
+  // adding all the veOlas of all the voters
+  const totalVeOlas = votersAddress?.reduce((acc, voter) => {
+    const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
+    return acc.add(ethers.BigNumber.from(currentVeOlas));
+  }, ethers.BigNumber.from(0));
 
+  // check if voters have 2 million veolas in total
+  const isExecutable = totalVeOlas.gte(quorum);
+
+  // set current step
   useEffect(() => {
-    initStepState();
-  }, []);
+    if (isExecutable || proposal.posted) {
+      setCurrent(STEPS.EXECUTE);
+    } else {
+      setCurrent(STEPS.APPROVE);
+    }
+  }, [isExecutable, proposal.posted]);
 
   const onApprove = async () => {
     if (!isAddressPresent || !account) {
@@ -62,8 +84,13 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     try {
       setIsApproveLoading(true);
 
-      const updatedVoters = [...(proposal.voters || []), account];
-      set(proposal, 'voters', updatedVoters);
+      // Update proposal with the new voter & their veOlas balance
+      const accountVeOlasBalance = await fetchVeolasBalance({ account });
+      const updatedVotersWithVeOlas = [
+        ...(proposal.voters || []),
+        { [account]: accountVeOlasBalance },
+      ];
+      set(proposal, 'voters', updatedVotersWithVeOlas);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
         (tweet) => (tweet.request_id === proposal.request_id ? proposal : tweet),
@@ -140,6 +167,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   };
 
   const tweetOrThread = proposal?.text || [];
+  const remainingVeolasForApproval = formatToEth(quorum.sub(totalVeOlas));
+
   const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>
@@ -160,7 +189,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
       <div className="mb-12">
         <Text>
-          {`${forVotes} / ${centaur.members.length} members approved · Needs at least ${quorum} approvals to execute`}
+          {`Needs at least ${remainingVeolasForApproval} veOLAS to execute`}
         </Text>
       </div>
 
@@ -225,7 +254,9 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           <br />
           {!isExecutable && (
             <Text text="secondary">
-              {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
+              {`To be executed, this proposal needs ${remainingVeolasForApproval} veOLAS. Current veOLAS: ${formatToEth(
+                totalVeOlas,
+              )}`}
             </Text>
           )}
         </>
@@ -247,7 +278,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   ];
 
   const onChange = (value) => {
-    setCurrent(value);
+    setCurrent(STEPS[value]);
   };
 
   const proposedDate = proposal?.createdDate

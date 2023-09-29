@@ -7,7 +7,12 @@ export const ProposalPropTypes = PropTypes.shape({
   text: PropTypes.oneOfType(
     [PropTypes.string, PropTypes.arrayOf(PropTypes.string)],
   ).isRequired,
-  voters: PropTypes.arrayOf(PropTypes.string),
+  voters: PropTypes.oneOfType(
+    [
+      PropTypes.arrayOf(PropTypes.string),
+      PropTypes.shape({ address: PropTypes.string.isRequired }),
+    ],
+  ),
   posted: PropTypes.bool.isRequired,
   proposer: PropTypes.string.isRequired,
 });
