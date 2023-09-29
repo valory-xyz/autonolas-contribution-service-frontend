@@ -86,6 +86,11 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
       // Update proposal with the new voter & their veOlas balance
       const accountVeOlasBalance = await fetchVeolasBalance({ account });
+      if (ethers.BigNumber.from(accountVeOlasBalance).lt(ethersToWei('1'))) {
+        notifyError('You need at least 1 veOLAS to vote');
+        return;
+      }
+
       const updatedVotersWithVeOlas = [
         ...(proposal.voters || []),
         { [account]: accountVeOlasBalance },
