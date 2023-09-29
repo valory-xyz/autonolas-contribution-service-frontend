@@ -87,7 +87,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       await triggerAction(centaur.id, action);
       await fetchedUpdatedMemory();
     } catch (error) {
-      window?.console.error(error);
+      console.error(error);
     } finally {
       setIsApproveLoading(false);
       if (isExecutable) {
