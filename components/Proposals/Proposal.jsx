@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import PropTypes from 'prop-types';
 import {
   Typography, Button, Card, Row, Col, Steps, Result,
@@ -9,22 +10,13 @@ import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import {
-  ethersToWei,
-  formatToEth,
-  notifyError,
-  notifySuccess,
-} from 'common-util/functions';
+import { ethersToWei, notifyError, notifySuccess } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { fetchVeolasBalance } from 'components/MembersList/requests';
-import { ethers } from 'ethers';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
-// const million in eth
-const ONE_MILLION = 1000000;
-const TWO_MILLION_IN_WEI = ethersToWei(`${ONE_MILLION * 2}`);
 
 const STEPS = {
   APPROVE: 0,
@@ -40,24 +32,17 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
     triggerAction,
+    getProposalInfo,
   } = useCentaursFunctionalities();
   const account = useSelector((state) => state?.setup?.account);
-  const votersAddress = proposal.voters?.map((voter) => Object.keys(voter)[0]);
 
+  const {
+    isExecutable,
+    votersAddress,
+    totalVeOlasInEth,
+    remainingVeolasForApprovalInEth,
+  } = getProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
-  /**
-   * quorum in 2 million veolas in wei
-   */
-  const quorum = TWO_MILLION_IN_WEI;
-
-  // adding all the veOlas of all the voters
-  const totalVeOlas = votersAddress?.reduce((acc, voter) => {
-    const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
-    return acc.add(ethers.BigNumber.from(currentVeOlas));
-  }, ethers.BigNumber.from(0));
-
-  // check if voters have 2 million veolas in total
-  const isExecutable = totalVeOlas.gte(quorum);
 
   // set current step
   useEffect(() => {
@@ -172,7 +157,6 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   };
 
   const tweetOrThread = proposal?.text || [];
-  const remainingVeolasForApproval = formatToEth(quorum.sub(totalVeOlas));
 
   const ApproveStep = (
     <>
@@ -194,7 +178,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
       <div className="mb-12">
         <Text>
-          {`Needs at least ${remainingVeolasForApproval} veOLAS to execute`}
+          {`Needs at least ${remainingVeolasForApprovalInEth} veOLAS to execute`}
         </Text>
       </div>
 
@@ -259,9 +243,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           <br />
           {!isExecutable && (
             <Text text="secondary">
-              {`To be executed, this proposal needs ${remainingVeolasForApproval} veOLAS. Current veOLAS: ${formatToEth(
-                totalVeOlas,
-              )}`}
+              {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeOlasInEth}`}
             </Text>
           )}
         </>
