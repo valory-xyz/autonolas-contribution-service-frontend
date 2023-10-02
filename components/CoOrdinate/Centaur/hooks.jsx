@@ -5,17 +5,13 @@ import { set } from 'lodash';
 
 import { setMemoryDetails } from 'store/setup/actions';
 import addActionToCentaur from 'util/addActionToCentaur';
-import { DEFAULT_COORDINATE_ID } from 'util/constants';
+import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import {
   areAddressesEqual,
   ethersToWei,
   formatToEth,
 } from 'common-util/functions';
-
-// const million in eth
-const ONE_MILLION = 1000000;
-const TWO_MILLION_IN_WEI = ethersToWei(`${ONE_MILLION * 2}`);
 
 /**
  * internal hook to get the centaur details
@@ -118,7 +114,7 @@ export const useProposals = () => {
   const { currentMemoryDetails } = useCentaurs();
 
   // 2 million veolas in wei
-  const quorum = TWO_MILLION_IN_WEI;
+  const quorum = ethersToWei(`${VEOLAS_QUORUM}`);
 
   /**
    * check if the current proposal has enough veOLAS to be executed
@@ -128,7 +124,7 @@ export const useProposals = () => {
       (voter) => Object.keys(voter)[0],
     );
 
-    // const totalVeolas = ethersToWei(`${ONE_MILLION * 2}`); // example
+    // const totalVeolas = ethersToWei(`${VEOLAS_QUORUM * 1}`); // example
     const totalVeolas = votersAddress?.reduce((acc, voter) => {
       // TODO: remove typeof check once voters are updated
       const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
@@ -146,7 +142,8 @@ export const useProposals = () => {
     // limit it to 2 decimal places
     const totalVeolasInvestedInPercentage = totalVeolas
       .mul(ethers.BigNumber.from(100))
-      .div(quorum).toString();
+      .div(quorum)
+      .toString();
 
     return {
       isExecutable,

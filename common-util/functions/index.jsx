@@ -84,3 +84,12 @@ export const canAddMemoryMessaage = (list, account) => {
 
   return null;
 };
+
+export const getNumberInMillions = (num) => {
+  const formattedNumber = `${new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    maximumFractionDigits: 3,
+  }).format(num / 1000000)}M`;
+
+  return formattedNumber;
+};

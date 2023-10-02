@@ -17,9 +17,15 @@ import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import { ethersToWei, notifyError, notifySuccess } from 'common-util/functions';
+import {
+  ethersToWei,
+  getNumberInMillions,
+  notifyError,
+  notifySuccess,
+} from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { VEOLAS_QUORUM } from 'util/constants';
 import {
   useCentaursFunctionalities,
   useProposals,
@@ -54,9 +60,11 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
 
+  const canMoveToExecuteStep = isExecutable || proposal.posted;
+
   // set current step
   useEffect(() => {
-    if (isExecutable || proposal.posted) {
+    if (canMoveToExecuteStep) {
       setCurrent(STEPS.EXECUTE);
     } else {
       setCurrent(STEPS.APPROVE);
@@ -188,9 +196,15 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       </Card>
 
       <div className="mb-12">
-        <div>{`${totalVeolasInEth} veOLAS has approved`}</div>
         <div>
-          {`Quorum not achieved - ${totalVeolasInEth}/${remainingVeolasForApprovalInEth} veOLAS`}
+          {`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}
+        </div>
+        <div>
+          {`Quorum ${canMoveToExecuteStep ? '' : 'not '} achieved ${
+            canMoveToExecuteStep ? '✅ ' : ''
+          } - ${getNumberInMillions(totalVeolasInEth)}/${getNumberInMillions(
+            VEOLAS_QUORUM,
+          )} veOLAS`}
         </div>
         <Progress percent={totalVeolasInvestedInPercentage} />
       </div>
