@@ -94,14 +94,15 @@ const Proposal = ({ proposal, isAddressPresent }) => {
         return;
       }
 
+      const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [
         ...(proposal.voters || []),
         { [account]: accountVeOlasBalance },
       ];
-      set(proposal, 'voters', updatedVotersWithVeOlas);
+      set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
-        (tweet) => (tweet.request_id === proposal.request_id ? proposal : tweet),
+        (tweet) => (tweet.request_id === proposal.request_id ? updatedProposal : tweet),
       );
 
       // Update centaur with updated tweets
