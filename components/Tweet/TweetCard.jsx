@@ -3,10 +3,10 @@ import { NA } from '@autonolas/frontend-library';
 import Link from 'next/link';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { useProposals } from '../CoOrdinate/Centaur/hooks';
 
 const TweetCard = () => {
-  const { filteredProposals } = useCentaursFunctionalities();
+  const { filteredProposals } = useProposals();
 
   return (
     <Card

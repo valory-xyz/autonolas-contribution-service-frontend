@@ -3,7 +3,14 @@ import { useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import PropTypes from 'prop-types';
 import {
-  Typography, Button, Card, Row, Col, Steps, Result,
+  Typography,
+  Button,
+  Card,
+  Row,
+  Col,
+  Steps,
+  Result,
+  Progress,
 } from 'antd/lib';
 import { cloneDeep, set } from 'lodash';
 import dayjs from 'dayjs';
@@ -13,7 +20,10 @@ import DisplayName from 'common-util/DisplayName';
 import { ethersToWei, notifyError, notifySuccess } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { fetchVeolasBalance } from 'components/MembersList/requests';
-import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import {
+  useCentaursFunctionalities,
+  useProposals,
+} from '../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
@@ -27,21 +37,21 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
   const [current, setCurrent] = useState(STEPS.APPROVE);
 
+  const account = useSelector((state) => state?.setup?.account);
   const {
     fetchedUpdatedMemory,
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
-    triggerAction,
-    getProposalInfo,
   } = useCentaursFunctionalities();
-  const account = useSelector((state) => state?.setup?.account);
+  const { triggerAction, getCurrentProposalInfo } = useProposals();
 
   const {
     isExecutable,
     votersAddress,
-    totalVeOlasInEth,
+    totalVeolasInEth,
     remainingVeolasForApprovalInEth,
-  } = getProposalInfo(proposal);
+    totalVeolasInvestedInPercentage,
+  } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
 
   // set current step
@@ -161,6 +171,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>
+        {/* If string, just a tweet else a thread (array of string) */}
         {typeof tweetOrThread === 'string' ? (
           <>
             <div className="mb-12">
@@ -177,9 +188,11 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       </Card>
 
       <div className="mb-12">
-        <Text>
-          {`Needs at least ${remainingVeolasForApprovalInEth} veOLAS to execute`}
-        </Text>
+        <div>{`${totalVeolasInEth} veOLAS has approved`}</div>
+        <div>
+          {`Quorum not achieved - ${totalVeolasInEth}/${remainingVeolasForApprovalInEth} veOLAS`}
+        </div>
+        <Progress percent={totalVeolasInvestedInPercentage} />
       </div>
 
       {hasVoted ? (
@@ -243,7 +256,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           <br />
           {!isExecutable && (
             <Text text="secondary">
-              {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeOlasInEth}`}
+              {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
             </Text>
           )}
         </>
@@ -265,7 +278,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   ];
 
   const onChange = (value) => {
-    setCurrent(STEPS[value]);
+    setCurrent(value === 0 ? STEPS.APPROVE : STEPS.EXECUTE);
   };
 
   const proposedDate = proposal?.createdDate

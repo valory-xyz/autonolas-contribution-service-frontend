@@ -42,29 +42,18 @@ export const getVeolasContract = (isViewOnly) => {
   const { web3, chainId } = getWeb3Details();
 
   const getAddressAndAbi = () => {
+    // for view methods use wveolas abi and address
     if (chainId === 1) {
-      // for view methods use wveolas abi and address
       if (isViewOnly) {
-        return {
-          abi: WVEOLAS_ABI_MAINNET,
-          address: WVEOLAS_ADDRESS_MAINNET,
-        };
+        return { abi: WVEOLAS_ABI_MAINNET, address: WVEOLAS_ADDRESS_MAINNET };
       }
-
-      return {
-        abi: VEOLAS_ABI,
-        address: VEOLAS_ADDRESS_MAINNET,
-      };
+      return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_MAINNET };
     }
 
-    return {
-      abi: VEOLAS_ABI,
-      address: VEOLAS_ADDRESS_GOERLI,
-    };
+    return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_GOERLI };
   };
 
   const { address, abi } = getAddressAndAbi();
-
   const contract = new web3.eth.Contract(abi, address);
   return contract;
 };

@@ -17,24 +17,32 @@ import {
 const ONE_MILLION = 1000000;
 const TWO_MILLION_IN_WEI = ethersToWei(`${ONE_MILLION * 2}`);
 
-export const useCentaursFunctionalities = () => {
-  const dispatch = useDispatch();
+/**
+ * internal hook to get the centaur details
+ * and the information should be exposed via the hook
+ */
+const useCentaurs = () => {
   const router = useRouter();
-  const account = useSelector((state) => state?.setup?.account);
-
-  const isMemoryDetailsLoading = useSelector(
-    (state) => state?.setup?.isMemoryDetailsLoading,
-  );
+  const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
   const memoryDetailsList = useSelector(
     (state) => state?.setup?.memoryDetails || [],
   );
-  const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
   const currentMemoryDetails = memoryDetailsList.find((c) => c.id === centaurId) || {};
 
-  /**
-   * 2 million veolas in wei
-   */
-  const quorum = TWO_MILLION_IN_WEI;
+  return {
+    currentMemoryDetails,
+    memoryDetailsList,
+  };
+};
+
+export const useCentaursFunctionalities = () => {
+  const dispatch = useDispatch();
+  const account = useSelector((state) => state?.setup?.account);
+  const isMemoryDetailsLoading = useSelector(
+    (state) => state?.setup?.isMemoryDetailsLoading,
+  );
+
+  const { currentMemoryDetails, memoryDetailsList } = useCentaurs();
 
   /**
    * function to update the memory with the new centaur
@@ -93,46 +101,6 @@ export const useCentaursFunctionalities = () => {
     return isEqual;
   });
 
-  /**
-   * check if the current proposal has enough veOLAS to be executed
-   */
-  const getProposalInfo = (proposal) => {
-    const votersAddress = proposal.voters?.map(
-      (voter) => Object.keys(voter)[0],
-    );
-
-    const totalVeOlas = votersAddress?.reduce((acc, voter) => {
-      // TODO: remove typeof check once voters are updated
-      const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
-      return acc.add(ethers.BigNumber.from(currentVeOlas));
-    }, ethers.BigNumber.from(0));
-
-    // check if voters have 2 million veolas in total
-    const isExecutable = totalVeOlas.gte(quorum);
-
-    const remainingVeolasForApprovalInEth = formatToEth(
-      quorum.sub(totalVeOlas),
-    );
-
-    return {
-      votersAddress,
-      isExecutable,
-      totalVeOlas,
-      totalVeOlasInEth: formatToEth(totalVeOlas),
-      remainingVeolasForApprovalInEth,
-    };
-  };
-
-  /**
-   * Proposals that are not executed and have less than 2 million veolas
-   */
-  const filteredProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
-    (proposal) => {
-      const { isExecutable } = getProposalInfo(proposal);
-      return !proposal.execute && !isExecutable;
-    },
-  );
-
   return {
     isMemoryDetailsLoading,
     memoryDetailsList,
@@ -143,7 +111,65 @@ export const useCentaursFunctionalities = () => {
     getUpdatedCentaurAfterTweetProposal,
     isAddressPresent,
     membersList,
-    getProposalInfo,
+  };
+};
+
+export const useProposals = () => {
+  const { currentMemoryDetails } = useCentaurs();
+
+  // 2 million veolas in wei
+  const quorum = TWO_MILLION_IN_WEI;
+
+  /**
+   * check if the current proposal has enough veOLAS to be executed
+   */
+  const getCurrentProposalInfo = (proposal) => {
+    const votersAddress = proposal.voters?.map(
+      (voter) => Object.keys(voter)[0],
+    );
+
+    // const totalVeolas = ethersToWei(`${ONE_MILLION * 2}`); // example
+    const totalVeolas = votersAddress?.reduce((acc, voter) => {
+      // TODO: remove typeof check once voters are updated
+      const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
+      return acc.add(ethers.BigNumber.from(currentVeOlas));
+    }, ethers.BigNumber.from(0));
+
+    // check if voters have 2 million veolas in total
+    const isExecutable = totalVeolas.gte(quorum);
+
+    const remainingVeolasForApprovalInEth = formatToEth(
+      quorum.sub(totalVeolas),
+    );
+
+    // percentage of veolas invested in the proposal
+    // limit it to 2 decimal places
+    const totalVeolasInvestedInPercentage = totalVeolas
+      .mul(ethers.BigNumber.from(100))
+      .div(quorum).toString();
+
+    return {
+      isExecutable,
+      votersAddress,
+      totalVeolas,
+      totalVeolasInEth: formatToEth(totalVeolas),
+      remainingVeolasForApprovalInEth,
+      totalVeolasInvestedInPercentage,
+    };
+  };
+
+  /**
+   * Proposals that are not executed and have less than 2 million veolas
+   */
+  const filteredProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
+    (proposal) => {
+      const { isExecutable } = getCurrentProposalInfo(proposal);
+      return !proposal.execute && !isExecutable;
+    },
+  );
+
+  return {
+    getCurrentProposalInfo,
     filteredProposals,
   };
 };
