@@ -87,13 +87,14 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     try {
       setIsApproveLoading(true);
 
-      // Update proposal with the new voter & their veOlas balance
+      // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVeolasBalance({ account });
-      if (ethers.BigNumber.from(accountVeOlasBalance).lt(ethersToWei('1'))) {
+      if (ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))) {
         notifyError('You need at least 1 veOLAS to vote');
         return;
       }
 
+      // Update proposal with the new voter & their veOlas balance
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [
         ...(proposal.voters || []),

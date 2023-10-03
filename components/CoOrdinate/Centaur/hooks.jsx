@@ -15,7 +15,7 @@ import {
 
 /**
  * internal hook to get the centaur details
- * and the information should be exposed via the hook
+ * and the information should be exposed via other hooks
  */
 const useCentaurs = () => {
   const router = useRouter();
@@ -120,14 +120,13 @@ export const useProposals = () => {
    * check if the current proposal has enough veOLAS to be executed
    */
   const getCurrentProposalInfo = (proposal) => {
+    // example of votersAddress: [ { '0x123': '1000000000000000000000000' } ]
     const votersAddress = proposal.voters?.map(
       (voter) => Object.keys(voter)[0],
     );
 
-    // const totalVeolas = ethersToWei(`${VEOLAS_QUORUM * 1}`); // example
     const totalVeolas = votersAddress?.reduce((acc, voter) => {
-      // TODO: remove typeof check once voters are updated
-      const currentVeOlas = typeof voter === 'string' ? 0 : Object.values(voter)[0];
+      const currentVeOlas = Object.values(voter)[0]; // veOlas of the current voter in wei
       return acc.add(ethers.BigNumber.from(currentVeOlas));
     }, ethers.BigNumber.from(0));
 

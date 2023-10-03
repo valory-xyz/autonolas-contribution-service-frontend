@@ -9,8 +9,6 @@ export const ProposalPropTypes = PropTypes.shape({
   ).isRequired,
   voters: PropTypes.oneOfType(
     [
-      // TODO: array of string once updated to object
-      PropTypes.arrayOf(PropTypes.string),
       // example: [address]: [veOlas_balance]
       PropTypes.shape({ address: PropTypes.string.isRequired }),
     ],
