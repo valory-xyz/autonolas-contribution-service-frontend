@@ -29,6 +29,7 @@ export const MembersList = () => {
     updateMemoryWithNewCentaur,
     fetchedUpdatedMemory,
   } = useCentaursFunctionalities();
+  const isMemberPresent = membersList.some((member) => areAddressesEqual(member.address, account));
 
   const addNewMember = async () => {
     const newMember = { address: account, ownership: 0 };
@@ -161,13 +162,11 @@ export const MembersList = () => {
     },
   ];
 
-  const isMemberPresent = membersList.some((member) => areAddressesEqual(member.address, account));
-
   return (
     <>
       {isJoinError && (
         <Alert
-          message="Join failed, please refresh the page and try again."
+          message="Join failed, please retry."
           type="error"
           className="mb-12"
           showIcon
