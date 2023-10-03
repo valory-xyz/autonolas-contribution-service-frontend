@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { toLower, isNil, lowerCase } from 'lodash';
-import { notification } from 'antd/lib';
+import { notification } from 'antd';
 import data from 'common-util/Education/data.json';
 
 export const notifyError = (message = 'Some error occured') => notification.error({

@@ -1,5 +1,5 @@
 import { TwitterOutlined } from '@ant-design/icons';
-import { Typography, Button, Modal } from 'antd/lib';
+import { Typography, Button, Modal } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 

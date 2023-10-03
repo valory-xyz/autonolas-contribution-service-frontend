@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Form, Input, Button, DatePicker,
-} from 'antd/lib';
+} from 'antd';
 import { uuid } from 'uuidv4';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { setPredictionRequests } from 'store/setup/actions';

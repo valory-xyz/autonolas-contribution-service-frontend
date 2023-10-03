@@ -1,6 +1,6 @@
 import {
   Card, Col, Row, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import PredictionForm from './PredictionForm';
 import PredictionRequestsTable from './PredictionRequestsTable';

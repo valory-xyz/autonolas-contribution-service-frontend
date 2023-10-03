@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Typography, Col, Row, Button, Alert,
-} from 'antd/lib';
+} from 'antd';
 import get from 'lodash/get';
 import styled from 'styled-components';
 import { setIsVerified } from 'store/setup/actions';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { CENTAUR_BOT_ADDRESS } from 'util/constants';
 

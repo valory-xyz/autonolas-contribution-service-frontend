@@ -1,6 +1,6 @@
 import {
   Card, Statistic,
-} from 'antd/lib';
+} from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Link from 'next/link';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';

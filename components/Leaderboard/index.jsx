@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import dynamic from 'next/dynamic';
 import {
   Col, Row, Typography,
-} from 'antd/lib';
+} from 'antd';
 import Actions from './Actions';
 import MintNft from './MintNft';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';

@@ -1,6 +1,6 @@
 import {
   Image, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Typography, Button, Card, Row, Col, Steps, Result,
-} from 'antd/lib';
+} from 'antd';
 import { cloneDeep, set } from 'lodash';
 import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';

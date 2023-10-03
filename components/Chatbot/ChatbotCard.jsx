@@ -2,7 +2,7 @@ import { MessageOutlined } from '@ant-design/icons';
 import {
   Button,
   Card, Col, Row, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Image from 'next/image';
 import Link from 'next/link';

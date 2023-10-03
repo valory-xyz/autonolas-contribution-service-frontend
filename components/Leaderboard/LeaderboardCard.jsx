@@ -1,4 +1,4 @@
-import { Card, Table } from 'antd/lib';
+import { Card, Table } from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { getName } from 'common-util/functions';
 import Link from 'next/link';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { List } from 'antd/lib';
+import { List } from 'antd';
 import PropTypes from 'prop-types';
 import { areAddressesEqual } from 'common-util/functions';
 

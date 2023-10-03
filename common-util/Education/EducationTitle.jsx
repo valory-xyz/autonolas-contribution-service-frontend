@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Col, Popover, Row, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { getEducationItemByComponent } from 'util/education';
 import Link from 'next/link';

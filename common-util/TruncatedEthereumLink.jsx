@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from 'antd/lib';
+import { Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 
 function TruncatedEthereumLink({ text, isTransaction, className }) {

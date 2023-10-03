@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Button, Input, notification, Row, Col,
-} from 'antd/lib';
+} from 'antd';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
 import { PlusCircleOutlined } from '@ant-design/icons';

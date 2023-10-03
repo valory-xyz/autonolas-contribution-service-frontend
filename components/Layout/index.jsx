@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { Layout, Menu, Grid } from 'antd/lib';
+import { Layout, Menu, Grid } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import {

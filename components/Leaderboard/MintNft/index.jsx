@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Typography, Skeleton } from 'antd/lib';
+import { Button, Typography, Skeleton } from 'antd';
 import get from 'lodash/get';
 import { setNftDetails } from 'store/setup/actions';
 import { getLatestMintedNft } from 'common-util/api';

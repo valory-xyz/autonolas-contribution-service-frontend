@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
   Input, Button, List, Space, Drawer, Card, Row, Col,
-} from 'antd/lib';
+} from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { notifyError, notifySuccess } from 'common-util/functions';

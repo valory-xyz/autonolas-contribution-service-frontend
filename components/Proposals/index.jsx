@@ -1,6 +1,6 @@
 import {
   Alert, Card, List, Skeleton,
-} from 'antd/lib';
+} from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposal from './Proposal';

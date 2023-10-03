@@ -1,6 +1,6 @@
 import {
   Card, Col, Row, Skeleton, Statistic, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { getTier } from 'common-util/functions';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';

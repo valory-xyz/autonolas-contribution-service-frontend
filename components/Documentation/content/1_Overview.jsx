@@ -1,4 +1,4 @@
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 import educationItems from 'common-util/Education/data.json';
 import { DOCS_SECTIONS } from '../helpers';
 

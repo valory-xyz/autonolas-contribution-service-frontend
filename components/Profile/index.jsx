@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Col, List, Row, Skeleton, Statistic, Typography,
-} from 'antd/lib';
+} from 'antd';
 import PropTypes from 'prop-types';
 import { setLeaderboard } from 'store/setup/actions';
 import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';

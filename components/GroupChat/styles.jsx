@@ -1,4 +1,4 @@
-import { Card } from 'antd/lib';
+import { Card } from 'antd';
 import styled from 'styled-components';
 
 export const GroupChatContainer = styled(Card)`

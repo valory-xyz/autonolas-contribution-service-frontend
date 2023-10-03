@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd/lib';
+import { Col, Row } from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import GroupChat from 'components/GroupChat';
 import MembersList from 'components/MembersList';

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import {
   Button, Input, notification, Space, Card, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 
 /** Import Orbis SDK */

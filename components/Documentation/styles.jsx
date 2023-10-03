@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
-import { Card } from 'antd/lib';
+import { Card } from 'antd';
 
 export const Container = styled(Card)`
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Typography } from 'antd/lib';
+import { Card, List, Typography } from 'antd';
 import { EducationTitle } from '../MintNft/Education';
 import data from './data.json';
 

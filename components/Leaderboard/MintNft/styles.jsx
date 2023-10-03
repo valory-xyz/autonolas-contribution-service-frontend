@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card } from 'antd/lib';
+import { Card } from 'antd';
 import { COLOR } from '@autonolas/frontend-library';
 
 export const IMAGE_SIZE = 300;

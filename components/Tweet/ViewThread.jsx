@@ -1,5 +1,5 @@
 import PropTypes, { string } from 'prop-types';
-import { Button, Typography, Timeline } from 'antd/lib';
+import { Button, Typography, Timeline } from 'antd';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 

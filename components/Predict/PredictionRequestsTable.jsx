@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd/lib';
+import { Table } from 'antd';
 import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';

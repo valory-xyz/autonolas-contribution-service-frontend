@@ -8,7 +8,7 @@ import {
   Modal,
   Input,
   notification,
-} from 'antd/lib';
+} from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';

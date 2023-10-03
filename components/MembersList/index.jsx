@@ -4,7 +4,7 @@ import { useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
 import {
   Table, Typography, Button, notification, Card,
-} from 'antd/lib';
+} from 'antd';
 import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
