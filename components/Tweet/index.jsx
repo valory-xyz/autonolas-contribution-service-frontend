@@ -12,7 +12,7 @@ import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { notifyError } from 'common-util/functions';
 
 import Proposals from '../Proposals';
-import { checkIfHas100kVeOlas } from '../MembersList/requests';
+import { checkIfHas100kVeOlas } from '../Members/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { TweetLength, ProposalCountRow } from './utils';
 import ThreadModal from './ThreadModal';

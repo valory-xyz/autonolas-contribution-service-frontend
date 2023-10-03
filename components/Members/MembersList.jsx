@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
@@ -16,7 +15,6 @@ const { Text } = Typography;
 
 export const MembersList = () => {
   const router = useRouter();
-  const [joinLoading, setJoinLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
   const {
     membersList,
@@ -50,22 +48,39 @@ export const MembersList = () => {
     // await triggerAction(centaurId, action);
   };
 
-  const { signMessage } = useSignMessage({
+  const {
+    signMessageAsync: signMessage,
+    isError,
+    isLoading: isJoinLoading,
+    isSuccess,
+    data,
+  } = useSignMessage({
     message: 'Sign this message to verify ownership over this address.',
 
     onSettled: async (_data, error) => {
+      console.log({
+        data: _data,
+        error,
+      });
       if (error) {
         console.error(error);
-        notifyError('Some error occured while signing the message');
+        notifyError(
+          error.details || 'Some error occured while signing the message',
+        );
       } else {
         await addNewMember();
       }
-      setJoinLoading(false);
     },
   });
 
+  console.log({
+    isError,
+    isJoinLoading,
+    isSuccess,
+    data,
+  });
+
   const onJoin = async () => {
-    setJoinLoading(true);
     try {
       const balance = await fetchVeolasBalance({ account });
       if (Number(balance) === 0) {
@@ -82,13 +97,11 @@ export const MembersList = () => {
           </>,
         );
       } else {
-        signMessage();
+        await signMessage();
       }
     } catch (error) {
       notifyError('Join failed');
       console.error(error);
-    } finally {
-      setJoinLoading(false);
     }
   };
 
@@ -155,7 +168,7 @@ export const MembersList = () => {
             type="primary"
             className="mr-12"
             disabled={!account}
-            loading={joinLoading}
+            loading={isJoinLoading}
             onClick={onJoin}
           >
             Join

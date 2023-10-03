@@ -24,7 +24,7 @@ import {
   notifySuccess,
 } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
-import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { fetchVeolasBalance } from 'components/Members/requests';
 import { VEOLAS_QUORUM } from 'util/constants';
 import {
   useCentaursFunctionalities,
