@@ -121,7 +121,9 @@ const GroupChat = ({ chatEnabled }) => {
               </Fragment>
             ))
           ) : (
-            <Card>To see messages, first join Contribute</Card>
+            <div className="mt-24">
+              <Text type="secondary">To see messages, first join Contribute</Text>
+            </div>
           )}
         </div>
       ) : (
