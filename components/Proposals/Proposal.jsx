@@ -1,50 +1,75 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import PropTypes from 'prop-types';
 import {
-  Typography, Button, Card, Row, Col, Steps, Result,
+  Typography,
+  Button,
+  Card,
+  Row,
+  Col,
+  Steps,
+  Result,
+  Progress,
 } from 'antd/lib';
 import { cloneDeep, set } from 'lodash';
 import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import { notifyError, notifySuccess } from 'common-util/functions';
+import {
+  ethersToWei,
+  getNumberInMillions,
+  notifyError,
+  notifySuccess,
+} from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
-import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { VEOLAS_QUORUM } from 'util/constants';
+import {
+  useCentaursFunctionalities,
+  useProposals,
+} from '../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
 
+const STEPS = {
+  APPROVE: 0,
+  EXECUTE: 1,
+};
 const Proposal = ({ proposal, isAddressPresent }) => {
   const [isApproveLoading, setIsApproveLoading] = useState(false);
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(STEPS.APPROVE);
 
+  const account = useSelector((state) => state?.setup?.account);
   const {
     fetchedUpdatedMemory,
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
-    triggerAction,
   } = useCentaursFunctionalities();
-  const account = useSelector((state) => state?.setup?.account);
+  const { triggerAction, getCurrentProposalInfo } = useProposals();
 
-  const hasVoted = proposal.voters?.includes(account) || false;
-  const forVotes = proposal.voters?.length || 0;
-  const quorum = Math.ceil((centaur.members.length / 3) * 2);
-  const isExecutable = forVotes >= quorum;
+  const {
+    isExecutable,
+    votersAddress,
+    totalVeolasInEth,
+    remainingVeolasForApprovalInEth,
+    totalVeolasInvestedInPercentage,
+  } = getCurrentProposalInfo(proposal);
+  const hasVoted = votersAddress?.includes(account) || false;
 
-  const initStepState = () => {
-    if (isExecutable || proposal.posted) {
-      setCurrent(1);
-    } else {
-      setCurrent(0);
-    }
-  };
+  const canMoveToExecuteStep = isExecutable || proposal.posted;
 
+  // set current step
   useEffect(() => {
-    initStepState();
-  }, []);
+    if (canMoveToExecuteStep) {
+      setCurrent(STEPS.EXECUTE);
+    } else {
+      setCurrent(STEPS.APPROVE);
+    }
+  }, [isExecutable, proposal.posted]);
 
   const onApprove = async () => {
     if (!isAddressPresent || !account) {
@@ -62,11 +87,23 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     try {
       setIsApproveLoading(true);
 
-      const updatedVoters = [...(proposal.voters || []), account];
-      set(proposal, 'voters', updatedVoters);
+      // Check if the user has at least 1 veOlas
+      const accountVeOlasBalance = await fetchVeolasBalance({ account });
+      if (ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))) {
+        notifyError('You need at least 1 veOLAS to vote');
+        return;
+      }
+
+      // Update proposal with the new voter & their veOlas balance
+      const updatedProposal = cloneDeep(proposal);
+      const updatedVotersWithVeOlas = [
+        ...(proposal.voters || []),
+        { [account]: accountVeOlasBalance },
+      ];
+      set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
-        (tweet) => (tweet.request_id === proposal.request_id ? proposal : tweet),
+        (tweet) => (tweet.request_id === proposal.request_id ? updatedProposal : tweet),
       );
 
       // Update centaur with updated tweets
@@ -87,7 +124,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       await triggerAction(centaur.id, action);
       await fetchedUpdatedMemory();
     } catch (error) {
-      window?.console.error(error);
+      console.error(error);
     } finally {
       setIsApproveLoading(false);
       if (isExecutable) {
@@ -140,9 +177,11 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   };
 
   const tweetOrThread = proposal?.text || [];
+
   const ApproveStep = (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>
+        {/* If string, just a tweet else a thread (array of string) */}
         {typeof tweetOrThread === 'string' ? (
           <>
             <div className="mb-12">
@@ -159,9 +198,17 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       </Card>
 
       <div className="mb-12">
-        <Text>
-          {`${forVotes} / ${centaur.members.length} members approved · Needs at least ${quorum} approvals to execute`}
-        </Text>
+        <div>
+          {`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}
+        </div>
+        <div>
+          {`Quorum ${canMoveToExecuteStep ? '' : 'not '} achieved ${
+            canMoveToExecuteStep ? '✅ ' : ''
+          } - ${getNumberInMillions(totalVeolasInEth)}/${getNumberInMillions(
+            VEOLAS_QUORUM,
+          )} veOLAS`}
+        </div>
+        <Progress percent={totalVeolasInvestedInPercentage} />
       </div>
 
       {hasVoted ? (
@@ -225,7 +272,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
           <br />
           {!isExecutable && (
             <Text text="secondary">
-              {`To be executed, this proposal needs ${quorum} approvals. Current approvals: ${forVotes}`}
+              {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
             </Text>
           )}
         </>
@@ -247,7 +294,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   ];
 
   const onChange = (value) => {
-    setCurrent(value);
+    setCurrent(value === 0 ? STEPS.APPROVE : STEPS.EXECUTE);
   };
 
   const proposedDate = proposal?.createdDate

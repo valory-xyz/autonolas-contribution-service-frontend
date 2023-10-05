@@ -63,6 +63,14 @@ export const formatToEth = (value, dv = 0) => {
 };
 
 /**
+ * converts eth to wei
+ * @example
+ * input: 1
+ * output: 1000000000000000000
+ */
+export const ethersToWei = (value) => ethers.utils.parseUnits(value, 'ether');
+
+/**
  * returns error message if user can't add memory message
  * else returns null. If null, enable the button to add memory
  */
@@ -75,4 +83,13 @@ export const canAddMemoryMessaage = (list, account) => {
   if (!isPresent) return 'To add to memory, join this centaur';
 
   return null;
+};
+
+export const getNumberInMillions = (num) => {
+  const formattedNumber = `${new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    maximumFractionDigits: 3,
+  }).format(num / 1000000)}M`;
+
+  return formattedNumber;
 };

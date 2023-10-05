@@ -92,7 +92,7 @@ const Tweet = () => {
 
   return (
     <Row gutter={16}>
-      <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={8} className="mb-24">
         <SocialPosterContainer>
           <EducationTitle title="Tweet" educationItem="tweet" />
 
@@ -136,7 +136,7 @@ const Tweet = () => {
         </SocialPosterContainer>
       </Col>
 
-      <Col xs={24} md={24} lg={12} xl={12}>
+      <Col xs={24} md={24} lg={16}>
         <Proposals isAddressPresent={isAddressPresent} />
       </Col>
     </Row>
