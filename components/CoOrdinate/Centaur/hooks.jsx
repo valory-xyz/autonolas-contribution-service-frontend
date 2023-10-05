@@ -120,12 +120,8 @@ export const useProposals = () => {
    * check if the current proposal has enough veOLAS to be executed
    */
   const getCurrentProposalInfo = (proposal) => {
-    // example of votersAddress: [ { '0x123': '1000000000000000000000000' } ]
-    const votersAddress = proposal.voters?.map(
-      (voter) => Object.keys(voter)[0],
-    );
-
-    const totalVeolas = votersAddress?.reduce((acc, voter) => {
+    // example of voters: [ { '0x123': '1000000000000000000000000' } ]
+    const totalVeolas = proposal?.voters?.reduce((acc, voter) => {
       const currentVeOlas = Object.values(voter)[0]; // veOlas of the current voter in wei
       return acc.add(ethers.BigNumber.from(currentVeOlas));
     }, ethers.BigNumber.from(0));
@@ -146,7 +142,6 @@ export const useProposals = () => {
 
     return {
       isExecutable,
-      votersAddress,
       totalVeolas,
       totalVeolasInEth: formatToEth(totalVeolas),
       remainingVeolasForApprovalInEth,
