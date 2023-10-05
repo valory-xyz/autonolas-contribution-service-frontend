@@ -142,7 +142,6 @@ export const useProposals = () => {
 
     return {
       isExecutable,
-      votersAddress,
       totalVeolas,
       totalVeolasInEth: formatToEth(totalVeolas),
       remainingVeolasForApprovalInEth,
