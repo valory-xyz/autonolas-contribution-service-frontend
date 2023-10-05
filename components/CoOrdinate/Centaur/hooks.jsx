@@ -125,7 +125,7 @@ export const useProposals = () => {
       (voter) => Object.keys(voter)[0],
     );
 
-    const totalVeolas = votersAddress?.reduce((acc, voter) => {
+    const totalVeolas = proposal?.voters?.reduce((acc, voter) => {
       const currentVeOlas = Object.values(voter)[0]; // veOlas of the current voter in wei
       return acc.add(ethers.BigNumber.from(currentVeOlas));
     }, ethers.BigNumber.from(0));
