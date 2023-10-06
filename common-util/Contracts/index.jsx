@@ -20,7 +20,8 @@ const getWeb3Details = () => {
    * provider = wallect-connect provider or currentProvider by metamask
    */
   const web3 = new Web3(window.WEB3_PROVIDER || window.web3.currentProvider);
-  const chainId = Number(window.ethereum.chainId);
+  // Get chainId from window object or default to ethereum
+  const chainId = Number(window?.ethereum?.chainId) || 1;
 
   return { web3, chainId };
 };
