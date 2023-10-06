@@ -35,7 +35,7 @@ export const MembersList = () => {
     // Update the Ceramic stream
     // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
     await updateMemoryWithNewCentaur(updatedCentaur);
-    notification.success({ message: 'Joined centaur' });
+    notification.success({ message: 'Joined' });
 
     // Add action to the centaur
     // const action = {

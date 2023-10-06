@@ -26,7 +26,22 @@ const Tweet = () => (
       <Link href="/tweet">Tweet</Link>
       {' '}
       page. Write your tweet and propose it.
-      Other members will vote on it. If it gets enough votes, it will be posted.
+      Other members will vote on it. If the proposed tweet gets enough voting power, it will
+      be posted.
+    </Paragraph>
+
+    <Paragraph>
+      Voting power is measured in veOLAS. OLAS holders lock veOLAS in order to
+      be able to participate in Contribute, DAO voting and service donations.
+      {' '}
+      <a
+        href="https://member.olas.network"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Get veOLAS
+      </a>
+      .
     </Paragraph>
 
     <br />
