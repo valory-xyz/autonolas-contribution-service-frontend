@@ -11,7 +11,9 @@ import {
   Steps,
   Result,
   Progress,
+  Popconfirm,
 } from 'antd/lib';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { cloneDeep, set } from 'lodash';
 import dayjs from 'dayjs';
 import { NA } from '@autonolas/frontend-library';
@@ -126,8 +128,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsApproveLoading(false);
       if (isExecutable) {
+        setIsApproveLoading(false);
         setCurrent(1);
       }
     }
@@ -197,6 +199,29 @@ const Proposal = ({ proposal, isAddressPresent }) => {
         )}
       </Card>
 
+      {hasVoted ? (
+        <Text className="mb-8">✅ You approved</Text>
+      ) : (
+        <div className="mb-8">
+          <Button
+            ghost
+            type="primary"
+            onClick={onApprove}
+            loading={isApproveLoading}
+            disabled={!account || !isAddressPresent}
+          >
+            Approve this tweet
+          </Button>
+
+          {!account && (
+            <>
+              <br />
+              <Text type="secondary">To approve, connect your wallet</Text>
+            </>
+          )}
+        </div>
+      )}
+
       <div className="mb-12">
         <div>
           {`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}
@@ -210,29 +235,6 @@ const Proposal = ({ proposal, isAddressPresent }) => {
         </div>
         <Progress percent={totalVeolasInvestedInPercentage} />
       </div>
-
-      {hasVoted ? (
-        <Text>✅ You approved</Text>
-      ) : (
-        <>
-          <Button
-            ghost
-            type="primary"
-            onClick={onApprove}
-            loading={isApproveLoading}
-            disabled={!account || !isAddressPresent}
-          >
-            Approve this proposal
-          </Button>
-
-          {!account && (
-            <>
-              <br />
-              <Text type="secondary">To approve, connect your wallet</Text>
-            </>
-          )}
-        </>
-      )}
     </>
   );
 
@@ -259,16 +261,21 @@ const Proposal = ({ proposal, isAddressPresent }) => {
         <Text>Posting tweet...</Text>
       ) : (
         <>
-          <Button
-            ghost
-            type="primary"
-            onClick={onExecute}
-            loading={isExecuteLoading}
-            disabled={!isAddressPresent || !account || !isExecutable}
-            className="mb-12"
+          <Popconfirm
+            title="Are you sure？This will immediately post to the @autonolas Twitter account."
+            icon={<ExclamationCircleOutlined style={{ color: 'orange' }} />}
+            onConfirm={onExecute}
           >
-            Execute & post tweet
-          </Button>
+            <Button
+              ghost
+              type="primary"
+              loading={isExecuteLoading}
+              disabled={!isAddressPresent || !account || !isExecutable}
+              className="mb-12"
+            >
+              Execute & post tweet
+            </Button>
+          </Popconfirm>
           <br />
           {!isExecutable && (
             <Text text="secondary">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Button, Input, notification, Row, Col,
+  Button, Input, notification, Row, Col, Typography,
 } from 'antd/lib';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
@@ -11,11 +11,14 @@ import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { notifyError } from 'common-util/functions';
 
+import Link from 'next/link';
 import Proposals from '../Proposals';
 import { checkIfHas100kVeOlas } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { TweetLength, ProposalCountRow } from './utils';
 import ThreadModal from './ThreadModal';
+
+const { Text } = Typography;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
@@ -133,6 +136,14 @@ const Tweet = () => {
           >
             Propose
           </Button>
+          <br />
+          <Text type="secondary">
+            To propose a tweet, you must
+            {' '}
+            <Link href="/members">join Contribute</Link>
+            {' '}
+            and hold at least 100k veOLAS.
+          </Text>
         </SocialPosterContainer>
       </Col>
 
