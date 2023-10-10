@@ -1,30 +1,25 @@
+import React from 'react';
 import {
-  Card, Col, Row, Typography,
+  Col, Row,
 } from 'antd/lib';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import PredictionForm from './PredictionForm';
 import PredictionRequestsTable from './PredictionRequestsTable';
 
-const { Title } = Typography;
-
 const Predict = () => (
-  <>
-    <div className="mb-24">
-      <EducationTitle title="Predict" educationItem="predict" />
-    </div>
-    <Row gutter={12}>
-      <Col lg={8} xs={24} className="mb-24">
-        <Card title={<Title level={5}>Request a prediction</Title>}>
+  <div style={{ maxWidth: 700, margin: '0 auto' }}>
+    <div className="mb-12">
+      <Row>
+        <Col span={12}>
+          <EducationTitle title="Predict" educationItem="predict" />
+        </Col>
+        <Col span={12} style={{ textAlign: 'right' }}>
           <PredictionForm />
-        </Card>
-      </Col>
-      <Col lg={16} xs={24}>
-        <Card title={<Title level={5}>Requests</Title>} bodyStyle={{ padding: 0 }}>
-          <PredictionRequestsTable />
-        </Card>
-      </Col>
-    </Row>
-  </>
+        </Col>
+      </Row>
+    </div>
+    <PredictionRequestsTable />
+  </div>
 );
 
 export default Predict;

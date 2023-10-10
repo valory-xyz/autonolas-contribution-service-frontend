@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Form, Input, Button, DatePicker,
+  Form, Input, Button, DatePicker, Modal,
 } from 'antd/lib';
 import { uuid } from 'uuidv4';
 import { notifyError, notifySuccess } from 'common-util/functions';
@@ -13,6 +13,7 @@ const { TextArea } = Input;
 const PredictionForm = () => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,35 +43,46 @@ const PredictionForm = () => {
       console.error(error);
     } finally {
       setIsLoading(false);
+      setIsModalVisible(false);
     }
   };
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
   return (
-    <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item
-        label="Question"
-        name="question"
-        extra="Questions must expect a yes/no answer"
-        rules={[{ required: true, message: 'Please input a question' }]}
-      >
-        <TextArea />
-      </Form.Item>
+    <>
+      <Button type="primary" onClick={showModal}>
+        Ask a question
+      </Button>
+      <Modal title="Ask a question" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Form.Item
+            label="Question"
+            name="question"
+            extra="Questions must expect a yes/no answer"
+            rules={[{ required: true, message: 'Please input a question' }]}
+          >
+            <TextArea />
+          </Form.Item>
 
-      <Form.Item
-        label="Resolution time"
-        name="resolution_time"
-        extra="This is when you receive your answer"
-        rules={[{ required: true, message: 'Please pick the resolution time' }]}
-      >
-        <DatePicker showTime />
-      </Form.Item>
+          <Form.Item
+            label="Closing date"
+            name="resolution_time"
+            rules={[{ required: true, message: 'Please pick the closing date' }]}
+          >
+            <DatePicker showTime />
+          </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isLoading}>
-          Request
-        </Button>
-      </Form.Item>
-    </Form>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={isLoading}>
+              Ask
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 };
 
