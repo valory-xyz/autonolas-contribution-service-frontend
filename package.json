@@ -46,7 +46,7 @@
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
-    "uuidv4": "^6.2.13",
+    "uuid": "^9.0.1",
     "viem": "^0.3.35",
     "wagmi": "^1.0.8",
     "web3": "^1.7.3"

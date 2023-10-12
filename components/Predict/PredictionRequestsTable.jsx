@@ -10,7 +10,7 @@ import {
 import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPredictionRequests } from 'store/setup/actions';
+import { setPredictionRequests, setApprovedRequestsCount } from 'store/setup/actions';
 import { gql } from '@apollo/client';
 import client from 'apolloClient';
 import { LoadingOutlined, LinkOutlined } from '@ant-design/icons';
@@ -47,10 +47,9 @@ const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const PredictionRequestsTable = () => {
   const [loading, setLoading] = useState(true);
-  const [approvedRequestsCount, setApprovedRequestsCount] = useState(0);
 
   const dispatch = useDispatch();
-  const data = useSelector((state) => state?.setup?.predictionRequests);
+  const {predictionRequests : data, approvedRequestsCount} = useSelector((state) => state?.setup);
 
   const fetchData = async (initialLoad = false) => {
     if (initialLoad) {
@@ -60,7 +59,7 @@ const PredictionRequestsTable = () => {
       processedRequests: predictionRequests,
       approvedRequestsCount: count,
     } = await getPredictionRequests();
-    setApprovedRequestsCount(count);
+    dispatch(setApprovedRequestsCount(count));
 
     const queryResponse = await client.query({
       query: GET_FIXED_PRODUCT_MARKET_MAKERS,
@@ -95,7 +94,7 @@ const PredictionRequestsTable = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [approvedRequestsCount]);
 
   return (
     <>
@@ -115,7 +114,7 @@ const PredictionRequestsTable = () => {
         />
       )}
 
-      <Card bodyStyle={{ padding: 0, backgroundColor: 'white' }}>
+      <Card bodyStyle={{ padding: 0, backgroundColor: 'white', borderRadius: '5px' }}>
         <List
           itemLayout="horizontal"
           dataSource={data}
@@ -140,52 +139,80 @@ const PredictionRequestsTable = () => {
                     <Text strong>
                       Answer –
                       {' '}
-                      {item.currentAnswer ? 'Final' : 'Predicted'}
+                      {item.currentAnswer ? 'Final' : item.outcomeTokenMarginalPrices ? 'Predicted' : 'Finalizing...'}
                       {' '}
                     </Text>
                     <br />
                     {item.currentAnswer === null ? (
-                      <>
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            gap: '2rem',
-                          }}
-                        >
-                          <Statistic
-                            title="Yes"
-                            value={Math.round(
-                              parseFloat(item.outcomeTokenMarginalPrices[0])
-                                * 100,
-                            )}
-                            suffix="%"
+                      item.outcomeTokenMarginalPrices ? (
+                        <>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              gap: '2rem',
+                            }}
+                          >
+                            <Statistic
+                              title="Yes"
+                              value={Math.round(
+                                parseFloat(item?.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0])
+                                  * 100,
+                              )}
+                              valueStyle={{ color: '#10b981' }}
+                              suffix="%"
+                            />
+                            <Statistic
+                              title="No"
+                              value={Math.round(
+                                (1
+                                  - parseFloat(
+                                    item.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0],
+                                  ))
+                                  * 100,
+                              )}
+                              valueStyle={{ color: '#ef4444' }}
+                              suffix="%"
+                            />
+                            <Statistic
+                              title="Prediction Count"
+                              value={item.tradeCount}
+                            />
+                          </div>
+                          <Progress
+                            percent={
+                              parseFloat(
+                                item.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0]) * 100
+                            }
+                            strokeColor="#10b981"
+                            trailColor='#ef4444'
+                            strokeLinecap="butt"
+                            showInfo={false}
+                            style={{ maxWidth: '600px' }}
                           />
-                          <Statistic
-                            title="No"
-                            value={Math.round(
-                              (1
-                                - parseFloat(
-                                  item.outcomeTokenMarginalPrices[0],
-                                ))
-                                * 100,
-                            )}
-                            suffix="%"
-                          />
-                          <Statistic
-                            title="Prediction Count"
-                            value={item.tradeCount}
-                          />
-                        </div>
-                        <Progress
-                          percent={
-                            parseFloat(item.outcomeTokenMarginalPrices[0]) * 100
-                          }
-                          strokeColor="#52c41a"
-                          showInfo={false}
-                          style={{ maxWidth: '600px' }}
-                        />
-                        <br />
+                          <br />
+                          <Text type="secondary">
+                            Final answer will be available on
+                            {' '}
+                            {dayjs
+                              .unix(item.resolution_time)
+                              .format("DD MMM 'YY")}
+                            {' '}
+                            ·
+                            {' '}
+                            <a
+                              href={`https://aiomen.eth.limo/#/${item.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+                            >
+                              See prediction market
+                              {' '}
+                              <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
+                            </a>
+                          </Text>
+                        </>
+                      ) : (
                         <Text type="secondary">
                           Final answer will be available on
                           {' '}
@@ -206,7 +233,7 @@ const PredictionRequestsTable = () => {
                             <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
                           </a>
                         </Text>
-                      </>
+                      )
                     ) : (
                       <>
                         <Statistic
@@ -244,6 +271,9 @@ const PredictionRequestsTable = () => {
           )}
         />
       </Card>
+      {process.env.NODE_ENV === 'development' && (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      )}
     </>
   );
 };

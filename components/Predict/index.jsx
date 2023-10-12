@@ -11,7 +11,7 @@ const Predict = () => (
     <div className="mb-12">
       <Row>
         <Col span={12}>
-          <EducationTitle title="Predict" educationItem="predict" />
+          <EducationTitle title="Predict" educationItem="predict" level={3} />
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>
           <PredictionForm />

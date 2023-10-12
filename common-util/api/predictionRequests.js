@@ -11,57 +11,16 @@ export const getPredictionRequests = async () => {
     },
   });
 
-  const markets = response.data.all_markets;
-  const prefilteredRequests = Object.keys(markets).map((key) => ({
-    ...markets[key],
-    key: markets[key].id,
+  const requests = response.data.all_markets;
+  const prefilteredRequests = Object.keys(requests).map((key) => ({
+    ...requests[key],
+    key: requests[key].id,
   }));
 
-  // const allRequests = prefilteredRequests.filter(
-  //   (market) => market.source === 'contribute',
-  // );
-
-  const allRequests = [
-    {
-      answers: [
-        'Yes',
-        'No',
-      ],
-      id: '0xee062891c7590a2cefe4f2166ecdb10ea126061e',
-      language: 'en_US',
-      question: "Will Olas DAO's latest round of bonding products be fully consumed by the end of 30 September 2023?",
-      resolution_time: 1696114799,
-      source: 'contribute',
-      state: 'APPROVED',
-      topic: 'olas',
-    },
-    {
-      answers: [
-        'Yes',
-        'No',
-      ],
-      id: '0xee062891c7590a2cefe4f2166ecdb10ea126061e',
-      language: 'en_US',
-      question: "Will Olas DAO's latest round of bonding products be fully consumed by the end of 30 September 2023?",
-      resolution_time: 1696114799,
-      source: 'contribute',
-      state: 'PROCESSED',
-      topic: 'olas',
-    },
-    {
-      answers: [
-        'Yes',
-        'No',
-      ],
-      id: '0xa07b86ce047420d1760416179b3f592f36cc740a',
-      language: 'en_US',
-      question: "Will Olas DAO's latest round of bonding products be fully consumed by the end of 30 September 2023?",
-      resolution_time: 1696114799,
-      source: 'contribute',
-      state: 'PROCESSED',
-      topic: 'olas',
-    },
-  ];
+  
+  const allRequests = prefilteredRequests.filter(
+    (market) => market.source === 'contribute',
+    );
 
   const processedRequests = allRequests.filter(
     (market) => market.state === 'PROCESSED',
@@ -71,11 +30,14 @@ export const getPredictionRequests = async () => {
     (market) => market.state === 'APPROVED',
   ).length;
 
+  console.log(allRequests);
+
   return {
     allRequests,
     approvedRequestsCount,
     processedRequests,
   };
+
 };
 
 export const postPredictionRequest = async (payload) => {
@@ -90,7 +52,10 @@ export const postPredictionRequest = async (payload) => {
     { headers },
   );
 
-  const { id } = response.data;
+  // Extract the id from the response data
+  // Respond structure data.info = "Market ID {id} created successfully."
+  const id = response.data.info.split(" ")[2];
 
+  // Make a POST request to the PREDICT_APPROVE_ENDPOINT with the extracted id
   await axios.post(PREDICT_BASE_URL + PREDICT_APPROVE_ENDPOINT, { id }, { headers });
 };

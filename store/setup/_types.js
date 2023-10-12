@@ -20,5 +20,6 @@ export const syncTypes = {
 
   SET_STORE_STATE: `${reducerName}/Set Store State`,
 
-  SET_PREDICTION_REQUESTS: `${reducerName}/Set prediction reqeusts data`,
+  SET_PREDICTION_REQUESTS: `${reducerName}/Set prediction requests data`,
+  SET_APPROVED_REQUESTS_COUNT: `${reducerName}/Set approved requests count`,
 };

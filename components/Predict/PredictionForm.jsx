@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
   Form, Input, Button, DatePicker, Modal,
 } from 'antd/lib';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { notifyError, notifySuccess } from 'common-util/functions';
-import { setPredictionRequests } from 'store/setup/actions';
+import { setApprovedRequestsCount, setPredictionRequests } from 'store/setup/actions';
 import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { useDispatch } from 'react-redux';
 
@@ -32,11 +32,11 @@ const PredictionForm = () => {
 
     try {
       await postPredictionRequest(payload);
-
-      const predictionRequests = await getPredictionRequests();
-      dispatch(setPredictionRequests(predictionRequests));
-
-      notifySuccess('Prediction requested');
+      
+      const {approvedRequestsCount} = await getPredictionRequests()
+      dispatch(setApprovedRequestsCount(approvedRequestsCount));
+      
+      notifySuccess('Question asked');
       form.resetFields();
     } catch (error) {
       notifyError('Request failed');
