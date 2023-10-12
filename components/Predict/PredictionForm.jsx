@@ -6,7 +6,8 @@ import { v4 as uuid } from 'uuid';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { setApprovedRequestsCount } from 'store/setup/actions';
 import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkVeolasThreshold } from 'components/MembersList/requests';
 
 const { TextArea } = Input;
 
@@ -17,8 +18,33 @@ const PredictionForm = () => {
 
   const dispatch = useDispatch();
 
+  const account = useSelector((state) => state?.setup?.account);
+  const isAddressPresent = useSelector((state) => state?.setup?.isAddressPresent);
+
   const handleSubmit = async (values) => {
     setIsLoading(true);
+
+    // Check if the user has a connected wallet
+    if (!account) {
+      notifyError('Connect your wallet to ask questions');
+      setIsLoading(false);
+      return;
+    }
+
+    // Check if the connected address is a member
+    if (!isAddressPresent) {
+      notifyError('Join Contribute to ask questions');
+      setIsLoading(false);
+      return;
+    }
+
+    const thresholdIsMet = checkVeolasThreshold(account, '5000000000000000000000');
+
+    if (thresholdIsMet) {
+      notifyError('Get at least 5k veOLAS to ask questions');
+      setIsLoading(false);
+      return;
+    }
 
     const payload = {
       id: uuid(),

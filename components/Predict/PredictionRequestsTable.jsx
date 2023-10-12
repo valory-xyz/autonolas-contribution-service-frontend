@@ -299,9 +299,6 @@ const PredictionRequestsTable = () => {
           }}
         />
       </Card>
-      {process.env.NODE_ENV === 'development' && (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      )}
     </>
   );
 };
