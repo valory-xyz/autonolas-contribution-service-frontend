@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  List,
-  Typography,
-  Spin,
-  Progress,
-  Card,
-  Statistic,
+  List, Typography, Spin, Progress, Card, Statistic,
 } from 'antd/lib';
 import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPredictionRequests, setApprovedRequestsCount } from 'store/setup/actions';
+import {
+  setPredictionRequests,
+  setApprovedRequestsCount,
+} from 'store/setup/actions';
 import { gql } from '@apollo/client';
-import client from 'apolloClient';
 import { LoadingOutlined, LinkOutlined } from '@ant-design/icons';
+import client from '../../apolloClient';
 import { ProcessingBanner } from './styles';
 
 const { Text } = Typography;
@@ -36,7 +34,7 @@ const GET_FIXED_PRODUCT_MARKET_MAKERS = gql`
       currentAnswer
       resolutionTimestamp
     }
-    fpmmTrades(where: {fpmm_in: $ids}) {
+    fpmmTrades(where: { fpmm_in: $ids }) {
       id
       outcomeTokensTraded
     }
@@ -49,7 +47,9 @@ const PredictionRequestsTable = () => {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const {predictionRequests : data, approvedRequestsCount} = useSelector((state) => state?.setup);
+  const { predictionRequests: data, approvedRequestsCount } = useSelector(
+    (state) => state?.setup,
+  );
 
   const fetchData = async (initialLoad = false) => {
     if (initialLoad) {
@@ -74,7 +74,9 @@ const PredictionRequestsTable = () => {
         (tradeItem) => tradeItem.id.startsWith(item.id),
       ).length;
 
-      return queryItem ? { ...item, ...queryItem, tradeCount } : { ...item, tradeCount };
+      return queryItem
+        ? { ...item, ...queryItem, tradeCount }
+        : { ...item, tradeCount };
     });
 
     dispatch(setPredictionRequests(mergedData));
@@ -114,37 +116,50 @@ const PredictionRequestsTable = () => {
         />
       )}
 
-      <Card bodyStyle={{ padding: 0, backgroundColor: 'white', borderRadius: '5px' }}>
+      <Card
+        bodyStyle={{
+          padding: 0,
+          backgroundColor: 'white',
+          borderRadius: '5px',
+        }}
+      >
         <List
           itemLayout="horizontal"
           dataSource={data}
           loading={loading}
-          renderItem={(item) => (
-            <List.Item style={{ padding: '20px' }}>
-              <List.Item.Meta
-                title={(
-                  <div style={{ maxWidth: '600px' }} className="mb-12">
-                    <Text
-                      style={{
-                        fontSize: '24px',
-                        wordWrap: 'break-word',
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                  </div>
-                )}
-                description={(
-                  <>
-                    <Text strong>
-                      Answer –
-                      {' '}
-                      {item.currentAnswer ? 'Final' : item.outcomeTokenMarginalPrices ? 'Predicted' : 'Finalizing...'}
-                      {' '}
-                    </Text>
-                    <br />
-                    {item.currentAnswer === null ? (
-                      item.outcomeTokenMarginalPrices ? (
+          renderItem={(item) => {
+            let answerStatus;
+            if (item.currentAnswer) {
+              answerStatus = 'Final';
+            } else if (item.outcomeTokenMarginalPrices) {
+              answerStatus = 'Predicted';
+            } else {
+              answerStatus = 'Finalizing...';
+            }
+
+            return (
+              <List.Item style={{ padding: '20px' }}>
+                <List.Item.Meta
+                  title={(
+                    <div style={{ maxWidth: '600px' }} className="mb-12">
+                      <Text
+                        style={{
+                          fontSize: '24px',
+                          wordWrap: 'break-word',
+                        }}
+                      >
+                        {item.title}
+                      </Text>
+                    </div>
+                  )}
+                  description={(
+                    <>
+                      <Text strong>
+                        Answer –
+                        {answerStatus}
+                      </Text>
+                      <br />
+                      {answerStatus === 'Predicted' && (
                         <>
                           <div
                             style={{
@@ -156,8 +171,10 @@ const PredictionRequestsTable = () => {
                             <Statistic
                               title="Yes"
                               value={Math.round(
-                                parseFloat(item?.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0])
-                                  * 100,
+                                parseFloat(
+                                  item?.outcomeTokenMarginalPrices
+                                    && item.outcomeTokenMarginalPrices[0],
+                                ) * 100,
                               )}
                               valueStyle={{ color: '#10b981' }}
                               suffix="%"
@@ -167,7 +184,8 @@ const PredictionRequestsTable = () => {
                               value={Math.round(
                                 (1
                                   - parseFloat(
-                                    item.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0],
+                                    item.outcomeTokenMarginalPrices
+                                      && item.outcomeTokenMarginalPrices[0],
                                   ))
                                   * 100,
                               )}
@@ -182,10 +200,12 @@ const PredictionRequestsTable = () => {
                           <Progress
                             percent={
                               parseFloat(
-                                item.outcomeTokenMarginalPrices && item.outcomeTokenMarginalPrices[0]) * 100
+                                item.outcomeTokenMarginalPrices
+                                  && item.outcomeTokenMarginalPrices[0],
+                              ) * 100
                             }
                             strokeColor="#10b981"
-                            trailColor='#ef4444'
+                            trailColor="#ef4444"
                             strokeLinecap="butt"
                             showInfo={false}
                             style={{ maxWidth: '600px' }}
@@ -208,11 +228,14 @@ const PredictionRequestsTable = () => {
                             >
                               See prediction market
                               {' '}
-                              <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
+                              <LinkOutlined
+                                style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+                              />
                             </a>
                           </Text>
                         </>
-                      ) : (
+                      )}
+                      {answerStatus === 'Finalizing...' && (
                         <Text type="secondary">
                           Final answer will be available on
                           {' '}
@@ -230,45 +253,50 @@ const PredictionRequestsTable = () => {
                           >
                             See prediction market
                             {' '}
-                            <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
+                            <LinkOutlined
+                              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+                            />
                           </a>
                         </Text>
-                      )
-                    ) : (
-                      <>
-                        <Statistic
-                          value={
-                            // eslint-disable-next-line radix
-                            parseInt(item.currentAnswer?.slice(-1)) === 1
-                              ? 'Yes'
-                              : 'No'
-                          }
-                        />
-                        <Text type="secondary">
-                          {`Answered on ${dayjs
-                            .unix(item.answerFinalizedTimestamp)
-                            .format("DD MMM 'YY")}`}
-                          {' '}
-                          ·
-                          {' '}
-                          <a
-                            href={`https://aiomen.eth.limo/#/${item.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                          >
-                            See prediction market
+                      )}
+                      {answerStatus === 'Final' && (
+                        <>
+                          <Statistic
+                            value={
+                              // eslint-disable-next-line radix
+                              parseInt(item.currentAnswer?.slice(-1)) === 1
+                                ? 'Yes'
+                                : 'No'
+                            }
+                          />
+                          <Text type="secondary">
+                            {`Answered on ${dayjs
+                              .unix(item.answerFinalizedTimestamp)
+                              .format("DD MMM 'YY")}`}
                             {' '}
-                            <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
-                          </a>
-                        </Text>
-                      </>
-                    )}
-                  </>
-                )}
-              />
-            </List.Item>
-          )}
+                            ·
+                            {' '}
+                            <a
+                              href={`https://aiomen.eth.limo/#/${item.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+                            >
+                              See prediction market
+                              {' '}
+                              <LinkOutlined
+                                style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+                              />
+                            </a>
+                          </Text>
+                        </>
+                      )}
+                    </>
+                  )}
+                />
+              </List.Item>
+            );
+          }}
         />
       </Card>
       {process.env.NODE_ENV === 'development' && (

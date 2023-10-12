@@ -55,7 +55,6 @@ export const setPredictionRequests = (predictionRequests) => ({
   data: { predictionRequests },
 });
 
-
 export const setApprovedRequestsCount = (approvedRequestsCount) => ({
   type: syncTypes.SET_APPROVED_REQUESTS_COUNT,
   data: { approvedRequestsCount },

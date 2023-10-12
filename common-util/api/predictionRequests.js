@@ -17,10 +17,9 @@ export const getPredictionRequests = async () => {
     key: requests[key].id,
   }));
 
-  
   const allRequests = prefilteredRequests.filter(
     (market) => market.source === 'contribute',
-    );
+  );
 
   const processedRequests = allRequests.filter(
     (market) => market.state === 'PROCESSED',
@@ -30,14 +29,11 @@ export const getPredictionRequests = async () => {
     (market) => market.state === 'APPROVED',
   ).length;
 
-  console.log(allRequests);
-
   return {
     allRequests,
     approvedRequestsCount,
     processedRequests,
   };
-
 };
 
 export const postPredictionRequest = async (payload) => {
@@ -54,7 +50,7 @@ export const postPredictionRequest = async (payload) => {
 
   // Extract the id from the response data
   // Respond structure data.info = "Market ID {id} created successfully."
-  const id = response.data.info.split(" ")[2];
+  const id = response.data.info.split(' ')[2];
 
   // Make a POST request to the PREDICT_APPROVE_ENDPOINT with the extracted id
   await axios.post(PREDICT_BASE_URL + PREDICT_APPROVE_ENDPOINT, { id }, { headers });

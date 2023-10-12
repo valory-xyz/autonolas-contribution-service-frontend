@@ -4,7 +4,7 @@ import {
 } from 'antd/lib';
 import { v4 as uuid } from 'uuid';
 import { notifyError, notifySuccess } from 'common-util/functions';
-import { setApprovedRequestsCount, setPredictionRequests } from 'store/setup/actions';
+import { setApprovedRequestsCount } from 'store/setup/actions';
 import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { useDispatch } from 'react-redux';
 
@@ -32,10 +32,10 @@ const PredictionForm = () => {
 
     try {
       await postPredictionRequest(payload);
-      
-      const {approvedRequestsCount} = await getPredictionRequests()
+
+      const { approvedRequestsCount } = await getPredictionRequests();
       dispatch(setApprovedRequestsCount(approvedRequestsCount));
-      
+
       notifySuccess('Question asked');
       form.resetFields();
     } catch (error) {
