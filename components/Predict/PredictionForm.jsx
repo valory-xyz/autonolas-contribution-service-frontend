@@ -8,6 +8,7 @@ import { setApprovedRequestsCount } from 'store/setup/actions';
 import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkVeolasThreshold } from '../MembersList/requests';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { TextArea } = Input;
 
@@ -15,11 +16,11 @@ const PredictionForm = () => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { isAddressPresent } = useCentaursFunctionalities();
 
   const dispatch = useDispatch();
 
   const account = useSelector((state) => state?.setup?.account);
-  const isAddressPresent = useSelector((state) => state?.setup?.isAddressPresent);
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
