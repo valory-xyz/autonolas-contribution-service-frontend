@@ -94,9 +94,10 @@ const PredictionForm = () => {
           </Form.Item>
 
           <Form.Item
-            label="Closing date"
+            label="Final answer date"
             name="resolution_time"
-            rules={[{ required: true, message: 'Please pick the closing date' }]}
+            extra="Enter the date when the question can be definitively answered"
+            rules={[{ required: true, message: 'Please pick the final answer date' }]}
           >
             <DatePicker showTime />
           </Form.Item>
