@@ -11,6 +11,8 @@ import {
 } from 'store/setup/actions';
 import { gql } from '@apollo/client';
 import { LoadingOutlined, LinkOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+import { COLOR } from '@autonolas/frontend-library';
 import client from '../../apolloClient';
 import { ProcessingBanner } from './styles';
 
@@ -42,6 +44,23 @@ const GET_FIXED_PRODUCT_MARKET_MAKERS = gql`
 `;
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+const PredictionMarketLink = ({ id }) => (
+  <a
+    href={`https://aiomen.eth.limo/#/${id}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+  >
+    See prediction market
+    {' '}
+    <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
+  </a>
+);
+
+PredictionMarketLink.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 const PredictionRequestsTable = () => {
   const [loading, setLoading] = useState(true);
@@ -128,18 +147,127 @@ const PredictionRequestsTable = () => {
           dataSource={data}
           loading={loading}
           renderItem={(item) => {
-            if (!item.id) {
+            const {
+              id,
+              outcomeTokenMarginalPrices,
+              resolution_time: resolutionTime,
+              currentAnswer,
+              tradeCount,
+              answerFinalizedTimestamp,
+            } = item;
+
+            if (!id) {
               return null;
             }
 
+            const marginalPrice = outcomeTokenMarginalPrices?.[0] ?? 0;
+            const marginalPriceAsPercent = parseFloat(marginalPrice) * 100;
+
+            const STATUS = {
+              PREDICTED: 'Predicted',
+              FINAL: 'Final',
+              FINALIZING: 'Finalizing...',
+            };
+
             let answerStatus;
-            if (item.currentAnswer) {
-              answerStatus = 'Final';
-            } else if (item.outcomeTokenMarginalPrices) {
-              answerStatus = 'Predicted';
+            if (currentAnswer) {
+              answerStatus = STATUS.FINAL;
+            } else if (outcomeTokenMarginalPrices) {
+              answerStatus = STATUS.PREDICTED;
             } else {
-              answerStatus = 'Finalizing...';
+              answerStatus = STATUS.FINALIZING;
             }
+
+            const answerDateFormat = "DD MMM 'YY";
+            const FinalAnswerText = () => (
+              <Text type="secondary">
+                Final answer will be available on
+                {' '}
+                {dayjs.unix(resolutionTime).format(answerDateFormat)}
+                {' '}
+                ·
+                {' '}
+                <PredictionMarketLink id={id} />
+              </Text>
+            );
+
+            const ListItemDescription = () => (
+              <>
+                <Text strong>
+                  Answer –
+                  {' '}
+                  {answerStatus}
+                </Text>
+                <br />
+                {answerStatus === STATUS.PREDICTED && (
+                  <>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        gap: '2rem',
+                      }}
+                    >
+                      <Statistic
+                        title="Yes"
+                        value={Math.round(
+                          marginalPriceAsPercent,
+                        )}
+                        valueStyle={{ color: COLOR.GREEN_1 }}
+                        suffix="%"
+                      />
+                      <Statistic
+                        title="No"
+                        value={Math.round(
+                          marginalPriceAsPercent,
+                        )}
+                        valueStyle={{ color: COLOR.RED }}
+                        suffix="%"
+                      />
+                      <Statistic
+                        title="Prediction Count"
+                        value={tradeCount}
+                      />
+                    </div>
+                    <Progress
+                      percent={
+                        marginalPriceAsPercent
+                      }
+                      strokeColor={COLOR.GREEN_1}
+                      trailColor={COLOR.RED}
+                      strokeLinecap="butt"
+                      showInfo={false}
+                      style={{ maxWidth: '600px' }}
+                    />
+                    <br />
+                    <FinalAnswerText />
+                  </>
+                )}
+                {answerStatus === STATUS.FINALIZING && (
+                  <FinalAnswerText />
+                )}
+                {answerStatus === STATUS.FINAL && (
+                  <>
+                    <Statistic
+                      value={
+                        parseInt(currentAnswer?.slice(-1), 10) === 0
+                          ? 'Yes'
+                          : 'No'
+                      }
+                    />
+                    <Text type="secondary">
+                      {`Answered on ${dayjs
+                        .unix(answerFinalizedTimestamp)
+                        .format(answerDateFormat)}`}
+                      {' '}
+                      ·
+                      {' '}
+                      <PredictionMarketLink id={id} />
+                    </Text>
+                  </>
+                )}
+              </>
+            );
 
             return (
               <List.Item style={{ padding: '20px' }}>
@@ -155,148 +283,8 @@ const PredictionRequestsTable = () => {
                         {item.title}
                       </Text>
                     </div>
-                    )}
-                  description={(
-                    <>
-                      <Text strong>
-                        Answer –
-                        {answerStatus}
-                      </Text>
-                      <br />
-                      {answerStatus === 'Predicted' && (
-                      <>
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            gap: '2rem',
-                          }}
-                        >
-                          <Statistic
-                            title="Yes"
-                            value={Math.round(
-                              parseFloat(
-                                item?.outcomeTokenMarginalPrices
-                                      && item.outcomeTokenMarginalPrices[0],
-                              ) * 100,
-                            )}
-                            valueStyle={{ color: '#10b981' }}
-                            suffix="%"
-                          />
-                          <Statistic
-                            title="No"
-                            value={Math.round(
-                              (1
-                                    - parseFloat(
-                                      item.outcomeTokenMarginalPrices
-                                        && item.outcomeTokenMarginalPrices[0],
-                                    ))
-                                    * 100,
-                            )}
-                            valueStyle={{ color: '#ef4444' }}
-                            suffix="%"
-                          />
-                          <Statistic
-                            title="Prediction Count"
-                            value={item.tradeCount}
-                          />
-                        </div>
-                        <Progress
-                          percent={
-                                parseFloat(
-                                  item.outcomeTokenMarginalPrices
-                                    && item.outcomeTokenMarginalPrices[0],
-                                ) * 100
-                              }
-                          strokeColor="#10b981"
-                          trailColor="#ef4444"
-                          strokeLinecap="butt"
-                          showInfo={false}
-                          style={{ maxWidth: '600px' }}
-                        />
-                        <br />
-                        <Text type="secondary">
-                          Final answer will be available on
-                          {' '}
-                          {dayjs
-                            .unix(item.resolution_time)
-                            .format("DD MMM 'YY")}
-                          {' '}
-                          ·
-                          {' '}
-                          <a
-                            href={`https://aiomen.eth.limo/#/${item.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                          >
-                            See prediction market
-                            {' '}
-                            <LinkOutlined
-                              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                            />
-                          </a>
-                        </Text>
-                      </>
-                      )}
-                      {answerStatus === 'Finalizing...' && (
-                      <Text type="secondary">
-                        Final answer will be available on
-                        {' '}
-                        {dayjs
-                          .unix(item.resolution_time)
-                          .format("DD MMM 'YY")}
-                        {' '}
-                        ·
-                        {' '}
-                        <a
-                          href={`https://aiomen.eth.limo/#/${item.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                        >
-                          See prediction market
-                          {' '}
-                          <LinkOutlined
-                            style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                          />
-                        </a>
-                      </Text>
-                      )}
-                      {answerStatus === 'Final' && (
-                      <>
-                        <Statistic
-                          value={
-                                // eslint-disable-next-line radix
-                                parseInt(item.currentAnswer?.slice(-1)) === 1
-                                  ? 'Yes'
-                                  : 'No'
-                              }
-                        />
-                        <Text type="secondary">
-                          {`Answered on ${dayjs
-                            .unix(item.answerFinalizedTimestamp)
-                            .format("DD MMM 'YY")}`}
-                          {' '}
-                          ·
-                          {' '}
-                          <a
-                            href={`https://aiomen.eth.limo/#/${item.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                          >
-                            See prediction market
-                            {' '}
-                            <LinkOutlined
-                              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-                            />
-                          </a>
-                        </Text>
-                      </>
-                      )}
-                    </>
-                    )}
+                  )}
+                  description={<ListItemDescription />}
                 />
               </List.Item>
             );

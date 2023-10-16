@@ -10,9 +10,9 @@ export const fetchVeolasBalance = async ({ account }) => {
   return balance;
 };
 
-export const checkVeolasThreshold = async (account, threshold) => {
+export const checkVeolasThreshold = async (account, thresholdInWei) => {
   const balance = await fetchVeolasBalance({ account });
   const bNBalance = BigNumber.from(balance);
-  const processedThreshold = BigNumber.from(threshold);
+  const processedThreshold = BigNumber.from(thresholdInWei);
   return bNBalance.gte(processedThreshold);
 };

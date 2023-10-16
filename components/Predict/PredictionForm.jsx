@@ -7,7 +7,7 @@ import { notifyError, notifySuccess } from 'common-util/functions';
 import { setApprovedRequestsCount } from 'store/setup/actions';
 import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkVeolasThreshold } from 'components/MembersList/requests';
+import { checkVeolasThreshold } from '../MembersList/requests';
 
 const { TextArea } = Input;
 
