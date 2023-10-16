@@ -91,9 +91,6 @@ const GlobalStyle = createGlobalStyle`
   .ml-12 {
     margin-left: 12px;
   }
-  .mr-12 {
-    margin-right: 12px;
-  }
   .w-100 {
     width: 100%;
   }
@@ -136,6 +133,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* layout */
   .ant-layout-header {
+    padding: 0 20px;
     display: flex;
     position: fixed;
     z-index: 10;

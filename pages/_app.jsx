@@ -2,6 +2,7 @@
 import App from 'next/app';
 import { createWrapper } from 'next-redux-wrapper';
 import PropTypes from 'prop-types';
+import { ApolloProvider } from '@apollo/client';
 
 import { WagmiConfig } from 'wagmi';
 
@@ -9,6 +10,7 @@ import Meta from 'common-util/meta';
 import GlobalStyle from 'components/GlobalStyles';
 import Layout from 'components/Layout';
 import { wagmiConfig } from 'common-util/Login/config';
+import client from '../apolloClient';
 import initStore from '../store';
 
 require('../styles/antd.less');
@@ -30,9 +32,11 @@ class MyApp extends App {
         <GlobalStyle />
         <Meta />
         <WagmiConfig config={wagmiConfig}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <ApolloProvider client={client}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ApolloProvider>
         </WagmiConfig>
       </>
     );

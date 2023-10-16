@@ -4,7 +4,7 @@ import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
   .site-layout {
-    padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 50px 120px 50px;')};
+    padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 20px 100px 20px;')};
     margin-top: 64px;
     .contribute-footer {
       > div {
@@ -54,7 +54,6 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-left: 0.5rem;
   margin-right: 1rem;
   span {
     margin-left: 0.5rem;
