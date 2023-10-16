@@ -96,7 +96,7 @@ const PredictionForm = () => {
           <Form.Item
             label="Final answer date"
             name="resolution_time"
-            extra="Enter the date when the question can be definitively answered"
+            extra="When will it be possible to definitively answer the question?"
             rules={[{ required: true, message: 'Please pick the final answer date' }]}
           >
             <DatePicker showTime />
