@@ -45,9 +45,9 @@ const GET_FIXED_PRODUCT_MARKET_MAKERS = gql`
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-const PredictionMarketLink = ({ id }) => (
+const PredictionMarketLink = ({ fpmmId }) => (
   <a
-    href={`https://aiomen.eth.limo/#/${id}`}
+    href={`https://aiomen.eth.limo/#/${fpmmId}`}
     target="_blank"
     rel="noopener noreferrer"
     style={{ color: 'rgba(0, 0, 0, 0.45)' }}
@@ -59,7 +59,7 @@ const PredictionMarketLink = ({ id }) => (
 );
 
 PredictionMarketLink.propTypes = {
-  id: PropTypes.string.isRequired,
+  fpmmId: PropTypes.string.isRequired,
 };
 
 const PredictionRequestsTable = () => {
@@ -74,6 +74,7 @@ const PredictionRequestsTable = () => {
     if (initialLoad) {
       setLoading(true);
     }
+
     const {
       processedRequests: predictionRequests,
       approvedRequestsCount: count,
@@ -82,7 +83,7 @@ const PredictionRequestsTable = () => {
 
     const queryResponse = await client.query({
       query: GET_FIXED_PRODUCT_MARKET_MAKERS,
-      variables: { ids: predictionRequests.map((item) => item.id) },
+      variables: { ids: predictionRequests.map((item) => item.fpmm_id) },
     });
 
     const mergedData = predictionRequests.map((item) => {
@@ -90,7 +91,7 @@ const PredictionRequestsTable = () => {
         (matchedItem) => matchedItem.id === item.id,
       );
       const tradeCount = queryResponse.data.fpmmTrades.filter(
-        (tradeItem) => tradeItem.id.startsWith(item.id),
+        (tradeItem) => tradeItem.id.startsWith(item.fpmm_id),
       ).length;
 
       return queryItem
@@ -154,9 +155,10 @@ const PredictionRequestsTable = () => {
               currentAnswer,
               tradeCount,
               answerFinalizedTimestamp,
+              fpmm_id: fpmmId,
             } = item;
 
-            if (!id) {
+            if (!fpmmId) {
               return null;
             }
 
@@ -187,7 +189,7 @@ const PredictionRequestsTable = () => {
                 {' '}
                 ·
                 {' '}
-                <PredictionMarketLink id={id} />
+                <PredictionMarketLink fpmmId={fpmmId} />
               </Text>
             );
 
@@ -262,7 +264,7 @@ const PredictionRequestsTable = () => {
                       {' '}
                       ·
                       {' '}
-                      <PredictionMarketLink id={id} />
+                      <PredictionMarketLink fpmmId={fpmmId} />
                     </Text>
                   </>
                 )}
