@@ -41,7 +41,7 @@ const PredictionForm = () => {
 
     const thresholdIsMet = checkVeolasThreshold(account, '5000000000000000000000');
 
-    if (thresholdIsMet) {
+    if (!thresholdIsMet) {
       notifyError('Get at least 5k veOLAS to ask questions');
       setIsLoading(false);
       return;
