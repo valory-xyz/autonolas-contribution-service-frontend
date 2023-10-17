@@ -12,7 +12,6 @@ import {
 import { gql } from '@apollo/client';
 import { LoadingOutlined, LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import { COLOR } from '@autonolas/frontend-library';
 import client from '../../apolloClient';
 import { ProcessingBanner } from './styles';
 
@@ -81,17 +80,22 @@ const PredictionRequestsTable = () => {
     } = await getPredictionRequests();
     dispatch(setApprovedRequestsCount(count));
 
+    const requestFpmmIds = predictionRequests.map((item) => item.fpmm_id.toLowerCase());
+
     const queryResponse = await client.query({
       query: GET_FIXED_PRODUCT_MARKET_MAKERS,
-      variables: { ids: predictionRequests.map((item) => item.fpmm_id) },
+      variables: {
+        ids: requestFpmmIds,
+      },
     });
 
     const mergedData = predictionRequests.map((item) => {
       const queryItem = queryResponse.data.fixedProductMarketMakers.find(
-        (matchedItem) => matchedItem.id === item.id,
+        (matchedItem) => matchedItem.id === item.fpmm_id.toLowerCase(),
       );
+
       const tradeCount = queryResponse.data.fpmmTrades.filter(
-        (tradeItem) => tradeItem.id.startsWith(item.fpmm_id),
+        (tradeItem) => tradeItem.id.startsWith(item.fpmm_id.toLowerCase()),
       ).length;
 
       return queryItem
@@ -108,15 +112,11 @@ const PredictionRequestsTable = () => {
   useEffect(() => {
     fetchData(true);
     const intervalId = setInterval(async () => {
-      const { approvedRequestsCount: newCount } = await getPredictionRequests();
-
-      if (newCount !== approvedRequestsCount) {
-        fetchData();
-      }
+      fetchData();
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [approvedRequestsCount]);
+  }, []);
 
   return (
     <>
@@ -127,7 +127,7 @@ const PredictionRequestsTable = () => {
               <Spin className="mr-12" indicator={spinIcon} />
               {`Processing ${approvedRequestsCount} question${
                 approvedRequestsCount > 1 ? 's' : ''
-              }`}
+              } – can take up to 10 minutes`}
             </>
           )}
           showIcon={false}
@@ -145,25 +145,23 @@ const PredictionRequestsTable = () => {
       >
         <List
           itemLayout="horizontal"
-          dataSource={data}
+          dataSource={data.sort((a, b) => b.utc_timestamp_processed - a.utc_timestamp_processed)}
           loading={loading}
           renderItem={(item) => {
             const {
-              id,
               outcomeTokenMarginalPrices,
               resolution_time: resolutionTime,
               currentAnswer,
               tradeCount,
               answerFinalizedTimestamp,
               fpmm_id: fpmmId,
+              title,
             } = item;
 
-            if (!fpmmId) {
-              return null;
-            }
-
-            const marginalPrice = outcomeTokenMarginalPrices?.[0] ?? 0;
-            const marginalPriceAsPercent = parseFloat(marginalPrice) * 100;
+            const getMarginalPricePercent = (index) => {
+              const marginalPrice = outcomeTokenMarginalPrices?.[index] ?? 0;
+              return Math.round(parseFloat(marginalPrice) * 100);
+            };
 
             const STATUS = {
               PREDICTED: 'Predicted',
@@ -193,6 +191,12 @@ const PredictionRequestsTable = () => {
               </Text>
             );
 
+            const DescriptionNoTitle = () => (
+              <Text>
+                Creating prediction market...
+              </Text>
+            );
+
             const ListItemDescription = () => (
               <>
                 <Text strong>
@@ -212,18 +216,14 @@ const PredictionRequestsTable = () => {
                     >
                       <Statistic
                         title="Yes"
-                        value={Math.round(
-                          marginalPriceAsPercent,
-                        )}
-                        valueStyle={{ color: COLOR.GREEN_1 }}
+                        value={getMarginalPricePercent(0)}
+                        valueStyle={{ color: '#34d399' }}
                         suffix="%"
                       />
                       <Statistic
                         title="No"
-                        value={Math.round(
-                          marginalPriceAsPercent,
-                        )}
-                        valueStyle={{ color: COLOR.RED }}
+                        value={getMarginalPricePercent(1)}
+                        valueStyle={{ color: '#f43f5e' }}
                         suffix="%"
                       />
                       <Statistic
@@ -233,10 +233,10 @@ const PredictionRequestsTable = () => {
                     </div>
                     <Progress
                       percent={
-                        marginalPriceAsPercent
+                        getMarginalPricePercent(0)
                       }
-                      strokeColor={COLOR.GREEN_1}
-                      trailColor={COLOR.RED}
+                      strokeColor="#34d399"
+                      trailColor="#f43f5e"
                       strokeLinecap="butt"
                       showInfo={false}
                       style={{ maxWidth: '600px' }}
@@ -274,7 +274,7 @@ const PredictionRequestsTable = () => {
             return (
               <List.Item style={{ padding: '20px' }}>
                 <List.Item.Meta
-                  title={(
+                  title={title ? (
                     <div style={{ maxWidth: '600px' }} className="mb-12">
                       <Text
                         style={{
@@ -285,8 +285,8 @@ const PredictionRequestsTable = () => {
                         {item.title}
                       </Text>
                     </div>
-                  )}
-                  description={<ListItemDescription />}
+                  ) : null}
+                  description={title ? <ListItemDescription /> : <DescriptionNoTitle />}
                 />
               </List.Item>
             );

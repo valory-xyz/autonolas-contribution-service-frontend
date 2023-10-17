@@ -22,7 +22,7 @@ export const getPredictionRequests = async () => {
   );
 
   const processedRequests = allRequests.filter(
-    (market) => market.state === 'PROCESSED',
+    (market) => market.state === 'PROCESSED' && market.fpmm_id,
   );
 
   const approvedRequestsCount = allRequests.filter(
