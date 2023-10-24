@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { toLower, isNil, lowerCase } from 'lodash';
 import { notification } from 'antd/lib';
 import data from 'common-util/Education/data.json';
+import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
 export const notifyError = (message = 'Some error occured') => notification.error({
   message,
@@ -92,4 +93,9 @@ export const getNumberInMillions = (num) => {
   }).format(num / 1000000)}M`;
 
   return formattedNumber;
+};
+
+export const isAddressProhibited = (address) => {
+  const addresses = prohibitedAddresses.map((e) => toLower(e));
+  return addresses.includes(toLower(address));
 };
