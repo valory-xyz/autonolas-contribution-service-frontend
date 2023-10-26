@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import {
   Layout, Grid, Button,
-} from 'antd/lib'; // Import Button from antd
+} from 'antd/lib';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import {
