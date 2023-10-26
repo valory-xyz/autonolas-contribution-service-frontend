@@ -95,7 +95,7 @@ const Tweet = () => {
 
   return (
     <Row gutter={16}>
-      <Col xs={24} md={24} lg={8} className="mb-24">
+      <Col xs={24} md={24} lg={16} className="mb-24">
         <SocialPosterContainer>
           <EducationTitle title="Tweet" educationItem="tweet" />
 
@@ -128,7 +128,7 @@ const Tweet = () => {
           </ProposalCountRow>
 
           <Button
-            className="mt-12 mb-8"
+            className="mt-12 mb-12"
             type="primary"
             disabled={!canSubmit}
             loading={isSubmitting && !isThreadModalVisible}
@@ -147,7 +147,7 @@ const Tweet = () => {
         </SocialPosterContainer>
       </Col>
 
-      <Col xs={24} md={24} lg={16}>
+      <Col xs={24} md={24} lg={24}>
         <Proposals isAddressPresent={isAddressPresent} />
       </Col>
     </Row>

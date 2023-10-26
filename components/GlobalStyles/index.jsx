@@ -40,6 +40,9 @@ const GlobalStyle = createGlobalStyle`
   .mb-48 {
     margin-bottom: 48px !important;
   }
+  .mr-8 {
+    margin-right: 8px !important;
+  }
   .mr-12 {
     margin-right: 12px !important;
   }
@@ -129,6 +132,13 @@ const GlobalStyle = createGlobalStyle`
   }
   .hide-only-sm {
     display: initial;
+  }
+
+  .ant-menu-vertical > .ant-menu-item {
+    padding: 0 20px;
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   /* layout */
