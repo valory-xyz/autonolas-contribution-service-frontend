@@ -100,6 +100,6 @@ export const CustomMenu = styled(Menu)`
   bottom: 0;
   left: 0;
   width: 200px;
-  transition: width 0.2s ease;
   border-right: 1px solid ${COLOR.BORDER_GREY};
+  z-index: 2;
 `;

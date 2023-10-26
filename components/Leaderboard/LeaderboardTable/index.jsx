@@ -144,14 +144,16 @@ const Leaderboard = () => {
       />
 
       <Card bodyStyle={{ padding: 0 }}>
-        <Table
-          columns={columns}
-          dataSource={data}
-          loading={isLoading}
-          pagination={false}
-          className="mb-12"
-          rowKey="rowKeyUi"
-        />
+        <div style={{ overflowX: 'auto' }}>
+          <Table
+            columns={columns}
+            dataSource={data}
+            loading={isLoading}
+            pagination={false}
+            className="mb-12"
+            rowKey="rowKeyUi"
+          />
+        </div>
       </Card>
     </LeaderboardContent>
   );

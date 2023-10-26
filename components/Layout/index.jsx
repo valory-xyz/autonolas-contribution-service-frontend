@@ -155,7 +155,12 @@ const NavigationBar = ({ children }) => {
         />
       )}
 
-      <Content className="site-layout" style={{ marginLeft: (screens.md || isMenuVisible) ? '200px' : '0px', transition: 'margin-left 0.2s ease' }}>
+      <Content
+        className="site-layout"
+        style={{
+          marginLeft: (screens.md) ? '200px' : '0',
+        }}
+      >
         <div className="site-layout-background">
           {children}
         </div>

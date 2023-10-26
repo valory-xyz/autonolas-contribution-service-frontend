@@ -38,7 +38,6 @@ const Actions = () => (
               )}
               className="mr-48"
             />
-            <div />
           </List.Item>
         )}
       />
