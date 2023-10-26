@@ -32,9 +32,7 @@ const Actions = () => (
                     {item.description}
                   </Paragraph>
                   <Text>
-                    Points:
-                    {' '}
-                    {item.points}
+                    {`Points: ${item.points}`}
                   </Text>
                 </>
               )}
