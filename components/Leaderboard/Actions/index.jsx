@@ -27,15 +27,20 @@ const Actions = () => (
             <List.Item.Meta
               title={item.name}
               description={(
-                <Paragraph type="secondary" className="mb-0">
-                  {item.description}
-                </Paragraph>
+                <>
+                  <Paragraph type="secondary">
+                    {item.description}
+                  </Paragraph>
+                  <Text>
+                    Points:
+                    {' '}
+                    {item.points}
+                  </Text>
+                </>
               )}
               className="mr-48"
             />
-            <div>
-              {`Points: ${item.points}`}
-            </div>
+            <div />
           </List.Item>
         )}
       />

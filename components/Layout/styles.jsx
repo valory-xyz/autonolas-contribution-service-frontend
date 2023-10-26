@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Layout } from 'antd/lib';
+import { Layout, Menu } from 'antd/lib';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
@@ -69,11 +69,6 @@ export const RightMenu = styled.div`
   }
 `;
 
-export const LoginXsContainer = styled.div`
-  text-align: center;
-  margin-bottom: 1rem;
-`;
-
 export const SupportOnlyDesktop = styled.div`
   margin: 4rem 0;
 `;
@@ -97,4 +92,14 @@ export const CustomHeader = styled(Layout.Header)`
   justify-content: space-between;
   background-color: ${COLOR.WHITE};
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
+`;
+
+export const CustomMenu = styled(Menu)`
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  transition: width 0.2s ease;
+  border-right: 1px solid ${COLOR.BORDER_GREY};
 `;
