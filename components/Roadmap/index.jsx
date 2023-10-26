@@ -25,7 +25,7 @@ const roadmapItems = [
 
 const RoadmapPage = () => {
   const sortedRoadmapItems = roadmapItems.sort(
-    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix()
+    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix(),
   );
 
   return (
