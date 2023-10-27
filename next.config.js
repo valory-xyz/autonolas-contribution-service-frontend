@@ -12,6 +12,7 @@ module.exports = {
   }),
   publicRuntimeConfig: {},
   images: {
+    domains: ['github.com'],
     remotePatterns: [
       {
         protocol: 'https',

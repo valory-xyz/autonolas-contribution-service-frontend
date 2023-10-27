@@ -33,19 +33,19 @@ const Dashboard = () => {
 
   return (
     <Row gutter={24}>
-      <Col xs={24} md={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={12} className="mb-24">
         <LeaderboardCard data={data} isLoading={isLoading} />
       </Col>
-      <Col xs={24} md={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={12} className="mb-24">
         <ProfileCard data={data} isLoading={isLoading} />
       </Col>
-      <Col xs={24} md={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={12} className="mb-24">
         <MembersCard />
       </Col>
-      <Col xs={24} md={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={12} className="mb-24">
         <ChatbotCard />
       </Col>
-      <Col xs={24} md={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={12} className="mb-24">
         <TweetCard />
       </Col>
     </Row>
