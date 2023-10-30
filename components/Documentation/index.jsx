@@ -6,6 +6,7 @@ import Overview from './content/1_Overview';
 import Badge from './content/3_Badge';
 import Leaderboard from './content/4_Leaderboard';
 import HowItWorks from './content/5_HowItWorks';
+import Calendar from './content/Calendar';
 import { DOC_NAV, NavWrapper } from './helpers';
 import { Container, DocSection } from './styles';
 import ActionsDocs from './content/2_Actions';
@@ -68,6 +69,7 @@ const Documentation = () => {
           <Tweet />
           <Proposals />
           <HowItWorks />
+          <Calendar />
         </div>
       </DocSection>
       <br />
