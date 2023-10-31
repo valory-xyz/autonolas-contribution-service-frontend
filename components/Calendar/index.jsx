@@ -32,12 +32,7 @@ const CalendarPage = () => {
       return { ...event, date };
     });
 
-  const eventsList = processedEvents.filter((event) => {
-    if (hidePastEvents) {
-      return Number(event.timestamp) >= moment().unix();
-    }
-    return true;
-  });
+  const eventsList = processedEvents.filter((event) => hidePastEvents ? Number(event.timestamp) >= moment().unix() : true);
 
   const dateCellRender = (value) => {
     // Generate a date from the timestamp and format it in the Chinese format
