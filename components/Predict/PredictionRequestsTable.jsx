@@ -89,6 +89,7 @@ const PredictionRequestsTable = () => {
       variables: {
         ids: requestFpmmIds,
       },
+      fetchPolicy: 'network-only',
     });
 
     const mergedData = predictionRequests.map((item) => {
@@ -100,9 +101,10 @@ const PredictionRequestsTable = () => {
         (tradeItem) => tradeItem.id.startsWith(item.fpmm_id.toLowerCase()),
       ).length;
 
-      return queryItem
-        ? { ...item, ...queryItem, tradeCount }
-        : { ...item, tradeCount };
+      const withoutQueryItem = { ...item, tradeCount };
+      const withQueryItem = { ...item, ...queryItem, tradeCount };
+
+      return queryItem ? withQueryItem : withoutQueryItem;
     });
 
     dispatch(setPredictionRequests(mergedData));
@@ -115,7 +117,7 @@ const PredictionRequestsTable = () => {
     fetchData(true);
     const intervalId = setInterval(async () => {
       fetchData();
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(intervalId);
   }, []);
