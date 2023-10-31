@@ -13,6 +13,8 @@ export const DOCS_SECTIONS = {
   tweet: 'tweet',
   proposals: 'proposals',
   'how-it-works': 'how-it-works',
+  roadmap: 'roadmap',
+  calendar: 'calendar',
 };
 
 /**
@@ -58,6 +60,14 @@ export const DOC_NAV = [
   {
     id: DOCS_SECTIONS['how-it-works'],
     title: 'How It Works',
+  },
+  {
+    id: DOCS_SECTIONS.roadmap,
+    title: 'Roadmap',
+  },
+  {
+    id: DOCS_SECTIONS.calendar,
+    title: 'Calendar',
   },
 ];
 

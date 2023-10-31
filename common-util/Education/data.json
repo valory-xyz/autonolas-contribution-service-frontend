@@ -50,5 +50,17 @@
     "id": "e0cf5a7e-770d-4d13-9845-7b30ee66f223",
     "component": "predict",
     "text": "Ask questions about the future of Olas."
+  },
+  {
+    "id": "697e205d-e9cc-4a4b-a553-21fc53215062",
+    "component": "calendar",
+    "text": "Learn about upcoming Olas events.",
+    "docsLink": "#calendar"
+  },
+  {
+    "id": "d9b82344-c8fd-4eae-8aba-112bed020314",
+    "component": "roadmap",
+    "text": "Find out what Olas is working on.",
+    "docsLink": "#roadmap"
   }
 ]

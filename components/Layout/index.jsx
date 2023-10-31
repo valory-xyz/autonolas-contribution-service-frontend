@@ -37,6 +37,7 @@ const menuItems = [
   { key: 'members', label: 'Members' },
   { key: 'predict', label: 'Predict' },
   { key: 'roadmap', label: 'Roadmap' },
+  { key: 'calendar', label: 'Calendar' },
   { key: 'chatbot', label: 'Chatbot' },
   { key: 'docs', label: 'Docs' },
 ];
