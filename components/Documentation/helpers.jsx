@@ -10,6 +10,7 @@ export const DOCS_SECTIONS = {
   members: 'members',
   chatbot: 'chatbot',
   memory: 'memory',
+  predict: 'predict',
   tweet: 'tweet',
   proposals: 'proposals',
   'how-it-works': 'how-it-works',
@@ -52,6 +53,10 @@ export const DOC_NAV = [
   {
     id: DOCS_SECTIONS.tweet,
     title: 'Tweet',
+  },
+  {
+    id: DOCS_SECTIONS.predict,
+    title: 'Predict',
   },
   {
     id: DOCS_SECTIONS.proposals,
