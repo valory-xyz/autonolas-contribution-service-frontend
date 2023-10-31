@@ -32,7 +32,12 @@ const CalendarPage = () => {
       return { ...event, date };
     });
 
-  const eventsList = processedEvents.filter((event) => hidePastEvents ? Number(event.timestamp) >= moment().unix() : true);
+  const eventsList = processedEvents.filter((event) => {
+    if (hidePastEvents) {
+      return Number(event.timestamp) >= moment().unix();
+    }
+    return true;
+  });
 
   const dateCellRender = (value) => {
     // Generate a date from the timestamp and format it in the Chinese format
@@ -44,8 +49,8 @@ const CalendarPage = () => {
       <>
         {listData.map((item) => (
           <Cell key={item.id}>
-            <Link className="cell-text" href={`/calendar/events/${item.id}`}>
-              {item.title}
+            <Link href={`/calendar/events/${item.id}`}>
+              <Text className="cell-text">{item.title}</Text>
             </Link>
           </Cell>
         ))}
@@ -64,7 +69,7 @@ const CalendarPage = () => {
       <>
         {monthData.map((item) => (
           <Cell key={item.id} className="mb-4">
-            <Link className="cell-text" href={`/calendar/events/${item.id}`}>
+            <Link href={`/calendar/events/${item.id}`}>
               <Text className="cell-text">{item.title}</Text>
             </Link>
           </Cell>

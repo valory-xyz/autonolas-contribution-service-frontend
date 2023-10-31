@@ -25,7 +25,7 @@ const MembersCard = () => {
           ]
         }
       >
-        <Statistic title="Total members" value={membersList?.length || 'n/a'} />
+        <Statistic title="Total members" value={membersList?.length || NA} />
       </Card>
     </>
   );
