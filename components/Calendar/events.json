@@ -61,5 +61,103 @@
     "timestamp": "1708689600",
     "location": "Denver, CO, USA",
     "description": ""
+  },
+  {
+    "id": "c293fe6d-fd5e-4a81-a1df-018a33c340e7",
+    "title": "Protocol Deep Dives w/ TheFett - Autonolas",
+    "timestamp": "1678396800",
+    "location": "https://www.youtube.com/watch?v=oznC6JXb7EQ",
+    "description": ""
+  },
+  {
+    "id": "c5460d75-c50e-4ac1-8dcb-0c42b4062e7a",
+    "title": "David Minarsch at Crypto x AI Standards: Mini Conference - Full Talk",
+    "timestamp": "1677686400",
+    "location": "https://www.youtube.com/watch?v=4pXC_ZDwMko",
+    "description": ""
+  },
+  {
+    "id": "6c227103-a3b7-4fcd-b4ca-96d04c85a38b",
+    "title": "Decentralized Off-chain Backends - How Autonolas utilizes IPFS across its stack - David Minarsch",
+    "timestamp": "1679856000",
+    "location": "https://www.youtube.com/watch?v=bzSjPTF-6G4",
+    "description": ""
+  },
+  {
+    "id": "8384644a-e423-4c00-9d2a-fc05736e2fc0",
+    "title": "Co-Owned AI - and why DAOs are its primal form with David Minarsch",
+    "timestamp": "1679078400",
+    "location": "https://www.youtube.com/watch?v=bmBnv2g-mR8",
+    "description": ""
+  },
+  {
+    "id": "80c02387-109f-49e6-9659-ad6b508ce3c5",
+    "title": "David Galindo - Presentation at StarkNet, Lisbon 2022",
+    "timestamp": "1678809600",
+    "location": "https://drive.google.com/file/d/1o0QaFRz9JkaQ3naPRPReze31o-U_dWle/view",
+    "description": ""
+  },
+  {
+    "id": "73cce841-5dbf-40d2-9876-14a584360140",
+    "title": "Oaksprout the Tan (Autonolas) with Carlos Noe Saavedra (Fyre) and Luca Mossini (Avantgarde Finance) moderated by Lawrence Chiu (Trading Strategy): The Trends in Modern DAO Treasury Management",
+    "timestamp": "1669315200",
+    "location": "https://drive.google.com/file/d/1rF1kKT9jtyKbfFh4xes17VDHtQMXRw-e/view",
+    "description": ""
+  },
+  {
+    "id": "58bbc00b-07c9-4945-875d-0f9189041cbd",
+    "title": "Autonolas Protocol Launch Live Developer Chat and Demos Stream",
+    "timestamp": "1659676800",
+    "location": "https://drive.google.com/file/d/1OOrYLwEpeMRgojNPF1i4NPFYM9LRxLV5/view",
+    "description": ""
+  },
+  {
+    "id": "005aef78-74fb-4459-86e2-075372fe34c7",
+    "title": "Upgrade your DAO with Autonomous Services: An Intro to Autonolas",
+    "timestamp": "1659235200",
+    "location": "https://www.youtube.com/watch?v=sWBy277MPIg",
+    "description": ""
+  },
+  {
+    "id": "0ccd236d-27b4-41b0-84a4-7ae203c605b4",
+    "title": "El Collectooorr - Introduction Presentation",
+    "timestamp": "1659158400",
+    "location": "https://www.youtube.com/watch?v=TFEmhM0XSQQ",
+    "description": ""
+  },
+  {
+    "id": "96f1df14-2ac3-42c8-b75a-afc197b60cd8",
+    "title": "El Collectooorr - Demo",
+    "timestamp": "1659158400",
+    "location": "https://www.youtube.com/watch?v=x-wP8r6pyeY",
+    "description": ""
+  },
+  {
+    "id": "69fc706f-7cfb-4d91-94ff-4d9e575dec7b",
+    "title": "Oaksprout at NFTBerlin",
+    "timestamp": "1656048000",
+    "location": "https://www.youtube.com/watch?v=_m1jH-tCrOk",
+    "description": ""
+  },
+  {
+    "id": "c9039cf9-b25d-46e7-af0e-d8134779231f",
+    "title": "Initial Releases Screencast",
+    "timestamp": "1655280000",
+    "location": "https://drive.google.com/file/d/18A0-dsfp6IxwZCTwhApa8e1yPLRh3SpG/view",
+    "description": ""
+  },
+  {
+    "id": "633d3f85-963d-4efd-8bd1-f3d4e8c9bf29",
+    "title": "Autonolas: Automating offchain services for DAOs - The Crypto Podcast Ep. 3",
+    "timestamp": "1653792000",
+    "location": "https://www.youtube.com/watch?v=oNNXlizKnYM",
+    "description": ""
+  },
+  {
+    "id": "b9b8931d-f8e8-41a2-9b25-bb62eecbdd1a",
+    "title": "David Minarsch & Oaksprout the Tan - Autonolas | Chorus One Podcast #54",
+    "timestamp": "1653196800",
+    "location": "https://www.youtube.com/watch?v=ucxwaJhBr20",
+    "description": ""
   }
 ]
