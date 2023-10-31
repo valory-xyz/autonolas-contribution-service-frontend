@@ -67,6 +67,7 @@ export const DocSection = styled.div`
   .custom-nav-anchor {
     font-size: 18px;
     padding: 0 40px 0 0;
+    font-weight: 600;
     padding-left: ${({ isMobile }) => (isMobile ? '16px' : '0')};
     a.ant-anchor-link-title {
       font-size: 18px;
@@ -78,7 +79,6 @@ export const DocSection = styled.div`
   }
   .custom-nav-anchor-active a.ant-anchor-link-title {
     color: ${COLOR.PRIMARY} !important;
-    font-weight: 600;
     text-underline-offset: 4px !important;
   }
 

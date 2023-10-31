@@ -11,7 +11,6 @@ import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 
-import { NA } from '@autonolas/frontend-library';
 import { DiscordLink } from '../Leaderboard/common';
 import { getAutonolasTokenUri } from '../Leaderboard/MintNft/utils';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
@@ -61,13 +60,13 @@ const ProfileBody = ({ profile }) => {
               <Col>
                 <Statistic
                   title="Tier"
-                  value={profile.points ? getTier(profile.points) : NA}
+                  value={profile.points ? getTier(profile.points) : 'n/a'}
                 />
               </Col>
               <Col>
                 <Statistic
                   title="Points"
-                  value={profile.points ? profile.points : NA}
+                  value={profile.points ? profile.points : 'n/a'}
                 />
               </Col>
             </Row>
@@ -83,7 +82,7 @@ const ProfileBody = ({ profile }) => {
                       <Text type="secondary">
                         <TruncatedEthereumLink text={profile.wallet_address} />
                       </Text>
-                    ) || NA
+                    ) || 'n/a'
                   }
                 />
               </List.Item>
@@ -95,7 +94,7 @@ const ProfileBody = ({ profile }) => {
                     || (account && account === profile.wallet_address ? (
                       <DiscordLink text="Connect Discord" />
                     ) : (
-                      NA
+                      'n/a'
                     ))
                   }
                 />
@@ -108,7 +107,7 @@ const ProfileBody = ({ profile }) => {
                     || (account && account === profile.wallet_address ? (
                       <ConnectTwitterModal />
                     ) : (
-                      NA
+                      'n/a'
                     ))
                   }
                 />

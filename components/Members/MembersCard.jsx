@@ -3,7 +3,6 @@ import {
 } from 'antd/lib';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Link from 'next/link';
-import { NA } from '@autonolas/frontend-library';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const MembersCard = () => {
@@ -26,7 +25,7 @@ const MembersCard = () => {
           ]
         }
       >
-        <Statistic title="Total members" value={membersList?.length || NA} />
+        <Statistic title="Total members" value={membersList?.length || 'n/a'} />
       </Card>
     </>
   );
