@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  List, Typography, Spin, Progress, Card, Statistic,
+  List, Typography, Spin, Progress, Card, Statistic, Button,
 } from 'antd/lib';
 import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   setPredictionRequests,
   setApprovedRequestsCount,
 } from 'store/setup/actions';
 import { gql } from '@apollo/client';
-import { LoadingOutlined, LinkOutlined } from '@ant-design/icons';
+import { LoadingOutlined, RedoOutlined, LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import client from '../../apolloClient';
 import { ProcessingBanner } from './styles';
 
@@ -118,6 +120,20 @@ const PredictionRequestsTable = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const router = useRouter();
+
+  const DescriptionNoTitle = () => (
+    <Text>
+      Creating prediction market...
+      You may need to
+      {' '}
+      <Button type="ghost" underline onClick={() => router.reload()}>
+        <RedoOutlined />
+        Refresh
+      </Button>
+    </Text>
+  );
+
   return (
     <>
       {approvedRequestsCount > 0 && (
@@ -188,12 +204,6 @@ const PredictionRequestsTable = () => {
                 ·
                 {' '}
                 <PredictionMarketLink fpmmId={fpmmId} />
-              </Text>
-            );
-
-            const DescriptionNoTitle = () => (
-              <Text>
-                Creating prediction market...
               </Text>
             );
 
