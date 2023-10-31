@@ -56,5 +56,11 @@
     "component": "calendar",
     "text": "Learn about upcoming Olas events.",
     "docsLink": "#calendar"
+  },
+  {
+    "id": "d9b82344-c8fd-4eae-8aba-112bed020314",
+    "component": "roadmap",
+    "text": "Find out what Olas is working on.",
+    "docsLink": "#roadmap"
   }
 ]

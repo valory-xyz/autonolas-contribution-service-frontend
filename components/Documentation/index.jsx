@@ -15,6 +15,7 @@ import Chatbot from './content/Chatbot';
 import Memory from './content/Memory';
 import Tweet from './content/Tweet';
 import Proposals from './content/Proposals';
+import Roadmap from './content/Roadmap';
 
 const { Title } = Typography;
 const { Link } = Anchor;
@@ -69,6 +70,7 @@ const Documentation = () => {
           <Tweet />
           <Proposals />
           <HowItWorks />
+          <Roadmap />
           <Calendar />
         </div>
       </DocSection>
