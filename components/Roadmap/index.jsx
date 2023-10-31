@@ -3,7 +3,7 @@ import {
 } from 'antd/lib';
 import Image from 'next/image';
 import dayjs from 'dayjs';
-import roadmapItems from 'components/Roadmap/roadmapItems.json';
+import roadmapItems from './roadmapItems.json';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 
 const { Text, Title, Link } = Typography;
