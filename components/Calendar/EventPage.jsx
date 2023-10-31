@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import events from 'components/Calendar/events.json';
+import events from './events.json';
 import { Card, Typography } from 'antd/lib';
 import moment from 'moment';
 import Link from 'next/link';
