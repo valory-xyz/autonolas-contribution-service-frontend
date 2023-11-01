@@ -159,5 +159,19 @@
     "timestamp": "1653196800",
     "location": "https://www.youtube.com/watch?v=ucxwaJhBr20",
     "description": ""
+  },
+  {
+    "id": "7fa6ab73-afba-4c6f-a093-bce69f7a03dc",
+    "title": "Prediction Agent Hackathon",
+    "timestamp": "1690844400",
+    "location": "https://hackathon.olas.network",
+    "description": ""
+  },
+  {
+    "id": "9baec9e2-cfc2-4577-a0ba-d9da60178f52",
+    "title": "Safe DAATA and AI Hackathon",
+    "timestamp": "1696806000",
+    "location": "https://x.com/safe/status/1707742185645584744?s=20",
+    "description": ""
   }
 ]
