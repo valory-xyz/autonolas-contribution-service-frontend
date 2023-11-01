@@ -16,6 +16,7 @@ import Memory from './content/Memory';
 import Tweet from './content/Tweet';
 import Proposals from './content/Proposals';
 import Roadmap from './content/Roadmap';
+import Predict from './content/Predict';
 
 const { Title } = Typography;
 const { Link } = Anchor;
@@ -72,6 +73,7 @@ const Documentation = () => {
           <HowItWorks />
           <Roadmap />
           <Calendar />
+          <Predict />
         </div>
       </DocSection>
       <br />

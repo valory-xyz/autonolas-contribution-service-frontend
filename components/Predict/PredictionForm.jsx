@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import {
-  Form, Input, Button, DatePicker, Modal,
+  Form, Input, Button, DatePicker, Modal, Alert,
 } from 'antd/lib';
 import { v4 as uuid } from 'uuid';
 import { notifyError, notifySuccess } from 'common-util/functions';
 import { setApprovedRequestsCount } from 'store/setup/actions';
-import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
+import {
+  getPredictionRequests,
+  postPredictionRequest,
+} from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
@@ -39,7 +43,10 @@ const PredictionForm = () => {
       return;
     }
 
-    const thresholdIsMet = checkVeolasThreshold(account, '5000000000000000000000');
+    const thresholdIsMet = checkVeolasThreshold(
+      account,
+      '5000000000000000000000',
+    );
 
     if (!thresholdIsMet) {
       notifyError('Get at least 5k veOLAS to ask questions');
@@ -83,7 +90,13 @@ const PredictionForm = () => {
       <Button type="primary" onClick={showModal}>
         Ask a question
       </Button>
-      <Modal title="Ask a question" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+      <Modal
+        title="Ask a question"
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
+        <Alert className="mb-12" type="info" showIcon message={<Link href="/docs#predict">Learn how to ask a good question</Link>} />
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             label="Question"
@@ -98,7 +111,9 @@ const PredictionForm = () => {
             label="Final answer date"
             name="resolution_time"
             extra="When will it be possible to definitively answer the question?"
-            rules={[{ required: true, message: 'Please pick the final answer date' }]}
+            rules={[
+              { required: true, message: 'Please pick the final answer date' },
+            ]}
           >
             <DatePicker showTime />
           </Form.Item>
