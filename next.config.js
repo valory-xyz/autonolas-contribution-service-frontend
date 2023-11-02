@@ -17,7 +17,7 @@ module.exports = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'none';",
+            value: "default-src 'none'; script-src 'self' 'strict-dynamic' https://www.walletconnect.org; style-src 'self'; img-src 'self' blob: data:; font-src 'self' https://fonts.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; block-all-mixed-content; upgrade-insecure-requests; connect-src 'self' https://bridge.walletconnect.org usb;",
           },
           {
             key: 'X-Content-Type-Options',
@@ -35,11 +35,15 @@ module.exports = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains',
           },
+          {
+            key: 'X-XSS-Protection',
+            value: '0',
+          },
         ],
       },
     ];
   },
-  publicRuntimeConfig: {},
+  publicRuntimeConfig: { },
   images: {
     domains: ['github.com'],
     remotePatterns: [
