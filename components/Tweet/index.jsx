@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Button, Input, notification, Row, Col,
+  Button, Input, notification, Row, Col, Typography,
 } from 'antd';
 import styled from 'styled-components';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { notifyError } from 'common-util/functions';
 
+import Link from 'next/link';
 import Proposals from '../Proposals';
-import { checkIfHas100kVeOlas } from '../MembersList/requests';
+import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { TweetLength, ProposalCountRow } from './utils';
 import ThreadModal from './ThreadModal';
+
+const { Text } = Typography;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
@@ -39,7 +42,7 @@ const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkIfHas100kVeOlas({ account });
+      const has100kVeOlas = await checkVeolasThreshold(account, '100000000000000000000000');
       if (!has100kVeOlas) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
@@ -92,7 +95,7 @@ const Tweet = () => {
 
   return (
     <Row gutter={16}>
-      <Col xs={24} md={24} lg={12} xl={8} className="mb-24">
+      <Col xs={24} md={24} lg={16} className="mb-24">
         <SocialPosterContainer>
           <EducationTitle title="Tweet" educationItem="tweet" />
 
@@ -125,7 +128,7 @@ const Tweet = () => {
           </ProposalCountRow>
 
           <Button
-            className="mt-12 mb-8"
+            className="mt-12 mb-12"
             type="primary"
             disabled={!canSubmit}
             loading={isSubmitting && !isThreadModalVisible}
@@ -133,10 +136,18 @@ const Tweet = () => {
           >
             Propose
           </Button>
+          <br />
+          <Text type="secondary">
+            To propose a tweet, you must
+            {' '}
+            <Link href="/members">join Contribute</Link>
+            {' '}
+            and hold at least 100k veOLAS.
+          </Text>
         </SocialPosterContainer>
       </Col>
 
-      <Col xs={24} md={24} lg={12} xl={12}>
+      <Col xs={24} md={24} lg={24}>
         <Proposals isAddressPresent={isAddressPresent} />
       </Col>
     </Row>

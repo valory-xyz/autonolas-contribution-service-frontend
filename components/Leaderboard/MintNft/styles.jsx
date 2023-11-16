@@ -20,6 +20,8 @@ export const MintNftContainer = styled.div`
     margin: 0;
     padding: 1rem;
     border: 1px solid ${COLOR.GREY_1};
+    background-color: ${COLOR.WHITE};
+    border-radius: 10px;
   }
   .ant-btn-link {
     padding: 0;

@@ -40,6 +40,9 @@ const GlobalStyle = createGlobalStyle`
   .mb-48 {
     margin-bottom: 48px !important;
   }
+  .mr-8 {
+    margin-right: 8px !important;
+  }
   .mr-12 {
     margin-right: 12px !important;
   }
@@ -59,7 +62,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 24px !important;
   }
   .mb-8 {
-    margin-bottom: 8px;
+    margin-bottom: 8px !important;
   }
   .mb-12 {
     margin-bottom: 12px;
@@ -85,14 +88,14 @@ const GlobalStyle = createGlobalStyle`
   .mt-24 {
     margin-top: 24px;
   }
+  .ml-4 {
+    margin-left: 4px !important;
+  }
   .ml-8 {
     margin-left: 8px;
   }
   .ml-12 {
     margin-left: 12px;
-  }
-  .mr-12 {
-    margin-right: 12px;
   }
   .w-100 {
     width: 100%;
@@ -134,8 +137,16 @@ const GlobalStyle = createGlobalStyle`
     display: initial;
   }
 
+  .ant-menu-vertical > .ant-menu-item {
+    padding: 0 20px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
   /* layout */
   .ant-layout-header {
+    padding: 0 20px;
     display: flex;
     position: fixed;
     z-index: 10;
@@ -293,6 +304,19 @@ const GlobalStyle = createGlobalStyle`
   /* antd steps */
   .ant-steps-item-title {
     width: 100%;
+  }
+
+  // Calendar
+
+  .ant-picker-calendar-header .ant-picker-calendar-mode-switch {
+    margin-right: 20px;
+  }
+
+  //Switch
+
+  .ant-switch {
+    // add right padding assuming a label is added to the right
+    margin-right: 4px;
   }
 `;
 

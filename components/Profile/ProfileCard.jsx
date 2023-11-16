@@ -5,6 +5,7 @@ import { getTier } from 'common-util/functions';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { NA } from '@autonolas/frontend-library';
 
 const { Text } = Typography;
 
@@ -30,16 +31,16 @@ const ProfileCard = ({ data, isLoading }) => {
               {account && (
               <Row gutter={24}>
                 <Col>
-                  <Statistic title="Rank" value={profile?.rank || 'n/a'} />
+                  <Statistic title="Rank" value={profile?.rank || NA} />
                 </Col>
                 <Col>
                   <Statistic
                     title="Tier"
-                    value={profile?.points ? getTier(profile.points) : 'n/a'}
+                    value={profile?.points ? getTier(profile.points) : NA}
                   />
                 </Col>
                 <Col>
-                  <Statistic title="Points" value={profile?.points || 'n/a'} />
+                  <Statistic title="Points" value={profile?.points || NA} />
                 </Col>
               </Row>
               )}

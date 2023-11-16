@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import {
-  Input, Row, Col, Typography, Button, Form, Card,
+  Input, Row, Col, Typography, Button, Form,
 } from 'antd';
 import { setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
@@ -121,7 +121,9 @@ const GroupChat = ({ chatEnabled }) => {
               </Fragment>
             ))
           ) : (
-            <Card>To see messages, first join Contribute</Card>
+            <div className="mt-24">
+              <Text type="secondary">To see messages, first join Contribute</Text>
+            </div>
           )}
         </div>
       ) : (

@@ -38,7 +38,7 @@ const Leaderboard = () => {
         </>
       )}
 
-      <Row gutter={[96, 8]} style={{ marginTop: 12 }}>
+      <Row gutter={[24, 8]}>
         <Col xs={24} lg={14}>
           <LeaderboardTable />
         </Col>

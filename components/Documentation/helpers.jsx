@@ -10,9 +10,12 @@ export const DOCS_SECTIONS = {
   members: 'members',
   chatbot: 'chatbot',
   memory: 'memory',
+  predict: 'predict',
   tweet: 'tweet',
   proposals: 'proposals',
   'how-it-works': 'how-it-works',
+  roadmap: 'roadmap',
+  calendar: 'calendar',
 };
 
 /**
@@ -52,12 +55,24 @@ export const DOC_NAV = [
     title: 'Tweet',
   },
   {
+    id: DOCS_SECTIONS.predict,
+    title: 'Predict',
+  },
+  {
     id: DOCS_SECTIONS.proposals,
     title: 'Proposals',
   },
   {
     id: DOCS_SECTIONS['how-it-works'],
     title: 'How It Works',
+  },
+  {
+    id: DOCS_SECTIONS.roadmap,
+    title: 'Roadmap',
+  },
+  {
+    id: DOCS_SECTIONS.calendar,
+    title: 'Calendar',
   },
 ];
 

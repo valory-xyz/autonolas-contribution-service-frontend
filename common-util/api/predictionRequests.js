@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { PREDICT_BASE_URL, PREDICT_GET_ALL_ENDPOINT, PREDICT_REQUEST_ENDPOINT } from 'util/constants';
+import {
+  PREDICT_APPROVE_ENDPOINT, PREDICT_BASE_URL, PREDICT_GET_ALL_ENDPOINT, PREDICT_PROPOSE_ENDPOINT,
+} from 'util/constants';
 
 export const getPredictionRequests = async () => {
   const response = await axios.get(PREDICT_BASE_URL + PREDICT_GET_ALL_ENDPOINT, {
@@ -9,24 +11,47 @@ export const getPredictionRequests = async () => {
     },
   });
 
-  const markets = response.data.all_markets;
-  const prefilteredRequests = Object.keys(markets).map((key) => ({
-    ...markets[key],
-    key: markets[key].id,
+  const requests = response.data.all_markets;
+  const prefilteredRequests = Object.keys(requests).map((key) => ({
+    ...requests[key],
+    key: requests[key].id,
   }));
 
-  const requests = prefilteredRequests.filter(
+  const allRequests = prefilteredRequests.filter(
     (market) => market.source === 'contribute',
   );
 
-  return requests;
+  const processedRequests = allRequests.filter(
+    (market) => market.state === 'PROCESSED' && market.fpmm_id,
+  );
+
+  const approvedRequestsCount = allRequests.filter(
+    (market) => market.state === 'APPROVED',
+  ).length;
+
+  return {
+    allRequests,
+    approvedRequestsCount,
+    processedRequests,
+  };
 };
 
 export const postPredictionRequest = async (payload) => {
-  await axios.post(PREDICT_BASE_URL + PREDICT_REQUEST_ENDPOINT, payload, {
-    headers: {
-      Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
-      'Content-Type': 'application/json',
-    },
-  });
+  const headers = {
+    Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
+    'Content-Type': 'application/json',
+  };
+
+  const response = await axios.post(
+    PREDICT_BASE_URL + PREDICT_PROPOSE_ENDPOINT,
+    payload,
+    { headers },
+  );
+
+  // Extract the id from the response data
+  // Respond structure data.info = "Market ID {id} created successfully."
+  const id = response.data.info.split(' ')[2];
+
+  // Make a POST request to the PREDICT_APPROVE_ENDPOINT with the extracted id
+  await axios.post(PREDICT_BASE_URL + PREDICT_APPROVE_ENDPOINT, { id }, { headers });
 };

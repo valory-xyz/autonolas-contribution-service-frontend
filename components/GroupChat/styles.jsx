@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 export const GroupChatContainer = styled(Card)`
   position: relative;
-  height: 100%;
   .group-chat-container {
-    height: calc(100vh - 386px);
+    height: calc(100vh - 330px);
     overflow: auto;
+    margin-bottom: 56px;
   }
 `;
 

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import { Layout, Menu } from 'antd';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
   .site-layout {
-    padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 50px 120px 50px;')};
+    padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 20px 100px 20px;')};
     margin-top: 64px;
     .contribute-footer {
       > div {
@@ -54,7 +54,6 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-left: 0.5rem;
   margin-right: 1rem;
   span {
     margin-left: 0.5rem;
@@ -68,11 +67,6 @@ export const RightMenu = styled.div`
   ${MEDIA_QUERY.tablet} {
     line-height: normal;
   }
-`;
-
-export const LoginXsContainer = styled.div`
-  text-align: center;
-  margin-bottom: 1rem;
 `;
 
 export const SupportOnlyDesktop = styled.div`
@@ -98,4 +92,14 @@ export const CustomHeader = styled(Layout.Header)`
   justify-content: space-between;
   background-color: ${COLOR.WHITE};
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
+`;
+
+export const CustomMenu = styled(Menu)`
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  border-right: 1px solid ${COLOR.BORDER_GREY};
+  z-index: 2;
 `;

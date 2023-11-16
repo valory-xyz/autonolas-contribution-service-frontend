@@ -20,7 +20,8 @@ const getWeb3Details = () => {
    * provider = wallect-connect provider or currentProvider by metamask
    */
   const web3 = new Web3(window.WEB3_PROVIDER || window.web3.currentProvider);
-  const chainId = Number(window.ethereum.chainId);
+  // Get chainId from window object or default to ethereum
+  const chainId = Number(window?.ethereum?.chainId) || 1;
 
   return { web3, chainId };
 };
@@ -42,29 +43,18 @@ export const getVeolasContract = (isViewOnly) => {
   const { web3, chainId } = getWeb3Details();
 
   const getAddressAndAbi = () => {
+    // for view methods use wveolas abi and address
     if (chainId === 1) {
-      // for view methods use wveolas abi and address
       if (isViewOnly) {
-        return {
-          abi: WVEOLAS_ABI_MAINNET,
-          address: WVEOLAS_ADDRESS_MAINNET,
-        };
+        return { abi: WVEOLAS_ABI_MAINNET, address: WVEOLAS_ADDRESS_MAINNET };
       }
-
-      return {
-        abi: VEOLAS_ABI,
-        address: VEOLAS_ADDRESS_MAINNET,
-      };
+      return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_MAINNET };
     }
 
-    return {
-      abi: VEOLAS_ABI,
-      address: VEOLAS_ADDRESS_GOERLI,
-    };
+    return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_GOERLI };
   };
 
   const { address, abi } = getAddressAndAbi();
-
   const contract = new web3.eth.Contract(abi, address);
   return contract;
 };
