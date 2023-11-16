@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import moment from 'moment';
+import Link from 'next/link';
 import {
   Switch,
   Calendar,
@@ -9,9 +11,8 @@ import {
   Card,
   Grid,
 } from 'antd/lib';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import moment from 'moment';
-import Link from 'next/link';
 import events from './events.json';
 import { Cell } from './styles';
 

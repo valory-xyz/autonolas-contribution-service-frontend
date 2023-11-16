@@ -183,5 +183,3 @@ export const MembersList = () => {
     </Card>
   );
 };
-
-export default MembersList;

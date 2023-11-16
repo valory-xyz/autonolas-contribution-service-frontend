@@ -18,7 +18,7 @@ import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 const { TextArea } = Input;
 const { Text } = Typography;
 
-const GroupChat = ({ chatEnabled }) => {
+export const GroupChat = ({ chatEnabled }) => {
   const dispatch = useDispatch();
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
@@ -122,7 +122,9 @@ const GroupChat = ({ chatEnabled }) => {
             ))
           ) : (
             <div className="mt-24">
-              <Text type="secondary">To see messages, first join Contribute</Text>
+              <Text type="secondary">
+                To see messages, first join Contribute
+              </Text>
             </div>
           )}
         </div>
@@ -168,5 +170,3 @@ GroupChat.propTypes = {
 GroupChat.defaultProps = {
   chatEnabled: false,
 };
-
-export default GroupChat;
