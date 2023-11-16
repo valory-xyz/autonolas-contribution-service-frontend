@@ -8,8 +8,9 @@ const Predict = () => (
   <div id={DOCS_SECTIONS.predict}>
     <Title level={2}>Predict</Title>
     <Paragraph>
-      Contribute&apos;s Predict feature allows members to predict the future of the
-      Olas ecosystem. It&apos;s based on Olas&apos; novel AI prediction service.
+      Contribute&apos;s Predict feature allows members to predict the future of
+      the Olas ecosystem. It&apos;s based on Olas&apos; novel AI prediction
+      service.
     </Paragraph>
 
     <Title level={4}>Asking a question</Title>
@@ -69,7 +70,7 @@ const Predict = () => (
 
     <Paragraph>
       Note that both questions are related to a tangible and knowable aspect of
-      Olas – i.e. number of services, execution of a named proposal – and
+      Olas – i.e. number of services, execution of a named proposal – and
       include a date by which the question has a definitive answer.
     </Paragraph>
 
@@ -81,21 +82,21 @@ const Predict = () => (
 
     <Paragraph>
       Note that both questions are not related to a tangible and knowable aspect
-      of Olas – i.e. they are not specific enough – and do not include a date by
+      of Olas – i.e. they are not specific enough – and do not include a date by
       which the question has a definitive answer.
     </Paragraph>
 
     <Paragraph>---</Paragraph>
 
     <Paragraph>
-      You must also add a &quot;Final answer date&quot;. This should be the same as the
-      date in your question. This is the point at which, under the hood, the
-      prediction market contract will be resolved.
+      You must also add a &quot;Final answer date&quot;. This should be the same
+      as the date in your question. This is the point at which, under the hood,
+      the prediction market contract will be resolved.
     </Paragraph>
 
     <Paragraph>
       To learn more about how the backend functionality – relating to Olas
-      services, on-chain prediction markets etc – works, see this
+      services, on-chain prediction markets etc – works, see this
       {' '}
       <a
         href="https://hackathon.olas.network/system-overview"

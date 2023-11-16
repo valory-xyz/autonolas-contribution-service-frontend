@@ -74,7 +74,7 @@ const ConnectTwitterModal = () => {
           Step 3:
         </Title>
         <Text>
-          Wait up to 5 minutes – your Twitter account will be automatically
+          Wait up to 5 minutes – your Twitter account will be automatically
           linked.
         </Text>
         <br />

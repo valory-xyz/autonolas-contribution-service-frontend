@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-
 import {
   Button, Input, notification, Space, Card, Typography,
 } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-
-/** Import Orbis SDK */
 import { Orbis } from '@orbisclub/orbis-sdk';
 
 import { Conversations } from './Conversation';

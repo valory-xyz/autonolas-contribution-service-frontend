@@ -48,33 +48,33 @@ const HowItWorks = () => (
       <ul>
         <li>
           <Text strong>NewMemberListRound</Text>
-          &nbsp;– agents search for new minted NFTs and create a list of wallets
+          &nbsp;– agents search for new minted NFTs and create a list of wallets
           holding a community NFT that is not in the first table. This list is
           then used to update the table.
         </li>
         <li>
           <Text strong>LeaderboardObservationRound</Text>
-          &nbsp;– agents read the leaderboard from the API and agree on the JSON
+          &nbsp;– agents read the leaderboard from the API and agree on the JSON
           file they receive.
         </li>
         <li>
           <Text strong>ImageCodeCalculationRound</Text>
-          &nbsp;– for each entry in the leaderboard, agents check for members
+          &nbsp;– for each entry in the leaderboard, agents check for members
           whose number of points have changed and recalculate their images.
         </li>
         <li>
           <Text strong>ImageGenerationRound</Text>
-          &nbsp;– agents check for new image codes and generate the
+          &nbsp;– agents check for new image codes and generate the
           corresponding images.
         </li>
         <li>
           <Text strong>ImageStorageRound</Text>
-          &nbsp;– agents store the generated images on IPFS and update the
+          &nbsp;– agents store the generated images on IPFS and update the
           redirect table.
         </li>
         <li>
           <Text strong>UpdateDatabaseRound</Text>
-          &nbsp;– agents update the first table with the new image codes and
+          &nbsp;– agents update the first table with the new image codes and
           points.
         </li>
       </ul>

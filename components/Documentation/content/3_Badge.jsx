@@ -52,25 +52,27 @@ const Badge = () => (
       height={208}
       className="mint-nft-image"
     />
-    <Paragraph>There are several badge tiers, and each has a different shape:</Paragraph>
+    <Paragraph>
+      There are several badge tiers, and each has a different shape:
+    </Paragraph>
     <Paragraph>
       <ol>
         <li>
           <Text strong>Idle</Text>
-          &nbsp;–  0 - 100 points. Badge is not activated. Register your profile
+          &nbsp;– 0 - 100 points. Badge is not activated. Register your profile
           to activate.
         </li>
         <li>
           <Text strong>Basic</Text>
-          &nbsp;– 0 – 50k points
+          &nbsp;– 0 – 50k points
         </li>
         <li>
           <Text strong>Legendary</Text>
-          &nbsp;– 50k – 100k points
+          &nbsp;– 50k – 100k points
         </li>
         <li>
           <Text strong>Epic</Text>
-          &nbsp;– 100k - 150k points
+          &nbsp;– 100k - 150k points
         </li>
       </ol>
     </Paragraph>

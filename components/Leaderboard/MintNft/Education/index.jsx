@@ -1,11 +1,11 @@
-import React from 'react';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import {
   Col, Popover, Row, Typography,
 } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+
 import { getEducationItemByComponent } from 'common-util/functions';
-import Link from 'next/link';
 
 const { Title, Text } = Typography;
 
@@ -29,29 +29,30 @@ PopoverContent.propTypes = {
 };
 
 export const EducationTitle = ({
-  title, level, educationItemSlug, marginBottom,
+  title,
+  level,
+  educationItemSlug,
+  marginBottom,
 }) => {
   const educationItem = getEducationItemByComponent(educationItemSlug);
 
   return (
-    <>
-      <Row gutter={8} align="middle" className={`${marginBottom}`}>
-        <Col>
-          <Title level={level} className="mb-0">
-            {title}
-          </Title>
-        </Col>
-        <Col>
-          <Popover
-            content={<PopoverContent educationItem={educationItem} />}
-            placement="topLeft"
-            overlayInnerStyle={{ maxWidth: 300 }}
-          >
-            <InfoCircleOutlined className="mb-0" />
-          </Popover>
-        </Col>
-      </Row>
-    </>
+    <Row gutter={8} align="middle" className={`${marginBottom}`}>
+      <Col>
+        <Title level={level} className="mb-0">
+          {title}
+        </Title>
+      </Col>
+      <Col>
+        <Popover
+          content={<PopoverContent educationItem={educationItem} />}
+          placement="topLeft"
+          overlayInnerStyle={{ maxWidth: 300 }}
+        >
+          <InfoCircleOutlined className="mb-0" />
+        </Popover>
+      </Col>
+    </Row>
   );
 };
 

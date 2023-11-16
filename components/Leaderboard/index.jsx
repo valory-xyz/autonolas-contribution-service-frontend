@@ -1,8 +1,7 @@
 import { useSelector } from 'react-redux';
 import dynamic from 'next/dynamic';
-import {
-  Col, Row, Typography,
-} from 'antd';
+import { Col, Row, Typography } from 'antd';
+
 import Actions from './Actions';
 import MintNft from './MintNft';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
@@ -21,21 +20,19 @@ const Leaderboard = () => {
   return (
     <>
       {!isVerified && (
-        <>
-          <CustomAlert
-            message={(
-              <>
-                <Title level={2} className="mb-24">
-                  Start earning points
-                </Title>
-                <ConnectTwitterModal />
-              </>
-            )}
-            type="info"
-            closable
-            onClose={onClose}
-          />
-        </>
+        <CustomAlert
+          message={(
+            <>
+              <Title level={2} className="mb-24">
+                Start earning points
+              </Title>
+              <ConnectTwitterModal />
+            </>
+          )}
+          type="info"
+          closable
+          onClose={onClose}
+        />
       )}
 
       <Row gutter={[24, 8]}>

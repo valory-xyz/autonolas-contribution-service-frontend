@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import {
-  Layout, Grid, Button,
-} from 'antd';
+import { Layout, Grid, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+
 import {
   setIsVerified,
   setMemoryDetails,
@@ -140,7 +139,12 @@ const NavigationBar = ({ children }) => {
 
         <RightMenu>
           {!screens.md && (
-          <Button className="mr-8" onClick={() => setIsMenuVisible(!isMenuVisible)}>Menu</Button>
+            <Button
+              className="mr-8"
+              onClick={() => setIsMenuVisible(!isMenuVisible)}
+            >
+              Menu
+            </Button>
           )}
           <Login />
         </RightMenu>
@@ -159,12 +163,10 @@ const NavigationBar = ({ children }) => {
       <Content
         className="site-layout"
         style={{
-          marginLeft: (screens.md) ? '200px' : '0',
+          marginLeft: screens.md ? '200px' : '0',
         }}
       >
-        <div className="site-layout-background">
-          {children}
-        </div>
+        <div className="site-layout-background">{children}</div>
 
         {!isCoordinatePage && (
           <div className="contribute-footer">
