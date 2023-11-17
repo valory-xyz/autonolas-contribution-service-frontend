@@ -25,8 +25,8 @@ const RoadmapPage = () => {
               <Image
                 src={item.imageUrl}
                 alt={item.title}
-                width={640}
-                height={495}
+                width={500}
+                height={390}
               />
             </Col>
             <Col xs={24} md={24} lg={14}>

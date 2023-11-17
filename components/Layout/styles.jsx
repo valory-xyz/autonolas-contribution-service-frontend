@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
+  background: ${COLOR.GREY_3};
   .site-layout {
     padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 20px 100px 20px;')};
     margin-top: 64px;
@@ -102,4 +103,8 @@ export const CustomMenu = styled(Menu)`
   width: 200px;
   border-right: 1px solid ${COLOR.BORDER_GREY};
   z-index: 2;
+  li {
+    line-height: 40px;
+    height: 40px;
+  }
 `;

@@ -37,7 +37,6 @@ export const DocSection = styled.div`
     padding: 0 8rem;
     h3 {
       font-weight: bold;
-      /* margin: 0; */
     }
     .green-text-2 {
       font-size: 19px;
@@ -47,8 +46,11 @@ export const DocSection = styled.div`
   }
   .ant-anchor {
     padding-left: 4px;
+    &:before {
+      display: none !important;
+    }
     .ant-anchor-ink {
-      display: none;
+      display: none !important;
     }
     .ant-anchor-link {
       padding-left: 0px;

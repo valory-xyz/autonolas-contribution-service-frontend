@@ -42,7 +42,10 @@ const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(account, '100000000000000000000000');
+      const has100kVeOlas = await checkVeolasThreshold(
+        account,
+        '100000000000000000000000',
+      );
       if (!has100kVeOlas) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
@@ -142,7 +145,8 @@ const Tweet = () => {
             {' '}
             <Link href="/members">join Contribute</Link>
             {' '}
-            and hold at least 100k veOLAS.
+            and hold at least 100k
+            veOLAS.
           </Text>
         </SocialPosterContainer>
       </Col>

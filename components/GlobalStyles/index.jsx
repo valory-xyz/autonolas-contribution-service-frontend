@@ -9,6 +9,17 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  body,
+  html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+  }
+
   /* common */
   .p-0 {
     padding: 0 !important;
@@ -146,6 +157,7 @@ const GlobalStyle = createGlobalStyle`
 
   /* layout */
   .ant-layout-header {
+    height: 64px;
     padding: 0 20px;
     display: flex;
     position: fixed;

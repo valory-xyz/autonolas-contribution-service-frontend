@@ -13,7 +13,7 @@ const ChatbotCard = () => (
   <Card>
     <Row gutter={24} align="middle">
       <Col span={10}>
-        <Image src="/images/chatbot.png" width={300} height={300} />
+        <Image src="/images/chatbot.png" width={225} height={225} />
       </Col>
       <Col span={14}>
         <EducationTitle
