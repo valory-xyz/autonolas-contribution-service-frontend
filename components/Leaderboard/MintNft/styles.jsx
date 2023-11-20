@@ -29,8 +29,8 @@ export const MintNftContainer = styled.div`
     height: fit-content;
   }
   .skeleton-image-loader {
-    width: ${IMAGE_SIZE}px;
-    height: ${IMAGE_SIZE}px;
+    width: 100%;
+    height: 100%;
     border-radius: 1rem;
     > svg {
       transform: scale(2.5);

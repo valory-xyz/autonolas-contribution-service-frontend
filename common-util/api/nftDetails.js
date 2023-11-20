@@ -1,44 +1,55 @@
+/* eslint-disable no-await-in-loop */
+import { notifyError } from '@autonolas/frontend-library';
 import axios from 'axios';
 import { getMintContract } from 'common-util/Contracts';
-import { findIndex, toLower } from 'lodash';
+import { findIndex, toLower, memoize } from 'lodash';
 
-export const getLatestMintedNft = (account) => new Promise((resolve, reject) => {
-  const contract = getMintContract();
+const getTotalSupply = memoize(async () => {
+  try {
+    const contract = getMintContract();
+    const total = await contract.methods.totalSupply().call();
+    return total;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
 
-  contract.methods
-    .totalSupply()
-    .call()
-    .then((total) => {
-      const nftImages = [];
-      for (let i = 1; i <= total; i += 1) {
-        const result = contract.methods.ownerOf(`${i}`).call();
-        nftImages.push(result);
+export const getLatestMintedNft = memoize(async (account) => {
+  try {
+    const contract = getMintContract();
+    const total = await getTotalSupply();
+    const nftImages = [];
+    for (let i = 1; i <= total; i += 1) {
+      const result = await contract.methods.ownerOf(`${i}`).call();
+      nftImages.push(result);
+    }
+
+    const ownerList = await Promise.all(nftImages);
+
+    /**
+     * find the element in reverse order to fetch the latest
+     */
+    const lastIndex = findIndex(
+      ownerList,
+      (e) => toLower(e) === toLower(account),
+    );
+
+    if (lastIndex !== -1) {
+      const tokenId = `${Number(lastIndex) + 1}`;
+      const infoUrl = await contract.methods.tokenURI(tokenId).call();
+
+      if (infoUrl) {
+        const value = await axios.get(infoUrl);
+        return { details: value.data, tokenId };
       }
+      return { details: null, tokenId: null };
+    }
 
-      Promise.all(nftImages).then(async (ownerList) => {
-        /**
-           * find the element in reverse order to fetch the latest
-           */
-        const lastIndex = findIndex(
-          ownerList,
-          (e) => toLower(e) === toLower(account),
-        );
-        if (lastIndex !== -1) {
-          const tokenId = `${Number(lastIndex) + 1}`;
-          const infoUrl = await contract.methods.tokenURI(tokenId).call();
-          if (infoUrl) {
-            const value = await axios.get(infoUrl);
-            resolve({ details: value.data, tokenId });
-          } else {
-            resolve({ details: null, tokenId: null });
-          }
-        } else {
-          resolve({ details: null, tokenId: null });
-        }
-      });
-    })
-    .catch((e) => {
-      console.error(e);
-      reject(e);
-    });
+    return { details: null, tokenId: null };
+  } catch (e) {
+    notifyError('Error fetching NFT details');
+    console.error(e);
+    throw e;
+  }
 });
