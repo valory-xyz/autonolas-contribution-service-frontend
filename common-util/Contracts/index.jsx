@@ -28,6 +28,8 @@ const getWeb3Details = () => {
 
 export const getMintContract = () => {
   const { web3, chainId } = getWeb3Details();
+
+  console.log({ chainId });
   const contract = new web3.eth.Contract(
     chainId === 5
       ? MINT_NFT_CONTRACT_ABI_GOERLI

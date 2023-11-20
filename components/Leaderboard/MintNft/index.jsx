@@ -31,8 +31,11 @@ const MintNft = () => {
       if (account && chainId) {
         setNftFetchingLoading(true);
 
+        console.log({ account, chainId });
+
         try {
           const { details, tokenId } = await getLatestMintedNft(account);
+          console.log({ details, tokenId });
           dispatch(setNftDetails({ tokenId, ...(details || {}) }));
         } catch (error) {
           window.console.error(error);
@@ -69,6 +72,8 @@ const MintNft = () => {
   };
 
   const image = get(nftDetails, 'image');
+
+  console.log({ account, nftDetails });
 
   return (
     <MintNftContainer>

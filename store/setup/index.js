@@ -3,9 +3,9 @@ import lowerCase from 'lodash/lowerCase';
 import { apiTypes, syncTypes } from './_types';
 
 const initialState = {
-  account: null,
+  account: '0x07b5302e01D44bD5b90C63C6Fb24807946704bFC',
   balance: null,
-  chainId: null,
+  chainId: 1,
   errorMessage: null,
   /**
    * initially set to true to avoid glitch
@@ -76,7 +76,7 @@ export default (state = initialState, action) => {
     case syncTypes.SET_LOGOUT: {
       return {
         ...state,
-        account: null,
+        account: '0x07b5302e01D44bD5b90C63C6Fb24807946704bFC',
         balance: null,
         errorMessage: null,
         isVerified: false,

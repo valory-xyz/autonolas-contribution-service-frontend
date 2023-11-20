@@ -1,6 +1,5 @@
-import {
-  Image, Typography,
-} from 'antd/lib';
+import Image from 'next/image';
+import { Typography } from 'antd/lib';
 import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';
@@ -24,19 +23,18 @@ const ShowBadge = ({ image, nftDetails }) => {
         width={IMAGE_SIZE}
         height={IMAGE_SIZE}
         className="nft-image"
-        preview={false}
       />
       {nftDetails?.tokenId && (
-      <Text type="secondary" className="mt-12">
-        <a
-          href={`${openSeaUrl}/${nftDetails.tokenId}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View on OpenSea&nbsp;
-          <LinkOutlined />
-        </a>
-      </Text>
+        <Text type="secondary" className="mt-12">
+          <a
+            href={`${openSeaUrl}/${nftDetails.tokenId}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on OpenSea&nbsp;
+            <LinkOutlined />
+          </a>
+        </Text>
       )}
     </>
   );
@@ -45,10 +43,7 @@ const ShowBadge = ({ image, nftDetails }) => {
 ShowBadge.propTypes = {
   image: PropTypes.string.isRequired,
   nftDetails: PropTypes.shape({
-    tokenId: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    tokenId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
 };
 
