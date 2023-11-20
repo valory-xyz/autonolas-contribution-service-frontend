@@ -43,9 +43,7 @@ const RoadmapPage = () => {
                 >
                   Read ↗
                 </Link>
-                {' '}
-                ·
-                {' '}
+                {' · '}
                 <Link
                   type="secondary"
                   href="https://discord.com/channels/899649805582737479/1121019872839729152"
@@ -54,10 +52,7 @@ const RoadmapPage = () => {
                 >
                   Discuss ↗
                 </Link>
-                {' '}
-                · Proposed:
-                {' '}
-                {dayjs(item.date).format('MMMM D YYYY')}
+                {` · Proposed: ${dayjs(item.date).format('MMMM D YYYY')}`}
               </Text>
             </Col>
           </Row>

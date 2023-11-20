@@ -6,10 +6,11 @@ import {
 } from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
+
 import { notifyError, notifySuccess } from 'common-util/functions';
-import MemoryCard from 'components/MemoryCard';
-import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
-import { EducationTitle } from '../../common-util/Education/EducationTitle';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
+import MemoryCard from '../MemoryCard';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { ApiKeyModal } from './ApiKeyModal';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
@@ -164,11 +165,7 @@ const Chatbot = ({ name }) => {
                 <List.Item className={item.role === 'You' ? 'bot-chat' : ''}>
                   <List.Item.Meta
                     title={item.role}
-                    description={(
-                      <ReactMarkdown>
-                        {item.content}
-                      </ReactMarkdown>
-)}
+                    description={<ReactMarkdown>{item.content}</ReactMarkdown>}
                   />
                 </List.Item>
               )}
