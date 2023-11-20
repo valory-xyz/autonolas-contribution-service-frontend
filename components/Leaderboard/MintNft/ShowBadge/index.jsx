@@ -5,8 +5,9 @@ import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { IMAGE_SIZE } from '../styles';
+
 import { getAutonolasTokenUri } from '../utils';
+import { IMAGE_SIZE } from '../styles';
 
 const { Text } = Typography;
 

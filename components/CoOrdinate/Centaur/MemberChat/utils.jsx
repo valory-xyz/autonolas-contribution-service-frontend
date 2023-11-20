@@ -1,5 +1,5 @@
 import { flatMap, reverse } from 'lodash';
-import { areAddressesEqual } from 'common-util/functions';
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 export const areBothMembersChatting = (
   loggedInAddress,

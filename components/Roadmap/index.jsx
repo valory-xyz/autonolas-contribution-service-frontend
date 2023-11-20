@@ -18,8 +18,8 @@ const RoadmapPage = () => {
       <div className="mb-8">
         <EducationTitle title="Roadmap" level={3} educationItem="roadmap" />
       </div>
-      {sortedRoadmapItems.map((item) => (
-        <Card className="mb-12" bordered={false}>
+      {sortedRoadmapItems.map((item, index) => (
+        <Card className="mb-12" bordered={false} key={`roadmap-${index}`}>
           <Row gutter={16} align="middle">
             <Col xs={24} md={24} lg={10}>
               <Image

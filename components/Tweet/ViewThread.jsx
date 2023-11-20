@@ -18,10 +18,11 @@ const EachThreadContainer = styled.div`
 `;
 
 export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
-  <Timeline style={{ paddingTop: 10 }}>
-    {thread.map((e, threadIndex) => (
-      <Timeline.Item key={`thread-${threadIndex}`}>
-        <EachThreadContainer>
+  <Timeline
+    style={{ paddingTop: 10 }}
+    items={thread.map((e, threadIndex) => ({
+      children: (
+        <EachThreadContainer key={`thread-${threadIndex}`}>
           <Text style={{ whiteSpace: 'pre-wrap' }}>{e}</Text>
 
           <div className="thread-col-2">
@@ -46,9 +47,9 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
             )}
           </div>
         </EachThreadContainer>
-      </Timeline.Item>
-    ))}
-  </Timeline>
+      ),
+    }))}
+  />
 );
 
 ViewThread.propTypes = {

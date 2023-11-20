@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 import {
   Input, Row, Col, Typography, Button, Form,
 } from 'antd';
+import { notifyError } from '@autonolas/frontend-library';
+
 import { setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
-import { notifyError } from 'common-util/functions';
 import DisplayName from 'common-util/DisplayName';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import { GroupChatContainer, StyledGroupChat } from './styles';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { GroupChatContainer, StyledGroupChat } from './styles';
 
 const { TextArea } = Input;
 const { Text } = Typography;

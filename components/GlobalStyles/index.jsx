@@ -132,12 +132,6 @@ const GlobalStyle = createGlobalStyle`
   .border-right {
     border-left: 1px solid ${COLOR.BORDER_GREY};
   }
-
-  .walletconnect-modal__base {
-    .walletconnect-modal__mobile__toggle a {
-      color: #1890ff !important;
-    }
-  }
   .ant-alert {
     border-radius: 5px;
   }

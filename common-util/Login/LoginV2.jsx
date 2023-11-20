@@ -7,10 +7,19 @@ import {
   useAccount, useNetwork, useBalance, useDisconnect,
 } from 'wagmi';
 import styled from 'styled-components';
-import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import {
+  COLOR,
+  CannotConnectAddressOfacError,
+  MEDIA_QUERY,
+  notifyError,
+} from '@autonolas/frontend-library';
 
-import { setUserBalance } from 'store/setup/actions';
-import { isAddressProhibited, notifyError } from 'common-util/functions';
+import { setChainId, setUserBalance } from 'store/setup/actions';
+import {
+  getChainId,
+  getChainIdOrDefaultToMainnet,
+  isAddressProhibited,
+} from 'common-util/functions';
 import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
@@ -57,6 +66,23 @@ export const LoginV2 = ({
       dispatch(setUserBalance(balance.formatted));
     }
   }, [balance?.formatted]);
+
+  useEffect(() => {
+    // if chainId is undefined, the wallet is not connected & default to mainnet
+    if (chainId === undefined) {
+      /**
+       * wait for 0ms to get the chainId & set it to redux to avoid race condition
+       * and dependent components are loaded once the chainId is set
+       */
+      setTimeout(() => {
+        const tempChainId = getChainId();
+        dispatch(setChainId(tempChainId));
+      }, 0);
+    } else {
+      const tempChainId = getChainIdOrDefaultToMainnet(chainId);
+      dispatch(setChainId(tempChainId));
+    }
+  }, [chainId]);
 
   useEffect(() => {
     const getData = async () => {
@@ -114,21 +140,7 @@ export const LoginV2 = ({
   useEffect(() => {
     if (address && isAddressProhibited(address)) {
       disconnect();
-
-      // throw an error
-      notifyError(
-        <>
-          Cannot connect – address is on&nbsp;
-          <a
-            rel="noreferrer"
-            href="https://www.treasury.gov/ofac/downloads/sdnlist.pdf"
-            target="_blank"
-          >
-            OFAC SDN list
-          </a>
-        </>,
-      );
-
+      notifyError(<CannotConnectAddressOfacError />);
       if (onDisconnectCb) onDisconnectCb();
     }
   }, [address]);

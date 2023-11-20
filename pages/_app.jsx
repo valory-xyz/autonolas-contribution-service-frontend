@@ -20,13 +20,13 @@ const MyApp = ({ Component, pageProps }) => (
     <GlobalStyle />
     <Meta />
     <ConfigProvider theme={THEME_CONFIG}>
-      <WagmiConfigProvider config={wagmiConfig}>
-        <ApolloProvider client={client}>
+      <ApolloProvider client={client}>
+        <WagmiConfigProvider config={wagmiConfig}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </ApolloProvider>
-      </WagmiConfigProvider>
+        </WagmiConfigProvider>
+      </ApolloProvider>
     </ConfigProvider>
   </>
 );

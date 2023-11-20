@@ -2,16 +2,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { set } from 'lodash';
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 import { setMemoryDetails } from 'store/setup/actions';
 import addActionToCentaur from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
-import {
-  areAddressesEqual,
-  ethersToWei,
-  formatToEth,
-} from 'common-util/functions';
+import { ethersToWei, formatToEth } from 'common-util/functions';
 
 /**
  * internal hook to get the centaur details

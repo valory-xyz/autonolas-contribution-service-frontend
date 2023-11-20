@@ -6,7 +6,8 @@ import {
   Table, Typography, Button, notification, Card,
 } from 'antd';
 import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
-import { areAddressesEqual, notifyError } from 'common-util/functions';
+import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
+
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';

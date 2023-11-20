@@ -7,8 +7,9 @@ import {
 } from 'antd';
 import get from 'lodash/get';
 import styled from 'styled-components';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
+
 import { setIsVerified } from 'store/setup/actions';
-import { notifyError, notifySuccess } from 'common-util/functions';
 import Login from '../Login';
 import { getAddressStatus } from '../Layout/utils';
 import { verifyAddress, isRouteValid } from './utils';

@@ -6,8 +6,8 @@ import {
 } from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import { notifyError, notifySuccess } from 'common-util/functions';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import MemoryCard from '../MemoryCard';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';

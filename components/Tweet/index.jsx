@@ -9,7 +9,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { notifyError } from 'common-util/functions';
+import { notifyError } from '@autonolas/frontend-library';
 
 import Link from 'next/link';
 import Proposals from '../Proposals';
