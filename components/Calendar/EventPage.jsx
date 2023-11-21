@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Card, Typography } from 'antd/lib';
+import { Card, Typography } from 'antd';
 import moment from 'moment';
 import Link from 'next/link';
 import { NA } from '@autonolas/frontend-library';

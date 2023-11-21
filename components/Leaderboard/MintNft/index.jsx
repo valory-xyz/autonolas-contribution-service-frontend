@@ -76,7 +76,7 @@ const MintNft = () => {
 
       {isNftFetchingLoading ? (
         <>
-          <Skeleton.Image active className="skeleton-image-loader" />
+          <Skeleton.Image active className="custom-skeleton-image-loader" />
           <Text type="secondary" className="custom-text-secondary mt-12">
             Your badge is being generated. This can take up to 2 minutes.
           </Text>

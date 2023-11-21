@@ -10,7 +10,7 @@ import {
   Timeline,
   Card,
   Grid,
-} from 'antd/lib';
+} from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import events from './events.json';

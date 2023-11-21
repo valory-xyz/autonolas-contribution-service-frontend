@@ -28,12 +28,16 @@ export const MintNftContainer = styled.div`
     line-height: normal;
     height: fit-content;
   }
-  .skeleton-image-loader {
-    width: 100%;
-    height: 100%;
+  .ant-skeleton.custom-skeleton-image-loader {
     border-radius: 1rem;
-    > svg {
-      transform: scale(2.5);
+    width: ${IMAGE_SIZE}px;
+    height: ${IMAGE_SIZE}px;
+    .ant-skeleton-image {
+      width: 100%;
+      height: 100%;
+      > svg {
+        transform: scale(1.5);
+      }
     }
   }
 `;

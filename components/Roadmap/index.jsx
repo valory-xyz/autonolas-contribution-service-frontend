@@ -1,9 +1,11 @@
 import {
   Card, Typography, Row, Col,
-} from 'antd/lib';
+} from 'antd';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import { useScreen } from '@autonolas/frontend-library';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+import { useMemo } from 'react';
 import roadmapItems from './roadmapItems.json';
 
 const { Text, Title, Link } = Typography;
@@ -12,6 +14,20 @@ const RoadmapPage = () => {
   const sortedRoadmapItems = roadmapItems.sort(
     (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix(),
   );
+
+  const { isMobile, isTablet } = useScreen();
+
+  const imageWidth = useMemo(() => {
+    if (isMobile) return 320;
+    if (isTablet) return 400;
+    return 500;
+  }, [isMobile, isTablet]);
+
+  const imageHeight = useMemo(() => {
+    if (isMobile) return 240;
+    if (isTablet) return 300;
+    return 390;
+  }, [isMobile, isTablet]);
 
   return (
     <div>
@@ -25,8 +41,8 @@ const RoadmapPage = () => {
               <Image
                 src={item.imageUrl}
                 alt={item.title}
-                width={500}
-                height={390}
+                width={imageWidth}
+                height={imageHeight}
               />
             </Col>
             <Col xs={24} md={24} lg={14}>
