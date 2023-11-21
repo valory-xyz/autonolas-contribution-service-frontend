@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+
 import { CENTAUR_BOT_ADDRESS } from 'util/constants';
+import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 
 const { Text } = Typography;
 
@@ -10,9 +10,11 @@ const DisplayName = ({ actorAddress, account, className }) => {
   if (actorAddress === account) {
     return <Text className={className}>You</Text>;
   }
+
   if (actorAddress === CENTAUR_BOT_ADDRESS) {
     return <Text className={className}>CentaurBot</Text>;
   }
+
   return <TruncatedEthereumLink text={actorAddress} className={className} />;
 };
 
