@@ -1,5 +1,5 @@
 import { Footer as CommonFooter } from '@autonolas/frontend-library';
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 import Socials from './Socials';
 
 const { Link } = Typography;

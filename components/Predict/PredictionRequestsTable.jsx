@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  List, Typography, Spin, Progress, Card, Statistic, Button,
-} from 'antd/lib';
+  List,
+  Typography,
+  Spin,
+  Progress,
+  Card,
+  Statistic,
+  Button,
+} from 'antd';
 import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
@@ -97,9 +103,10 @@ const PredictionRequestsTable = () => {
         (matchedItem) => matchedItem.id === item.fpmm_id.toLowerCase(),
       );
 
-      const tradeCount = queryResponse.data.fpmmTrades.filter(
-        (tradeItem) => tradeItem.id.startsWith(item.fpmm_id.toLowerCase()),
-      ).length;
+      const tradeCount = queryResponse.data.fpmmTrades.filter((tradeItem) => {
+        const tradeItemId = tradeItem.id;
+        return tradeItemId.startsWith(item.fpmm_id.toLowerCase());
+      }).length;
 
       const withoutQueryItem = { ...item, tradeCount };
       const withQueryItem = { ...item, ...queryItem, tradeCount };
@@ -124,10 +131,9 @@ const PredictionRequestsTable = () => {
 
   const router = useRouter();
 
-  const DescriptionNoTitle = () => (
+  const DescriptionNoTitle = (
     <Text>
-      Creating prediction market...
-      You may need to
+      Creating prediction market... You may need to
       {' '}
       <Button type="ghost" underline onClick={() => router.reload()}>
         <RedoOutlined />
@@ -163,7 +169,9 @@ const PredictionRequestsTable = () => {
       >
         <List
           itemLayout="horizontal"
-          dataSource={data.sort((a, b) => b.utc_timestamp_processed - a.utc_timestamp_processed)}
+          dataSource={data.sort(
+            (a, b) => b.utc_timestamp_processed - a.utc_timestamp_processed,
+          )}
           loading={loading}
           renderItem={(item) => {
             const {
@@ -199,11 +207,9 @@ const PredictionRequestsTable = () => {
             const answerDateFormat = "DD MMM 'YY";
             const FinalAnswerText = () => (
               <Text type="secondary">
-                Final answer will be available on
-                {' '}
-                {dayjs.unix(resolutionTime).format(answerDateFormat)}
-                {' '}
-                ·
+                {`Final answer will be available on ${dayjs
+                  .unix(resolutionTime)
+                  .format(answerDateFormat)} ·`}
                 {' '}
                 <PredictionMarketLink fpmmId={fpmmId} />
               </Text>
@@ -211,11 +217,7 @@ const PredictionRequestsTable = () => {
 
             const ListItemDescription = () => (
               <>
-                <Text strong>
-                  Answer –
-                  {' '}
-                  {answerStatus}
-                </Text>
+                <Text strong>{` Answer – ${answerStatus}`}</Text>
                 <br />
                 {answerStatus === STATUS.PREDICTED && (
                   <>
@@ -238,15 +240,10 @@ const PredictionRequestsTable = () => {
                         valueStyle={{ color: '#f43f5e' }}
                         suffix="%"
                       />
-                      <Statistic
-                        title="Prediction Count"
-                        value={tradeCount}
-                      />
+                      <Statistic title="Prediction Count" value={tradeCount} />
                     </div>
                     <Progress
-                      percent={
-                        getMarginalPricePercent(0)
-                      }
+                      percent={getMarginalPricePercent(0)}
                       strokeColor="#34d399"
                       trailColor="#f43f5e"
                       strokeLinecap="butt"
@@ -257,9 +254,7 @@ const PredictionRequestsTable = () => {
                     <FinalAnswerText />
                   </>
                 )}
-                {answerStatus === STATUS.FINALIZING && (
-                  <FinalAnswerText />
-                )}
+                {answerStatus === STATUS.FINALIZING && <FinalAnswerText />}
                 {answerStatus === STATUS.FINAL && (
                   <>
                     <Statistic
@@ -272,9 +267,7 @@ const PredictionRequestsTable = () => {
                     <Text type="secondary">
                       {`Answered on ${dayjs
                         .unix(answerFinalizedTimestamp)
-                        .format(answerDateFormat)}`}
-                      {' '}
-                      ·
+                        .format(answerDateFormat)} ·`}
                       {' '}
                       <PredictionMarketLink fpmmId={fpmmId} />
                     </Text>
@@ -286,19 +279,20 @@ const PredictionRequestsTable = () => {
             return (
               <List.Item style={{ padding: '20px' }}>
                 <List.Item.Meta
-                  title={title ? (
-                    <div style={{ maxWidth: '600px' }} className="mb-12">
-                      <Text
-                        style={{
-                          fontSize: '24px',
-                          wordWrap: 'break-word',
-                        }}
-                      >
-                        {item.title}
-                      </Text>
-                    </div>
-                  ) : null}
-                  description={title ? <ListItemDescription /> : <DescriptionNoTitle />}
+                  title={
+                    title ? (
+                      <div style={{ maxWidth: '600px' }} className="mb-12">
+                        <Text
+                          style={{ fontSize: '24px', wordWrap: 'break-word' }}
+                        >
+                          {item.title}
+                        </Text>
+                      </div>
+                    ) : null
+                  }
+                  description={
+                    title ? <ListItemDescription /> : <DescriptionNoTitle />
+                  }
                 />
               </List.Item>
             );

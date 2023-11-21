@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Button, Input, notification, Row, Col, Typography,
-} from 'antd/lib';
+} from 'antd';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { notifyError } from 'common-util/functions';
+import { notifyError } from '@autonolas/frontend-library';
 
 import Link from 'next/link';
 import Proposals from '../Proposals';
@@ -42,7 +42,10 @@ const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(account, '100000000000000000000000');
+      const has100kVeOlas = await checkVeolasThreshold(
+        account,
+        '100000000000000000000000',
+      );
       if (!has100kVeOlas) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
@@ -142,7 +145,8 @@ const Tweet = () => {
             {' '}
             <Link href="/members">join Contribute</Link>
             {' '}
-            and hold at least 100k veOLAS.
+            and hold at least 100k
+            veOLAS.
           </Text>
         </SocialPosterContainer>
       </Col>

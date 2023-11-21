@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd/lib';
+import { Col, Row } from 'antd';
 import { getLeaderboardList } from 'common-util/api';
 import ChatbotCard from 'components/Chatbot/ChatbotCard';
 import LeaderboardCard from 'components/Leaderboard/LeaderboardCard';

@@ -1,4 +1,4 @@
-import { Card, Statistic } from 'antd/lib';
+import { Card, Statistic } from 'antd';
 import { NA } from '@autonolas/frontend-library';
 import Link from 'next/link';
 

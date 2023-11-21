@@ -1,15 +1,8 @@
-const withAntdLess = require('next-plugin-antd-less');
-
 module.exports = {
-  ...withAntdLess({
-    lessVarsFilePathAppendToEndOfContent: false,
-    cssLoaderOptions: { importLoaders: 1 },
-    lessLoaderOptions: { javascriptEnabled: true },
-    productionBrowserSourceMaps: true,
-    webpack(config) {
-      return config;
-    },
-  }),
+  reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
   async headers() {
     return [
       {
@@ -35,7 +28,7 @@ module.exports = {
       },
     ];
   },
-  publicRuntimeConfig: { },
+  publicRuntimeConfig: {},
   images: {
     domains: ['github.com'],
     remotePatterns: [

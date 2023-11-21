@@ -1,9 +1,11 @@
 import {
   Card, Typography, Row, Col,
-} from 'antd/lib';
+} from 'antd';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import { useScreen } from '@autonolas/frontend-library';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+import { useMemo } from 'react';
 import roadmapItems from './roadmapItems.json';
 
 const { Text, Title, Link } = Typography;
@@ -13,20 +15,34 @@ const RoadmapPage = () => {
     (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix(),
   );
 
+  const { isMobile, isTablet } = useScreen();
+
+  const imageWidth = useMemo(() => {
+    if (isMobile) return 320;
+    if (isTablet) return 400;
+    return 500;
+  }, [isMobile, isTablet]);
+
+  const imageHeight = useMemo(() => {
+    if (isMobile) return 240;
+    if (isTablet) return 300;
+    return 390;
+  }, [isMobile, isTablet]);
+
   return (
     <div>
       <div className="mb-8">
         <EducationTitle title="Roadmap" level={3} educationItem="roadmap" />
       </div>
-      {sortedRoadmapItems.map((item) => (
-        <Card className="mb-12" bordered={false}>
+      {sortedRoadmapItems.map((item, index) => (
+        <Card className="mb-12" bordered={false} key={`roadmap-${index}`}>
           <Row gutter={16} align="middle">
             <Col xs={24} md={24} lg={10}>
               <Image
                 src={item.imageUrl}
                 alt={item.title}
-                width={640}
-                height={495}
+                width={imageWidth}
+                height={imageHeight}
               />
             </Col>
             <Col xs={24} md={24} lg={14}>
@@ -43,9 +59,7 @@ const RoadmapPage = () => {
                 >
                   Read ↗
                 </Link>
-                {' '}
-                ·
-                {' '}
+                {' · '}
                 <Link
                   type="secondary"
                   href="https://discord.com/channels/899649805582737479/1121019872839729152"
@@ -54,10 +68,7 @@ const RoadmapPage = () => {
                 >
                   Discuss ↗
                 </Link>
-                {' '}
-                · Proposed:
-                {' '}
-                {dayjs(item.date).format('MMMM D YYYY')}
+                {` · Proposed: ${dayjs(item.date).format('MMMM D YYYY')}`}
               </Text>
             </Col>
           </Row>

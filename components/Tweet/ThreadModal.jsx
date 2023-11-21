@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Modal, Button, Input, Row, Col, message,
-} from 'antd/lib';
+} from 'antd';
 import PropTypes from 'prop-types';
 import { TwitterOutlined, PlusOutlined } from '@ant-design/icons';
 import { MAX_TWEET_LENGTH } from 'util/constants';

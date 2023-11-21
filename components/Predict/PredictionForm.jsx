@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import {
   Form, Input, Button, DatePicker, Modal, Alert,
-} from 'antd/lib';
+} from 'antd';
 import { v4 as uuid } from 'uuid';
-import { notifyError, notifySuccess } from 'common-util/functions';
+import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
+
 import { setApprovedRequestsCount } from 'store/setup/actions';
 import {
   getPredictionRequests,
   postPredictionRequest,
 } from 'common-util/api/predictionRequests';
-import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
+
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 

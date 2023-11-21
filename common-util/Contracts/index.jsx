@@ -15,32 +15,54 @@ import {
   WVEOLAS_ABI_MAINNET,
 } from 'common-util/AbiAndAddresses';
 
-const getWeb3Details = () => {
-  /**
-   * provider = wallect-connect provider or currentProvider by metamask
-   */
-  const web3 = new Web3(window.WEB3_PROVIDER || window.web3.currentProvider);
-  // Get chainId from window object or default to ethereum
-  const chainId = Number(window?.ethereum?.chainId) || 1;
+import { getChainId, getProvider } from 'common-util/functions';
 
-  return { web3, chainId };
+const ADDRESSES = {
+  1: {
+    mintNft: MINT_NFT_CONTRACT_ADDRESS_MAINNET,
+    veOlas: VEOLAS_ADDRESS_MAINNET,
+    wveOlas: WVEOLAS_ADDRESS_MAINNET,
+  },
+  5: {
+    mintNft: MINT_NFT_CONTRACT_ADDRESS_GOERLI,
+    veOlas: VEOLAS_ADDRESS_GOERLI,
+    wveOlas: WVEOLAS_ADDRESS_MAINNET,
+  },
+};
+
+const getWeb3Details = () => {
+  const web3 = new Web3(getProvider());
+  const chainId = getChainId();
+  const address = ADDRESSES[chainId];
+
+  return { web3, address, chainId };
+};
+
+/**
+ * returns the contract instance
+ * @param {Array} abi - abi of the contract
+ * @param {String} contractAddress - address of the contract
+ */
+const getContract = (abi, contractAddress) => {
+  const { web3 } = getWeb3Details();
+  const contract = new web3.eth.Contract(abi, contractAddress);
+  return contract;
 };
 
 export const getMintContract = () => {
-  const { web3, chainId } = getWeb3Details();
-  const contract = new web3.eth.Contract(
+  const { chainId } = getWeb3Details();
+  const contract = getContract(
     chainId === 5
       ? MINT_NFT_CONTRACT_ABI_GOERLI
       : MINT_NFT_CONTRACT_ABI_MAINNET,
-    chainId === 5
-      ? MINT_NFT_CONTRACT_ADDRESS_GOERLI
-      : MINT_NFT_CONTRACT_ADDRESS_MAINNET,
+    ADDRESSES[chainId].mintNft,
   );
+
   return contract;
 };
 
 export const getVeolasContract = (isViewOnly) => {
-  const { web3, chainId } = getWeb3Details();
+  const { chainId } = getWeb3Details();
 
   const getAddressAndAbi = () => {
     // for view methods use wveolas abi and address
@@ -55,11 +77,11 @@ export const getVeolasContract = (isViewOnly) => {
   };
 
   const { address, abi } = getAddressAndAbi();
-  const contract = new web3.eth.Contract(abi, address);
+  const contract = getContract(abi, address);
   return contract;
 };
 
-export const rpc = {
+export const RPC_URLS = {
   1: process.env.NEXT_PUBLIC_MAINNET_URL,
   5: process.env.NEXT_PUBLIC_GOERLI_URL,
 };

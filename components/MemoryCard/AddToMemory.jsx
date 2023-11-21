@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, Input } from 'antd/lib';
+import { Button, Modal, Input } from 'antd';
 import { SaveOutlined, PlusOutlined } from '@ant-design/icons';
 
 export const AddToMemory = ({

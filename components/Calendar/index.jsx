@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
+import moment from 'moment';
+import Link from 'next/link';
 import {
   Switch,
   Calendar,
@@ -8,10 +10,9 @@ import {
   Timeline,
   Card,
   Grid,
-} from 'antd/lib';
+} from 'antd';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import moment from 'moment';
-import Link from 'next/link';
 import events from './events.json';
 import { Cell } from './styles';
 
@@ -104,27 +105,33 @@ const CalendarPage = () => {
               />
               <Text type="secondary">Hide past events</Text>
             </div>
-            <Timeline mode="left">
-              {eventsList.length > 0 ? (
-                eventsList.map((event) => (
-                  <Timeline.Item
-                    key={event.id}
-                  >
-                    <Link className="cell-text" href={`/calendar/events/${event.id}`}>{event.title}</Link>
-                    <br />
-                    <Text type="secondary">
-                      {moment.unix(event.timestamp).format('DD MMM YYYY')}
-                    </Text>
-                  </Timeline.Item>
-                ))
-              ) : (
-                <Text type="secondary">No future events</Text>
-              )}
-            </Timeline>
+
+            {eventsList.length === 0 ? (
+              <Text type="secondary">No future events</Text>
+            ) : (
+              <Timeline
+                mode="left"
+                items={eventsList.map((event) => ({
+                  children: (
+                    <Fragment key={event.id}>
+                      <Link
+                        className="cell-text"
+                        href={`/calendar/events/${event.id}`}
+                      >
+                        {event.title}
+                      </Link>
+                      <br />
+                      <Text type="secondary">
+                        {moment.unix(event.timestamp).format('DD MMM YYYY')}
+                      </Text>
+                    </Fragment>
+                  ),
+                }))}
+              />
+            )}
           </Card>
         </Col>
       </Row>
-
     </div>
   );
 };

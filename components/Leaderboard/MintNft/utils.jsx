@@ -1,6 +1,7 @@
 import get from 'lodash/get';
+import { notifySuccess } from '@autonolas/frontend-library';
+
 import { getMintContract } from 'common-util/Contracts';
-import { notifySuccess } from 'common-util/functions';
 import { GATEWAY_URL } from 'util/constants';
 
 const pattern = /ipfs:\/\/+/g;

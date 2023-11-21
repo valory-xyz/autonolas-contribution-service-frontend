@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react';
-import { Input, Modal, Typography } from 'antd/lib';
+import { Input, Modal, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
 const { Text } = Typography;

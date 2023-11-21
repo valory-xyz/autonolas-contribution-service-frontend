@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 import { MAX_TWEET_LENGTH } from 'util/constants';
 import PropTypes from 'prop-types';
 

@@ -1,4 +1,4 @@
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 import Link from 'next/link';
 import { DOCS_SECTIONS } from '../helpers';
 

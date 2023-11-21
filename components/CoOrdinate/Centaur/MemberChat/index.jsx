@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-
 import {
   Button, Input, notification, Space, Card, Typography,
-} from 'antd/lib';
+} from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-
-/** Import Orbis SDK */
 import { Orbis } from '@orbisclub/orbis-sdk';
 
 import { Conversations } from './Conversation';
@@ -116,11 +113,15 @@ export const MemberChat = () => {
   const isUserConnected = !!user;
 
   // on load, fetch the messages
-  useEffect(async () => {
-    if (account && isUserConnected) {
+  useEffect(() => {
+    const getData = async () => {
       setIsMessageLoading(true);
       await getMessagesForTheDid();
       setIsMessageLoading(false);
+    };
+
+    if (account && isUserConnected) {
+      getData();
     }
   }, [account, isUserConnected]);
 

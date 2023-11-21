@@ -6,19 +6,20 @@ import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import {
   Input, Row, Col, Typography, Button, Form,
-} from 'antd/lib';
+} from 'antd';
+import { notifyError } from '@autonolas/frontend-library';
+
 import { setMemoryDetails } from 'store/setup/actions';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
-import { notifyError } from 'common-util/functions';
 import DisplayName from 'common-util/DisplayName';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import { GroupChatContainer, StyledGroupChat } from './styles';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { GroupChatContainer, StyledGroupChat } from './styles';
 
 const { TextArea } = Input;
 const { Text } = Typography;
 
-const GroupChat = ({ chatEnabled }) => {
+export const GroupChat = ({ chatEnabled }) => {
   const dispatch = useDispatch();
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
@@ -87,9 +88,14 @@ const GroupChat = ({ chatEnabled }) => {
 
   const getAlignmentClass = (msg) => (displayName === msg.member ? 'my-message' : '');
 
+  const hasMessages = currentMemoryDetails?.messages?.length;
+
   return (
-    <GroupChatContainer title="Chat" bodyStyle={{ paddingTop: 0 }}>
-      {currentMemoryDetails?.messages?.length ? (
+    <GroupChatContainer
+      title="Chat"
+      bodyStyle={hasMessages ? { paddingTop: 0 } : {}}
+    >
+      {hasMessages ? (
         <div ref={messageWindowRef} className="group-chat-container">
           {isAddressPresent ? (
             currentMemoryDetails.messages.map((msg) => (
@@ -122,12 +128,16 @@ const GroupChat = ({ chatEnabled }) => {
             ))
           ) : (
             <div className="mt-24">
-              <Text type="secondary">To see messages, first join Contribute</Text>
+              <Text type="secondary">
+                To see messages, first join Contribute
+              </Text>
             </div>
           )}
         </div>
       ) : (
-        <Text type="secondary">No messages yet</Text>
+        <div className="group-chat-container">
+          <Text type="secondary">No messages yet</Text>
+        </div>
       )}
 
       <StyledGroupChat>
@@ -168,5 +178,3 @@ GroupChat.propTypes = {
 GroupChat.defaultProps = {
   chatEnabled: false,
 };
-
-export default GroupChat;

@@ -8,17 +8,19 @@ import {
   Modal,
   Input,
   notification,
-} from 'antd/lib';
+} from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { updateMemoryDetails } from 'common-util/api';
-import addActionToCentaur from 'util/addActionToCentaur';
-import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
-import { notifyError, canAddMemoryMessaage } from 'common-util/functions';
-import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
+import { notifyError } from '@autonolas/frontend-library';
+
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
+import addActionToCentaur from 'util/addActionToCentaur';
+import { updateMemoryDetails } from 'common-util/api';
+import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
+import { canAddMemoryMessaage } from 'common-util/functions';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
+import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { AddToMemory } from './AddToMemory';
 
 const MemoryCard = () => {
