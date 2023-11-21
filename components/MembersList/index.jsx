@@ -27,28 +27,32 @@ export const MembersList = () => {
   } = useCentaursFunctionalities();
 
   const addNewMember = async () => {
-    const newMember = { address: account, ownership: 0 };
-    const updatedMembers = [...(membersList || []), newMember];
-    // update the members
-    const updatedCentaur = cloneDeep(currentMemoryDetails);
-    updatedCentaur.members = updatedMembers;
+    try {
+      const newMember = { address: account, ownership: 0 };
+      const updatedMembers = [...(membersList || []), newMember];
+      // update the members
+      const updatedCentaur = cloneDeep(currentMemoryDetails);
+      updatedCentaur.members = updatedMembers;
 
-    // Update the Ceramic stream
-    // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
-    await updateMemoryWithNewCentaur(updatedCentaur);
-    notification.success({ message: 'Joined' });
+      // Update the Ceramic stream
+      // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
+      await updateMemoryWithNewCentaur(updatedCentaur);
+      notification.success({ message: 'Joined' });
 
-    // Add action to the centaur
-    // const action = {
-    //   actorAddress: account,
-    //   commitId,
-    //   description: 'joined the centaur',
-    //   timestamp: Date.now(),
-    // };
+      // Add action to the centaur
+      // const action = {
+      //   actorAddress: account,
+      //   commitId,
+      //   description: 'joined the centaur',
+      //   timestamp: Date.now(),
+      // };
 
-    await fetchedUpdatedMemory();
-    // Commenting out until fixed
-    // await triggerAction(centaurId, action);
+      await fetchedUpdatedMemory();
+      // Commenting out until fixed
+      // await triggerAction(centaurId, action);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const { signMessage } = useSignMessage({

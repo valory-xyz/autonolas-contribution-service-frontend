@@ -113,11 +113,15 @@ export const MemberChat = () => {
   const isUserConnected = !!user;
 
   // on load, fetch the messages
-  useEffect(async () => {
-    if (account && isUserConnected) {
+  useEffect(() => {
+    const getData = async () => {
       setIsMessageLoading(true);
       await getMessagesForTheDid();
       setIsMessageLoading(false);
+    };
+
+    if (account && isUserConnected) {
+      getData();
     }
   }, [account, isUserConnected]);
 

@@ -24,11 +24,15 @@ const ProfileBody = ({ profile }) => {
   const account = useSelector((state) => state?.setup?.account);
   const name = getName(profile);
 
-  useEffect(async () => {
-    const { details: badgeDetails } = await getLatestMintedNft(
-      profile?.wallet_address,
-    );
-    setDetails(badgeDetails);
+  useEffect(() => {
+    const getData = async () => {
+      const { details: badgeDetails } = await getLatestMintedNft(
+        profile?.wallet_address,
+      );
+      setDetails(badgeDetails);
+    };
+
+    getData();
   }, []);
 
   return (
