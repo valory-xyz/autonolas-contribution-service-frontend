@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { notifyError } from '@autonolas/frontend-library';
 
 const POLLING_TYPE = {
   STANDARD: 'standard',
@@ -29,7 +28,6 @@ export const useHealthCheckup = (
         isHealthy ? POLLING_TYPE.STANDARD : POLLING_TYPE.DISRUPTED,
       );
     } catch (error) {
-      notifyError('Error fetching health checkup');
       console.error(error);
     }
   };
