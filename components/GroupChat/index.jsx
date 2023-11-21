@@ -135,7 +135,9 @@ export const GroupChat = ({ chatEnabled }) => {
           )}
         </div>
       ) : (
-        <Text type="secondary">No messages yet</Text>
+        <div className="group-chat-container">
+          <Text type="secondary">No messages yet</Text>
+        </div>
       )}
 
       <StyledGroupChat>
