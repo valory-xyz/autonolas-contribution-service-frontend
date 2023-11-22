@@ -30,13 +30,13 @@ export const getLatestMintedNft = memoize(async (account) => {
     /**
      * find the element in reverse order to fetch the latest
      */
-    const lastIndex = findIndex(
+    const latestNftIndex = findIndex(
       ownerList,
       (e) => toLower(e) === toLower(account),
     );
 
-    if (lastIndex !== -1) {
-      const tokenId = `${Number(lastIndex) + 1}`;
+    if (latestNftIndex !== -1) {
+      const tokenId = `${Number(latestNftIndex) + 1}`;
       const infoUrl = await contract.methods.tokenURI(tokenId).call();
 
       if (infoUrl) {

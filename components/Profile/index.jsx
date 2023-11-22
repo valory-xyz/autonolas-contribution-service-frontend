@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Col, List, Row, Skeleton, Statistic, Typography,
+  Col, List, Row, Skeleton, Statistic, Typography, Image,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { NA } from '@autonolas/frontend-library';
@@ -26,10 +25,15 @@ const ProfileBody = ({ profile }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const { details: badgeDetails } = await getLatestMintedNft(
-        profile?.wallet_address,
-      );
-      setDetails(badgeDetails);
+      try {
+        const { details: badgeDetails } = await getLatestMintedNft(
+          profile?.wallet_address,
+        );
+
+        setDetails(badgeDetails);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     getData();
@@ -58,6 +62,7 @@ const ProfileBody = ({ profile }) => {
           </BadgeCard>
           {details && !details.image && <Text>Badge not minted yet</Text>}
         </Col>
+
         <Col xl={12}>
           <div className="mb-48">
             <Title level={4}>Contribution</Title>
