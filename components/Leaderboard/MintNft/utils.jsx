@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { notifySuccess } from '@autonolas/frontend-library';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { getMintContract } from 'common-util/Contracts';
 import { GATEWAY_URL } from 'util/constants';
@@ -19,6 +19,7 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
       resolve(id);
     })
     .catch((e) => {
+      notifyError('Error occured on minting NFT');
       window.console.log('Error occured on minting NFT');
       reject(e);
     });

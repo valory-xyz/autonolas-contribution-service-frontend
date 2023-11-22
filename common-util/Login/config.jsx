@@ -1,5 +1,3 @@
-/* eslint-disable jest/require-hook */
-/* eslint-disable no-console */
 import {
   EthereumClient,
   w3mConnectors,
