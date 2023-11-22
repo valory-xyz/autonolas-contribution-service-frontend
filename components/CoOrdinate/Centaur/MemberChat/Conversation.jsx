@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { List } from 'antd/lib';
+import { List } from 'antd';
 import PropTypes from 'prop-types';
-import { areAddressesEqual } from 'common-util/functions';
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 export const Conversations = ({ isLoading, messages }) => {
   const account = useSelector((state) => state?.setup?.account);

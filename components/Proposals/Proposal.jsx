@@ -12,19 +12,14 @@ import {
   Result,
   Progress,
   Popconfirm,
-} from 'antd/lib';
+} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { cloneDeep, set } from 'lodash';
 import dayjs from 'dayjs';
-import { NA } from '@autonolas/frontend-library';
+import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import {
-  ethersToWei,
-  getNumberInMillions,
-  notifyError,
-  notifySuccess,
-} from 'common-util/functions';
+import { ethersToWei, getNumberInMillions } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { fetchVeolasBalance } from 'components/MembersList/requests';
 import { VEOLAS_QUORUM } from 'util/constants';

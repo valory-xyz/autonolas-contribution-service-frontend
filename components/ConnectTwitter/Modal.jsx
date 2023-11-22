@@ -1,5 +1,5 @@
 import { TwitterOutlined } from '@ant-design/icons';
-import { Typography, Button, Modal } from 'antd/lib';
+import { Typography, Button, Modal } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -74,7 +74,7 @@ const ConnectTwitterModal = () => {
           Step 3:
         </Title>
         <Text>
-          Wait up to 5 minutes – your Twitter account will be automatically
+          Wait up to 5 minutes – your Twitter account will be automatically
           linked.
         </Text>
         <br />

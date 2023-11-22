@@ -21,7 +21,7 @@ const initialState = {
   predictionRequests: [],
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action = {}) => {
   const { data } = action;
 
   switch (action.type) {

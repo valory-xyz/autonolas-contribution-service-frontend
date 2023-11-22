@@ -4,9 +4,10 @@ import { useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
 import {
   Table, Typography, Button, notification, Card,
-} from 'antd/lib';
+} from 'antd';
 import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
-import { areAddressesEqual, notifyError } from 'common-util/functions';
+import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
+
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';
@@ -26,28 +27,32 @@ export const MembersList = () => {
   } = useCentaursFunctionalities();
 
   const addNewMember = async () => {
-    const newMember = { address: account, ownership: 0 };
-    const updatedMembers = [...(membersList || []), newMember];
-    // update the members
-    const updatedCentaur = cloneDeep(currentMemoryDetails);
-    updatedCentaur.members = updatedMembers;
+    try {
+      const newMember = { address: account, ownership: 0 };
+      const updatedMembers = [...(membersList || []), newMember];
+      // update the members
+      const updatedCentaur = cloneDeep(currentMemoryDetails);
+      updatedCentaur.members = updatedMembers;
 
-    // Update the Ceramic stream
-    // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
-    await updateMemoryWithNewCentaur(updatedCentaur);
-    notification.success({ message: 'Joined' });
+      // Update the Ceramic stream
+      // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
+      await updateMemoryWithNewCentaur(updatedCentaur);
+      notification.success({ message: 'Joined' });
 
-    // Add action to the centaur
-    // const action = {
-    //   actorAddress: account,
-    //   commitId,
-    //   description: 'joined the centaur',
-    //   timestamp: Date.now(),
-    // };
+      // Add action to the centaur
+      // const action = {
+      //   actorAddress: account,
+      //   commitId,
+      //   description: 'joined the centaur',
+      //   timestamp: Date.now(),
+      // };
 
-    await fetchedUpdatedMemory();
-    // Commenting out until fixed
-    // await triggerAction(centaurId, action);
+      await fetchedUpdatedMemory();
+      // Commenting out until fixed
+      // await triggerAction(centaurId, action);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const { signMessage } = useSignMessage({
@@ -183,5 +188,3 @@ export const MembersList = () => {
     </Card>
   );
 };
-
-export default MembersList;

@@ -1,5 +1,5 @@
 import Home from './Leaderboard';
 
-const Component = () => <><Home /></>;
+const Component = () => <Home />;
 
 export default Component;

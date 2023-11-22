@@ -1,4 +1,4 @@
-import { Space, Typography } from 'antd/lib';
+import { Space, Typography } from 'antd';
 import Image from 'next/image';
 import { MintBadgeCardContainer } from './styles';
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card } from 'antd/lib';
+import { Card } from 'antd';
 import { COLOR } from '@autonolas/frontend-library';
 
 export const IMAGE_SIZE = 300;
@@ -28,12 +28,16 @@ export const MintNftContainer = styled.div`
     line-height: normal;
     height: fit-content;
   }
-  .skeleton-image-loader {
+  .ant-skeleton.custom-skeleton-image-loader {
+    border-radius: 1rem;
     width: ${IMAGE_SIZE}px;
     height: ${IMAGE_SIZE}px;
-    border-radius: 1rem;
-    > svg {
-      transform: scale(2.5);
+    .ant-skeleton-image {
+      width: 100%;
+      height: 100%;
+      > svg {
+        transform: scale(1.5);
+      }
     }
   }
 `;

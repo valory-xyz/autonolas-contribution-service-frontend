@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
-import { Alert } from 'antd/lib';
+import { Alert } from 'antd';
 
 export const HomeContainer = styled.div``;
 

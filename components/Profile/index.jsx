@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Col, List, Row, Skeleton, Statistic, Typography,
-} from 'antd/lib';
+} from 'antd';
 import PropTypes from 'prop-types';
+import { NA } from '@autonolas/frontend-library';
+
 import { setLeaderboard } from 'store/setup/actions';
 import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-
-import { NA } from '@autonolas/frontend-library';
 import { DiscordLink } from '../Leaderboard/common';
 import { getAutonolasTokenUri } from '../Leaderboard/MintNft/utils';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
@@ -24,11 +24,15 @@ const ProfileBody = ({ profile }) => {
   const account = useSelector((state) => state?.setup?.account);
   const name = getName(profile);
 
-  useEffect(async () => {
-    const { details: badgeDetails } = await getLatestMintedNft(
-      profile?.wallet_address,
-    );
-    setDetails(badgeDetails);
+  useEffect(() => {
+    const getData = async () => {
+      const { details: badgeDetails } = await getLatestMintedNft(
+        profile?.wallet_address,
+      );
+      setDetails(badgeDetails);
+    };
+
+    getData();
   }, []);
 
   return (

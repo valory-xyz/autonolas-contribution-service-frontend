@@ -1,24 +1,52 @@
+/* eslint-disable max-len */
 import { ethers } from 'ethers';
 import { toLower, isNil, lowerCase } from 'lodash';
-import { notification } from 'antd/lib';
+import {
+  getProvider as getProviderFn,
+  getEthersProvider as getEthersProviderFn,
+  getChainId as getChainIdFn,
+  getChainIdOrDefaultToMainnet as getChainIdOrDefaultToMainnetFn,
+  getIsValidChainId as getIsValidChainIdFn,
+  sendTransaction as sendTransactionFn,
+  LOCAL_FORK_ID,
+} from '@autonolas/frontend-library';
 import data from 'common-util/Education/data.json';
+
+import { RPC_URLS } from 'common-util/Contracts';
+import { SUPPORTED_CHAINS } from 'common-util/Login';
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
-export const notifyError = (message = 'Some error occured') => notification.error({
-  message,
-});
+const getSupportedChains = () => (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
+  ? [...SUPPORTED_CHAINS, { id: LOCAL_FORK_ID }]
+  : SUPPORTED_CHAINS);
 
-export const notifySuccess = (message = 'Successful', description = null) => notification.success({
-  message,
-  description,
+/**
+ * re-usable functions
+ */
+
+export const getProvider = () => getProviderFn(getSupportedChains(), RPC_URLS);
+
+export const getEthersProvider = () => getEthersProviderFn(getSupportedChains(), RPC_URLS);
+
+export const getIsValidChainId = (chainId) => getIsValidChainIdFn(getSupportedChains(), chainId);
+
+export const getChainIdOrDefaultToMainnet = (chainId) => getChainIdOrDefaultToMainnetFn(getSupportedChains(), chainId);
+
+export const getChainId = (chainId = null) => {
+  if (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true') {
+    return LOCAL_FORK_ID;
+  }
+  return getChainIdFn(getSupportedChains(), chainId);
+};
+
+export const sendTransaction = (fn, account) => sendTransactionFn(fn, account, {
+  supportedChains: getSupportedChains(),
+  rpcUrls: RPC_URLS,
 });
 
 export const isGoerli = (id) => id === 5;
 
-// eslint-disable-next-line max-len
 export const getEducationItemByComponent = (component) => data.filter((item) => component === item.component)[0];
-
-export const areAddressesEqual = (a1, a2) => toLower(a1) === toLower(a2);
 
 export const getTier = (points) => {
   switch (true) {

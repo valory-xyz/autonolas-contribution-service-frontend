@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import PropTypes from 'prop-types';
-import { Typography } from 'antd/lib';
+import { Typography } from 'antd';
 
 const { Text } = Typography;
 

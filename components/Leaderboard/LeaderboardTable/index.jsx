@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Table, Card } from 'antd/lib';
+import { Typography, Table, Card } from 'antd';
 import Link from 'next/link';
 import { COLOR, NA } from '@autonolas/frontend-library';
 
@@ -37,6 +37,7 @@ const Leaderboard = () => {
         const {
           wallet_address, twitter_handle, discord_id, rowKeyUi,
         } = record;
+
         const socials = [
           wallet_address && (
             <span className="mr-12">
@@ -44,6 +45,7 @@ const Leaderboard = () => {
                 href={`https://etherscan.io/address/${wallet_address}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Wallet address"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +66,7 @@ const Leaderboard = () => {
                 href={`https://twitter.com/${twitter_handle}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Twitter handle"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,6 +86,7 @@ const Leaderboard = () => {
               href={`https://discord.com/users/${discord_id}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Discord ID"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +100,7 @@ const Leaderboard = () => {
               </svg>
             </a>
           ),
-        ];
+        ].filter(Boolean);
 
         if (socials.length === 0) return NA;
 
