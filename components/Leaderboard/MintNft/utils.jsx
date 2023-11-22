@@ -19,7 +19,7 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
       resolve(id);
     })
     .catch((e) => {
-      notifyError('Error occured on minting NFT');
+      notifyError('Error: could not mint NFT');
       window.console.log('Error occured on minting NFT');
       reject(e);
     });
