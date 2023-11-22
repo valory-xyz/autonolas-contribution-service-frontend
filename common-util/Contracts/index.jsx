@@ -51,6 +51,8 @@ const getContract = (abi, contractAddress) => {
 
 export const getMintContract = () => {
   const { chainId } = getWeb3Details();
+  console.log('chain ID in mintContract - ', { chainId });
+
   const contract = getContract(
     chainId === 5
       ? MINT_NFT_CONTRACT_ABI_GOERLI
