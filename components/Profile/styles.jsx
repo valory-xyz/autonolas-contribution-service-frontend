@@ -7,4 +7,9 @@ export const BadgeCard = styled(Card)`
   .ant-card-body {
     padding: 0;
   }
+  .ant-skeleton {
+    width: ${IMAGE_SIZE}px;
+    height: ${IMAGE_SIZE}px;
+    padding: 24px;
+  }
 `;
