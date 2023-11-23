@@ -10,8 +10,9 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 import { RPC_URLS } from 'common-util/Contracts';
 
+// if the PFP_URL contains staging, use goerli, else use mainnet
 export const SUPPORTED_CHAINS = (
-  process.env.NEXT_PUBLIC_BACKEND_URL || ''
+  process.env.NEXT_PUBLIC_PFP_URL || ''
 ).includes('staging')
   ? [goerli]
   : [mainnet];

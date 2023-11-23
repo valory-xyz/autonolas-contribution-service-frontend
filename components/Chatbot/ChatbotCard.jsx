@@ -1,8 +1,7 @@
 import { MessageOutlined } from '@ant-design/icons';
-import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Button, Card, Col, Row, Typography,
+  Button, Card, Col, Row, Typography, Image,
 } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
@@ -13,7 +12,7 @@ const ChatbotCard = () => (
   <Card>
     <Row gutter={24} align="middle">
       <Col span={10}>
-        <Image src="/images/chatbot.png" width={225} height={225} />
+        <Image src="/images/chatbot.png" />
       </Col>
       <Col span={14}>
         <EducationTitle
