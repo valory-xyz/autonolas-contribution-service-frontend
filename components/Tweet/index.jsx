@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import { useSignMessage } from 'wagmi';
+import { v4 as uuid } from 'uuid';
 import {
   Button, Input, notification, Row, Col, Typography,
 } from 'antd';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import Link from 'next/link';
 import { notifyError } from '@autonolas/frontend-library';
 
 import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
@@ -37,6 +38,17 @@ const Tweet = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
+  const { signMessageAsync } = useSignMessage({
+    message: 'Sign this message to propose a tweet',
+    // onSuccess: async (signature) => {
+    //   console.log(signature);
+    // },
+    // onError: (error) => {
+    //   notifyError('Some error occurred while signing the message');
+    //   console.error(error);
+    // },
+  });
+
   const handleSubmit = async (tweetOrThread) => {
     setIsSubmitting(true);
 
@@ -48,6 +60,8 @@ const Tweet = () => {
         );
       }
 
+      const signature = await signMessageAsync();
+
       const tweetDetails = {
         request_id: uuid(),
         text: tweetOrThread,
@@ -57,6 +71,7 @@ const Tweet = () => {
         createdDate: Date.now() / 1000, // in seconds
         execute: false,
         action_id: '',
+        signature, // TODO: do we need to add the signature here?????
       };
 
       const updatedCentaur = getUpdatedCentaurAfterTweetProposal(
@@ -80,7 +95,8 @@ const Tweet = () => {
       // reset form
       setTweet('');
     } catch (error) {
-      notifyError(`Proposal failed: ${error.message}`);
+      notifyError('Proposal failed');
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
