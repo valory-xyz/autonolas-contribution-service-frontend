@@ -40,13 +40,6 @@ const Tweet = () => {
 
   const { signMessageAsync } = useSignMessage({
     message: 'Sign this message to propose a tweet',
-    // onSuccess: async (signature) => {
-    //   console.log(signature);
-    // },
-    // onError: (error) => {
-    //   notifyError('Some error occurred while signing the message');
-    //   console.error(error);
-    // },
   });
 
   const handleSubmit = async (tweetOrThread) => {
