@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
+import { useSignMessage } from 'wagmi';
+import { cloneDeep, set } from 'lodash';
+import dayjs from 'dayjs';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Typography,
   Button,
@@ -13,16 +16,13 @@ import {
   Progress,
   Popconfirm,
 } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { cloneDeep, set } from 'lodash';
-import dayjs from 'dayjs';
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
+import { VEOLAS_QUORUM } from 'util/constants';
 import DisplayName from 'common-util/DisplayName';
 import { ethersToWei, getNumberInMillions } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
-import { fetchVeolasBalance } from 'components/MembersList/requests';
-import { VEOLAS_QUORUM } from 'util/constants';
+import { fetchVeolasBalance } from '../MembersList/requests';
 import {
   useCentaursFunctionalities,
   useProposals,
@@ -31,11 +31,9 @@ import { ViewThread } from '../Tweet/ViewThread';
 
 const { Text } = Typography;
 
-const STEPS = {
-  APPROVE: 0,
-  EXECUTE: 1,
-};
-const Proposal = ({ proposal, isAddressPresent }) => {
+const STEPS = { APPROVE: 0, EXECUTE: 1 };
+
+export const Proposal = ({ proposal }) => {
   const [isApproveLoading, setIsApproveLoading] = useState(false);
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
   const [current, setCurrent] = useState(STEPS.APPROVE);
@@ -56,8 +54,11 @@ const Proposal = ({ proposal, isAddressPresent }) => {
     totalVeolasInvestedInPercentage,
   } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
-
   const canMoveToExecuteStep = isExecutable || proposal.posted;
+
+  const { signMessageAsync } = useSignMessage({
+    message: 'Sign this message to propose a tweet',
+  });
 
   // set current step
   useEffect(() => {
@@ -69,10 +70,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   }, [isExecutable, proposal.posted]);
 
   const onApprove = async () => {
-    if (!isAddressPresent || !account) {
-      notifyError(
-        'Please connect your wallet and join the coordinate to vote.',
-      );
+    if (!account) {
+      notifyError('Please connect your wallet to vote.');
       return;
     }
 
@@ -91,12 +90,16 @@ const Proposal = ({ proposal, isAddressPresent }) => {
         return;
       }
 
+      const signature = await signMessageAsync();
+
       // Update proposal with the new voter & their veOlas balance
+      const vote = {
+        address: account,
+        signature,
+        votingPower: accountVeOlasBalance,
+      };
       const updatedProposal = cloneDeep(proposal);
-      const updatedVotersWithVeOlas = [
-        ...(proposal.voters || []),
-        { [account]: accountVeOlasBalance },
-      ];
+      const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
       set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
@@ -121,6 +124,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
       await triggerAction(centaur.id, action);
       await fetchedUpdatedMemory();
     } catch (error) {
+      notifyError('Failed to approve proposal');
       console.error(error);
     } finally {
       if (isExecutable) {
@@ -131,8 +135,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
   };
 
   const onExecute = async () => {
-    if (!isAddressPresent || !account) {
-      notifyError('To execute, connect your wallet and join the centaur.');
+    if (!account) {
+      notifyError('To execute, connect your wallet.');
       return;
     }
 
@@ -203,7 +207,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
             type="primary"
             onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!account || !isAddressPresent}
+            disabled={!account}
           >
             Approve this tweet
           </Button>
@@ -265,7 +269,7 @@ const Proposal = ({ proposal, isAddressPresent }) => {
               ghost
               type="primary"
               loading={isExecuteLoading}
-              disabled={!isAddressPresent || !account || !isExecutable}
+              disabled={!account || !isExecutable}
               className="mb-12"
             >
               Execute & post tweet
@@ -331,11 +335,8 @@ const Proposal = ({ proposal, isAddressPresent }) => {
 
 Proposal.propTypes = {
   proposal: ProposalPropTypes,
-  isAddressPresent: PropTypes.bool.isRequired,
 };
 
 Proposal.defaultProps = {
   proposal: {},
 };
-
-export default Proposal;
