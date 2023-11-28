@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Typography, Skeleton } from 'antd';
+import { Button, Typography } from 'antd';
 import get from 'lodash/get';
 
 import { setNftDetails } from 'store/setup/actions';
 import { getLatestMintedNft } from 'common-util/api';
+import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import { EducationTitle } from './Education';
-import ShowBadge from './ShowBadge';
 import { mintNft, pollNftDetails } from './utils';
 import { DiscordLink } from '../common';
 import { MintBadgeCard } from './helpers';
@@ -76,7 +76,7 @@ const MintNft = () => {
 
       {isNftFetchingLoading ? (
         <>
-          <Skeleton.Image active className="custom-skeleton-image-loader" />
+          <BadgeLoading />
           <Text type="secondary" className="custom-text-secondary mt-12">
             Your badge is being generated. This can take up to 2 minutes.
           </Text>
@@ -90,7 +90,7 @@ const MintNft = () => {
           {account ? (
             <>
               {image ? (
-                <ShowBadge image={image} nftDetails={nftDetails} />
+                <ShowBadge image={image} tokenId={nftDetails.tokenId} />
               ) : (
                 <>
                   <Button

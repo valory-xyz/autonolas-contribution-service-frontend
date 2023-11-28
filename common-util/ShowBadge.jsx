@@ -1,16 +1,18 @@
 import Image from 'next/image';
-import { Typography } from 'antd';
+import { Skeleton, Typography } from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getAutonolasTokenUri } from '../utils';
-import { IMAGE_SIZE } from '../styles';
+import styled from 'styled-components';
+import { getAutonolasTokenUri } from '../components/Leaderboard/MintNft/utils';
+
+export const IMAGE_SIZE = 300;
 
 const { Text } = Typography;
 
-const ShowBadge = ({ image, nftDetails }) => {
+export const ShowBadge = ({ image, tokenId }) => {
   const chainId = useSelector((state) => state?.setup?.chainId);
   const openSeaUrl = isGoerli(chainId)
     ? 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8'
@@ -25,13 +27,9 @@ const ShowBadge = ({ image, nftDetails }) => {
         height={IMAGE_SIZE}
         className="nft-image"
       />
-      {nftDetails?.tokenId && (
+      {tokenId && (
         <Text type="secondary" className="mt-12">
-          <a
-            href={`${openSeaUrl}/${nftDetails.tokenId}`}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={`${openSeaUrl}/${tokenId}`} target="_blank" rel="noreferrer">
             View on OpenSea&nbsp;
             <LinkOutlined />
           </a>
@@ -43,13 +41,29 @@ const ShowBadge = ({ image, nftDetails }) => {
 
 ShowBadge.propTypes = {
   image: PropTypes.string.isRequired,
-  nftDetails: PropTypes.shape({
-    tokenId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  }),
+  tokenId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 ShowBadge.defaultProps = {
-  nftDetails: null,
+  tokenId: null,
 };
 
-export default ShowBadge;
+/**
+ * @returns {import { Skeleton } from "module"; Skeleton.Image}
+ */
+export const BadgeLoadingContainer = styled(Skeleton.Image)`
+  &.ant-skeleton {
+    border-radius: 1rem;
+    width: ${IMAGE_SIZE}px;
+    height: ${IMAGE_SIZE}px;
+    .ant-skeleton-image {
+      width: 100%;
+      height: 100%;
+      > svg {
+        transform: scale(1.5);
+      }
+    }
+  }
+`;
+
+export const BadgeLoading = () => <BadgeLoadingContainer active />;
