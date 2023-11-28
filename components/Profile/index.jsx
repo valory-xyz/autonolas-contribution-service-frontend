@@ -19,6 +19,7 @@ import { BadgeCard, IMAGE_SIZE } from './styles';
 const { Title, Text } = Typography;
 
 const ProfileBody = ({ profile }) => {
+  const [isBadgeLoading, setIsBadgeLoading] = useState(false);
   const [details, setDetails] = useState(null);
   const account = useSelector((state) => state?.setup?.account);
   const name = getName(profile);
@@ -26,13 +27,16 @@ const ProfileBody = ({ profile }) => {
   useEffect(() => {
     const getData = async () => {
       try {
+        setIsBadgeLoading(true);
+
         const { details: badgeDetails } = await getLatestMintedNft(
           profile?.wallet_address,
         );
-
         setDetails(badgeDetails);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsBadgeLoading(false);
       }
     };
 
@@ -47,20 +51,25 @@ const ProfileBody = ({ profile }) => {
         <Col className="mb-48">
           <Title level={4}>Badge</Title>
           <BadgeCard>
-            {details?.image ? (
-              <Image
-                src={getAutonolasTokenUri(details.image)}
-                alt="Badge image"
-                width={IMAGE_SIZE}
-                height={IMAGE_SIZE}
-                className="nft-image"
-                preview={false}
-              />
-            ) : (
+            {isBadgeLoading ? (
               <Skeleton active />
+            ) : (
+              <>
+                {details?.image ? (
+                  <Image
+                    src={getAutonolasTokenUri(details.image)}
+                    alt="Badge image"
+                    width={IMAGE_SIZE}
+                    height={IMAGE_SIZE}
+                    className="nft-image"
+                    preview={false}
+                  />
+                ) : (
+                  <Text>Badge not minted yet</Text>
+                )}
+              </>
             )}
           </BadgeCard>
-          {details && !details.image && <Text>Badge not minted yet</Text>}
         </Col>
 
         <Col xl={12}>
