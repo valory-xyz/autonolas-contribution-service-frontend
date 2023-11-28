@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Col, List, Row, Skeleton, Statistic, Typography, Image,
+  Col, List, Row, Skeleton, Statistic, Typography,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { NA } from '@autonolas/frontend-library';
@@ -11,10 +11,9 @@ import { setLeaderboard } from 'store/setup/actions';
 import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import { DiscordLink } from '../Leaderboard/common';
-import { getAutonolasTokenUri } from '../Leaderboard/MintNft/utils';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { BadgeCard, IMAGE_SIZE } from './styles';
 
 const { Title, Text } = Typography;
 
@@ -43,43 +42,6 @@ const ProfileBody = ({ profile }) => {
     getData();
   }, []);
 
-  const badgeDetails = [
-    {
-      title: 'Details',
-      desc: (
-        <Text type="secondary">
-          {profile.wallet_address ? (
-            <TruncatedEthereumLink text={profile.wallet_address} />
-          ) : (
-            NA
-          )}
-        </Text>
-      ),
-    },
-    {
-      title: 'Discord Handle',
-      desc: (
-        <Text type="secondary">
-          {profile.discord_handle || NA}
-          {account && account === profile.wallet_address ? (
-            <DiscordLink text="Connect Discord" />
-          ) : null}
-        </Text>
-      ),
-    },
-    {
-      title: 'Twitter Handle',
-      desc: (
-        <Text type="secondary">
-          {profile.twitter_handle || NA}
-          {account && account === profile.wallet_address ? (
-            <ConnectTwitterModal />
-          ) : null}
-        </Text>
-      ),
-    },
-  ];
-
   return (
     <>
       <Title>{name}</Title>
@@ -87,26 +49,17 @@ const ProfileBody = ({ profile }) => {
       <Row gutter={48}>
         <Col className="mb-48">
           <Title level={4}>Badge</Title>
-          <BadgeCard>
-            {isBadgeLoading ? (
-              <Skeleton active />
-            ) : (
-              <>
-                {details?.image ? (
-                  <Image
-                    src={getAutonolasTokenUri(details.image)}
-                    alt="Badge image"
-                    width={IMAGE_SIZE}
-                    height={IMAGE_SIZE}
-                    className="nft-image"
-                    preview={false}
-                  />
-                ) : (
-                  <Text>Badge not minted yet</Text>
-                )}
-              </>
-            )}
-          </BadgeCard>
+          {isBadgeLoading ? (
+            <BadgeLoading />
+          ) : (
+            <>
+              {details?.image ? (
+                <ShowBadge image={details?.image} tokenId={details?.tokenId} />
+              ) : (
+                <Text>Badge not minted yet</Text>
+              )}
+            </>
+          )}
         </Col>
 
         <Col xl={12}>
@@ -133,25 +86,28 @@ const ProfileBody = ({ profile }) => {
               <List.Item>
                 <List.Item.Meta
                   title="Wallet Address"
-                  description={
-                    (
-                      <Text type="secondary">
+                  description={(
+                    <Text type="secondary">
+                      {profile.wallet_address ? (
                         <TruncatedEthereumLink text={profile.wallet_address} />
-                      </Text>
-                    ) || NA
-                  }
+                      ) : (
+                        NA
+                      )}
+                    </Text>
+                  )}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
                   title="Discord Handle"
                   description={
-                    <Text type="secondary">{profile.discord_handle}</Text>
-                    || (account && account === profile.wallet_address ? (
+                    account && account === profile.wallet_address ? (
                       <DiscordLink text="Connect Discord" />
                     ) : (
-                      NA
-                    ))
+                      <Text type="secondary">
+                        {profile.discord_handle || NA}
+                      </Text>
+                    )
                   }
                 />
               </List.Item>
@@ -159,12 +115,13 @@ const ProfileBody = ({ profile }) => {
                 <List.Item.Meta
                   title="Twitter Handle"
                   description={
-                    profile.twitter_handle
-                    || (account && account === profile.wallet_address ? (
+                    account && account === profile.wallet_address ? (
                       <ConnectTwitterModal />
                     ) : (
-                      NA
-                    ))
+                      <Text type="secondary">
+                        {profile.twitter_handle || NA}
+                      </Text>
+                    )
                   }
                 />
               </List.Item>
