@@ -43,6 +43,43 @@ const ProfileBody = ({ profile }) => {
     getData();
   }, []);
 
+  const badgeDetails = [
+    {
+      title: 'Details',
+      desc: (
+        <Text type="secondary">
+          {profile.wallet_address ? (
+            <TruncatedEthereumLink text={profile.wallet_address} />
+          ) : (
+            NA
+          )}
+        </Text>
+      ),
+    },
+    {
+      title: 'Discord Handle',
+      desc: (
+        <Text type="secondary">
+          {profile.discord_handle || NA}
+          {account && account === profile.wallet_address ? (
+            <DiscordLink text="Connect Discord" />
+          ) : null}
+        </Text>
+      ),
+    },
+    {
+      title: 'Twitter Handle',
+      desc: (
+        <Text type="secondary">
+          {profile.twitter_handle || NA}
+          {account && account === profile.wallet_address ? (
+            <ConnectTwitterModal />
+          ) : null}
+        </Text>
+      ),
+    },
+  ];
+
   return (
     <>
       <Title>{name}</Title>
@@ -157,7 +194,7 @@ ProfileBody.defaultProps = {
   },
 };
 
-const Profile = () => {
+export const Profile = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -171,7 +208,7 @@ const Profile = () => {
         const response = await getLeaderboardList();
         dispatch(setLeaderboard(response));
       } catch (error) {
-        window.console.error(error);
+        console.error(error);
       }
     };
     fn();
@@ -187,5 +224,3 @@ const Profile = () => {
     </>
   );
 };
-
-export default Profile;
