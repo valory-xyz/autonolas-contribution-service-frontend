@@ -6,12 +6,11 @@ import {
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { PlusCircleOutlined } from '@ant-design/icons';
-
-import { MAX_TWEET_LENGTH } from 'util/constants';
-import { EducationTitle } from 'common-util/Education/EducationTitle';
+import Link from 'next/link';
 import { notifyError } from '@autonolas/frontend-library';
 
-import Link from 'next/link';
+import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
+import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from '../Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
@@ -42,10 +41,7 @@ const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(
-        account,
-        '100000000000000000000000',
-      );
+      const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS);
       if (!has100kVeOlas) {
         throw new Error(
           'You must hold at least 100k veOLAS to propose a tweet.',
