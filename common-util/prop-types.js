@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 
+const Voter = PropTypes.shape({
+  address: PropTypes.string,
+  signature: PropTypes.string,
+  votingPower: PropTypes.string, // passed in wei
+});
+
 const ProposerPropTypes = PropTypes.oneOfType([
   PropTypes.string, // TODO: remove once backend is migrated
   PropTypes.shape({
     address: PropTypes.string.isRequired, // address of the proposer
-    signature: PropTypes.number, // signature of the message signed
+    signature: PropTypes.string, // signature of the message signed
     verified: PropTypes.bool, // if the signature is validated
   }),
 ]);
@@ -13,6 +19,7 @@ export const ProposalPropTypes = PropTypes.shape({
   // unique id of the proposal
   request_id: PropTypes.string.isRequired,
 
+  // proposal creation date
   createdDate: PropTypes.number.isRequired,
 
   // tweet = the `text` is string
@@ -28,11 +35,7 @@ export const ProposalPropTypes = PropTypes.shape({
   proposer: ProposerPropTypes.isRequired,
 
   // list of voters that approved the tweet
-  voters: PropTypes.arrayOf(PropTypes.shape({
-    address: PropTypes.string,
-    signature: PropTypes.number,
-    balance: PropTypes.number, // TODO
-  })),
+  voters: PropTypes.arrayOf(Voter),
 
   executionAttempts: PropTypes.arrayOf(
     PropTypes.shape({
