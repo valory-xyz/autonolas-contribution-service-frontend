@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { useSignMessage } from 'wagmi';
-import { cloneDeep, isNull, set } from 'lodash';
+import {
+  cloneDeep, isNil, last, set,
+} from 'lodash';
 import dayjs from 'dayjs';
 import { v4 as uuid } from 'uuid';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -15,6 +17,7 @@ import {
   Result,
   Progress,
   Popconfirm,
+  Alert,
 } from 'antd';
 import {
   COLOR,
@@ -247,6 +250,22 @@ export const Proposal = ({ proposal }) => {
     </>
   );
 
+  const isValidating = () => {
+    const lastExecutionAttempt = last(proposal?.executionAttempts);
+
+    // If the last execution attempt is "null" & the proposal is not posted,
+    // it means the proposal is BEING EXECUTED
+    return isNil(lastExecutionAttempt) && !proposal?.posted;
+  };
+
+  const isExecuteFailed = () => {
+    const lastExecutionAttempt = last(proposal?.executionAttempts);
+
+    // If the last execution attempt is "false" & the proposal is not posted,
+    // it means the proposal execution FAILED
+    return lastExecutionAttempt?.verified === false && !proposal?.posted;
+  };
+
   const ExecuteStep = proposal.posted ? (
     <Result
       status="success"
@@ -266,32 +285,49 @@ export const Proposal = ({ proposal }) => {
     />
   ) : (
     <>
-      {proposal.execute ? (
-        <Text>Posting tweet...</Text>
-      ) : (
+      {isValidating() && (
         <>
-          <Popconfirm
-            title="Are you sure？This will immediately post to the @autonolas Twitter account."
-            icon={<ExclamationCircleOutlined style={{ color: COLOR.ORANGE }} />}
-            onConfirm={onExecute}
-          >
-            <Button
-              ghost
-              type="primary"
-              loading={isExecuteLoading}
-              disabled={!account || !isExecutable || !isProposalVerified}
-              className="mb-12"
-            >
-              Execute & post tweet
-            </Button>
-          </Popconfirm>
+          <Alert
+            type="warning"
+            message="Tweet is being validated. Please wait."
+            showIcon
+          />
           <br />
-          {!isExecutable && (
-            <Text text="secondary">
-              {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
-            </Text>
-          )}
         </>
+      )}
+
+      {isExecuteFailed() && (
+        <>
+          <Alert
+            type="error"
+            message="Tweet failed to post. Please try again."
+            showIcon
+          />
+          <br />
+        </>
+      )}
+
+      <Popconfirm
+        title="Are you sure？This will immediately post to the @autonolas Twitter account."
+        icon={<ExclamationCircleOutlined style={{ color: COLOR.ORANGE }} />}
+        onConfirm={onExecute}
+      >
+        <Button
+          ghost
+          type="primary"
+          loading={isExecuteLoading}
+          disabled={!account || !isExecutable || !isProposalVerified || isValidating()}
+          className="mb-12"
+        >
+          Execute & post tweet
+        </Button>
+      </Popconfirm>
+      <br />
+
+      {!isExecutable && (
+        <Text text="secondary">
+          {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
+        </Text>
       )}
     </>
   );
@@ -310,7 +346,7 @@ export const Proposal = ({ proposal }) => {
     : '--';
 
   const getProposalVerificationStatus = useCallback(() => {
-    if (isNull(isProposalVerified)) return 'Unvalidated';
+    if (isNil(isProposalVerified)) return 'Unvalidated';
     return isProposalVerified ? 'Validated' : 'Not yet validated';
   }, [isProposalVerified]);
 
