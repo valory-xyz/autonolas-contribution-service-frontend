@@ -11,7 +11,11 @@ const ProposerPropTypes = PropTypes.oneOfType([
   PropTypes.shape({
     address: PropTypes.string.isRequired, // address of the proposer
     signature: PropTypes.string, // signature of the message signed
-    verified: PropTypes.bool, // if the signature is validated
+
+    // if the signature is validated, initially null
+    verified: PropTypes.oneOfType(
+      [PropTypes.bool, PropTypes.null],
+    ),
   }),
 ]);
 
