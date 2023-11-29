@@ -250,21 +250,13 @@ export const Proposal = ({ proposal }) => {
     </>
   );
 
-  const isValidating = () => {
-    const lastExecutionAttempt = last(proposal?.executionAttempts);
+  // If the last execution attempt is "null" & the proposal is not posted,
+  // it means the proposal is BEING VALIDATED
+  const isValidating = isNil(last(proposal?.executionAttempts)) && !proposal?.posted;
 
-    // If the last execution attempt is "null" & the proposal is not posted,
-    // it means the proposal is BEING EXECUTED
-    return isNil(lastExecutionAttempt) && !proposal?.posted;
-  };
-
-  const isExecuteFailed = () => {
-    const lastExecutionAttempt = last(proposal?.executionAttempts);
-
-    // If the last execution attempt is "false" & the proposal is not posted,
-    // it means the proposal execution FAILED
-    return lastExecutionAttempt?.verified === false && !proposal?.posted;
-  };
+  // If the last execution attempt is "false" & the proposal is not posted,
+  // it means the proposal execution FAILED
+  const isFailed = last(proposal?.executionAttempts)?.verified === false && !proposal?.posted;
 
   const ExecuteStep = proposal.posted ? (
     <Result
@@ -285,7 +277,7 @@ export const Proposal = ({ proposal }) => {
     />
   ) : (
     <>
-      {isValidating() && (
+      {isValidating && (
         <>
           <Alert
             type="warning"
@@ -296,7 +288,7 @@ export const Proposal = ({ proposal }) => {
         </>
       )}
 
-      {isExecuteFailed() && (
+      {isFailed && (
         <>
           <Alert
             type="error"
@@ -315,8 +307,10 @@ export const Proposal = ({ proposal }) => {
         <Button
           ghost
           type="primary"
-          loading={isExecuteLoading}
-          disabled={!account || !isExecutable || !isProposalVerified || isValidating()}
+          loading={isExecuteLoading || isValidating}
+          disabled={
+            !account || !isExecutable || !isProposalVerified || isValidating
+          }
           className="mb-12"
         >
           Execute & post tweet
