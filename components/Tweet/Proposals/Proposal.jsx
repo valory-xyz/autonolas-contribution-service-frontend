@@ -1,34 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { useSignMessage } from 'wagmi';
-import {
-  cloneDeep, isNil, last, set,
-} from 'lodash';
+import { cloneDeep, isNil, set } from 'lodash';
 import dayjs from 'dayjs';
 import { v4 as uuid } from 'uuid';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
-  Typography,
-  Button,
-  Card,
-  Row,
-  Col,
-  Steps,
-  Result,
-  Progress,
-  Popconfirm,
-  Alert,
+  Typography, Card, Row, Col, Steps,
 } from 'antd';
-import {
-  COLOR,
-  NA,
-  notifyError,
-  notifySuccess,
-} from '@autonolas/frontend-library';
+import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import { VEOLAS_QUORUM } from 'util/constants';
 import DisplayName from 'common-util/DisplayName';
-import { ethersToWei, getNumberInMillions } from 'common-util/functions';
+import { ethersToWei } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { fetchVeolasBalance } from '../../MembersList/requests';
@@ -36,8 +18,9 @@ import {
   useCentaursFunctionalities,
   useProposals,
 } from '../../CoOrdinate/Centaur/hooks';
-import { ViewThread } from '../ViewThread';
 import { getFirstTenCharsOfTweet } from '../utils';
+import { ExecuteStep } from './ExecuteStep';
+import { ApproveStep } from './ApproveStep';
 
 const { Text } = Typography;
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
@@ -55,14 +38,7 @@ export const Proposal = ({ proposal }) => {
   } = useCentaursFunctionalities();
   const { triggerAction, getCurrentProposalInfo } = useProposals();
 
-  const {
-    isExecutable,
-    votersAddress,
-    totalVeolasInEth,
-    remainingVeolasForApprovalInEth,
-    totalVeolasInvestedInPercentage,
-    isProposalVerified,
-  } = getCurrentProposalInfo(proposal);
+  const { isExecutable, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isExecutable || proposal.posted;
 
@@ -190,145 +166,29 @@ export const Proposal = ({ proposal }) => {
     }
   };
 
-  const tweetOrThread = proposal?.text || [];
-
-  const ApproveStep = (
-    <>
-      <Card className="mb-12" bodyStyle={{ padding: 16 }}>
-        {/* If string, just a tweet else a thread (array of string) */}
-        {typeof tweetOrThread === 'string' ? (
-          <>
-            <div className="mb-12">
-              <Text>{tweetOrThread || NA}</Text>
-            </div>
-            <Text type="secondary">
-              {tweetOrThread.length || 0}
-              /280 characters
-            </Text>
-          </>
-        ) : (
-          <ViewThread thread={tweetOrThread || []} />
-        )}
-      </Card>
-
-      {hasVoted ? (
-        <Text className="mb-8">✅ You approved</Text>
-      ) : (
-        <div className="mb-8">
-          <Button
-            ghost
-            type="primary"
-            onClick={onApprove}
-            loading={isApproveLoading}
-            disabled={!account || !isProposalVerified}
-          >
-            Approve this tweet
-          </Button>
-
-          {!account && (
-            <>
-              <br />
-              <Text type="secondary">To approve, connect your wallet</Text>
-            </>
-          )}
-        </div>
-      )}
-
-      <div className="mb-12">
-        <div>
-          {`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}
-        </div>
-        <div>
-          {`Quorum ${canMoveToExecuteStep ? '' : 'not '} achieved ${
-            canMoveToExecuteStep ? '✅ ' : ''
-          } - ${getNumberInMillions(totalVeolasInEth)}/${getNumberInMillions(
-            VEOLAS_QUORUM,
-          )} veOLAS`}
-        </div>
-        <Progress percent={totalVeolasInvestedInPercentage} />
-      </div>
-    </>
-  );
-
-  // If the last execution attempt is "null" & the proposal is not posted,
-  // it means the proposal is BEING VALIDATED
-  const isValidating = isNil(last(proposal?.executionAttempts)) && !proposal?.posted;
-
-  // If the last execution attempt is "false" & the proposal is not posted,
-  // it means the proposal execution FAILED
-  const isFailed = last(proposal?.executionAttempts)?.verified === false && !proposal?.posted;
-
-  const ExecuteStep = proposal.posted ? (
-    <Result
-      status="success"
-      title="Tweet posted successfully!"
-      extra={[
-        <Button
-          type="primary"
-          ghost
-          key="tweet-successful"
-          href={proposal.action_id}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          View tweet
-        </Button>,
-      ]}
-    />
-  ) : (
-    <>
-      {isValidating && (
-        <>
-          <Alert
-            type="warning"
-            message="Tweet is being validated. Please wait."
-            showIcon
-          />
-          <br />
-        </>
-      )}
-
-      {isFailed && (
-        <>
-          <Alert
-            type="error"
-            message="Tweet failed to post. Please try again."
-            showIcon
-          />
-          <br />
-        </>
-      )}
-
-      <Popconfirm
-        title="Are you sure？This will immediately post to the @autonolas Twitter account."
-        icon={<ExclamationCircleOutlined style={{ color: COLOR.ORANGE }} />}
-        onConfirm={onExecute}
-      >
-        <Button
-          ghost
-          type="primary"
-          loading={isExecuteLoading || isValidating}
-          disabled={
-            !account || !isExecutable || !isProposalVerified || isValidating
-          }
-          className="mb-12"
-        >
-          Execute & post tweet
-        </Button>
-      </Popconfirm>
-      <br />
-
-      {!isExecutable && (
-        <Text text="secondary">
-          {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
-        </Text>
-      )}
-    </>
-  );
-
   const steps = [
-    { key: 'approve', title: 'Approve', content: ApproveStep },
-    { key: 'execute', title: 'Execute', content: ExecuteStep },
+    {
+      key: 'approve',
+      title: 'Approve',
+      content: (
+        <ApproveStep
+          isApproveLoading={isApproveLoading}
+          proposal={proposal}
+          onApprove={onApprove}
+        />
+      ),
+    },
+    {
+      key: 'execute',
+      title: 'Execute',
+      content: (
+        <ExecuteStep
+          isExecuteLoading={isExecuteLoading}
+          proposal={proposal}
+          onExecute={onExecute}
+        />
+      ),
+    },
   ];
 
   const onChange = (value) => {
@@ -374,10 +234,6 @@ export const Proposal = ({ proposal }) => {
   );
 };
 
-Proposal.propTypes = {
-  proposal: ProposalPropTypes,
-};
+Proposal.propTypes = { proposal: ProposalPropTypes };
 
-Proposal.defaultProps = {
-  proposal: {},
-};
+Proposal.defaultProps = { proposal: {} };
