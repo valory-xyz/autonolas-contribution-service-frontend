@@ -108,7 +108,6 @@ export const GroupChat = ({ chatEnabled }) => {
                   ) : (
                     <DisplayName
                       actorAddress={msg.member}
-                      account={account}
                       className="text-small"
                     />
                   )}

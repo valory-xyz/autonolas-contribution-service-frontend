@@ -313,16 +313,20 @@ const GlobalStyle = createGlobalStyle`
   }
 
   // Calendar
-
   .ant-picker-calendar-header .ant-picker-calendar-mode-switch {
     margin-right: 20px;
   }
 
   //Switch
-
   .ant-switch {
     // add right padding assuming a label is added to the right
     margin-right: 4px;
+  }
+
+  .ant-notification {
+    .ant-notification-notice-message {
+      margin-bottom: 0 !important;
+    }
   }
 `;
 
