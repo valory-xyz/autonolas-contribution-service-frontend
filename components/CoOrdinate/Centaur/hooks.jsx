@@ -137,12 +137,15 @@ export const useProposals = () => {
       .div(quorum)
       .toString();
 
+    const proposalVerification = proposal?.proposer?.verified;
+
     return {
       isExecutable,
       totalVeolas,
       totalVeolasInEth: formatToEth(totalVeolas),
       remainingVeolasForApprovalInEth,
       totalVeolasInvestedInPercentage,
+      proposalVerification,
     };
   };
 
