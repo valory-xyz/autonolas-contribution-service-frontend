@@ -137,7 +137,7 @@ export const useProposals = () => {
       .div(quorum)
       .toString();
 
-    const proposalVerification = proposal?.proposer?.verified;
+    const isProposalVerified = proposal?.proposer?.verified;
 
     return {
       isExecutable,
@@ -145,7 +145,7 @@ export const useProposals = () => {
       totalVeolasInEth: formatToEth(totalVeolas),
       remainingVeolasForApprovalInEth,
       totalVeolasInvestedInPercentage,
-      proposalVerification,
+      isProposalVerified,
     };
   };
 
