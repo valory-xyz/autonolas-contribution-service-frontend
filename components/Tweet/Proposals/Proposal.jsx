@@ -52,7 +52,7 @@ export const Proposal = ({ proposal }) => {
     totalVeolasInEth,
     remainingVeolasForApprovalInEth,
     totalVeolasInvestedInPercentage,
-    proposalVerification,
+    isProposalVerified,
   } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isExecutable || proposal.posted;
@@ -208,7 +208,7 @@ export const Proposal = ({ proposal }) => {
             type="primary"
             onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!account || !proposalVerification}
+            disabled={!account || !isProposalVerified}
           >
             Approve this tweet
           </Button>
@@ -270,7 +270,7 @@ export const Proposal = ({ proposal }) => {
               ghost
               type="primary"
               loading={isExecuteLoading}
-              disabled={!account || !isExecutable || !proposalVerification}
+              disabled={!account || !isExecutable || !isProposalVerified}
               className="mb-12"
             >
               Execute & post tweet
@@ -288,16 +288,8 @@ export const Proposal = ({ proposal }) => {
   );
 
   const steps = [
-    {
-      key: 'approve',
-      title: 'Approve',
-      content: ApproveStep,
-    },
-    {
-      key: 'execute',
-      title: 'Execute',
-      content: ExecuteStep,
-    },
+    { key: 'approve', title: 'Approve', content: ApproveStep },
+    { key: 'execute', title: 'Execute', content: ExecuteStep },
   ];
 
   const onChange = (value) => {
@@ -309,9 +301,9 @@ export const Proposal = ({ proposal }) => {
     : '--';
 
   const getProposalVerificationStatus = useCallback(() => {
-    if (isNull(proposalVerification)) return 'Unvalidated';
-    return proposalVerification ? 'Validated' : 'Not yet validated';
-  }, [proposalVerification]);
+    if (isNull(isProposalVerified)) return 'Unvalidated';
+    return isProposalVerified ? 'Validated' : 'Not yet validated';
+  }, [isProposalVerified]);
 
   return (
     <Card className="mb-24" bodyStyle={{ padding: 0 }}>
@@ -332,7 +324,7 @@ export const Proposal = ({ proposal }) => {
         <Text type="secondary">
           {'Proposed by: '}
           <DisplayName actorAddress={proposal?.proposer} account={account} />
-          {` · Date: ${proposedDate} · Status: ${getProposalVerificationStatus()}`}
+          {` · Status: ${getProposalVerificationStatus()} · Date: ${proposedDate}`}
         </Text>
       </div>
     </Card>
