@@ -15,7 +15,11 @@ import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { TweetLength, ProposalCountRow, getFirstTenChars } from './utils';
+import {
+  TweetLength,
+  ProposalCountRow,
+  getFirstTenCharsOfTweet,
+} from './utils';
 import ThreadModal from './ThreadModal';
 
 const { Text } = Typography;
@@ -49,9 +53,8 @@ export const Tweet = () => {
         return;
       }
 
-      // TODO: Ask David V want happens if the user uses SAFE
       const signature = await signMessageAsync({
-        message: getFirstTenChars(tweetOrThread),
+        message: getFirstTenCharsOfTweet(tweetOrThread),
       });
 
       const tweetDetails = {

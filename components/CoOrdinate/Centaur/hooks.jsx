@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import { isObject, set } from 'lodash';
+import { set } from 'lodash';
 import { areAddressesEqual } from '@autonolas/frontend-library';
 
 import { setMemoryDetails } from 'store/setup/actions';
@@ -121,9 +121,7 @@ export const useProposals = () => {
     const totalVeolasInWei = proposal?.voters?.reduce((acc, voter) => {
       // previously the voters were stored as an [account]: balance.
       // now, it is stored as an object (eg. Check "Voter" in prop-types.js).
-      const currentVeOlasInWei = isObject(voter)
-        ? voter.votingPower
-        : Object.values(voter)[0];
+      const currentVeOlasInWei = voter?.votingPower || Object.values(voter)[0];
 
       return acc.add(ethers.BigNumber.from(currentVeOlasInWei));
     }, ethers.BigNumber.from(0));

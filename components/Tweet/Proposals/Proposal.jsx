@@ -37,7 +37,7 @@ import {
   useProposals,
 } from '../../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../ViewThread';
-import { getFirstTenChars } from '../utils';
+import { getFirstTenCharsOfTweet } from '../utils';
 
 const { Text } = Typography;
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
@@ -95,12 +95,12 @@ export const Proposal = ({ proposal }) => {
       }
 
       const signature = await signMessageAsync({
-        message: `I am signing a message to verify that I approve the tweet starting with ${getFirstTenChars(
+        message: `I am signing a message to verify that I approve the tweet starting with ${getFirstTenCharsOfTweet(
           proposal.text,
         )}...`,
       });
 
-      // Update proposal with the new voter & their veOlas balance
+      // Update proposal with the new voter, signature & veOlas balance
       const vote = {
         address: account,
         signature,

@@ -18,7 +18,7 @@ export const TweetLength = ({ tweet }) => {
 TweetLength.propTypes = { tweet: PropTypes.string };
 TweetLength.defaultProps = { tweet: '' };
 
-export const getFirstTenChars = (tweetOrThread) => {
+export const getFirstTenCharsOfTweet = (tweetOrThread) => {
   if (typeof tweetOrThread === 'string') {
     return tweetOrThread.substring(0, 10);
   }
