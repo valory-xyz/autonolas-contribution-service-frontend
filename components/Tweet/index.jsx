@@ -15,7 +15,7 @@ import { EducationTitle } from 'common-util/Education/EducationTitle';
 import Proposals from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { TweetLength, ProposalCountRow } from './utils';
+import { TweetLength, ProposalCountRow, getFirstTenChars } from './utils';
 import ThreadModal from './ThreadModal';
 
 const { Text } = Typography;
@@ -26,6 +26,7 @@ const SocialPosterContainer = styled.div`
 `;
 
 export const Tweet = () => {
+  const { signMessageAsync } = useSignMessage();
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
@@ -38,24 +39,20 @@ export const Tweet = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
-  const tweetFirstTenChars = tweet.substring(0, 10);
-  const { signMessageAsync } = useSignMessage({
-    message: `I am signing a message to verify that I propose a tweet starting with ${tweetFirstTenChars}...`,
-  });
-
   const handleSubmit = async (tweetOrThread) => {
     setIsSubmitting(true);
 
     try {
       const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS);
       if (!has100kVeOlas) {
-        throw new Error(
-          'You must hold at least 100k veOLAS to propose a tweet.',
-        );
+        notifyError('You must hold at least 100k veOLAS to propose a tweet.');
+        return;
       }
 
       // TODO: Ask David V want happens if the user uses SAFE
-      const signature = await signMessageAsync();
+      const signature = await signMessageAsync({
+        message: getFirstTenChars(tweetOrThread),
+      });
 
       const tweetDetails = {
         request_id: uuid(),

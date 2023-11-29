@@ -1,5 +1,14 @@
 import PropTypes from 'prop-types';
 
+const ProposerPropTypes = PropTypes.oneOfType([
+  PropTypes.string, // TODO: remove once backend is migrated
+  PropTypes.shape({
+    address: PropTypes.string.isRequired, // address of the proposer
+    signature: PropTypes.number, // signature of the message signed
+    verified: PropTypes.bool, // if the signature is validated
+  }),
+]);
+
 export const ProposalPropTypes = PropTypes.shape({
   // unique id of the proposal
   request_id: PropTypes.string.isRequired,
@@ -16,17 +25,13 @@ export const ProposalPropTypes = PropTypes.shape({
   posted: PropTypes.bool.isRequired,
 
   // proposer details
-  proposer: PropTypes.shape({
-    address: PropTypes.string.isRequired, // address of the proposer
-    signature: PropTypes.number.isRequired, // signature of the message signed
-    verified: PropTypes.bool.isRequired, // if the signature is validated
-  }).isRequired,
+  proposer: ProposerPropTypes.isRequired,
 
   // list of voters that approved the tweet
   voters: PropTypes.arrayOf(PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    signature: PropTypes.number.isRequired,
-    balance: PropTypes.number.isRequired, // TODO
+    address: PropTypes.string,
+    signature: PropTypes.number,
+    balance: PropTypes.number, // TODO
   })),
 
   executionAttempts: PropTypes.arrayOf(
@@ -36,7 +41,7 @@ export const ProposalPropTypes = PropTypes.shape({
       verified: PropTypes.oneOfType(
         [PropTypes.bool, PropTypes.null],
       ),
-      dateCreated: PropTypes.string.isRequired,
+      dateCreated: PropTypes.number.isRequired,
     }),
   ),
 

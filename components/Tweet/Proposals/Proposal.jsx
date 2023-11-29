@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import { useSignMessage } from 'wagmi';
 import { cloneDeep, isNull, set } from 'lodash';
 import dayjs from 'dayjs';
+import { v4 as uuid } from 'uuid';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Typography,
@@ -16,21 +16,27 @@ import {
   Progress,
   Popconfirm,
 } from 'antd';
-import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
+import {
+  COLOR,
+  NA,
+  notifyError,
+  notifySuccess,
+} from '@autonolas/frontend-library';
 
 import { VEOLAS_QUORUM } from 'util/constants';
 import DisplayName from 'common-util/DisplayName';
 import { ethersToWei, getNumberInMillions } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 import { fetchVeolasBalance } from '../../MembersList/requests';
 import {
   useCentaursFunctionalities,
   useProposals,
 } from '../../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../ViewThread';
+import { getFirstTenChars } from '../utils';
 
 const { Text } = Typography;
-
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
 
 export const Proposal = ({ proposal }) => {
@@ -38,7 +44,7 @@ export const Proposal = ({ proposal }) => {
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
   const [current, setCurrent] = useState(STEPS.APPROVE);
 
-  const account = useSelector((state) => state?.setup?.account);
+  const { account } = useHelpers();
   const {
     fetchedUpdatedMemory,
     updateMemoryWithNewCentaur,
@@ -57,17 +63,11 @@ export const Proposal = ({ proposal }) => {
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isExecutable || proposal.posted;
 
-  const { signMessageAsync } = useSignMessage({
-    message: 'Sign this message to propose a tweet',
-  });
+  const { signMessageAsync } = useSignMessage();
 
   // set current step
   useEffect(() => {
-    if (canMoveToExecuteStep) {
-      setCurrent(STEPS.EXECUTE);
-    } else {
-      setCurrent(STEPS.APPROVE);
-    }
+    setCurrent(canMoveToExecuteStep ? STEPS.EXECUTE : STEPS.APPROVE);
   }, [isExecutable, proposal.posted]);
 
   const onApprove = async () => {
@@ -91,7 +91,11 @@ export const Proposal = ({ proposal }) => {
         return;
       }
 
-      const signature = await signMessageAsync();
+      const signature = await signMessageAsync({
+        message: `I am signing a message to verify that I approve the tweet starting with ${getFirstTenChars(
+          proposal.text,
+        )}...`,
+      });
 
       // Update proposal with the new voter & their veOlas balance
       const vote = {
@@ -149,7 +153,12 @@ export const Proposal = ({ proposal }) => {
     try {
       setIsExecuteLoading(true);
 
-      set(proposal, 'execute', true);
+      const executionAttempts = [
+        ...(proposal.executionAttempts || []),
+        { id: uuid(), dateCreated: Date.now(), verified: null },
+      ];
+
+      set(proposal, 'executionAttempts', executionAttempts);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
         (tweet) => (tweet.request_id === proposal.request_id ? proposal : tweet),
@@ -263,7 +272,7 @@ export const Proposal = ({ proposal }) => {
         <>
           <Popconfirm
             title="Are you sure？This will immediately post to the @autonolas Twitter account."
-            icon={<ExclamationCircleOutlined style={{ color: 'orange' }} />}
+            icon={<ExclamationCircleOutlined style={{ color: COLOR.ORANGE }} />}
             onConfirm={onExecute}
           >
             <Button
@@ -323,7 +332,11 @@ export const Proposal = ({ proposal }) => {
       <div className="p-24">
         <Text type="secondary">
           {'Proposed by: '}
-          <DisplayName actorAddress={proposal?.proposer} account={account} />
+          {proposal?.proposer?.address ? (
+            <DisplayName actorAddress={proposal.proposer.address} />
+          ) : (
+            NA
+          )}
           {` · Status: ${getProposalVerificationStatus()} · Date: ${proposedDate}`}
         </Text>
       </div>
