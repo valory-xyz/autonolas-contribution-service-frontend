@@ -17,9 +17,9 @@ export const ProposalPropTypes = PropTypes.shape({
 
   // proposer details
   proposer: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    signature: PropTypes.number.isRequired,
-    verified: PropTypes.bool.isRequired,
+    address: PropTypes.string.isRequired, // address of the proposer
+    signature: PropTypes.number.isRequired, // signature of the message signed
+    verified: PropTypes.bool.isRequired, // if the signature is validated
   }).isRequired,
 
   // list of voters that approved the tweet

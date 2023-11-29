@@ -12,25 +12,25 @@ import { notifyError } from '@autonolas/frontend-library';
 
 import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposals from '../Proposals';
+import Proposals from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { TweetLength, ProposalCountRow } from './utils';
 import ThreadModal from './ThreadModal';
 
 const { Text } = Typography;
+const { TextArea } = Input;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-const Tweet = () => {
+export const Tweet = () => {
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
     updateMemoryWithNewCentaur,
     triggerAction,
-    isAddressPresent,
   } = useCentaursFunctionalities();
   const account = useSelector((state) => state?.setup?.account);
 
@@ -38,8 +38,9 @@ const Tweet = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
+  const tweetFirstTenChars = tweet.substring(0, 10);
   const { signMessageAsync } = useSignMessage({
-    message: 'Sign this message to propose a tweet',
+    message: `I am signing a message to verify that I propose a tweet starting with ${tweetFirstTenChars}...`,
   });
 
   const handleSubmit = async (tweetOrThread) => {
@@ -53,18 +54,22 @@ const Tweet = () => {
         );
       }
 
+      // TODO: Ask David V want happens if the user uses SAFE
       const signature = await signMessageAsync();
 
       const tweetDetails = {
         request_id: uuid(),
-        text: tweetOrThread,
-        voters: [], // initially no votes
-        posted: false,
-        proposer: account,
         createdDate: Date.now() / 1000, // in seconds
-        execute: false,
+        text: tweetOrThread,
+        posted: false,
+        proposer: {
+          address: account,
+          signature,
+          verified: null,
+        },
+        voters: [], // initially no votes
+        executionAttempts: [], // initially no execution attempts
         action_id: '',
-        signature, // TODO: do we need to add the signature here?????
       };
 
       const updatedCentaur = getUpdatedCentaurAfterTweetProposal(
@@ -99,7 +104,7 @@ const Tweet = () => {
     setIsThreadModalVisible(false);
   };
 
-  const canSubmit = !isSubmitting && tweet.length > 0 && account && isAddressPresent;
+  const canSubmit = !isSubmitting && tweet.length > 0 && account;
 
   return (
     <Row gutter={16}>
@@ -107,7 +112,7 @@ const Tweet = () => {
         <SocialPosterContainer>
           <EducationTitle title="Tweet" educationItem="tweet" />
 
-          <Input.TextArea
+          <TextArea
             value={tweet}
             onChange={(e) => setTweet(e.target.value)}
             maxLength={MAX_TWEET_LENGTH}
@@ -157,10 +162,8 @@ const Tweet = () => {
       </Col>
 
       <Col xs={24} md={24} lg={24}>
-        <Proposals isAddressPresent={isAddressPresent} />
+        <Proposals />
       </Col>
     </Row>
   );
 };
-
-export default Tweet;

@@ -4,7 +4,7 @@ import {
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { Proposal } from './Proposal';
-import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
 
 const Proposals = () => {
   const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();

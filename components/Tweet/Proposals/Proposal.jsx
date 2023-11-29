@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import { useSignMessage } from 'wagmi';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, isNull, set } from 'lodash';
 import dayjs from 'dayjs';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
@@ -22,12 +22,12 @@ import { VEOLAS_QUORUM } from 'util/constants';
 import DisplayName from 'common-util/DisplayName';
 import { ethersToWei, getNumberInMillions } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
-import { fetchVeolasBalance } from '../MembersList/requests';
+import { fetchVeolasBalance } from '../../MembersList/requests';
 import {
   useCentaursFunctionalities,
   useProposals,
-} from '../CoOrdinate/Centaur/hooks';
-import { ViewThread } from '../Tweet/ViewThread';
+} from '../../CoOrdinate/Centaur/hooks';
+import { ViewThread } from '../ViewThread';
 
 const { Text } = Typography;
 
@@ -52,6 +52,7 @@ export const Proposal = ({ proposal }) => {
     totalVeolasInEth,
     remainingVeolasForApprovalInEth,
     totalVeolasInvestedInPercentage,
+    proposalVerification,
   } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isExecutable || proposal.posted;
@@ -207,7 +208,7 @@ export const Proposal = ({ proposal }) => {
             type="primary"
             onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!account}
+            disabled={!account || !proposalVerification}
           >
             Approve this tweet
           </Button>
@@ -269,7 +270,7 @@ export const Proposal = ({ proposal }) => {
               ghost
               type="primary"
               loading={isExecuteLoading}
-              disabled={!account || !isExecutable}
+              disabled={!account || !isExecutable || !proposalVerification}
               className="mb-12"
             >
               Execute & post tweet
@@ -307,6 +308,11 @@ export const Proposal = ({ proposal }) => {
     ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY')
     : '--';
 
+  const getProposalVerificationStatus = useCallback(() => {
+    if (isNull(proposalVerification)) return 'Unvalidated';
+    return proposalVerification ? 'Validated' : 'Not yet validated';
+  }, [proposalVerification]);
+
   return (
     <Card className="mb-24" bodyStyle={{ padding: 0 }}>
       <Row gutter={24} className="p-24">
@@ -326,7 +332,7 @@ export const Proposal = ({ proposal }) => {
         <Text type="secondary">
           {'Proposed by: '}
           <DisplayName actorAddress={proposal?.proposer} account={account} />
-          {` · Date: ${proposedDate}`}
+          {` · Date: ${proposedDate} · Status: ${getProposalVerificationStatus()}`}
         </Text>
       </div>
     </Card>
