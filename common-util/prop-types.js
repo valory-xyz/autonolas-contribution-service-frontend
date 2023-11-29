@@ -1,20 +1,47 @@
 import PropTypes from 'prop-types';
 
 export const ProposalPropTypes = PropTypes.shape({
+  // unique id of the proposal
   request_id: PropTypes.string.isRequired,
+
+  createdDate: PropTypes.number.isRequired,
+
   // tweet = the `text` is string
   // thread = the `text` is array of string (array of tweets)
   text: PropTypes.oneOfType(
     [PropTypes.string, PropTypes.arrayOf(PropTypes.string)],
   ).isRequired,
-  voters: PropTypes.oneOfType(
-    [
-      // example: [address]: [veOlas_balance]
-      PropTypes.shape({ address: PropTypes.string.isRequired }),
-    ],
-  ),
+
+  // if the tweet is posted
   posted: PropTypes.bool.isRequired,
-  proposer: PropTypes.string.isRequired,
+
+  // proposer details
+  proposer: PropTypes.shape({
+    address: PropTypes.string.isRequired,
+    signature: PropTypes.number.isRequired,
+    verified: PropTypes.bool.isRequired,
+  }).isRequired,
+
+  // list of voters that approved the tweet
+  voters: PropTypes.arrayOf(PropTypes.shape({
+    address: PropTypes.string.isRequired,
+    signature: PropTypes.number.isRequired,
+    balance: PropTypes.number.isRequired, // TODO
+  })),
+
+  executionAttempts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      // initally null, backend will set to true if verified
+      verified: PropTypes.oneOfType(
+        [PropTypes.bool, PropTypes.null],
+      ),
+      dateCreated: PropTypes.string.isRequired,
+    }),
+  ),
+
+  // link to the actual tweet
+  action_id: PropTypes.string.isRequired,
 });
 
 export const ProposalsPropTypes = PropTypes.arrayOf(ProposalPropTypes);
