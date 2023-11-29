@@ -12,7 +12,7 @@ import { notifyError } from '@autonolas/frontend-library';
 
 import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposals from './Proposals';
+import { Proposals } from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import {
