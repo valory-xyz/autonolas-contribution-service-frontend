@@ -12,6 +12,7 @@ import { notifyError } from '@autonolas/frontend-library';
 
 import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposals } from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
@@ -31,6 +32,7 @@ const SocialPosterContainer = styled.div`
 
 export const Tweet = () => {
   const { signMessageAsync } = useSignMessage();
+  const { isStaging } = useHelpers();
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
@@ -48,13 +50,15 @@ export const Tweet = () => {
 
     try {
       const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS);
-      if (!has100kVeOlas) {
+      if (!isStaging && !has100kVeOlas) {
         notifyError('You must hold at least 100k veOLAS to propose a tweet.');
         return;
       }
 
       const signature = await signMessageAsync({
-        message: getFirstTenCharsOfTweet(tweetOrThread),
+        message: `I am signing a message to verify that I propose a tweet starting with ${getFirstTenCharsOfTweet(
+          tweetOrThread,
+        )}...`,
       });
 
       const tweetDetails = {
