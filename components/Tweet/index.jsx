@@ -93,7 +93,7 @@ export const Tweet = () => {
       // reset form
       setTweet('');
     } catch (error) {
-      notifyError('Proposal failed');
+      notifyError('Tweet proposal failed');
       console.error(error);
     } finally {
       setIsSubmitting(false);
