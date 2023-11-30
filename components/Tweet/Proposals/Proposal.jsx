@@ -201,7 +201,7 @@ export const Proposal = ({ proposal }) => {
 
   const getProposalVerificationStatus = useCallback(() => {
     if (isNil(isProposalVerified)) return 'Validating…';
-    return isProposalVerified ? 'Validated' : 'Not yet validated';
+    return isProposalVerified ? 'Valid' : 'Invalid';
   }, [isProposalVerified]);
 
   return (
