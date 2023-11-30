@@ -66,11 +66,7 @@ export const Tweet = () => {
         createdDate: Date.now() / 1000, // in seconds
         text: tweetOrThread,
         posted: false,
-        proposer: {
-          address: account,
-          signature,
-          verified: null,
-        },
+        proposer: { address: account, signature, verified: null },
         voters: [], // initially no votes
         executionAttempts: [], // initially no execution attempts
         action_id: '',

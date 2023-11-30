@@ -12,6 +12,28 @@ import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
 
+const TweetValidating = () => (
+  <>
+    <Alert
+      type="warning"
+      message="Tweet is being validated. Please wait."
+      showIcon
+    />
+    <br />
+  </>
+);
+
+const TweetFailed = () => (
+  <>
+    <Alert
+      type="error"
+      message="Tweet failed to post. Please try again."
+      showIcon
+    />
+    <br />
+  </>
+);
+
 export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   const { account } = useHelpers();
   const { getCurrentProposalInfo } = useProposals();
@@ -34,13 +56,13 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   if (proposal.posted) {
     return (
       <Result
+        style={{ borderLeft: `1px solid ${COLOR.BORDER_GREY}` }}
         status="success"
         title="Tweet posted successfully!"
         extra={[
           <Button
             type="primary"
             ghost
-            key="tweet-successful"
             href={proposal.action_id}
             rel="noopener noreferrer"
             target="_blank"
@@ -54,27 +76,8 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
 
   return (
     <>
-      {isValidating && (
-        <>
-          <Alert
-            type="warning"
-            message="Tweet is being validated. Please wait."
-            showIcon
-          />
-          <br />
-        </>
-      )}
-
-      {isFailed && (
-        <>
-          <Alert
-            type="error"
-            message="Tweet failed to post. Please try again."
-            showIcon
-          />
-          <br />
-        </>
-      )}
+      {isValidating && <TweetValidating />}
+      {isFailed && <TweetFailed />}
 
       <Popconfirm
         title="Are you sure？This will immediately post to the @autonolas Twitter account."

@@ -13,6 +13,13 @@ import { ViewThread } from '../ViewThread';
 
 const { Text } = Typography;
 
+const ConnectWallet = () => (
+  <>
+    <br />
+    <Text type="secondary">To approve, connect your wallet</Text>
+  </>
+);
+
 export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
   const { getCurrentProposalInfo } = useProposals();
   const { account } = useHelpers();
@@ -61,12 +68,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
             Approve this tweet
           </Button>
 
-          {!account && (
-            <>
-              <br />
-              <Text type="secondary">To approve, connect your wallet</Text>
-            </>
-          )}
+          {!account && <ConnectWallet />}
         </div>
       )}
 
