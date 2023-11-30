@@ -41,6 +41,33 @@ const ProfileBody = ({ profile }) => {
     getData();
   }, [profile?.wallet_address]);
 
+  const getWalletAddress = () => {
+    if (profile?.wallet_address) {
+      return <TruncatedEthereumLink text={profile.wallet_address} />;
+    }
+    return NA;
+  };
+
+  const getDiscordHandle = () => {
+    if (profile?.discord_handle) {
+      return <Text type="secondary">{profile.discord_handle}</Text>;
+    }
+    if (account && account === profile.wallet_address) {
+      return <DiscordLink text="Connect Discord" />;
+    }
+    return NA;
+  };
+
+  const getTwitterHandle = () => {
+    if (profile?.twitter_handle) {
+      return <Text type="secondary">{profile.twitter_handle}</Text>;
+    }
+    if (account && account === profile.wallet_address) {
+      return <ConnectTwitterModal />;
+    }
+    return NA;
+  };
+
   return (
     <>
       <Title>{name}</Title>
@@ -85,43 +112,21 @@ const ProfileBody = ({ profile }) => {
               <List.Item>
                 <List.Item.Meta
                   title="Wallet Address"
-                  description={(
-                    <Text type="secondary">
-                      {profile.wallet_address ? (
-                        <TruncatedEthereumLink text={profile.wallet_address} />
-                      ) : (
-                        NA
-                      )}
-                    </Text>
-                  )}
+                  description={
+                    <Text type="secondary">{getWalletAddress()}</Text>
+                  }
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
                   title="Discord Handle"
-                  description={
-                    account && account === profile.wallet_address ? (
-                      <DiscordLink text="Connect Discord" />
-                    ) : (
-                      <Text type="secondary">
-                        {profile.discord_handle || NA}
-                      </Text>
-                    )
-                  }
+                  description={getDiscordHandle()}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
                   title="Twitter Handle"
-                  description={
-                    account && account === profile.wallet_address ? (
-                      <ConnectTwitterModal />
-                    ) : (
-                      <Text type="secondary">
-                        {profile.twitter_handle || NA}
-                      </Text>
-                    )
-                  }
+                  description={getTwitterHandle()}
                 />
               </List.Item>
             </List>
