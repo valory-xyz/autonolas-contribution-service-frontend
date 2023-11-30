@@ -56,7 +56,7 @@ export const Proposal = ({ proposal }) => {
     }
 
     if (hasVoted) {
-      notifyError('You have already voted for this option.');
+      notifyError('You already approved.');
       return;
     }
 
