@@ -51,7 +51,7 @@ export const Proposal = ({ proposal }) => {
 
   const onApprove = async () => {
     if (!account) {
-      notifyError('Please connect your wallet to vote.');
+      notifyError('Connect your wallet to approve.');
       return;
     }
 
