@@ -69,7 +69,7 @@ export const Proposal = ({ proposal }) => {
         !isStaging
         && ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))
       ) {
-        notifyError('You need at least 1 veOLAS to vote');
+        notifyError('You need at least 1 veOLAS to approve');
         return;
       }
 
