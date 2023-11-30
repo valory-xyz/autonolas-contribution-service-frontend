@@ -19,7 +19,7 @@ export const useHelpers = () => {
     if (currentChainId !== chainId) {
       dispatch(setChainId(currentChainId));
     }
-  }, [currentChainId]);
+  }, [currentChainId, chainId, dispatch]);
 
   return {
     chainId,

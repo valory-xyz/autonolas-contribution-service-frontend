@@ -127,7 +127,7 @@ export const useProposals = () => {
     }, ethers.BigNumber.from(0));
 
     // check if voters have 2 million veolas in total
-    const isExecutable = totalVeolasInWei.gte(quorumInWei);
+    const isQuorumAchieved = totalVeolasInWei.gte(quorumInWei);
 
     const remainingVeolasForApprovalInEth = formatToEth(
       quorumInWei.sub(totalVeolasInWei),
@@ -143,7 +143,7 @@ export const useProposals = () => {
     const isProposalVerified = proposal?.proposer?.verified;
 
     return {
-      isExecutable,
+      isQuorumAchieved,
       totalVeolasInEth: formatToEth(totalVeolasInWei),
       remainingVeolasForApprovalInEth,
       totalVeolasInvestedInPercentage,
@@ -154,15 +154,15 @@ export const useProposals = () => {
   /**
    * Proposals that are not executed and have less than 2 million veolas
    */
-  const filteredProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
+  const pendingTweetProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
     (proposal) => {
-      const { isExecutable } = getCurrentProposalInfo(proposal);
-      return !proposal.execute && !isExecutable;
+      const { isQuorumAchieved } = getCurrentProposalInfo(proposal);
+      return !proposal.execute && !isQuorumAchieved;
     },
   );
 
   return {
     getCurrentProposalInfo,
-    filteredProposals,
+    pendingTweetProposals,
   };
 };
