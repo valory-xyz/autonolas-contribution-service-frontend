@@ -39,7 +39,7 @@ const ProfileBody = ({ profile }) => {
     };
 
     getData();
-  }, []);
+  }, [profile?.wallet_address]);
 
   return (
     <>

@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { notifyError } from '@autonolas/frontend-library';
 
-import { HUNDRED_K_OLAS, MAX_TWEET_LENGTH } from 'util/constants';
+import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposals } from './Proposals';
@@ -49,7 +49,7 @@ export const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS);
+      const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS_IN_WEI);
       if (!isStaging && !has100kVeOlas) {
         notifyError('You must hold at least 100k veOLAS to propose a tweet.');
         return;

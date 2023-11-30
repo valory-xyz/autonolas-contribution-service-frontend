@@ -1,12 +1,7 @@
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ServiceStatusInfo } from '@autonolas/frontend-library';
 
-import {
-  setIsLeaderboardLoading,
-  setLeaderboard,
-  setNftDetails,
-} from 'store/setup/actions';
+import { setLeaderboard, setNftDetails } from 'store/setup/actions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
 import { useHealthCheckup } from 'common-util/hooks/useHealthCheckup';
 import { useHelpers } from 'common-util/hooks/useHelpers';
@@ -15,24 +10,7 @@ const MINUTE = 60 * 1000;
 
 const ServiceStatus = () => {
   const dispatch = useDispatch();
-  const { account, chainId } = useHelpers();
-
-  // load leaderboard list only once on page load
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        dispatch(setIsLeaderboardLoading(true));
-        const list = await getLeaderboardList();
-        dispatch(setLeaderboard(list));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        dispatch(setIsLeaderboardLoading(false));
-      }
-    };
-
-    fetchLeaderboard();
-  }, [chainId]);
+  const { account } = useHelpers();
 
   const pollingCallback = async () => {
     // fetch leaderboard list
