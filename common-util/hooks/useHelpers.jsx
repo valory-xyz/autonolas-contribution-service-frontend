@@ -8,6 +8,7 @@ export const useHelpers = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state?.setup?.account);
   const chainId = useSelector((state) => state?.setup?.chainId);
+  const isStaging = process.env.NEXT_PUBLIC_PFP_URL?.includes('staging');
 
   /**
    * Set chainId to redux on page load.
@@ -18,10 +19,11 @@ export const useHelpers = () => {
     if (currentChainId !== chainId) {
       dispatch(setChainId(currentChainId));
     }
-  }, [currentChainId]);
+  }, [currentChainId, chainId, dispatch]);
 
   return {
     chainId,
     account,
+    isStaging,
   };
 };

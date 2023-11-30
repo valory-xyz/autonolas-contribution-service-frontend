@@ -1,5 +1,5 @@
 import { createWrapper } from 'next-redux-wrapper';
-import { ConfigProvider } from 'antd';
+import { App, ConfigProvider } from 'antd';
 import PropTypes from 'prop-types';
 import { ApolloProvider } from '@apollo/client';
 import { THEME_CONFIG } from '@autonolas/frontend-library';
@@ -20,13 +20,15 @@ const MyApp = ({ Component, pageProps }) => (
     <GlobalStyle />
     <Meta />
     <ConfigProvider theme={THEME_CONFIG}>
-      <ApolloProvider client={client}>
-        <WagmiConfigProvider config={wagmiConfig}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </WagmiConfigProvider>
-      </ApolloProvider>
+      <App>
+        <ApolloProvider client={client}>
+          <WagmiConfigProvider config={wagmiConfig}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </WagmiConfigProvider>
+        </ApolloProvider>
+      </App>
     </ConfigProvider>
   </>
 );

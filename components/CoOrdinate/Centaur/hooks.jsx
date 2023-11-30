@@ -111,53 +111,58 @@ export const useProposals = () => {
   const { currentMemoryDetails } = useCentaurs();
 
   // 2 million veolas in wei
-  const quorum = ethersToWei(`${VEOLAS_QUORUM}`);
+  const quorumInWei = ethersToWei(`${VEOLAS_QUORUM}`);
 
   /**
    * check if the current proposal has enough veOLAS to be executed
    */
   const getCurrentProposalInfo = (proposal) => {
     // example of voters: [ { '0x123': '1000000000000000000000000' } ]
-    const totalVeolas = proposal?.voters?.reduce((acc, voter) => {
-      const currentVeOlas = Object.values(voter)[0]; // veOlas of the current voter in wei
-      return acc.add(ethers.BigNumber.from(currentVeOlas));
+    const totalVeolasInWei = proposal?.voters?.reduce((acc, voter) => {
+      // previously the voters were stored as an [account]: balance.
+      // now, it is stored as an object (eg. Check "Voter" in prop-types.js).
+      const currentVeOlasInWei = voter?.votingPower || Object.values(voter)[0];
+
+      return acc.add(ethers.BigNumber.from(currentVeOlasInWei));
     }, ethers.BigNumber.from(0));
 
     // check if voters have 2 million veolas in total
-    const isExecutable = totalVeolas.gte(quorum);
+    const isQuorumAchieved = totalVeolasInWei.gte(quorumInWei);
 
     const remainingVeolasForApprovalInEth = formatToEth(
-      quorum.sub(totalVeolas),
+      quorumInWei.sub(totalVeolasInWei),
     );
 
     // percentage of veolas invested in the proposal
     // limit it to 2 decimal places
-    const totalVeolasInvestedInPercentage = totalVeolas
+    const totalVeolasInvestedInPercentage = totalVeolasInWei
       .mul(ethers.BigNumber.from(100))
-      .div(quorum)
+      .div(quorumInWei)
       .toString();
 
+    const isProposalVerified = proposal?.proposer?.verified;
+
     return {
-      isExecutable,
-      totalVeolas,
-      totalVeolasInEth: formatToEth(totalVeolas),
+      isQuorumAchieved,
+      totalVeolasInEth: formatToEth(totalVeolasInWei),
       remainingVeolasForApprovalInEth,
       totalVeolasInvestedInPercentage,
+      isProposalVerified,
     };
   };
 
   /**
    * Proposals that are not executed and have less than 2 million veolas
    */
-  const filteredProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
+  const pendingTweetProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
     (proposal) => {
-      const { isExecutable } = getCurrentProposalInfo(proposal);
-      return !proposal.execute && !isExecutable;
+      const { isQuorumAchieved } = getCurrentProposalInfo(proposal);
+      return !proposal.execute && !isQuorumAchieved;
     },
   );
 
   return {
     getCurrentProposalInfo,
-    filteredProposals,
+    pendingTweetProposals,
   };
 };
