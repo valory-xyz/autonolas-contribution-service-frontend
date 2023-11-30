@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Card } from 'antd';
 import { COLOR } from '@autonolas/frontend-library';
 
-export const IMAGE_SIZE = 300;
+const IMAGE_SIZE = 300;
 
 export const MintNftContainer = styled.div`
   display: flex;

@@ -4,12 +4,11 @@ import { LinkOutlined } from '@ant-design/icons';
 import { isGoerli } from '@autonolas/frontend-library';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import styled from 'styled-components';
+
 import { getAutonolasTokenUri } from '../components/Leaderboard/MintNft/utils';
 
-export const IMAGE_SIZE = 300;
-
+const IMAGE_SIZE = 300;
 const { Text } = Typography;
 
 export const ShowBadge = ({ image, tokenId }) => {

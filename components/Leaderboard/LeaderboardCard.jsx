@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
-// import PropTypes from 'prop-types';
 import { Card, Table } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
