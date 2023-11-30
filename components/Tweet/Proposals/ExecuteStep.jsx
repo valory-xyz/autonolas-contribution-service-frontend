@@ -28,7 +28,7 @@ const TweetFailed = () => (
   <>
     <Alert
       type="error"
-      message="Tweet failed to post. Please try again."
+      message="Could not execute or post. This could mean the approving veOLAS amount did not meet quorum."
       showIcon
     />
     <br />
