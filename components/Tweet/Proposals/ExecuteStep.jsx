@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { isNil, last } from 'lodash';
 import {
@@ -39,19 +40,30 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   const { getCurrentProposalInfo } = useProposals();
 
   const {
-    isExecutable,
+    isQuorumAchieved,
     totalVeolasInEth,
     remainingVeolasForApprovalInEth,
     isProposalVerified,
   } = getCurrentProposalInfo(proposal);
 
+  const executionAttempts = useMemo(
+    () => proposal?.executionAttempts || [],
+    [proposal],
+  );
+
   // If the last execution attempt is "null" & the proposal is not posted,
   // it means the proposal is BEING VALIDATED
-  const isValidating = isNil(last(proposal?.executionAttempts)) && !proposal?.posted;
+  const isValidating = useMemo(() => {
+    if (executionAttempts.length === 0) return false;
+    return isNil(last(executionAttempts)?.verified) && !proposal?.posted;
+  }, [executionAttempts, proposal?.posted]);
 
   // If the last execution attempt is "false" & the proposal is not posted,
   // it means the proposal execution FAILED
-  const isFailed = last(proposal?.executionAttempts)?.verified === false && !proposal?.posted;
+  const isFailed = useMemo(() => {
+    if (executionAttempts.length === 0) return false;
+    return last(executionAttempts).verified === false && !proposal?.posted;
+  }, [executionAttempts, proposal?.posted]);
 
   if (proposal.posted) {
     return (
@@ -87,9 +99,9 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
         <Button
           ghost
           type="primary"
-          loading={isExecuteLoading || isValidating}
+          loading={isExecuteLoading}
           disabled={
-            !account || !isExecutable || !isProposalVerified || isValidating
+            !account || !isQuorumAchieved || !isProposalVerified || isValidating
           }
           className="mb-12"
         >
@@ -98,7 +110,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
       </Popconfirm>
       <br />
 
-      {!isExecutable && (
+      {!isQuorumAchieved && (
         <Text text="secondary">
           {`To be executed, this proposal needs ${remainingVeolasForApprovalInEth} veOLAS. Current veOLAS: ${totalVeolasInEth}`}
         </Text>

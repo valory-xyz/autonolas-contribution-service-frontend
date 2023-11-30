@@ -35,19 +35,20 @@ export const Proposal = ({ proposal }) => {
     fetchedUpdatedMemory,
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
+    triggerAction,
   } = useCentaursFunctionalities();
-  const { triggerAction, getCurrentProposalInfo } = useProposals();
+  const { getCurrentProposalInfo } = useProposals();
 
-  const { isExecutable, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
+  const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
-  const canMoveToExecuteStep = isExecutable || proposal.posted;
+  const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
 
   const { signMessageAsync } = useSignMessage();
 
   // set current step
   useEffect(() => {
     setCurrent(canMoveToExecuteStep ? STEPS.EXECUTE : STEPS.APPROVE);
-  }, [isExecutable, proposal.posted]);
+  }, [canMoveToExecuteStep]);
 
   const onApprove = async () => {
     if (!account) {
@@ -114,9 +115,9 @@ export const Proposal = ({ proposal }) => {
       notifyError('Failed to approve proposal');
       console.error(error);
     } finally {
-      if (isExecutable) {
-        setIsApproveLoading(false);
-        setCurrent(1);
+      setIsApproveLoading(false);
+      if (isQuorumAchieved) {
+        setCurrent(STEPS.EXECUTE);
       }
     }
   };
@@ -127,7 +128,7 @@ export const Proposal = ({ proposal }) => {
       return;
     }
 
-    if (!isExecutable) {
+    if (!isQuorumAchieved) {
       notifyError('This proposal needs more approvals to be executed.');
       return;
     }

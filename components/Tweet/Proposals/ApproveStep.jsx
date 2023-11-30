@@ -25,7 +25,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
   const { account } = useHelpers();
 
   const {
-    isExecutable,
+    isQuorumAchieved,
     votersAddress,
     totalVeolasInEth,
     totalVeolasInvestedInPercentage,
@@ -33,7 +33,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
   } = getCurrentProposalInfo(proposal);
   const tweetOrThread = proposal?.text || [];
   const hasVoted = votersAddress?.includes(account) || false;
-  const canMoveToExecuteStep = isExecutable || proposal.posted;
+  const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
 
   return (
     <>
