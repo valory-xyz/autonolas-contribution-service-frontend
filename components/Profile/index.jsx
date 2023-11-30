@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-  Col, List, Row, Skeleton, Statistic, Typography,
+  Col, List, Result, Row, Skeleton, Statistic, Typography,
 } from 'antd';
 import PropTypes from 'prop-types';
 import { NA } from '@autonolas/frontend-library';
 
-import { setLeaderboard } from 'store/setup/actions';
-import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
+import { getLatestMintedNft } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
@@ -153,31 +152,18 @@ ProfileBody.defaultProps = {
 
 export const Profile = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const { id } = router.query;
   const data = useSelector((state) => state?.setup?.leaderboard);
   const profile = data.find((item) => item.wallet_address === id);
 
-  useEffect(() => {
-    const fn = async () => {
-      try {
-        const response = await getLeaderboardList();
-        dispatch(setLeaderboard(response));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fn();
-  }, []);
+  if (data?.length === 0) {
+    return <Skeleton active />;
+  }
 
-  return (
-    <>
-      {profile ? (
-        <ProfileBody profile={profile} />
-      ) : (
-        <Skeleton loading={!profile} active />
-      )}
-    </>
-  );
+  if (!profile) {
+    return <Result status="warning" title="Profile Not Found" />;
+  }
+
+  return <ProfileBody profile={profile} />;
 };
