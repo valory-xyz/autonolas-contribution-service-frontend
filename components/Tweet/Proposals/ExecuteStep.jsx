@@ -17,7 +17,7 @@ const TweetValidating = () => (
   <>
     <Alert
       type="warning"
-      message="Tweet is being validated. Please wait."
+      message="Validating approvals and quorum amount…"
       showIcon
     />
     <br />
