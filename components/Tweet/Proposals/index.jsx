@@ -3,15 +3,11 @@ import {
 } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import Proposal from './Proposal';
-import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { Proposal } from './Proposal';
+import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
 
-const Proposals = () => {
-  const {
-    isMemoryDetailsLoading: isLoading,
-    currentMemoryDetails,
-    isAddressPresent,
-  } = useCentaursFunctionalities();
+export const Proposals = () => {
+  const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
   const sortedProposals = proposals.sort(
     (a, b) => b.createdDate - a.createdDate,
@@ -38,11 +34,7 @@ const Proposals = () => {
           {proposals.length > 0 ? (
             <List>
               {sortedProposals.map((proposal) => (
-                <Proposal
-                  key={proposal.request_id}
-                  proposal={proposal}
-                  isAddressPresent={isAddressPresent}
-                />
+                <Proposal key={proposal.request_id} proposal={proposal} />
               ))}
             </List>
           ) : (
@@ -53,5 +45,3 @@ const Proposals = () => {
     </>
   );
 };
-
-export default Proposals;

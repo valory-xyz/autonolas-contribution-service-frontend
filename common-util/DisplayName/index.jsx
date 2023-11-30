@@ -3,10 +3,13 @@ import { Typography } from 'antd';
 
 import { CENTAUR_BOT_ADDRESS } from 'util/constants';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 
 const { Text } = Typography;
 
-const DisplayName = ({ actorAddress, account, className }) => {
+const DisplayName = ({ actorAddress, className }) => {
+  const { account } = useHelpers();
+
   if (actorAddress === account) {
     return <Text className={className}>You</Text>;
   }
@@ -19,13 +22,12 @@ const DisplayName = ({ actorAddress, account, className }) => {
 };
 
 DisplayName.propTypes = {
-  account: PropTypes.string,
-  actorAddress: PropTypes.string.isRequired,
+  actorAddress: PropTypes.string,
   className: PropTypes.string,
 };
 
 DisplayName.defaultProps = {
-  account: null,
+  actorAddress: '',
   className: '',
 };
 
