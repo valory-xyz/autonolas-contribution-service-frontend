@@ -1,55 +1,29 @@
 import { Col, Row } from 'antd';
-import { getLeaderboardList } from 'common-util/api';
-import ChatbotCard from 'components/Chatbot/ChatbotCard';
-import LeaderboardCard from 'components/Leaderboard/LeaderboardCard';
-import MembersCard from 'components/Members/MembersCard';
-import ProfileCard from 'components/Profile/ProfileCard';
-import TweetCard from 'components/Tweet/TweetCard';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLeaderboard } from 'store/setup/actions';
 
-const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
+import ChatbotCard from '../Chatbot/ChatbotCard';
+import MembersCard from '../Members/MembersCard';
+import TweetCard from '../Tweet/TweetCard';
+import { LeaderboardCard } from '../Leaderboard/LeaderboardCard';
+import { ProfileCard } from '../Profile/ProfileCard';
 
-  const dispatch = useDispatch();
-  const chainId = useSelector((state) => state?.setup?.chainId);
-  const data = useSelector((state) => state?.setup?.leaderboard);
-
-  useEffect(() => {
-    const fn = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getLeaderboardList();
-        dispatch(setLeaderboard(response));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fn();
-  }, [chainId]);
-
-  return (
-    <Row gutter={24}>
-      <Col xs={24} md={24} lg={12} className="mb-24">
-        <LeaderboardCard data={data} isLoading={isLoading} />
-      </Col>
-      <Col xs={24} md={24} lg={12} className="mb-24">
-        <ProfileCard data={data} isLoading={isLoading} />
-      </Col>
-      <Col xs={24} md={24} lg={12} className="mb-24">
-        <MembersCard />
-      </Col>
-      <Col xs={24} md={24} lg={12} className="mb-24">
-        <ChatbotCard />
-      </Col>
-      <Col xs={24} md={24} lg={12} className="mb-24">
-        <TweetCard />
-      </Col>
-    </Row>
-  );
-};
+const Dashboard = () => (
+  <Row gutter={24}>
+    <Col xs={24} md={24} lg={12} className="mb-24">
+      <LeaderboardCard />
+    </Col>
+    <Col xs={24} md={24} lg={12} className="mb-24">
+      <ProfileCard />
+    </Col>
+    <Col xs={24} md={24} lg={12} className="mb-24">
+      <MembersCard />
+    </Col>
+    <Col xs={24} md={24} lg={12} className="mb-24">
+      <ChatbotCard />
+    </Col>
+    <Col xs={24} md={24} lg={12} className="mb-24">
+      <TweetCard />
+    </Col>
+  </Row>
+);
 
 export default Dashboard;

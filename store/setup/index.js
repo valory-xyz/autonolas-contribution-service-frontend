@@ -12,7 +12,12 @@ const initialState = {
    * (util the API is completed)
    */
   isVerified: true,
+
+  // leaderboard
+  isLeaderboardLoading: false,
   leaderboard: [],
+
+  // nft details
   nftDetails: null,
 
   // memory details
@@ -39,6 +44,7 @@ export default (state = initialState, action = {}) => {
     case syncTypes.SET_MEMORY_DETAILS:
     case syncTypes.SET_PREDICTION_REQUESTS:
     case syncTypes.SET_APPROVED_REQUESTS_COUNT:
+    case syncTypes.SET_LEADERBOARD_LOADING:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
     }
