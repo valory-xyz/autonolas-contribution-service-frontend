@@ -24,6 +24,9 @@ const GlobalStyle = createGlobalStyle`
   .p-0 {
     padding: 0 !important;
   }
+  .px-12 {
+    padding: 0 12px !important;
+  }
   .px-24 {
     padding: 0 24px !important;
   }

@@ -26,10 +26,11 @@ const { Text } = Typography;
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
 
 export const Proposal = ({ proposal }) => {
+  const [current, setCurrent] = useState(STEPS.APPROVE);
   const [isApproveLoading, setIsApproveLoading] = useState(false);
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
-  const [current, setCurrent] = useState(STEPS.APPROVE);
 
+  const { signMessageAsync } = useSignMessage();
   const { account, isStaging } = useHelpers();
   const {
     fetchedUpdatedMemory,
@@ -42,8 +43,6 @@ export const Proposal = ({ proposal }) => {
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
-
-  const { signMessageAsync } = useSignMessage();
 
   // set current step
   useEffect(() => {
@@ -128,7 +127,7 @@ export const Proposal = ({ proposal }) => {
       return;
     }
 
-    if (!isQuorumAchieved) {
+    if (!isStaging && !isQuorumAchieved) {
       notifyError('This proposal needs more approvals to be executed.');
       return;
     }
@@ -164,7 +163,8 @@ export const Proposal = ({ proposal }) => {
       await triggerAction(centaur.id, action);
       await fetchedUpdatedMemory();
     } catch (error) {
-      window?.console.error(error);
+      notifyError('Failed to execute');
+      console.error(error);
     } finally {
       setIsExecuteLoading(false);
     }
@@ -195,10 +195,6 @@ export const Proposal = ({ proposal }) => {
     },
   ];
 
-  const onChange = (value) => {
-    setCurrent(value === 0 ? STEPS.APPROVE : STEPS.EXECUTE);
-  };
-
   const proposedDate = proposal?.createdDate
     ? dayjs.unix(proposal.createdDate).format('HH:mm DD/M/YY')
     : '--';
@@ -213,14 +209,14 @@ export const Proposal = ({ proposal }) => {
       <Row gutter={24} className="p-24">
         <Col md={6} xs={24}>
           <Steps
+            direction="vertical"
             current={current}
             items={steps}
-            direction="vertical"
-            onChange={onChange}
+            onChange={(e) => setCurrent(e === 0 ? STEPS.APPROVE : STEPS.EXECUTE)}
           />
         </Col>
         <Col md={18} xs={24}>
-          <div>{steps[current]?.content}</div>
+          <div>{steps[current]?.content || NA}</div>
         </Col>
       </Row>
       <div className="p-24">

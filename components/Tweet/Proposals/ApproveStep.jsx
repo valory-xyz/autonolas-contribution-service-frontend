@@ -13,11 +13,10 @@ import { ViewThread } from '../ViewThread';
 
 const { Text } = Typography;
 
-const ConnectWallet = () => (
-  <>
-    <br />
-    <Text type="secondary">To approve, connect your wallet</Text>
-  </>
+const ConnectWalletToApprove = () => (
+  <Text type="secondary" className="px-12">
+    To approve, connect your wallet
+  </Text>
 );
 
 export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
@@ -31,7 +30,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
     totalVeolasInvestedInPercentage,
     isProposalVerified,
   } = getCurrentProposalInfo(proposal);
-  const tweetOrThread = proposal?.text || [];
+  const tweetOrThread = proposal?.text;
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
 
@@ -68,7 +67,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
             Approve this tweet
           </Button>
 
-          {!account && <ConnectWallet />}
+          {!account && <ConnectWalletToApprove />}
         </div>
       )}
 

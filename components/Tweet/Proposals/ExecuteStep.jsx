@@ -46,6 +46,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
     isProposalVerified,
   } = getCurrentProposalInfo(proposal);
 
+  const isPosted = proposal?.posted;
   const executionAttempts = useMemo(
     () => proposal?.executionAttempts || [],
     [proposal],
@@ -55,17 +56,19 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   // it means the proposal is BEING VALIDATED
   const isValidating = useMemo(() => {
     if (executionAttempts.length === 0) return false;
-    return isNil(last(executionAttempts)?.verified) && !proposal?.posted;
-  }, [executionAttempts, proposal?.posted]);
+
+    return isNil(last(executionAttempts)?.verified) && !isPosted;
+  }, [executionAttempts, isPosted]);
 
   // If the last execution attempt is "false" & the proposal is not posted,
   // it means the proposal execution FAILED
   const isFailed = useMemo(() => {
     if (executionAttempts.length === 0) return false;
-    return last(executionAttempts).verified === false && !proposal?.posted;
-  }, [executionAttempts, proposal?.posted]);
 
-  if (proposal.posted) {
+    return last(executionAttempts)?.verified === false && !isPosted;
+  }, [executionAttempts, isPosted]);
+
+  if (isPosted) {
     return (
       <Result
         style={{ borderLeft: `1px solid ${COLOR.BORDER_GREY}` }}
