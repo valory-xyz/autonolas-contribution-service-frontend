@@ -227,7 +227,7 @@ export const Proposal = ({ proposal }) => {
           ) : (
             NA
           )}
-          {` · Status: ${getProposalVerificationStatus()} · Date: ${proposedDate}`}
+          {` · ${getProposalVerificationStatus()} · Date: ${proposedDate}`}
         </Text>
       </div>
     </Card>
