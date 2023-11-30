@@ -30,7 +30,7 @@ export const Proposal = ({ proposal }) => {
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
   const [current, setCurrent] = useState(STEPS.APPROVE);
 
-  const { account } = useHelpers();
+  const { account, isStaging } = useHelpers();
   const {
     fetchedUpdatedMemory,
     updateMemoryWithNewCentaur,
@@ -65,7 +65,10 @@ export const Proposal = ({ proposal }) => {
 
       // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVeolasBalance({ account });
-      if (ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))) {
+      if (
+        !isStaging
+        && ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))
+      ) {
         notifyError('You need at least 1 veOLAS to vote');
         return;
       }
