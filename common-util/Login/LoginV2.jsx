@@ -149,9 +149,6 @@ export const LoginV2 = ({
       <div className="mr-8">
         <SignInToOrbis />
       </div>
-      <div className="mr-8">
-        <SignInToOrbis />
-      </div>
       <Web3Button balance="hide" avatar="hide" />
       <Web3Modal
         projectId={projectId}
