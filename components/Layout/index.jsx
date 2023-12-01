@@ -55,6 +55,15 @@ const menuItems = [
   { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
   { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
   { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
+  { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
+  { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
+  { key: 'members', label: 'Members', icon: <UserOutlined /> },
+  { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
+  { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
+  { key: 'roadmap', label: 'Roadmap', icon: <NodeIndexOutlined /> },
+  { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
+  { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
+  { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
 ];
 
 const INTERVAL = 10000;
@@ -150,12 +159,9 @@ const NavigationBar = ({ children }) => {
     checkConnection();
   }, []);
 
-  // Watch for account changes
   useEffect(() => {
     watchAccount(() => {
-      if (account) {
-        disconnect();
-      }
+      disconnect();
     });
   }, []);
 
@@ -210,6 +216,7 @@ const NavigationBar = ({ children }) => {
         )}
       </Content>
 
+      {!isPadded && <ServiceStatus />}
       {!isPadded && <ServiceStatus />}
     </CustomLayout>
   );

@@ -7,6 +7,9 @@ import { forceIndex } from '@orbisclub/orbis-sdk/utils';
  */
 const orbis = new Orbis();
 
+// This is a wrapper around the normal createPost functionality.
+// It overcomes limitations around error messaging with the current
+// Orbis SDK.
 export const createPost = async (postContent, orbisArg) => {
   const {
     status: postStatus,

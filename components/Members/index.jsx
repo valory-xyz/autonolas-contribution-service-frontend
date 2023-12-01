@@ -1,6 +1,5 @@
 import { Col, Row } from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { GroupChat } from '../GroupChat';
 import { MembersList } from '../MembersList';
 
 const Members = () => (

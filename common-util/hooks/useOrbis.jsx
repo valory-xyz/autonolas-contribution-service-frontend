@@ -1,15 +1,13 @@
-// hooks/useOrbisDisconnect.js
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrbisConnection } from 'store/setup/actions';
-import { notifyError, notifySuccess } from '@autonolas/frontend-library';
+import { notifyError } from '@autonolas/frontend-library';
 import orbis from 'common-util/orbis';
 import { notification } from 'antd';
 
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
-  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
   const dispatch = useDispatch();
 
   const connect = async () => {
@@ -22,7 +20,7 @@ const useOrbis = () => {
           width: 600,
         },
       });
-      console.error('Error signing into Orbis: No account found');
+      console.error('Error signing into Orbis: no account found');
       setIsLoading(false);
       return null;
     }
@@ -34,7 +32,7 @@ const useOrbis = () => {
 
     if (response.status === 200) {
       notification.success({
-        message: 'Signed in to Orbis.',
+        message: 'Signed in to Orbis',
         placement: 'topLeft',
       });
       dispatch(setOrbisConnection(true));
@@ -47,20 +45,15 @@ const useOrbis = () => {
 
   const disconnect = async () => {
     setIsLoading(true);
-    // if (!isOrbisConnected) {
-    //   console.error('Error signing out of Orbis: Orbis not connected');
-    //   setIsLoading(false);
-    //   return null;
-    // }
 
     const res = await orbis.logout();
 
     if (res.status !== 200) {
-      notifyError('Could not logout from Orbis');
+      notifyError('Couldn\'t logout from Orbis');
     }
 
     notification.success({
-      message: 'Signed out of Orbis.',
+      message: 'Signed out of Orbis',
       placement: 'topLeft',
     });
     setIsLoading(false);

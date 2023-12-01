@@ -90,6 +90,9 @@ const GlobalStyle = createGlobalStyle`
   .mr-24 {
     margin-right: 24px;
   }
+  .mt-0 {
+    margin-top: 0px !important;
+  }
   .mt-8 {
     margin-top: 8px;
   }
@@ -98,6 +101,9 @@ const GlobalStyle = createGlobalStyle`
   }
   .mt-24 {
     margin-top: 24px;
+  }
+  .mt-48 {
+    margin-top: 48px !important;
   }
   .ml-4 {
     margin-left: 4px !important;
@@ -110,6 +116,9 @@ const GlobalStyle = createGlobalStyle`
   }
   .w-100 {
     width: 100%;
+  }
+  .text-center {
+    text-align: center !important;
   }
   .text-right {
     float: right;

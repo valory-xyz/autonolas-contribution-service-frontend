@@ -4,13 +4,12 @@ import Web3 from 'web3';
 import PropTypes from 'prop-types';
 import { Web3Modal, Web3Button } from '@web3modal/react';
 import {
-  useAccount, useNetwork, useBalance, useDisconnect, watchAccount,
+  useAccount, useNetwork, useBalance, useDisconnect,
 } from 'wagmi';
 import styled from 'styled-components';
 import {
   COLOR,
   CannotConnectAddressOfacError,
-  MEDIA_QUERY,
   notifyError,
 } from '@autonolas/frontend-library';
 
@@ -21,7 +20,6 @@ import {
   isAddressProhibited,
 } from 'common-util/functions';
 import SignInToOrbis from 'components/SignInToOrbis';
-import useOrbis from 'common-util/hooks/useOrbis';
 import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
@@ -29,9 +27,6 @@ const LoginContainer = styled.div`
   align-items: center;
   font-size: 18px;
   line-height: normal;
-  ${MEDIA_QUERY.mobileL} {
-    margin-top: 0.5rem;
-  }
 `;
 
 export const LoginV2 = ({
@@ -151,6 +146,9 @@ export const LoginV2 = ({
 
   return (
     <LoginContainer>
+      <div className="mr-8">
+        <SignInToOrbis />
+      </div>
       <div className="mr-8">
         <SignInToOrbis />
       </div>

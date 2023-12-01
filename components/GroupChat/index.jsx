@@ -5,22 +5,43 @@ import React, {
 import { useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import {
-  Input, Row, Col, Typography, Button, Form, Skeleton, Divider,
+  Input,
+  Row,
+  Col,
+  Typography,
+  Button,
+  Form,
+  Skeleton,
+  Divider,
+  Modal,
+  Collapse,
 } from 'antd';
 import { COLOR, notifyError } from '@autonolas/frontend-library';
+import { useRouter } from 'next/router';
+import { SendOutlined } from '@ant-design/icons';
 
 import DisplayName from 'common-util/DisplayName';
-import { useRouter } from 'next/router';
-import { MessageTwoTone, SendOutlined } from '@ant-design/icons';
 import orbis, { createPost } from 'common-util/orbis';
-import { GroupChatContainer, MessageGroup, StyledGroupChat } from './styles';
+import { checkVeolasThreshold } from 'components/MembersList/requests';
+import { ONE_IN_WEI } from 'util/constants';
+import {
+  EmptyState,
+  GroupChatContainer,
+  MessageBody,
+  MessageContainer,
+  MessageGroup,
+  MessageTimestamp,
+  StyledGroupChat,
+  StyledMessageTwoTone,
+} from './styles';
 
 const { TextArea } = Input;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 export const GroupChat = () => {
   const [orbisMessages, setOrbisMessages] = useState([]);
   const [orbisMessagesError, setOrbisMessagesError] = useState('');
+  const [showVeOLASModal, setShowVeOLASModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
@@ -31,18 +52,21 @@ export const GroupChat = () => {
   const { id } = router.query;
 
   const loadMessages = async () => {
-    try {
-      setLoading(true);
-      const { data } = await orbis.getPosts({
+    setLoading(true);
+    const { data, error } = await orbis.getPosts(
+      {
         context: id,
-      }, undefined, undefined, true);
-      setOrbisMessages(data);
-    } catch (error) {
+      },
+      undefined,
+      undefined,
+      true,
+    );
+    setOrbisMessages(data);
+    if (error) {
       console.error('Error loading messages:', error);
       setOrbisMessagesError(error.message);
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   /** Load all posts for this context */
@@ -57,14 +81,25 @@ export const GroupChat = () => {
   }, [orbisMessages]);
 
   const handleSubmit = async (formData) => {
+    const meetsVeolasThreshold = await checkVeolasThreshold(
+      account,
+      ONE_IN_WEI,
+    );
+    if (!meetsVeolasThreshold) {
+      setShowVeOLASModal(true);
+      return null;
+    }
+
     const { messageContent } = formData;
 
     setIsSending(true);
-
-    const { result, error } = await createPost({
-      body: messageContent,
-      context: id,
-    }, orbis);
+    const { result, error } = await createPost(
+      {
+        body: messageContent,
+        context: id,
+      },
+      orbis,
+    );
 
     if (error) {
       notifyError('Error sending message: ', error);
@@ -87,54 +122,67 @@ export const GroupChat = () => {
       {id ? (
         <>
           {loading && <Skeleton active />}
-          {orbisMessagesError && `Error loading messages: ${orbisMessagesError}`}
-          {(hasMessages && !loading) && (
+          {orbisMessagesError
+            && `Error loading messages: ${orbisMessagesError}`}
+          {hasMessages && !loading && (
             <div ref={messageWindowRef} className="group-chat-container">
-              {Object.entries(orbisMessages.reduce((acc, msg) => {
-                // Group messages by creator address
-                const address = msg?.creator_details?.metadata?.address || 'unknown';
-                const { timestamp } = msg;
-                const date = new Date(timestamp * 1000);
-                const dateKey = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-                if (!acc[dateKey]) {
-                  acc[dateKey] = {};
-                }
-                if (!acc[dateKey][address]) {
-                  acc[dateKey][address] = [];
-                }
-                acc[dateKey][address].push(msg);
-                return acc;
-              }, {})).map(([dateKey, messagesByAddress]) => {
+              {Object.entries(
+                orbisMessages.reduce((acc, msg) => {
+                  // Group messages by creator address
+                  const address = msg?.creator_details?.metadata?.address || 'unknown';
+                  const { timestamp } = msg;
+                  const date = new Date(timestamp * 1000);
+                  const dateKey = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+                  if (!acc[dateKey]) {
+                    acc[dateKey] = {};
+                  }
+                  if (!acc[dateKey][address]) {
+                    acc[dateKey][address] = [];
+                  }
+                  acc[dateKey][address].push(msg);
+                  return acc;
+                }, {}),
+              ).map(([dateKey, messagesByAddress]) => {
                 const isToday = new Date().toISOString().split('T')[0] === dateKey;
                 return (
                   <div key={dateKey}>
                     <div className="date-segment">
-                      <Divider plain>{isToday ? 'Today' : new Date(dateKey).toLocaleDateString()}</Divider>
+                      <Divider plain>
+                        {isToday
+                          ? 'Today'
+                          : new Date(dateKey).toLocaleDateString()}
+                      </Divider>
                     </div>
-                    {Object.entries(messagesByAddress).map(([address, messages]) => (
-                      <MessageGroup key={address}>
-                        <div className="mb-4">
-                          <DisplayName
-                            actorAddress={address}
-                            account={account}
-                          />
-                        </div>
-                        {messages.map((msg, index) => (
-                          <Fragment key={`${msg.content?.context}-${msg.timestamp}`}>
-                            <div className={`mb-4 ${index === 0 ? 'mt-2' : ''}`}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Text className="mr-8" style={{ lineHeight: 1.3 }}>{msg.content?.body}</Text>
-                                <Text type="secondary" style={{ minWidth: 50, textAlign: 'right' }}>
-                                  <Moment unix format="HH:mm">
-                                    {msg.timestamp}
-                                  </Moment>
-                                </Text>
+                    {Object.entries(messagesByAddress).map(
+                      ([address, messages]) => (
+                        <MessageGroup key={address}>
+                          <div className="mb-4">
+                            <DisplayName
+                              actorAddress={address}
+                              account={account}
+                            />
+                          </div>
+                          {messages.map((msg, index) => (
+                            <Fragment
+                              key={`${msg.content?.context}-${msg.timestamp}`}
+                            >
+                              <div
+                                className={`mb-4 ${index === 0 ? 'mt-2' : ''}`}
+                              >
+                                <MessageContainer>
+                                  <MessageBody>{msg.content?.body}</MessageBody>
+                                  <MessageTimestamp type="secondary">
+                                    <Moment unix format="HH:mm">
+                                      {msg.timestamp}
+                                    </Moment>
+                                  </MessageTimestamp>
+                                </MessageContainer>
                               </div>
-                            </div>
-                          </Fragment>
-                        ))}
-                      </MessageGroup>
-                    ))}
+                            </Fragment>
+                          ))}
+                        </MessageGroup>
+                      ),
+                    )}
                   </div>
                 );
               })}
@@ -143,7 +191,11 @@ export const GroupChat = () => {
 
           <StyledGroupChat>
             <Form form={form} onFinish={handleSubmit} layout="inline">
-              <Row gutter={[16, 16]} className="w-100" style={{ direction: 'flex', alignItems: 'center' }}>
+              <Row
+                gutter={[16, 16]}
+                className="w-100"
+                style={{ direction: 'flex', alignItems: 'center' }}
+              >
                 <Col flex="auto">
                   <Form.Item name="messageContent">
                     <TextArea rows={1} className="w-100" disabled={isSending} />
@@ -156,106 +208,91 @@ export const GroupChat = () => {
                       disabled={!account || !isOrbisConnected}
                       loading={isSending}
                     >
-                      <SendOutlined />
+                      {!loading && <SendOutlined />}
                       Send
                     </Button>
                   </Form.Item>
                 </Col>
               </Row>
             </Form>
-            {(!account && !isOrbisConnected) && (
-              <Text type="secondary">To send messages, connect your wallet and sign in to Orbis</Text>
+            {!account && !isOrbisConnected && (
+              <Text type="secondary">
+                To send messages, connect your wallet and sign in to Orbis
+              </Text>
             )}
-            {(account && !isOrbisConnected) && (
+            {account && !isOrbisConnected && (
               <Text type="secondary">To send messages, sign in to Orbis</Text>
             )}
-            {(!account && isOrbisConnected) && (
-              <Text type="secondary">To send messages, connect your wallet</Text>
+            {!account && isOrbisConnected && (
+              <Text type="secondary">
+                To send messages, connect your wallet
+              </Text>
             )}
           </StyledGroupChat>
         </>
       ) : (
-        <div style={{
-          display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20vh',
-        }}
-        >
-          <div style={{ textAlign: 'center' }}>
-            <MessageTwoTone style={{ fontSize: '4rem', marginBottom: '16px' }} twoToneColor={COLOR.GREY_1} />
+        <EmptyState>
+          <div>
+            <StyledMessageTwoTone twoToneColor={COLOR.GREY_1} />
             <br />
             <Text type="secondary">To start chatting, select a chat</Text>
           </div>
-        </div>
+        </EmptyState>
       )}
+      <Modal
+        title={
+          <Title level={4}>You need at least 1 veOLAS to send messages</Title>
+        }
+        open={showVeOLASModal}
+        onOk={() => setShowVeOLASModal(false)}
+        onCancel={() => setShowVeOLASModal(false)}
+      >
+        <Collapse
+          className="mb-12 mt-12"
+          items={[
+            {
+              key: '1',
+              label: "What's veOLAS?",
+              children: (
+                <Text>
+                  veOLAS is a locked form of the Olas ecosystem&apos;s token,
+                  called OLAS. When you lock OLAS into veOLAS you get access to
+                  functionality.
+                </Text>
+              ),
+            },
+          ]}
+        />
+        <Title level={5} className="mb-4">
+          How to get veOLAS
+        </Title>
+        <ol className="mt-0">
+          <li>
+            <a
+              href="https://app.uniswap.org/swap?inputCurrency=ETH&outputCurrency=0x0001a500a6b18995b03f44bb040a5ffc28e45cb0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get OLAS on Ethereum ↗
+            </a>
+          </li>
+          <li>
+            Lock your OLAS at
+            {' '}
+            <a
+              href="https://member.olas.network"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Olas Member ↗
+            </a>
+          </li>
+        </ol>
+        <Text type="secondary">
+          Note: it&apos;s worth locking more than 1 veOLAS because your veOLAS
+          amount will reduce over time.
+        </Text>
+      </Modal>
     </GroupChatContainer>
   );
 };
-// {
-//     "stream_id": "kjzl6cwe1jw1484pmywzbf9lfkjwg3gh3kabsc09gw0tnfplmfp9zxou3bqx23d",
-//     "type": null,
-//     "content": {
-//       "body": "test",
-//       "context": "kjzl6cwe1jw14b8gwhyz4oen68aaoatycg8l8gix08ckoi0fwk5wvjtp3g89bmh"
-//     },
-//     "context": "kjzl6cwe1jw14b8gwhyz4oen68aaoatycg8l8gix08ckoi0fwk5wvjtp3g89bmh",
-//     "creator": "did:pkh:eip155:1:0x6c6766e04ef971367d27e720d1d161a9b495d647",
-//     "creator_details": {
-//       "a_r": 0,
-//       "did": "did:pkh:eip155:1:0x6c6766e04ef971367d27e720d1d161a9b495d647",
-//       "nonces": {
-//         "global": 0,
-//         "mainnet": 0,
-//         "polygon": 0,
-//         "arbitrum": 0
-//       },
-//       "profile": null,
-//       "metadata": {
-//         "chain": "eip155:1",
-//         "address": "0x6c6766e04ef971367d27e720d1d161a9b495d647",
-//         "ensName": null
-//       },
-//       "github_details": null,
-//       "verified_email": null,
-//       "count_followers": 0,
-//       "count_following": 0,
-//       "encrypted_email": null,
-//       "twitter_details": null
-//     },
-//     "context_details": {
-//       "context_id": "kjzl6cwe1jw14b8gwhyz4oen68aaoatycg8l8gix08ckoi0fwk5wvjtp3g89bmh",
-//       "context_details": {
-//         "name": "general",
-//         "context": "kjzl6cwe1jw14ayy9pnrvdn2qwfeozwyxhwj9l0tz5vu0bp3yl20qq2w5fu7mu4",
-//         "imageUrl": "",
-//         "project_id": "kjzl6cwe1jw145erd6cl7quyc5zwy649iuty9xr0ycn2dpa0wnvehei6yn38pwx",
-//         "websiteUrl": "",
-//         "accessRules": [],
-//         "displayName": "General",
-//         "integrations": {}
-//       }
-//     },
-//     "master": null,
-//     "reply_to": null,
-//     "reply_to_details": null,
-//     "reply_to_creator_details": null,
-//     "repost_details": {
-//       "content": null,
-//       "stream_id": null,
-//       "timestamp": null,
-//       "count_likes": null,
-//       "count_repost": null,
-//       "count_replies": null,
-//       "creator_details": null
-//     },
-//     "repost_creator_details": null,
-//     "count_likes": 0,
-//     "count_haha": 0,
-//     "count_downvotes": 0,
-//     "count_replies": 0,
-//     "count_repost": 0,
-//     "timestamp": 1701186975,
-//     "count_commits": 1,
-//     "indexing_metadata": {
-//       "language": "eng"
-//     },
-//     "last_reply_timestamp": 1701186975
-//   }
