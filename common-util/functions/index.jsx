@@ -14,6 +14,7 @@ import data from 'common-util/Education/data.json';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import { SUPPORTED_CHAINS } from 'common-util/Login';
+import orbis from 'common-util/orbis';
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
 const getSupportedChains = () => (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
@@ -127,3 +128,20 @@ export const isAddressProhibited = (address) => {
   const addresses = prohibitedAddresses.map((e) => toLower(e));
   return addresses.includes(toLower(address));
 };
+
+// Orbis
+
+export const checkOrbisConnection = async () => {
+  try {
+    const res = await orbis.isConnected();
+    if (res.status === 200) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error checking Orbis connection:', error);
+    return false;
+  }
+};
+
+export const truncateAddress = (text) => `${text?.slice(0, 6)}…${text?.slice(-4)}`;

@@ -8,6 +8,7 @@ import {
   setLogout,
 } from 'store/setup/actions';
 import { LoginV2 } from 'common-util/Login';
+import useOrbis from 'common-util/hooks/useOrbis';
 
 const Login = () => {
   const dispatch = useDispatch();

@@ -5,7 +5,7 @@ import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 export const CustomLayout = styled(Layout)`
   background: ${COLOR.GREY_3};
   .site-layout {
-    padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : ' 0 20px 100px 20px;')};
+    padding: ${({ isPadded }) => (isPadded === 'true' ? '0' : ' 0 20px 100px 20px;')};
     margin-top: 64px;
     .contribute-footer {
       > div {
@@ -16,7 +16,7 @@ export const CustomLayout = styled(Layout)`
       }
     }
     .site-layout-background {
-      padding: ${({ iscoordinatepage }) => (iscoordinatepage === 'true' ? '0' : '24px 0;')};
+      padding: ${({ isPadded }) => (isPadded === 'true' ? '0' : '24px 0;')};
       min-height: calc(100vh - 120px);
     }
   }

@@ -22,4 +22,6 @@ export const syncTypes = {
 
   SET_PREDICTION_REQUESTS: `${reducerName}/Set prediction requests data`,
   SET_APPROVED_REQUESTS_COUNT: `${reducerName}/Set approved requests count`,
+
+  SET_ORBIS_CONNECTION: `${reducerName}/Set Orbis connection`,
 };

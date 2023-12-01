@@ -29,3 +29,7 @@ export const PREDICT_GET_ALL_ENDPOINT = '/all_markets';
 
 export const ONE_MILLION = 1000000;
 export const VEOLAS_QUORUM = ONE_MILLION * 2;
+
+export const ORBIS_PROJECT_ID = 'kjzl6cwe1jw145erd6cl7quyc5zwy649iuty9xr0ycn2dpa0wnvehei6yn38pwx';
+export const ORBIS_CONTEXT = 'kjzl6cwe1jw14ayy9pnrvdn2qwfeozwyxhwj9l0tz5vu0bp3yl20qq2w5fu7mu4';
+export const ORBIS_GENERAL_SUBCONTEXT = 'kjzl6cwe1jw14b8gwhyz4oen68aaoatycg8l8gix08ckoi0fwk5wvjtp3g89bmh';

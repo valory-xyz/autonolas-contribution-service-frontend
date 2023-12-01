@@ -296,16 +296,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
-  // Group Chat
-  .chat-bubble {
-    background-color: ${COLOR.WHITE};
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid ${COLOR.BORDER_GREY};
-    min-width: 100px;
-    max-width: 450px;
-    margin-bottom: 4px;
-  }
 
   /* antd steps */
   .ant-steps-item-title {

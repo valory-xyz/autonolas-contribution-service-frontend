@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import PropTypes from 'prop-types';
 import { Web3Modal, Web3Button } from '@web3modal/react';
 import {
-  useAccount, useNetwork, useBalance, useDisconnect,
+  useAccount, useNetwork, useBalance, useDisconnect, watchAccount,
 } from 'wagmi';
 import styled from 'styled-components';
 import {
@@ -20,6 +20,8 @@ import {
   getChainIdOrDefaultToMainnet,
   isAddressProhibited,
 } from 'common-util/functions';
+import SignInToOrbis from 'components/SignInToOrbis';
+import useOrbis from 'common-util/hooks/useOrbis';
 import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
@@ -55,7 +57,9 @@ export const LoginV2 = ({
       }
     },
     onDisconnect() {
-      if (onDisconnectCb) onDisconnectCb();
+      if (onDisconnectCb) {
+        onDisconnectCb();
+      }
     },
   });
 
@@ -147,6 +151,9 @@ export const LoginV2 = ({
 
   return (
     <LoginContainer>
+      <div className="mr-8">
+        <SignInToOrbis />
+      </div>
       <Web3Button balance="hide" avatar="hide" />
       <Web3Modal
         projectId={projectId}

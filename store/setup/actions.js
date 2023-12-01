@@ -59,3 +59,8 @@ export const setApprovedRequestsCount = (approvedRequestsCount) => ({
   type: syncTypes.SET_APPROVED_REQUESTS_COUNT,
   data: { approvedRequestsCount },
 });
+
+export const setOrbisConnection = (isConnected) => ({
+  type: syncTypes.SET_ORBIS_CONNECTION,
+  data: { isConnected },
+});

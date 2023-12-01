@@ -11,8 +11,23 @@ import {
   setIsVerified,
   setMemoryDetails,
   setIsMemoryDetailsLoading,
+  setOrbisConnection,
 } from 'store/setup/actions';
 import { getMemoryDetails } from 'common-util/api';
+import {
+  CalendarOutlined,
+  FileTextOutlined,
+  MessageOutlined,
+  NodeIndexOutlined,
+  RobotOutlined,
+  StarOutlined,
+  TrophyOutlined,
+  TwitterOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { checkOrbisConnection } from 'common-util/functions';
+import { watchAccount } from '@wagmi/core';
+import useOrbis from 'common-util/hooks/useOrbis';
 import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
@@ -31,14 +46,15 @@ const { Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const menuItems = [
-  { key: 'leaderboard', label: 'Leaderboard' },
-  { key: 'tweet', label: 'Tweet' },
-  { key: 'members', label: 'Members' },
-  { key: 'predict', label: 'Predict' },
-  { key: 'roadmap', label: 'Roadmap' },
-  { key: 'calendar', label: 'Calendar' },
-  { key: 'chatbot', label: 'Chatbot' },
-  { key: 'docs', label: 'Docs' },
+  { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
+  { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
+  { key: 'members', label: 'Members', icon: <UserOutlined /> },
+  { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
+  { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
+  { key: 'roadmap', label: 'Roadmap', icon: <NodeIndexOutlined /> },
+  { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
+  { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
+  { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
 ];
 
 const INTERVAL = 10000;
@@ -49,6 +65,7 @@ const NavigationBar = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState('homepage');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
+  const { disconnect } = useOrbis();
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -124,16 +141,34 @@ const NavigationBar = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const checkConnection = async () => {
+      const isConnected = await checkOrbisConnection();
+      dispatch(setOrbisConnection(isConnected));
+    };
+
+    checkConnection();
+  }, []);
+
+  // Watch for account changes
+  useEffect(() => {
+    watchAccount(() => {
+      if (account) {
+        disconnect();
+      }
+    });
+  }, []);
+
   const logo = (
     <Logo onClick={() => router.push('/')}>
       <LogoSvg />
     </Logo>
   );
 
-  const isCoordinatePage = ['coordinate', 'member-chat'].some((e) => pathname.includes(e));
+  const isPadded = ['chat', 'member-chat'].some((e) => pathname.includes(e));
 
   return (
-    <CustomLayout iscoordinatepage={isCoordinatePage.toString()}>
+    <CustomLayout isPadded={isPadded.toString()}>
       <CustomHeader>
         {logo}
 
@@ -168,14 +203,14 @@ const NavigationBar = ({ children }) => {
       >
         <div className="site-layout-background">{children}</div>
 
-        {!isCoordinatePage && (
+        {!isPadded && (
           <div className="contribute-footer">
             <Footer />
           </div>
         )}
       </Content>
 
-      {!isCoordinatePage && <ServiceStatus />}
+      {!isPadded && <ServiceStatus />}
     </CustomLayout>
   );
 };

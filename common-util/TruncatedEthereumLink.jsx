@@ -1,9 +1,10 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 import PropTypes from 'prop-types';
+import { truncateAddress } from './functions';
 
 function TruncatedEthereumLink({ text, isTransaction, className }) {
-  const truncatedText = `${text?.slice(0, 6)}...${text?.slice(-4)}`;
+  const truncatedText = truncateAddress(text);
 
   const etherscanLink = `https://etherscan.io/${
     isTransaction ? 'tx' : 'address'

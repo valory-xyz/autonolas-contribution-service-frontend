@@ -27,26 +27,6 @@ export const areBothMembersChatting = (
   return false;
 };
 
-/** Calls the Orbis SDK and handle the results */
-export const connectOrbis = async (orbis) => {
-  const response = await orbis.connect();
-
-  if (response.status === 200) {
-    // once the user is connect, create a context
-    const res = await orbis.createContext({
-      project_id: process.env.NEXT_PUBLIC_ORBIS_CONTEXT_ID,
-      name: 'Centaur',
-      websiteUrl: 'https://centaurs-frontend.vercel.app/',
-    });
-    window.console.log('User connected and context created: ', res);
-
-    return response.did;
-  }
-
-  window.console.error('Error connecting to Ceramic: ', response);
-  return null;
-};
-
 // get the details of the user we want to send the message to
 export const getToChatWithDid = async (orbis, toChatWith) => {
   const { data, error } = await orbis.getDids(toChatWith);
