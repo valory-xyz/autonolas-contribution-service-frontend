@@ -134,10 +134,7 @@ export const isAddressProhibited = (address) => {
 export const checkOrbisConnection = async () => {
   try {
     const res = await orbis.isConnected();
-    if (res.status === 200) {
-      return true;
-    }
-    return false;
+    return res.status === 200 || res.status === 201;
   } catch (error) {
     console.error('Error checking Orbis connection:', error);
     return false;
