@@ -49,6 +49,10 @@ export default (state = initialState, action = {}) => {
       return { ...state, ...action.data };
     }
 
+    case syncTypes.SET_ORBIS_CONNECTION: {
+      return { ...state, isConnected: action.data.isConnected };
+    }
+
     case syncTypes.SET_LEADERBOARD: {
       const { leaderboard } = action.data;
 

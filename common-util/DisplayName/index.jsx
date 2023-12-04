@@ -1,34 +1,20 @@
 import PropTypes from 'prop-types';
-import { Typography } from 'antd';
+import Link from 'next/link';
+import { EllipsisMiddle } from '@autonolas/frontend-library';
 
-import { CENTAUR_BOT_ADDRESS } from 'util/constants';
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-import { useHelpers } from 'common-util/hooks/useHelpers';
-
-const { Text } = Typography;
-
-const DisplayName = ({ actorAddress, className }) => {
-  const { account } = useHelpers();
-
-  if (actorAddress === account) {
-    return <Text className={className}>You</Text>;
-  }
-
-  if (actorAddress === CENTAUR_BOT_ADDRESS) {
-    return <Text className={className}>CentaurBot</Text>;
-  }
-
-  return <TruncatedEthereumLink text={actorAddress} className={className} />;
-};
+const DisplayName = ({ actorAddress, account }) => (
+  <Link href={`/profile/${actorAddress}`}>
+    {actorAddress?.toLowerCase() === account?.toLowerCase() ? 'You' : <EllipsisMiddle>{actorAddress}</EllipsisMiddle>}
+  </Link>
+);
 
 DisplayName.propTypes = {
-  actorAddress: PropTypes.string,
-  className: PropTypes.string,
+  account: PropTypes.string,
+  actorAddress: PropTypes.string.isRequired,
 };
 
 DisplayName.defaultProps = {
-  actorAddress: '',
-  className: '',
+  account: '',
 };
 
 export default DisplayName;

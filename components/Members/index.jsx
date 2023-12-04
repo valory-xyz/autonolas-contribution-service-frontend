@@ -1,6 +1,5 @@
 import { Col, Row } from 'antd';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { GroupChat } from '../GroupChat';
 import { MembersList } from '../MembersList';
 
 const Members = () => (
@@ -9,11 +8,8 @@ const Members = () => (
       <EducationTitle title="Members" educationItem="members" />
     </div>
     <Row gutter={24}>
-      <Col xs={24} md={24} lg={12} xl={12} className="mb-24">
+      <Col xs={24} md={24} lg={18} xl={18} className="mb-24">
         <MembersList />
-      </Col>
-      <Col xs={24} md={24} lg={12} xl={12}>
-        <GroupChat chatEnabled />
       </Col>
     </Row>
   </>

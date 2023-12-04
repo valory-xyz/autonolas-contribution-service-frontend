@@ -93,6 +93,9 @@ const GlobalStyle = createGlobalStyle`
   .mr-24 {
     margin-right: 24px;
   }
+  .mt-0 {
+    margin-top: 0px !important;
+  }
   .mt-8 {
     margin-top: 8px;
   }
@@ -101,6 +104,9 @@ const GlobalStyle = createGlobalStyle`
   }
   .mt-24 {
     margin-top: 24px;
+  }
+  .mt-48 {
+    margin-top: 48px !important;
   }
   .ml-4 {
     margin-left: 4px !important;
@@ -113,6 +119,9 @@ const GlobalStyle = createGlobalStyle`
   }
   .w-100 {
     width: 100%;
+  }
+  .text-center {
+    text-align: center !important;
   }
   .text-right {
     float: right;
@@ -145,11 +154,10 @@ const GlobalStyle = createGlobalStyle`
     display: initial;
   }
 
-  .ant-menu-vertical > .ant-menu-item {
-    padding: 0 20px;
-    &:first-child {
-      margin-top: 0;
-    }
+  .ant-menu-item {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
   }
 
   /* layout */
@@ -299,16 +307,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
-  // Group Chat
-  .chat-bubble {
-    background-color: ${COLOR.WHITE};
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid ${COLOR.BORDER_GREY};
-    min-width: 100px;
-    max-width: 450px;
-    margin-bottom: 4px;
-  }
 
   /* antd steps */
   .ant-steps-item-title {

@@ -5,24 +5,16 @@ import {
   Button, Input, notification, Space, Card, Typography,
 } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-import { Orbis } from '@orbisclub/orbis-sdk';
 
+import orbis from 'common-util/orbis';
 import { Conversations } from './Conversation';
 import {
   getToChatWithDid,
-  connectOrbis,
   createOrbisConversation,
   getAllTheMessages,
 } from './utils';
 
 const { Title, Text } = Typography;
-
-/**
- * Initialize the Orbis class object:
- * You can make this object available on other components
- * by passing it as a prop or by using a context.
- */
-const orbis = new Orbis();
 
 export const MemberChat = () => {
   // messages
@@ -35,22 +27,15 @@ export const MemberChat = () => {
   // send message loading
   const [isSending, setIsSending] = useState(false);
 
-  /** The user object */
-  const [user, setUser] = useState();
-
   const account = useSelector((state) => state?.setup?.account);
 
   // get address from querystring
   const router = useRouter();
   const toChatWith = router.query.address || null;
 
-  const connect = async () => {
-    const did = await connectOrbis(orbis);
-    setUser(did);
-  };
+  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
 
   const updateAfterSendMessage = () => {
-    notification.success({ message: 'Message sent successfully' });
     setMessages((prev) => [
       ...prev,
       { address: account, message: inputMessage },
@@ -62,10 +47,11 @@ export const MemberChat = () => {
   const handleSendMessage = async () => {
     setIsSending(true);
 
-    // check if the user is connected and use the same orbis object
-    const isMemberConnected = await orbis?.isConnected();
-    if (!isMemberConnected) {
-      await connect();
+    if (!isOrbisConnected) {
+      notification.error({
+        message: 'Please sign in to Orbis to send messages',
+      });
+      return;
     }
 
     if (!toChatWith) {
@@ -110,8 +96,6 @@ export const MemberChat = () => {
     }
   };
 
-  const isUserConnected = !!user;
-
   // on load, fetch the messages
   useEffect(() => {
     const getData = async () => {
@@ -120,20 +104,20 @@ export const MemberChat = () => {
       setIsMessageLoading(false);
     };
 
-    if (account && isUserConnected) {
+    if (account && isOrbisConnected) {
       getData();
     }
-  }, [account, isUserConnected]);
+  }, [account, isOrbisConnected]);
 
   // poll for messages every 6 seconds
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (account && isUserConnected) {
+      if (account && isOrbisConnected) {
         await getMessagesForTheDid();
       }
     }, 6000);
     return () => clearInterval(interval);
-  }, [account, isUserConnected]);
+  }, [account, isOrbisConnected]);
 
   return (
     <Card className="member-chat-card">
@@ -145,12 +129,12 @@ export const MemberChat = () => {
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           onPressEnter={handleSendMessage}
-          disabled={!isUserConnected}
+          disabled={!isOrbisConnected}
         />
 
         <Space>
           <Button
-            disabled={!inputMessage || !toChatWith || !isUserConnected}
+            disabled={!inputMessage || !toChatWith || !isOrbisConnected}
             type="primary"
             icon={<SendOutlined />}
             onClick={handleSendMessage}
@@ -159,19 +143,10 @@ export const MemberChat = () => {
             Send
           </Button>
 
-          {!isUserConnected && (
-            <>
-              <Button
-                onClick={async () => {
-                  await connect();
-                }}
-              >
-                Connect
-              </Button>
-              <Text type="secondary">
-                Please connect to orbis to chat and see messages
-              </Text>
-            </>
+          {!isOrbisConnected && (
+            <Text type="secondary">
+              Sign in to Orbis to chat and see messages
+            </Text>
           )}
         </Space>
       </Space>
