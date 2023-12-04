@@ -1,15 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ServiceStatusInfo } from '@autonolas/frontend-library';
 
 import { setLeaderboard, setNftDetails } from 'store/setup/actions';
 import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
 import { useHealthCheckup } from 'common-util/hooks/useHealthCheckup';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 
 const MINUTE = 60 * 1000;
 
 const ServiceStatus = () => {
   const dispatch = useDispatch();
-  const account = useSelector((state) => state?.setup?.account);
+  const { account } = useHelpers();
 
   const pollingCallback = async () => {
     // fetch leaderboard list

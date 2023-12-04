@@ -25,6 +25,11 @@ export const setIsVerified = (isVerified) => ({
   data: { isVerified },
 });
 
+export const setIsLeaderboardLoading = (isLeaderboardLoading) => ({
+  type: syncTypes.SET_LEADERBOARD_LOADING,
+  data: { isLeaderboardLoading },
+});
+
 export const setLeaderboard = (leaderboard) => ({
   type: syncTypes.SET_LEADERBOARD,
   data: { leaderboard },

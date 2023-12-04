@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -11,8 +11,10 @@ import {
   setIsVerified,
   setMemoryDetails,
   setIsMemoryDetailsLoading,
+  setLeaderboard,
+  setIsLeaderboardLoading,
 } from 'store/setup/actions';
-import { getMemoryDetails } from 'common-util/api';
+import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
@@ -54,10 +56,27 @@ const NavigationBar = ({ children }) => {
   const account = useSelector((state) => get(state, 'setup.account'));
   const chainId = useSelector((state) => get(state, 'setup.chainId'));
 
-  const getMembers = async () => {
+  const getMembers = useCallback(async () => {
     const { response } = await getMemoryDetails();
     dispatch(setMemoryDetails(response));
-  };
+  }, [dispatch]);
+
+  // load leaderboard list only once on page load
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        dispatch(setIsLeaderboardLoading(true));
+        const list = await getLeaderboardList();
+        dispatch(setLeaderboard(list));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch(setIsLeaderboardLoading(false));
+      }
+    };
+
+    fetchLeaderboard();
+  }, [chainId, dispatch]);
 
   useEffect(() => {
     // on first render, if there is no account (ie. wallet not connected),
@@ -78,7 +97,7 @@ const NavigationBar = ({ children }) => {
     };
 
     getData();
-  }, []);
+  }, [account, dispatch, getMembers]);
 
   // poll details
   useEffect(() => {
@@ -89,7 +108,7 @@ const NavigationBar = ({ children }) => {
     return () => {
       clearTimeout(interval);
     };
-  }, []);
+  }, [getMembers]);
 
   /**
    * fetch if wallet is verified on page load
@@ -106,7 +125,7 @@ const NavigationBar = ({ children }) => {
       }
     };
     fn();
-  }, [account, chainId]);
+  }, [account, chainId, dispatch]);
 
   // to set default menu on first render
   useEffect(() => {

@@ -1,12 +1,9 @@
 /* eslint-disable camelcase */
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Typography, Table, Card } from 'antd';
 import Link from 'next/link';
 import { COLOR, NA } from '@autonolas/frontend-library';
 
-import { setLeaderboard } from 'store/setup/actions';
-import { getLeaderboardList } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import { EducationTitle } from '../MintNft/Education';
 import { LeaderboardContent } from './styles';
@@ -14,11 +11,8 @@ import { LeaderboardContent } from './styles';
 const { Text } = Typography;
 
 const Leaderboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const chainId = useSelector((state) => state?.setup?.chainId);
-  const data = useSelector((state) => state?.setup?.leaderboard);
-  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state?.setup?.isLeaderboardLoading);
+  const leaderboard = useSelector((state) => state?.setup?.leaderboard);
 
   const columns = [
     { title: 'Rank', dataIndex: 'rank', width: 50 },
@@ -124,21 +118,6 @@ const Leaderboard = () => {
     },
   ];
 
-  useEffect(() => {
-    setIsLoading(true);
-    const fn = async () => {
-      try {
-        const response = await getLeaderboardList();
-        dispatch(setLeaderboard(response));
-      } catch (error) {
-        window.console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fn();
-  }, [chainId]);
-
   return (
     <LeaderboardContent className="section">
       <EducationTitle
@@ -151,7 +130,7 @@ const Leaderboard = () => {
         <div style={{ overflowX: 'auto' }}>
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={leaderboard}
             loading={isLoading}
             pagination={false}
             className="mb-12"

@@ -29,7 +29,6 @@ export const updateMemoryDetails = async (memoryDetails) => {
   // The Ceramic client can create and update streams using the authenticated DID
   CERAMIC_OBJECT.did = did;
 
-  // CERAMIC_OBJECT.did = process.env.NEXT_PUBLIC_CERAMIC_DID;
   const response = await TileDocument.load(
     CERAMIC_OBJECT,
     process.env.NEXT_PUBLIC_COORDINATE_STREAM_ID,
