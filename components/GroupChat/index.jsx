@@ -1,4 +1,3 @@
-// TODO - create modal to guide people to get veOLAS if they try to send a message without it
 import React, {
   Fragment, useEffect, useState, useRef,
 } from 'react';
@@ -189,6 +188,7 @@ export const GroupChat = () => {
                         </MessageGroup>
                       ),
                     )}
+
                   </div>
                 );
               })}
