@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrbisConnection } from 'store/setup/actions';
-import { notifyError } from '@autonolas/frontend-library';
+import { getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
 import orbis from 'common-util/orbis';
 import { notification } from 'antd';
 
@@ -26,6 +26,7 @@ const useOrbis = () => {
     }
 
     const response = await orbis.connect_v2({
+      // provider: getProvider([{ id: 1 }]),
       provider: window.ethereum,
       chain: 'ethereum',
     });
@@ -52,12 +53,9 @@ const useOrbis = () => {
       notifyError('Couldn\'t logout from Orbis');
     }
 
-    notification.success({
-      message: 'Signed out of Orbis',
-      placement: 'topLeft',
-    });
+    notifySuccess('Signed out of Orbis');
     setIsLoading(false);
-    await dispatch(setOrbisConnection(false));
+    dispatch(setOrbisConnection(false));
     return res.status === 200 ? res : null;
   };
 

@@ -151,11 +151,10 @@ const GlobalStyle = createGlobalStyle`
     display: initial;
   }
 
-  .ant-menu-vertical > .ant-menu-item {
-    padding: 0 20px;
-    &:first-child {
-      margin-top: 0;
-    }
+  .ant-menu-item {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
   }
 
   /* layout */

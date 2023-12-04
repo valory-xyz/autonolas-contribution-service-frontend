@@ -30,5 +30,3 @@ export const PREDICT_GET_ALL_ENDPOINT = '/all_markets';
 export const ONE_MILLION = 1000000;
 export const VEOLAS_QUORUM = ONE_MILLION * 2;
 export const ONE_IN_WEI = '1000000000000000000';
-
-export const ORBIS_PROJECT_ID = 'kjzl6cwe1jw145erd6cl7quyc5zwy649iuty9xr0ycn2dpa0wnvehei6yn38pwx';

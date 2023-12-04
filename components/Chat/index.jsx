@@ -1,14 +1,14 @@
 import {
   Menu, Skeleton, Grid, Typography,
 } from 'antd';
-import { GroupChat } from 'components/GroupChat';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { ORBIS_PROJECT_ID } from 'util/constants';
-import orbis from 'common-util/orbis';
 import { MobileTwoTone } from '@ant-design/icons';
 import { COLOR } from '@autonolas/frontend-library';
+
+import orbis from 'common-util/orbis';
+import { GroupChat } from 'components/GroupChat';
 import { ChatMenu } from './styles';
 
 const { useBreakpoint } = Grid;
@@ -31,8 +31,9 @@ const Chat = () => {
         setLoading(true);
         setFirstLoad(false);
       }
-      const { data } = await orbis.getContexts(ORBIS_PROJECT_ID);
-      setChats(data[0]?.child_contexts);
+      const { data } = await orbis.getContexts(process.env.NEXT_PUBLIC_ORBIS_PROJECT_ID);
+      const loadedChats = data[0]?.child_contexts;
+      setChats(loadedChats);
     } catch (error) {
       console.error('Error loading messages:', error);
       setChatsError(error.message);

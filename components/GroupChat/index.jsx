@@ -43,6 +43,7 @@ export const GroupChat = () => {
   const [orbisMessagesError, setOrbisMessagesError] = useState('');
   const [showVeOLASModal, setShowVeOLASModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingInitial, setLoadingInitial] = useState(false);
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
   const isOrbisConnected = useSelector((state) => state.setup.isConnected);
@@ -51,8 +52,12 @@ export const GroupChat = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const loadMessages = async () => {
-    setLoading(true);
+  const loadMessages = async (initialLoad = false) => {
+    if (!id) return;
+
+    if (initialLoad) setLoadingInitial(true);
+    else setLoading(true);
+
     const { data, error } = await orbis.getPosts(
       {
         context: id,
@@ -66,12 +71,14 @@ export const GroupChat = () => {
       console.error('Error loading messages:', error);
       setOrbisMessagesError(error.message);
     }
-    setLoading(false);
+
+    if (initialLoad) setLoadingInitial(false);
+    else setLoading(false);
   };
 
   /** Load all posts for this context */
   useEffect(() => {
-    loadMessages();
+    loadMessages(true);
   }, [id]);
 
   useEffect(() => {
@@ -109,6 +116,7 @@ export const GroupChat = () => {
     }
 
     await loadMessages();
+
     form.resetFields(['messageContent']);
 
     setIsSending(false);
@@ -121,10 +129,10 @@ export const GroupChat = () => {
     <GroupChatContainer bordered={false}>
       {id ? (
         <>
-          {loading && <Skeleton active />}
+          {loadingInitial && <Skeleton active />}
           {orbisMessagesError
             && `Error loading messages: ${orbisMessagesError}`}
-          {hasMessages && !loading && (
+          {hasMessages && !loadingInitial && (
             <div ref={messageWindowRef} className="group-chat-container">
               {Object.entries(
                 orbisMessages.reduce((acc, msg) => {
@@ -190,11 +198,21 @@ export const GroupChat = () => {
           )}
 
           <StyledGroupChat>
-            <Form form={form} onFinish={handleSubmit} layout="inline">
+            <Form
+              form={form}
+              onFinish={handleSubmit}
+              layout="inline"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  form.submit();
+                }
+              }}
+            >
               <Row
                 gutter={[16, 16]}
                 className="w-100"
-                style={{ direction: 'flex', alignItems: 'center' }}
+                style={{ display: 'flex', alignItems: 'center' }}
               >
                 <Col flex="auto">
                   <Form.Item name="messageContent">
@@ -208,7 +226,8 @@ export const GroupChat = () => {
                       disabled={!account || !isOrbisConnected}
                       loading={isSending}
                     >
-                      {!loading && <SendOutlined />}
+                      {!loadingInitial && <SendOutlined />}
+                      {' '}
                       Send
                     </Button>
                   </Form.Item>

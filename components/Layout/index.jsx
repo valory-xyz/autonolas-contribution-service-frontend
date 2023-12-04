@@ -66,6 +66,7 @@ const NavigationBar = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
   const { disconnect } = useOrbis();
+  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -151,10 +152,14 @@ const NavigationBar = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    watchAccount(() => {
-      disconnect();
+    const unwatch = watchAccount((newAccount) => {
+      if (account && (newAccount !== account || !isOrbisConnected)) {
+        disconnect();
+      }
     });
-  }, []);
+
+    return () => unwatch();
+  }, [account, disconnect]);
 
   const logo = (
     <Logo onClick={() => router.push('/')}>
