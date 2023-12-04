@@ -42,7 +42,6 @@ export const GroupChat = () => {
   const [orbisMessages, setOrbisMessages] = useState([]);
   const [orbisMessagesError, setOrbisMessagesError] = useState('');
   const [showVeOLASModal, setShowVeOLASModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(false);
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
@@ -56,7 +55,6 @@ export const GroupChat = () => {
     if (!id) return;
 
     if (initialLoad) setLoadingInitial(true);
-    else setLoading(true);
 
     const { data, error } = await orbis.getPosts(
       {
@@ -73,12 +71,12 @@ export const GroupChat = () => {
     }
 
     if (initialLoad) setLoadingInitial(false);
-    else setLoading(false);
   };
 
   /** Load all posts for this context */
   useEffect(() => {
     loadMessages(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {

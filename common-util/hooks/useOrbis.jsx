@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOrbisConnection } from 'store/setup/actions';
-import { getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
+import {
+  getProvider, notifyError, notifySuccess,
+} from '@autonolas/frontend-library';
 import orbis from 'common-util/orbis';
 import { notification } from 'antd';
+import { useNetwork } from 'wagmi';
+import { SUPPORTED_CHAINS } from 'common-util/Login';
+import { RPC_URLS } from 'common-util/Contracts';
 
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
   const dispatch = useDispatch();
+  const { chain } = useNetwork();
 
   const connect = async () => {
     setIsLoading(true);
+
     if (!account) {
       notification.error({
         message: 'Couldn\'t sign in to Orbis. Make sure your wallet is connected.',
@@ -25,9 +32,19 @@ const useOrbis = () => {
       return null;
     }
 
+    if (chain.unsupported) {
+      notification.error({
+        message: 'Couldn\'t sign in. Connect to Ethereum Mainnet to sign in to Orbis.',
+        placement: 'topLeft',
+      });
+      setIsLoading(false);
+      return null;
+    }
+
+    const provider = getProvider(SUPPORTED_CHAINS, RPC_URLS);
+
     const response = await orbis.connect_v2({
-      // provider: getProvider([{ id: 1 }]),
-      provider: window.ethereum,
+      provider,
       chain: 'ethereum',
     });
 
