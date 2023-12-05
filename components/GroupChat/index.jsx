@@ -96,7 +96,6 @@ export const GroupChat = () => {
       account,
       ONE_IN_WEI,
     );
-    // Only check the VeOLAS threshold in production environment
     if (process.env.NODE_ENV === 'production' && !meetsVeolasThreshold) {
       setShowVeOLASModal(true);
       return null;
