@@ -76,7 +76,7 @@ export const Proposal = ({ proposal }) => {
       const signature = await signMessageAsync({
         message: `I am signing a message to verify that I approve the tweet starting with ${getFirstTenCharsOfTweet(
           proposal.text,
-        )}...`,
+        )}`,
       });
 
       // Update proposal with the new voter, signature & veOlas balance
