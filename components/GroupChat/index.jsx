@@ -89,7 +89,7 @@ export const GroupChat = () => {
       account,
       ONE_IN_WEI,
     );
-    if (process.env.NODE_ENV === 'production' && !meetsVeolasThreshold) {
+    if (process.env.NODE_VERCEL_ENV === 'production' && !meetsVeolasThreshold) {
       setShowVeOLASModal(true);
       return null;
     }
