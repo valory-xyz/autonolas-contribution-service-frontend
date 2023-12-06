@@ -32,7 +32,7 @@ const useOrbis = () => {
       return null;
     }
 
-    if (chain.unsupported) {
+    if (chain.id !== 1) {
       notification.error({
         message: 'Couldn\'t sign in. Connect to Ethereum Mainnet to sign in to Orbis.',
         placement: 'topLeft',
