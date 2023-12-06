@@ -6,8 +6,7 @@ import {
 } from '@autonolas/frontend-library';
 import orbis from 'common-util/orbis';
 import { notification } from 'antd';
-import { useNetwork } from 'wagmi';
-import { SUPPORTED_CHAINS } from 'common-util/Login';
+import { mainnet, useNetwork } from 'wagmi';
 import { RPC_URLS } from 'common-util/Contracts';
 
 const useOrbis = () => {
@@ -41,20 +40,21 @@ const useOrbis = () => {
       return null;
     }
 
-    const provider = getProvider(SUPPORTED_CHAINS, RPC_URLS);
+    const provider = getProvider([mainnet], RPC_URLS);
 
     const response = await orbis.connect_v2({
       provider,
       chain: 'ethereum',
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
       notification.success({
         message: 'Signed in to Orbis',
         placement: 'topLeft',
       });
       dispatch(setOrbisConnection(true));
     } else {
+      notifyError('Couldn\'t sign into Orbis');
       console.error('Couldn\'t sign into Orbis', response);
     }
     setIsLoading(false);
