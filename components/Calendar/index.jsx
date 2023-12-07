@@ -122,7 +122,7 @@ const CalendarPage = () => {
                       </Link>
                       <br />
                       <Text type="secondary">
-                        {moment.unix(event.timestamp).format('HH:mm DD MMM YYYY')}
+                        {moment.unix(event.timestamp).format('HH:mm UTC · DD MMM YYYY')}
                       </Text>
                     </Fragment>
                   ),
