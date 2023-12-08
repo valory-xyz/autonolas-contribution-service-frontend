@@ -72,9 +72,16 @@ export const GroupChat = () => {
     if (initialLoad) setLoadingInitial(false);
   };
 
-  /** Load all posts for this context */
+  // Initial load of messages and poll for new messages every 5 seconds
   useEffect(() => {
     loadMessages(true);
+
+    const interval = setInterval(() => {
+      loadMessages();
+    }, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -82,7 +89,7 @@ export const GroupChat = () => {
     if (messageWindowRef.current) {
       messageWindowRef.current.scrollTop = messageWindowRef.current.scrollHeight;
     }
-  }, [orbisMessages]);
+  }, [loadingInitial]);
 
   const handleSubmit = async (formData) => {
     const meetsVeolasThreshold = await checkVeolasThreshold(
@@ -159,34 +166,39 @@ export const GroupChat = () => {
                       </Divider>
                     </div>
                     {Object.entries(messagesByAddress).map(
-                      ([address, messages]) => (
-                        <MessageGroup key={address}>
-                          <div className="mb-4">
-                            <DisplayName
-                              actorAddress={address}
-                              account={account}
-                            />
-                          </div>
-                          {messages.map((msg, index) => (
-                            <Fragment
-                              key={`${msg.content?.context}-${msg.timestamp}`}
-                            >
-                              <div
-                                className={`mb-4 ${index === 0 ? 'mt-2' : ''}`}
+                      ([address, messages]) => {
+                        const { username } = messages[0]?.creator_details?.profile || {};
+
+                        return (
+                          <MessageGroup key={address}>
+                            <div className="mb-4">
+                              <DisplayName
+                                actorAddress={address}
+                                account={account}
+                                username={username}
+                              />
+                            </div>
+                            {messages.map((msg, index) => (
+                              <Fragment
+                                key={`${msg.content?.context}-${msg.timestamp}`}
                               >
-                                <MessageContainer>
-                                  <MessageBody>{msg.content?.body}</MessageBody>
-                                  <MessageTimestamp type="secondary">
-                                    <Moment unix format="HH:mm">
-                                      {msg.timestamp}
-                                    </Moment>
-                                  </MessageTimestamp>
-                                </MessageContainer>
-                              </div>
-                            </Fragment>
-                          ))}
-                        </MessageGroup>
-                      ),
+                                <div
+                                  className={`mb-4 ${index === 0 ? 'mt-2' : ''}`}
+                                >
+                                  <MessageContainer>
+                                    <MessageBody>{msg.content?.body}</MessageBody>
+                                    <MessageTimestamp type="secondary">
+                                      <Moment unix format="HH:mm">
+                                        {msg.timestamp}
+                                      </Moment>
+                                    </MessageTimestamp>
+                                  </MessageContainer>
+                                </div>
+                              </Fragment>
+                            ))}
+                          </MessageGroup>
+                        );
+                      },
                     )}
 
                   </div>

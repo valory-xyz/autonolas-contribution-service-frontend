@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { EllipsisMiddle } from '@autonolas/frontend-library';
+import { truncateAddress } from 'common-util/functions';
 
-const DisplayName = ({ actorAddress, account }) => (
+const DisplayName = ({ actorAddress, username }) => (
   <Link href={`/profile/${actorAddress}`}>
-    {actorAddress?.toLowerCase() === account?.toLowerCase() ? 'You' : <EllipsisMiddle>{actorAddress}</EllipsisMiddle>}
+    {username || truncateAddress(actorAddress)}
   </Link>
 );
 
 DisplayName.propTypes = {
-  account: PropTypes.string,
   actorAddress: PropTypes.string.isRequired,
+  username: PropTypes.string,
 };
 
 DisplayName.defaultProps = {
-  account: '',
+  username: '',
 };
 
 export default DisplayName;

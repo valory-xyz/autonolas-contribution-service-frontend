@@ -140,3 +140,10 @@ export const checkOrbisConnection = async () => {
     return false;
   }
 };
+
+/**
+ * Truncates an Ethereum address to show the first five characters, a ..., and the last three characters
+ * @param {string} address - The Ethereum address to truncate
+ * @returns {string} The truncated address
+ */
+export const truncateAddress = (address) => `${address.substring(0, 5)}...${address.substring(address.length - 3)}`;
