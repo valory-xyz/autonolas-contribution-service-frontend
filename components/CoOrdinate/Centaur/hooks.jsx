@@ -2,22 +2,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { isNil, set } from 'lodash';
-import { areAddressesEqual, notifySuccess } from '@autonolas/frontend-library';
+import {
+  areAddressesEqual,
+  // notifySuccess
+} from '@autonolas/frontend-library';
 
 import { setMemoryDetails } from 'store/setup/actions';
 import { addActionToCentaur } from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { ethersToWei, formatToEth } from 'common-util/functions';
-import dummyMemory from './resetMemoryDetails.json';
+// import dummyMemory from './resetMemoryDetails.json';
 
 /**
  * only for internal use (for staging)
  */
-export const resetMemoryDetails = async () => {
-  await updateMemoryDetails(dummyMemory);
-  notifySuccess('Memory details reset successfully');
-};
+// export const resetMemoryDetails = async () => {
+//   await updateMemoryDetails(dummyMemory);
+//   notifySuccess('Memory details reset successfully');
+// };
 
 /**
  * internal hook to get the centaur details
