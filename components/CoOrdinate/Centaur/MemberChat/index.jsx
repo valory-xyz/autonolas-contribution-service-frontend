@@ -7,6 +7,7 @@ import {
 import { SendOutlined } from '@ant-design/icons';
 
 import orbis from 'common-util/orbis';
+import useOrbis from 'common-util/hooks/useOrbis';
 import { Conversations } from './Conversation';
 import {
   getToChatWithDid,
@@ -17,6 +18,7 @@ import {
 const { Title, Text } = Typography;
 
 export const MemberChat = () => {
+  const { isOrbisConnected } = useOrbis();
   // messages
   const [isMessageLoading, setIsMessageLoading] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -32,8 +34,6 @@ export const MemberChat = () => {
   // get address from querystring
   const router = useRouter();
   const toChatWith = router.query.address || null;
-
-  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
 
   const updateAfterSendMessage = () => {
     setMessages((prev) => [
@@ -107,6 +107,7 @@ export const MemberChat = () => {
     if (account && isOrbisConnected) {
       getData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, isOrbisConnected]);
 
   // poll for messages every 6 seconds
@@ -117,6 +118,7 @@ export const MemberChat = () => {
       }
     }, 6000);
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, isOrbisConnected]);
 
   return (

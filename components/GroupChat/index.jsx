@@ -23,6 +23,7 @@ import DisplayName from 'common-util/DisplayName';
 import orbis, { createPost } from 'common-util/orbis';
 import { checkVeolasThreshold } from 'components/MembersList/requests';
 import { ONE_IN_WEI } from 'util/constants';
+import useOrbis from 'common-util/hooks/useOrbis';
 import {
   EmptyState,
   GroupChatContainer,
@@ -44,11 +45,11 @@ export const GroupChat = () => {
   const [loadingInitial, setLoadingInitial] = useState(false);
   const messageWindowRef = useRef(null);
   const account = useSelector((state) => state?.setup?.account);
-  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
   const [isSending, setIsSending] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter();
   const { id } = router.query;
+  const { isOrbisConnected } = useOrbis();
 
   const loadMessages = async (initialLoad = false) => {
     if (!id) return;

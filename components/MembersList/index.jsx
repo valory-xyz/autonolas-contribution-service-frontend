@@ -8,9 +8,9 @@ import {
 import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
 import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
 
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';
+import DisplayName from 'common-util/DisplayName';
 import { fetchVeolasBalance } from './requests';
 
 const { Text } = Typography;
@@ -99,12 +99,12 @@ export const MembersList = () => {
 
   const columns = [
     {
-      title: 'Address',
+      title: 'Name',
       dataIndex: 'address',
       width: 160,
       render: (text) => (
         <Text type="secondary">
-          <TruncatedEthereumLink text={text} />
+          <DisplayName actorAddress={text} />
           {areAddressesEqual(text, account) && <>&nbsp;(You)</>}
         </Text>
       ),

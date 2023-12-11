@@ -45,12 +45,9 @@ export default (state = initialState, action = {}) => {
     case syncTypes.SET_PREDICTION_REQUESTS:
     case syncTypes.SET_APPROVED_REQUESTS_COUNT:
     case syncTypes.SET_LEADERBOARD_LOADING:
+    case syncTypes.SET_ORBIS_CONNECTION:
     case syncTypes.SET_STORE_STATE: {
       return { ...state, ...action.data };
-    }
-
-    case syncTypes.SET_ORBIS_CONNECTION: {
-      return { ...state, isConnected: action.data.isConnected };
     }
 
     case syncTypes.SET_LEADERBOARD: {
