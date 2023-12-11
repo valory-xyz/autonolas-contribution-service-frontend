@@ -81,6 +81,8 @@ export const getHash = (router) => router?.asPath?.split('#')[1] || '';
 export const isDevOrStaging = process.env.NODE_ENV === 'development'
   || process.env.NODE_VERCEL_ENV === 'staging';
 
+export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
+
 /**
  *
  * @param {BigNumber} value value to be converted to Eth
