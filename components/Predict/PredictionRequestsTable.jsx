@@ -127,7 +127,7 @@ const PredictionRequestsTable = () => {
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  });
 
   const router = useRouter();
 
