@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { notifyError } from '@autonolas/frontend-library';
 
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import addActionToCentaur from 'util/addActionToCentaur';
+import { addActionToCentaur } from 'util/addActionToCentaur';
 import { updateMemoryDetails } from 'common-util/api';
 import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
 import { canAddMemoryMessaage } from 'common-util/functions';
