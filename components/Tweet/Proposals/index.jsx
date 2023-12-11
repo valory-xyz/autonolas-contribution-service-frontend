@@ -1,10 +1,13 @@
 import {
-  Alert, Card, List, Skeleton,
+  Alert, Button, Card, List, Skeleton,
 } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { Proposal } from './Proposal';
-import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
+import {
+  resetMemoryDetails,
+  useCentaursFunctionalities,
+} from '../../CoOrdinate/Centaur/hooks';
 
 export const Proposals = () => {
   const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();
@@ -15,8 +18,11 @@ export const Proposals = () => {
 
   return (
     <>
-      <div className="mb-24">
+      <div className="mb-24" style={{ display: 'flex' }}>
         <EducationTitle title="Proposed tweets" educationItem="proposals" />
+        <Button type="primary" className="ml-12" onClick={resetMemoryDetails}>
+          Reset
+        </Button>
       </div>
 
       {isLoading ? (
