@@ -78,11 +78,13 @@ export const Proposal = ({ proposal }) => {
         )}`,
       });
 
+      console.log({ accountVeOlasBalanceInEth });
+
       // Update proposal with the new voter, signature & veOlas balance
       const vote = {
         address: account,
         signature,
-        votingPower: accountVeOlasBalanceInEth,
+        votingPower: isStaging ? 2_000_000 : accountVeOlasBalanceInEth,
       };
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
@@ -99,6 +101,8 @@ export const Proposal = ({ proposal }) => {
       const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
       notifySuccess('Proposal approved');
 
+      console.log({ commitId, updatedCentaur });
+
       // Add voting action to the centaur
       const action = {
         actorAddress: account,
@@ -107,8 +111,8 @@ export const Proposal = ({ proposal }) => {
         timestamp: Date.now(),
       };
 
-      await triggerAction(centaur.id, action);
-      await fetchedUpdatedMemory();
+      const updateMemoryDetailsList = await fetchedUpdatedMemory();
+      await triggerAction(centaur.id, action, updateMemoryDetailsList);
     } catch (error) {
       notifyError('Failed to approve proposal');
       console.error(error);

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { isNil, set } from 'lodash';
-import { areAddressesEqual } from '@autonolas/frontend-library';
+import { areAddressesEqual, notifySuccess } from '@autonolas/frontend-library';
 
 import { setMemoryDetails } from 'store/setup/actions';
 import { addActionToCentaur } from 'util/addActionToCentaur';
@@ -16,6 +16,7 @@ import dummyMemory from './resetMemoryDetails.json';
  */
 export const resetMemoryDetails = async () => {
   await updateMemoryDetails(dummyMemory);
+  notifySuccess('Memory details reset successfully');
 };
 
 /**
@@ -51,6 +52,7 @@ export const useCentaursFunctionalities = () => {
   const fetchedUpdatedMemory = async () => {
     const { response: responseAfterUpdate } = await getMemoryDetails();
     dispatch(setMemoryDetails(responseAfterUpdate)); // update the local state with new memory
+    return responseAfterUpdate;
   };
 
   /**
@@ -65,7 +67,6 @@ export const useCentaursFunctionalities = () => {
     });
 
     const commitId = await updateMemoryDetails(updatedMemoryDetails); // Update the Ceramic stream
-    await fetchedUpdatedMemory(); // Reload the updated data
     return commitId;
   };
 
@@ -89,8 +90,12 @@ export const useCentaursFunctionalities = () => {
   /**
    * triggers an action on the centaur and updates the memory
    */
-  const triggerAction = async (centaurID, action) => {
-    await addActionToCentaur(centaurID, action, memoryDetailsList);
+  const triggerAction = async (
+    centaurID,
+    action,
+    updatedMemoryDetailsList = memoryDetailsList,
+  ) => {
+    await addActionToCentaur(centaurID, action, updatedMemoryDetailsList);
     await fetchedUpdatedMemory(); // Reload the updated data
   };
 
