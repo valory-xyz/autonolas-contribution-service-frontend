@@ -32,7 +32,7 @@ export const Proposal = ({ proposal }) => {
   const { signMessageAsync } = useSignMessage();
   const { account, isStaging } = useHelpers();
   const {
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
     triggerAction,
@@ -78,12 +78,11 @@ export const Proposal = ({ proposal }) => {
         )}`,
       });
 
-      console.log({ accountVeOlasBalanceInEth });
-
       // Update proposal with the new voter, signature & veOlas balance
       const vote = {
         address: account,
         signature,
+        // 2 million veolas in wei for staging env
         votingPower: isStaging ? 2_000_000 : accountVeOlasBalanceInEth,
       };
       const updatedProposal = cloneDeep(proposal);
@@ -101,8 +100,6 @@ export const Proposal = ({ proposal }) => {
       const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
       notifySuccess('Proposal approved');
 
-      console.log({ commitId, updatedCentaur });
-
       // Add voting action to the centaur
       const action = {
         actorAddress: account,
@@ -111,7 +108,7 @@ export const Proposal = ({ proposal }) => {
         timestamp: Date.now(),
       };
 
-      const updateMemoryDetailsList = await fetchedUpdatedMemory();
+      const updateMemoryDetailsList = await fetchUpdatedMemory();
       await triggerAction(centaur.id, action, updateMemoryDetailsList);
     } catch (error) {
       notifyError('Failed to approve proposal');
@@ -163,8 +160,8 @@ export const Proposal = ({ proposal }) => {
         description: 'executed a proposal',
         timestamp: Date.now(),
       };
-      await triggerAction(centaur.id, action);
-      await fetchedUpdatedMemory();
+      const updateMemoryDetailsList = await fetchUpdatedMemory();
+      await triggerAction(centaur.id, action, updateMemoryDetailsList);
     } catch (error) {
       notifyError('Failed to execute');
       console.error(error);

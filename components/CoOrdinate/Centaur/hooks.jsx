@@ -49,7 +49,7 @@ export const useCentaursFunctionalities = () => {
   /**
    * Fetches the updated memory details from Ceramic
    */
-  const fetchedUpdatedMemory = async () => {
+  const fetchUpdatedMemory = async () => {
     const { response: responseAfterUpdate } = await getMemoryDetails();
     dispatch(setMemoryDetails(responseAfterUpdate)); // update the local state with new memory
     return responseAfterUpdate;
@@ -90,13 +90,13 @@ export const useCentaursFunctionalities = () => {
   /**
    * triggers an action on the centaur and updates the memory
    */
-  const triggerAction = async (
-    centaurID,
-    action,
-    updatedMemoryDetailsList = memoryDetailsList,
-  ) => {
+  const triggerAction = async (centaurID, action, updatedMemoryDetailsList) => {
+    if (!centaurID || !action || !updatedMemoryDetailsList) {
+      throw new Error('Arguments missing');
+    }
+
     await addActionToCentaur(centaurID, action, updatedMemoryDetailsList);
-    await fetchedUpdatedMemory(); // Reload the updated data
+    await fetchUpdatedMemory(); // Reload the updated data
   };
 
   /**
@@ -113,7 +113,7 @@ export const useCentaursFunctionalities = () => {
     memoryDetailsList,
     currentMemoryDetails,
     updateMemoryWithNewCentaur,
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
     triggerAction,
     getUpdatedCentaurAfterTweetProposal,
     isAddressPresent,
