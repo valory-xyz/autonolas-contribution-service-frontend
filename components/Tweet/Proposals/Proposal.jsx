@@ -11,6 +11,7 @@ import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
 import { ProposalPropTypes } from 'common-util/prop-types';
+import { VEOLAS_QUORUM } from 'util/constants';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { fetchVeolasBalance } from '../../MembersList/requests';
 import {
@@ -82,8 +83,8 @@ export const Proposal = ({ proposal }) => {
       const vote = {
         address: account,
         signature,
-        // 2 million veolas in wei for staging env
-        votingPower: isStaging ? 2_000_000 : accountVeOlasBalanceInEth,
+        // add 2 million veOLAS in wei to the voter (if staging) or the account's veOLAS balance
+        votingPower: isStaging ? VEOLAS_QUORUM : accountVeOlasBalanceInEth,
       };
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
