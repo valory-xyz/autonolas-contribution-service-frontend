@@ -10,7 +10,6 @@ import {
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import { ethersToWei } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { fetchVeolasBalance } from '../../MembersList/requests';
@@ -65,10 +64,10 @@ export const Proposal = ({ proposal }) => {
 
       // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVeolasBalance({ account });
-      if (
-        !isStaging
-        && ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))
-      ) {
+      const accountVeOlasBalanceInEth = Number(
+        ethers.utils.formatEther(accountVeOlasBalance),
+      );
+      if (!isStaging && accountVeOlasBalanceInEth < 1) {
         notifyError('You need at least 1 veOLAS to approve');
         return;
       }
@@ -83,7 +82,7 @@ export const Proposal = ({ proposal }) => {
       const vote = {
         address: account,
         signature,
-        votingPower: accountVeOlasBalance,
+        votingPower: accountVeOlasBalanceInEth,
       };
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
