@@ -35,11 +35,6 @@ export const updateMemoryDetails = async (memoryDetails) => {
   );
   await response.update(memoryDetails);
 
-  console.log('--- memoryDetails sent to the BE ---');
-  console.log({ memoryDetails });
-  console.log('** first tweet **', memoryDetails?.[0]?.plugins_data?.scheduled_tweet?.tweets?.[0]);
-  // console.trace();
-
   // Return the commit id of the updated Ceramic stream
   return response.state.log[response.state.log.length - 1].cid.toString();
 };

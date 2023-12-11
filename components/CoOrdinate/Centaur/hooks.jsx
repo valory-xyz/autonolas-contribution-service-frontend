@@ -51,7 +51,7 @@ export const useCentaursFunctionalities = () => {
    */
   const fetchUpdatedMemory = async () => {
     const { response: responseAfterUpdate } = await getMemoryDetails();
-    dispatch(setMemoryDetails(responseAfterUpdate)); // update the local state with new memory
+    dispatch(setMemoryDetails(responseAfterUpdate)); // update the redux state with new memory
     return responseAfterUpdate;
   };
 
@@ -96,7 +96,7 @@ export const useCentaursFunctionalities = () => {
     }
 
     await addActionToCentaur(centaurID, action, updatedMemoryDetailsList);
-    await fetchUpdatedMemory(); // Reload the updated data
+    await fetchUpdatedMemory(); // fetch the updated data
   };
 
   /**

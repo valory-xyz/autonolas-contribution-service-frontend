@@ -3,6 +3,7 @@ import {
 } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposal } from './Proposal';
 import {
   resetMemoryDetails,
@@ -15,14 +16,18 @@ export const Proposals = () => {
   const sortedProposals = proposals.sort(
     (a, b) => b.createdDate - a.createdDate,
   );
+  const { isStaging } = useHelpers();
 
   return (
     <>
       <div className="mb-24" style={{ display: 'flex' }}>
         <EducationTitle title="Proposed tweets" educationItem="proposals" />
-        <Button type="primary" className="ml-12" onClick={resetMemoryDetails}>
-          Reset
-        </Button>
+        {/* JUST FOR TESTING */}
+        {isStaging && (
+          <Button type="primary" className="ml-12" onClick={resetMemoryDetails}>
+            Reset
+          </Button>
+        )}
       </div>
 
       {isLoading ? (
