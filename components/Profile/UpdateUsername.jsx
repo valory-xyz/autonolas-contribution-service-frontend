@@ -32,7 +32,7 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
     }
   };
 
-  const isIdAndOrbisProfileMatch = id?.toLowerCase() === orbisAddress?.toLowerCase();
+  const isIdAndOrbisProfileMatch = areAddressesEqual(id, orbisAddress);
 
   return (
     <>
