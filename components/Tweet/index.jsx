@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
 import {
-  Button, Input, notification, Row, Col, Typography,
+  Button, Input, Row, Col, Typography,
 } from 'antd';
 import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { notifyError } from '@autonolas/frontend-library';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
@@ -38,6 +38,7 @@ export const Tweet = () => {
     getUpdatedCentaurAfterTweetProposal,
     updateMemoryWithNewCentaur,
     triggerAction,
+    fetchUpdatedMemory,
   } = useCentaursFunctionalities();
   const account = useSelector((state) => state?.setup?.account);
 
@@ -49,7 +50,10 @@ export const Tweet = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(account, HUNDRED_K_OLAS_IN_WEI);
+      const has100kVeOlas = await checkVeolasThreshold(
+        account,
+        HUNDRED_K_OLAS_IN_WEI,
+      );
       if (!isStaging && !has100kVeOlas) {
         notifyError('You must hold at least 100k veOLAS to propose a tweet.');
         return;
@@ -87,8 +91,14 @@ export const Tweet = () => {
         description: 'proposed a tweet',
         timestamp: Date.now(),
       };
-      await triggerAction(currentMemoryDetails.id, action);
-      notification.success({ message: 'Tweet proposed' });
+
+      const updatedMemoryDetails = await fetchUpdatedMemory();
+      await triggerAction(
+        currentMemoryDetails.id,
+        action,
+        updatedMemoryDetails,
+      );
+      notifySuccess('Tweet proposed');
 
       // reset form
       setTweet('');

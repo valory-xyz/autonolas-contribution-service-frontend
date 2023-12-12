@@ -10,8 +10,8 @@ import {
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import { ethersToWei } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
+import { VEOLAS_QUORUM } from 'util/constants';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { fetchVeolasBalance } from '../../MembersList/requests';
 import {
@@ -33,7 +33,7 @@ export const Proposal = ({ proposal }) => {
   const { signMessageAsync } = useSignMessage();
   const { account, isStaging } = useHelpers();
   const {
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
     updateMemoryWithNewCentaur,
     currentMemoryDetails: centaur,
     triggerAction,
@@ -65,10 +65,10 @@ export const Proposal = ({ proposal }) => {
 
       // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVeolasBalance({ account });
-      if (
-        !isStaging
-        && ethers.BigNumber.from(accountVeOlasBalance).lte(ethersToWei('1'))
-      ) {
+      const accountVeOlasBalanceInEth = Number(
+        ethers.utils.formatEther(accountVeOlasBalance),
+      );
+      if (!isStaging && accountVeOlasBalanceInEth < 1) {
         notifyError('You need at least 1 veOLAS to approve');
         return;
       }
@@ -83,7 +83,8 @@ export const Proposal = ({ proposal }) => {
       const vote = {
         address: account,
         signature,
-        votingPower: accountVeOlasBalance,
+        // add 2 million veOLAS in wei to the voter (if staging) or the account's veOLAS balance
+        votingPower: isStaging ? VEOLAS_QUORUM : accountVeOlasBalanceInEth,
       };
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
@@ -108,8 +109,8 @@ export const Proposal = ({ proposal }) => {
         timestamp: Date.now(),
       };
 
-      await triggerAction(centaur.id, action);
-      await fetchedUpdatedMemory();
+      const updateMemoryDetailsList = await fetchUpdatedMemory();
+      await triggerAction(centaur.id, action, updateMemoryDetailsList);
     } catch (error) {
       notifyError('Failed to approve proposal');
       console.error(error);
@@ -160,8 +161,8 @@ export const Proposal = ({ proposal }) => {
         description: 'executed a proposal',
         timestamp: Date.now(),
       };
-      await triggerAction(centaur.id, action);
-      await fetchedUpdatedMemory();
+      const updateMemoryDetailsList = await fetchUpdatedMemory();
+      await triggerAction(centaur.id, action, updateMemoryDetailsList);
     } catch (error) {
       notifyError('Failed to execute');
       console.error(error);
