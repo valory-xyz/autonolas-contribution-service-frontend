@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -107,7 +108,6 @@ export const MemberChat = () => {
     if (account && isOrbisConnected) {
       getData();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, isOrbisConnected]);
 
   // poll for messages every 6 seconds
@@ -118,7 +118,6 @@ export const MemberChat = () => {
       }
     }, 6000);
     return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, isOrbisConnected]);
 
   return (

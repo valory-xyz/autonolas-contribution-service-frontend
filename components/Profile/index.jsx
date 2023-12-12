@@ -52,8 +52,6 @@ const ProfileBody = ({ profile, id }) => {
     const res = await getOrbisProfile(id);
 
     if (checkOrbisStatus(res?.status)) {
-      console.log('res', res);
-
       setOrbisProfile(res?.data);
       return res;
     }

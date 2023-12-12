@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
@@ -64,7 +65,6 @@ export const LoginV2 = ({
     if (balance?.formatted) {
       dispatch(setUserBalance(balance.formatted));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance?.formatted]);
 
   useEffect(() => {
@@ -82,7 +82,6 @@ export const LoginV2 = ({
       const tempChainId = getChainIdOrDefaultToMainnet(chainId);
       dispatch(setChainId(tempChainId));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId]);
 
   useEffect(() => {
@@ -135,7 +134,6 @@ export const LoginV2 = ({
     if (connector && !isAddressProhibited(address)) {
       getData();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connector]);
 
   // Disconnect if the address is prohibited
@@ -145,7 +143,6 @@ export const LoginV2 = ({
       notifyError(<CannotConnectAddressOfacError />);
       if (onDisconnectCb) onDisconnectCb();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   return (
