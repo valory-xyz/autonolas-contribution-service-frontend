@@ -24,6 +24,9 @@ const initialState = {
   isMemoryDetailsLoading: true,
   memoryDetails: [],
   predictionRequests: [],
+
+  // orbis
+  connection: {},
 };
 
 export default (state = initialState, action = {}) => {
