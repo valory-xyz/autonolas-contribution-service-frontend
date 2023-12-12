@@ -89,7 +89,7 @@ export const GroupChat = () => {
     if (messageWindowRef.current) {
       messageWindowRef.current.scrollTop = messageWindowRef.current.scrollHeight;
     }
-  }, [loadingInitial]);
+  }, [loadingInitial, isSending]);
 
   const handleSubmit = async (formData) => {
     const meetsVeolasThreshold = await checkVeolasThreshold(
