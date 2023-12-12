@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Col, List, Row, Skeleton, Statistic, Typography,
@@ -48,7 +48,11 @@ const ProfileBody = ({ profile, id }) => {
     getData();
   }, [profile?.wallet_address]);
 
-  const loadOrbisProfile = async () => {
+  const loadOrbisProfile = useCallback(async (delay) => {
+    if (delay) {
+      await new Promise((resolve) => { setTimeout(resolve, 300); });
+    }
+
     const res = await getOrbisProfile(id);
 
     if (checkOrbisStatus(res?.status)) {
@@ -60,12 +64,11 @@ const ProfileBody = ({ profile, id }) => {
     console.error(ERROR_MESSAGE, res);
     setOrbisProfile(null);
     return null;
-  };
+  }, [id, getOrbisProfile]);
 
   useEffect(() => {
     loadOrbisProfile();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [loadOrbisProfile]);
 
   const getDiscordHandle = () => {
     if (profile?.discord_handle) {

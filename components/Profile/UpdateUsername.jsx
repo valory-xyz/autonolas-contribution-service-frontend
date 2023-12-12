@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button, Modal, Form, Input, Tooltip,
 } from 'antd';
@@ -6,6 +6,7 @@ import { EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 import useOrbis from 'common-util/hooks/useOrbis';
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 export const UpdateUsername = ({ loadOrbisProfile, id }) => {
   const [updateNameModalVisible, setUpdateNameModalVisible] = useState(false);
@@ -17,7 +18,6 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
   const handleUpdateUsername = async (values) => {
     const result = await updateUsername(values.username.trim());
 
-    loadOrbisProfile();
     form.resetFields();
     setUpdateNameModalVisible(false);
     return result;
@@ -26,7 +26,10 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      await handleUpdateUsername(values);
+      const result = await handleUpdateUsername(values);
+      if (result) {
+        await loadOrbisProfile(true);
+      }
     } catch (info) {
       console.error('Validate failed:', info);
     }
