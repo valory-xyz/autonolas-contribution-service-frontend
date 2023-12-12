@@ -9,10 +9,10 @@ const StyledPre = styled.pre`
 `;
 
 const StatePage = () => {
-  const { currentMemoryDetails, fetchedUpdatedMemory } = useCentaursFunctionalities();
+  const { currentMemoryDetails, fetchUpdatedMemory } = useCentaursFunctionalities();
 
   useEffect(() => {
-    fetchedUpdatedMemory();
+    fetchUpdatedMemory();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
