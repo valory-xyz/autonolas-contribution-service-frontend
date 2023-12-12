@@ -33,6 +33,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
   const tweetOrThread = proposal?.text;
   const hasVoted = votersAddress?.includes(account) || false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
+  const isApproveDisabled = !account || !isProposalVerified || proposal?.posted;
 
   return (
     <>
@@ -60,9 +61,9 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
           <Button
             ghost
             type="primary"
-            onClick={onApprove}
             loading={isApproveLoading}
-            disabled={!account || !isProposalVerified}
+            disabled={isApproveDisabled}
+            onClick={onApprove}
           >
             Approve this tweet
           </Button>
