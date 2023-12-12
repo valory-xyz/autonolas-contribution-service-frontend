@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const Voter = PropTypes.shape({
   address: PropTypes.string,
   signature: PropTypes.string,
-  votingPower: PropTypes.string, // passed in wei
+  votingPower: PropTypes.number,
 });
 
 const ProposerPropTypes = PropTypes.oneOfType([
