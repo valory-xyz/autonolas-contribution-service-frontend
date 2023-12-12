@@ -15,7 +15,7 @@ import {
   Modal,
   Collapse,
 } from 'antd';
-import { COLOR, notifyError } from '@autonolas/frontend-library';
+import { COLOR, areAddressesEqual, notifyError } from '@autonolas/frontend-library';
 import { useRouter } from 'next/router';
 import { SendOutlined } from '@ant-design/icons';
 
@@ -177,6 +177,7 @@ export const GroupChat = () => {
                                 account={account}
                                 username={username}
                               />
+                              {areAddressesEqual(address, account) && ' (You)'}
                             </div>
                             {messages.map((msg, index) => (
                               <div
