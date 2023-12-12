@@ -44,4 +44,8 @@ export const createPost = async (postContent, orbisArg) => {
   };
 };
 
+export const ORBIS_SUPPORTED_CHAIN = 1;
+export const checkOrbisStatus = (status) => status === 200 || status === 201;
+export const checkOrbisNegativeStatus = (status) => status !== 200 && status !== 201;
+
 export default orbis;

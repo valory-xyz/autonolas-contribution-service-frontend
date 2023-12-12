@@ -101,7 +101,7 @@ export const CustomMenu = styled(Menu)`
   bottom: 0;
   left: 0;
   width: 200px;
-  border-right: 1px solid ${COLOR.BORDER_GREY};
+  border-right: 1px solid ${COLOR.BORDER_GREY} !important;
   z-index: 2;
   li {
     line-height: 40px;

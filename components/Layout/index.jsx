@@ -25,7 +25,6 @@ import {
   setIsMemoryDetailsLoading,
   setLeaderboard,
   setIsLeaderboardLoading,
-  setOrbisConnection,
 } from 'store/setup/actions';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 import { checkOrbisConnection } from 'common-util/functions';
@@ -124,7 +123,7 @@ const NavigationBar = ({ children }) => {
     }, INTERVAL);
 
     return () => {
-      clearTimeout(interval);
+      clearInterval(interval);
     };
   }, [getMembers]);
 
@@ -162,17 +161,16 @@ const NavigationBar = ({ children }) => {
   };
 
   useEffect(() => {
-    const checkConnection = async () => {
-      const isConnected = await checkOrbisConnection();
-      dispatch(setOrbisConnection(isConnected));
-    };
-
-    checkConnection();
+    checkOrbisConnection();
   }, []);
 
   useEffect(() => {
     const unwatch = watchAccount((newAccount) => {
-      if (account && (newAccount !== account || !isOrbisConnected)) {
+      if (
+        account
+        && (newAccount !== account || !isOrbisConnected)
+        && isOrbisConnected !== undefined
+      ) {
         disconnect();
       }
     });
