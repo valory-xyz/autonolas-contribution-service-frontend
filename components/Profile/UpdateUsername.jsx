@@ -7,8 +7,7 @@ import PropTypes from 'prop-types';
 
 import useOrbis from 'common-util/hooks/useOrbis';
 
-const UpdateUsername = ({ loadOrbisProfile, id }) => {
-  // State for modal visibility
+export const UpdateUsername = ({ loadOrbisProfile, id }) => {
   const [updateNameModalVisible, setUpdateNameModalVisible] = useState(false);
   const {
     updateUsername, address: orbisAddress, isLoading, profile,
@@ -72,5 +71,3 @@ UpdateUsername.propTypes = {
   id: PropTypes.string.isRequired,
   loadOrbisProfile: PropTypes.func.isRequired,
 };
-
-export default UpdateUsername;

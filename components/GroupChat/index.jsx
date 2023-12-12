@@ -1,5 +1,5 @@
 import React, {
-  Fragment, useEffect, useState, useRef,
+  useEffect, useState, useRef,
 } from 'react';
 import { useSelector } from 'react-redux';
 import Moment from 'react-moment';
@@ -81,7 +81,6 @@ export const GroupChat = () => {
       loadMessages();
     }, 5000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -180,7 +179,7 @@ export const GroupChat = () => {
                               />
                             </div>
                             {messages.map((msg, index) => (
-                              <Fragment
+                              <div
                                 key={`${msg.content?.context}-${msg.timestamp}`}
                               >
                                 <div
@@ -195,7 +194,7 @@ export const GroupChat = () => {
                                     </MessageTimestamp>
                                   </MessageContainer>
                                 </div>
-                              </Fragment>
+                              </div>
                             ))}
                           </MessageGroup>
                         );

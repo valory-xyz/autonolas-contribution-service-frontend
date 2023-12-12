@@ -15,7 +15,7 @@ import useOrbis from 'common-util/hooks/useOrbis';
 import { checkOrbisStatus } from 'common-util/orbis';
 import { DiscordLink } from '../Leaderboard/common';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import UpdateUsername from './UpdateUsername';
+import { UpdateUsername } from './UpdateUsername';
 
 const { Title, Text } = Typography;
 
@@ -55,9 +55,8 @@ const ProfileBody = ({ profile, id }) => {
       setOrbisProfile(res?.data);
       return res;
     }
-    const ERROR_MESSAGE = 'Couldn\'t load Orbis profile';
+    const ERROR_MESSAGE = "Couldn't load Orbis profile.";
     notifyError(ERROR_MESSAGE);
-    // Handle the error state by logging the error and setting the orbisProfile to null
     console.error(ERROR_MESSAGE, res);
     setOrbisProfile(null);
     return null;
