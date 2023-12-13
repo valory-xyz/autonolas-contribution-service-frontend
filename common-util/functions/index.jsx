@@ -14,6 +14,7 @@ import data from 'common-util/Education/data.json';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import { SUPPORTED_CHAINS } from 'common-util/Login';
+import orbis from 'common-util/orbis';
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
 const getSupportedChains = () => (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
@@ -80,6 +81,8 @@ export const getHash = (router) => router?.asPath?.split('#')[1] || '';
 export const isDevOrStaging = process.env.NODE_ENV === 'development'
   || process.env.NODE_VERCEL_ENV === 'staging';
 
+export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
+
 /**
  *
  * @param {BigNumber} value value to be converted to Eth
@@ -127,3 +130,22 @@ export const isAddressProhibited = (address) => {
   const addresses = prohibitedAddresses.map((e) => toLower(e));
   return addresses.includes(toLower(address));
 };
+
+// Orbis
+
+export const checkOrbisConnection = async () => {
+  try {
+    const res = await orbis.isConnected();
+    return res.status === 200 || res.status === 201;
+  } catch (error) {
+    console.error('Error checking Orbis connection:', error);
+    return false;
+  }
+};
+
+/**
+ * Truncates an Ethereum address to show the first five characters, a ..., and the last three characters
+ * @param {string} address - The Ethereum address to truncate
+ * @returns {string} The truncated address
+ */
+export const truncateAddress = (address) => (address ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}` : '--');

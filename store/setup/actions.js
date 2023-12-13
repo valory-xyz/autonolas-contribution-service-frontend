@@ -25,6 +25,11 @@ export const setIsVerified = (isVerified) => ({
   data: { isVerified },
 });
 
+export const setIsLeaderboardLoading = (isLeaderboardLoading) => ({
+  type: syncTypes.SET_LEADERBOARD_LOADING,
+  data: { isLeaderboardLoading },
+});
+
 export const setLeaderboard = (leaderboard) => ({
   type: syncTypes.SET_LEADERBOARD,
   data: { leaderboard },
@@ -58,4 +63,9 @@ export const setPredictionRequests = (predictionRequests) => ({
 export const setApprovedRequestsCount = (approvedRequestsCount) => ({
   type: syncTypes.SET_APPROVED_REQUESTS_COUNT,
   data: { approvedRequestsCount },
+});
+
+export const setOrbisConnection = (connection) => ({
+  type: syncTypes.SET_ORBIS_CONNECTION,
+  data: { connection },
 });

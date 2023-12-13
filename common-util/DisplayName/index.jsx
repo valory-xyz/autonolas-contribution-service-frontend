@@ -1,32 +1,20 @@
 import PropTypes from 'prop-types';
-import { Typography } from 'antd';
+import Link from 'next/link';
+import { truncateAddress } from 'common-util/functions';
 
-import { CENTAUR_BOT_ADDRESS } from 'util/constants';
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-
-const { Text } = Typography;
-
-const DisplayName = ({ actorAddress, account, className }) => {
-  if (actorAddress === account) {
-    return <Text className={className}>You</Text>;
-  }
-
-  if (actorAddress === CENTAUR_BOT_ADDRESS) {
-    return <Text className={className}>CentaurBot</Text>;
-  }
-
-  return <TruncatedEthereumLink text={actorAddress} className={className} />;
-};
+const DisplayName = ({ actorAddress, username }) => (
+  <Link href={`/profile/${actorAddress}`}>
+    {username || truncateAddress(actorAddress)}
+  </Link>
+);
 
 DisplayName.propTypes = {
-  account: PropTypes.string,
   actorAddress: PropTypes.string.isRequired,
-  className: PropTypes.string,
+  username: PropTypes.string,
 };
 
 DisplayName.defaultProps = {
-  account: null,
-  className: '',
+  username: '',
 };
 
 export default DisplayName;

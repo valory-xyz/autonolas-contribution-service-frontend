@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
@@ -10,7 +11,6 @@ import styled from 'styled-components';
 import {
   COLOR,
   CannotConnectAddressOfacError,
-  MEDIA_QUERY,
   notifyError,
 } from '@autonolas/frontend-library';
 
@@ -20,6 +20,7 @@ import {
   getChainIdOrDefaultToMainnet,
   isAddressProhibited,
 } from 'common-util/functions';
+import SignInToOrbis from 'components/SignInToOrbis';
 import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
@@ -27,9 +28,6 @@ const LoginContainer = styled.div`
   align-items: center;
   font-size: 18px;
   line-height: normal;
-  ${MEDIA_QUERY.mobileL} {
-    margin-top: 0.5rem;
-  }
 `;
 
 export const LoginV2 = ({
@@ -55,7 +53,9 @@ export const LoginV2 = ({
       }
     },
     onDisconnect() {
-      if (onDisconnectCb) onDisconnectCb();
+      if (onDisconnectCb) {
+        onDisconnectCb();
+      }
     },
   });
 
@@ -147,6 +147,9 @@ export const LoginV2 = ({
 
   return (
     <LoginContainer>
+      <div className="mr-8">
+        <SignInToOrbis />
+      </div>
       <Web3Button balance="hide" avatar="hide" />
       <Web3Modal
         projectId={projectId}

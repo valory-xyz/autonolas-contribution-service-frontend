@@ -1,36 +1,44 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import { useSignMessage } from 'wagmi';
+import { v4 as uuid } from 'uuid';
 import {
-  Button, Input, notification, Row, Col, Typography,
+  Button, Input, Row, Col, Typography,
 } from 'antd';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import { MAX_TWEET_LENGTH } from 'util/constants';
+import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { notifyError } from '@autonolas/frontend-library';
-
-import Link from 'next/link';
-import Proposals from '../Proposals';
+import { useHelpers } from 'common-util/hooks/useHelpers';
+import { Proposals } from './Proposals';
 import { checkVeolasThreshold } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { TweetLength, ProposalCountRow } from './utils';
+import {
+  TweetLength,
+  ProposalCountRow,
+  getFirstTenCharsOfTweet,
+} from './utils';
 import ThreadModal from './ThreadModal';
 
 const { Text } = Typography;
+const { TextArea } = Input;
 
 const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-const Tweet = () => {
+export const Tweet = () => {
+  const { signMessageAsync } = useSignMessage();
+  const { isStaging } = useHelpers();
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
     updateMemoryWithNewCentaur,
     triggerAction,
-    isAddressPresent,
+    fetchUpdatedMemory,
   } = useCentaursFunctionalities();
   const account = useSelector((state) => state?.setup?.account);
 
@@ -44,22 +52,27 @@ const Tweet = () => {
     try {
       const has100kVeOlas = await checkVeolasThreshold(
         account,
-        '100000000000000000000000',
+        HUNDRED_K_OLAS_IN_WEI,
       );
-      if (!has100kVeOlas) {
-        throw new Error(
-          'You must hold at least 100k veOLAS to propose a tweet.',
-        );
+      if (!isStaging && !has100kVeOlas) {
+        notifyError('You must hold at least 100k veOLAS to propose a tweet.');
+        return;
       }
+
+      const signature = await signMessageAsync({
+        message: `I am signing a message to verify that I propose a tweet starting with ${getFirstTenCharsOfTweet(
+          tweetOrThread,
+        )}`,
+      });
 
       const tweetDetails = {
         request_id: uuid(),
-        text: tweetOrThread,
-        voters: [], // initially no votes
-        posted: false,
-        proposer: account,
         createdDate: Date.now() / 1000, // in seconds
-        execute: false,
+        text: tweetOrThread,
+        posted: false,
+        proposer: { address: account, signature, verified: null },
+        voters: [], // initially no votes
+        executionAttempts: [], // initially no execution attempts
         action_id: '',
       };
 
@@ -78,13 +91,20 @@ const Tweet = () => {
         description: 'proposed a tweet',
         timestamp: Date.now(),
       };
-      await triggerAction(currentMemoryDetails.id, action);
-      notification.success({ message: 'Tweet proposed' });
+
+      const updatedMemoryDetails = await fetchUpdatedMemory();
+      await triggerAction(
+        currentMemoryDetails.id,
+        action,
+        updatedMemoryDetails,
+      );
+      notifySuccess('Tweet proposed');
 
       // reset form
       setTweet('');
     } catch (error) {
-      notifyError(`Proposal failed: ${error.message}`);
+      notifyError('Tweet proposal failed');
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -94,7 +114,7 @@ const Tweet = () => {
     setIsThreadModalVisible(false);
   };
 
-  const canSubmit = !isSubmitting && tweet.length > 0 && account && isAddressPresent;
+  const canSubmit = !isSubmitting && tweet.length > 0 && account;
 
   return (
     <Row gutter={16}>
@@ -102,7 +122,7 @@ const Tweet = () => {
         <SocialPosterContainer>
           <EducationTitle title="Tweet" educationItem="tweet" />
 
-          <Input.TextArea
+          <TextArea
             value={tweet}
             onChange={(e) => setTweet(e.target.value)}
             maxLength={MAX_TWEET_LENGTH}
@@ -152,10 +172,8 @@ const Tweet = () => {
       </Col>
 
       <Col xs={24} md={24} lg={24}>
-        <Proposals isAddressPresent={isAddressPresent} />
+        <Proposals />
       </Col>
     </Row>
   );
 };
-
-export default Tweet;

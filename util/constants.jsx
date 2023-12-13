@@ -29,3 +29,5 @@ export const PREDICT_GET_ALL_ENDPOINT = '/all_markets';
 
 export const ONE_MILLION = 1000000;
 export const VEOLAS_QUORUM = ONE_MILLION * 2;
+export const ONE_IN_WEI = '1000000000000000000';
+export const HUNDRED_K_OLAS_IN_WEI = '100000000000000000000000';

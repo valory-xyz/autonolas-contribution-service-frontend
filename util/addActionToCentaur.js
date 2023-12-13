@@ -1,6 +1,6 @@
 import { updateMemoryDetails } from 'common-util/api';
 
-const addActionToCentaur = async (centaurId, action, centaurList) => {
+export const addActionToCentaur = async (centaurId, action, centaurList) => {
   if (!action.actorAddress || !action.description || !action.timestamp) {
     throw new Error('Missing required action fields');
   }
@@ -23,5 +23,3 @@ const addActionToCentaur = async (centaurId, action, centaurList) => {
   // Update the Ceramic stream with the new data
   await updateMemoryDetails(updatedMemoryDetails);
 };
-
-export default addActionToCentaur;

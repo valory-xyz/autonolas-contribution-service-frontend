@@ -1,11 +1,14 @@
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
 import { Card, Table } from 'antd';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { getName } from 'common-util/functions';
-import Link from 'next/link';
-import PropTypes from 'prop-types';
 
-const LeaderboardCard = ({ data, isLoading }) => {
-  const limitedLeaderboardList = data.slice(0, 5);
+export const LeaderboardCard = () => {
+  const isLoading = useSelector((state) => state?.setup?.isLeaderboardLoading);
+  const leaderboard = useSelector((state) => state?.setup?.leaderboard);
+  const limitedLeaderboardList = leaderboard.slice(0, 5);
 
   const columns = [
     { title: 'Rank', dataIndex: 'rank', width: 50 },
@@ -22,7 +25,13 @@ const LeaderboardCard = ({ data, isLoading }) => {
 
   return (
     <Card
-      title={<EducationTitle title="Leaderboard – Top 5" educationItem="leaderboard" level={5} />}
+      title={(
+        <EducationTitle
+          title="Leaderboard – Top 5"
+          educationItem="leaderboard"
+          level={5}
+        />
+      )}
       bodyStyle={{ padding: 0 }}
       extra={<Link href="/leaderboard">See all &rarr;</Link>}
       actions={[<Link href="/leaderboard">Start earning points</Link>]}
@@ -39,19 +48,3 @@ const LeaderboardCard = ({ data, isLoading }) => {
     </Card>
   );
 };
-
-LeaderboardCard.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      wallet_address: PropTypes.string.isRequired,
-      rank: PropTypes.number,
-      points: PropTypes.number,
-    }),
-  ).isRequired,
-  isLoading: PropTypes.bool,
-};
-
-LeaderboardCard.defaultProps = {
-  isLoading: false,
-};
-export default LeaderboardCard;

@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { notifyError } from '@autonolas/frontend-library';
 
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import addActionToCentaur from 'util/addActionToCentaur';
+import { addActionToCentaur } from 'util/addActionToCentaur';
 import { updateMemoryDetails } from 'common-util/api';
 import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
 import { canAddMemoryMessaage } from 'common-util/functions';
@@ -31,7 +31,7 @@ const MemoryCard = () => {
   const {
     currentMemoryDetails,
     memoryDetailsList,
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
     isAddressPresent,
   } = useCentaursFunctionalities();
 
@@ -93,7 +93,7 @@ const MemoryCard = () => {
     await addActionToCentaur(centaurId, action, memoryDetailsList);
 
     // update the local state with a new memory
-    await fetchedUpdatedMemory();
+    await fetchUpdatedMemory();
 
     notification.success({ message: 'Ownership updated' });
   };
@@ -126,7 +126,7 @@ const MemoryCard = () => {
     };
     await addActionToCentaur(centaurId, action, memoryDetailsList);
 
-    await fetchedUpdatedMemory();
+    await fetchUpdatedMemory();
   };
 
   const clearMemory = async () => {
@@ -155,7 +155,7 @@ const MemoryCard = () => {
     };
     await addActionToCentaur(centaurId, action, memoryDetailsList);
 
-    await fetchedUpdatedMemory();
+    await fetchUpdatedMemory();
   };
 
   const handleUpdateMemory = async () => {
@@ -199,7 +199,7 @@ const MemoryCard = () => {
       setEditingMemory(null);
 
       // update the local state with the new memory
-      await fetchedUpdatedMemory();
+      await fetchUpdatedMemory();
     } catch (error) {
       // handle error if needed
       console.error(error);

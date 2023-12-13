@@ -1,14 +1,26 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import { set } from 'lodash';
-import { areAddressesEqual } from '@autonolas/frontend-library';
+import { isNil, set } from 'lodash';
+import {
+  areAddressesEqual,
+  // notifySuccess
+} from '@autonolas/frontend-library';
 
 import { setMemoryDetails } from 'store/setup/actions';
-import addActionToCentaur from 'util/addActionToCentaur';
+import { addActionToCentaur } from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
 import { ethersToWei, formatToEth } from 'common-util/functions';
+// import dummyMemory from './resetMemoryDetails.json';
+
+/**
+ * only for internal use (for staging)
+ */
+// export const resetMemoryDetails = async () => {
+//   await updateMemoryDetails(dummyMemory);
+//   notifySuccess('Memory details reset successfully');
+// };
 
 /**
  * internal hook to get the centaur details
@@ -36,6 +48,15 @@ export const useCentaursFunctionalities = () => {
   );
 
   const { currentMemoryDetails, memoryDetailsList } = useCentaurs();
+
+  /**
+   * Fetches the updated memory details from Ceramic
+   */
+  const fetchUpdatedMemory = async () => {
+    const { response: responseAfterUpdate } = await getMemoryDetails();
+    dispatch(setMemoryDetails(responseAfterUpdate)); // update the redux state with new memory
+    return responseAfterUpdate;
+  };
 
   /**
    * function to update the memory with the new centaur
@@ -70,19 +91,15 @@ export const useCentaursFunctionalities = () => {
   };
 
   /**
-   * Fetches the updated memory details from Ceramic
-   */
-  const fetchedUpdatedMemory = async () => {
-    const { response: responseAfterUpdate } = await getMemoryDetails();
-    dispatch(setMemoryDetails(responseAfterUpdate)); // update the local state with new memory
-  };
-
-  /**
    * triggers an action on the centaur and updates the memory
    */
-  const triggerAction = async (centaurID, action) => {
-    await addActionToCentaur(centaurID, action, memoryDetailsList);
-    await fetchedUpdatedMemory(); // Reload the updated data
+  const triggerAction = async (centaurID, action, updatedMemoryDetailsList) => {
+    if (!centaurID || !action || !updatedMemoryDetailsList) {
+      throw new Error('Arguments missing');
+    }
+
+    await addActionToCentaur(centaurID, action, updatedMemoryDetailsList);
+    await fetchUpdatedMemory(); // fetch the updated data
   };
 
   /**
@@ -99,7 +116,7 @@ export const useCentaursFunctionalities = () => {
     memoryDetailsList,
     currentMemoryDetails,
     updateMemoryWithNewCentaur,
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
     triggerAction,
     getUpdatedCentaurAfterTweetProposal,
     isAddressPresent,
@@ -111,53 +128,66 @@ export const useProposals = () => {
   const { currentMemoryDetails } = useCentaurs();
 
   // 2 million veolas in wei
-  const quorum = ethersToWei(`${VEOLAS_QUORUM}`);
+  const quorumInWei = ethersToWei(`${VEOLAS_QUORUM}`);
 
   /**
    * check if the current proposal has enough veOLAS to be executed
    */
   const getCurrentProposalInfo = (proposal) => {
     // example of voters: [ { '0x123': '1000000000000000000000000' } ]
-    const totalVeolas = proposal?.voters?.reduce((acc, voter) => {
-      const currentVeOlas = Object.values(voter)[0]; // veOlas of the current voter in wei
-      return acc.add(ethers.BigNumber.from(currentVeOlas));
+    const totalVeolasInWei = proposal?.voters?.reduce((acc, voter) => {
+      // previously the voters were stored as an [account]: balance.
+      // now, it is stored as an object (eg. Check "Voter" in prop-types.js).
+      const currentVeOlasInWei = !isNil(voter?.votingPower)
+        ? ethersToWei(`${voter?.votingPower || '0'}`)
+        : Object.values(voter)[0];
+
+      return acc.add(ethers.BigNumber.from(currentVeOlasInWei));
     }, ethers.BigNumber.from(0));
 
     // check if voters have 2 million veolas in total
-    const isExecutable = totalVeolas.gte(quorum);
+    const isQuorumAchieved = totalVeolasInWei.gte(quorumInWei);
 
     const remainingVeolasForApprovalInEth = formatToEth(
-      quorum.sub(totalVeolas),
+      quorumInWei.sub(totalVeolasInWei),
     );
 
     // percentage of veolas invested in the proposal
     // limit it to 2 decimal places
-    const totalVeolasInvestedInPercentage = totalVeolas
+    const totalVeolasInvestedInPercentage = totalVeolasInWei
       .mul(ethers.BigNumber.from(100))
-      .div(quorum)
+      .div(quorumInWei)
       .toString();
 
+    const isProposalVerified = proposal?.proposer?.verified;
+
+    const votersAddress = proposal?.voters?.map((voter) => {
+      const address = voter.address || Object.keys(voter)[0];
+      return address;
+    });
+
     return {
-      isExecutable,
-      totalVeolas,
-      totalVeolasInEth: formatToEth(totalVeolas),
+      isQuorumAchieved,
+      totalVeolasInEth: formatToEth(totalVeolasInWei),
       remainingVeolasForApprovalInEth,
       totalVeolasInvestedInPercentage,
+      isProposalVerified,
+      votersAddress,
     };
   };
 
   /**
    * Proposals that are not executed and have less than 2 million veolas
    */
-  const filteredProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
+  const pendingTweetProposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets?.filter(
     (proposal) => {
-      const { isExecutable } = getCurrentProposalInfo(proposal);
-      return !proposal.execute && !isExecutable;
+      const { isQuorumAchieved } = getCurrentProposalInfo(proposal);
+      return !proposal.execute && !isQuorumAchieved;
     },
   );
 
   return {
     getCurrentProposalInfo,
-    filteredProposals,
+    pendingTweetProposals,
   };
 };

@@ -11,6 +11,7 @@ export const syncTypes = {
   SET_LOGIN_ERROR: `${reducerName}/Set error`,
   SET_WALLET_VERIFICATION: `${reducerName}/Set wallet verification`,
   SET_LOGOUT: `${reducerName}/Set logout`,
+  SET_LEADERBOARD_LOADING: `${reducerName}/Set leaderboard loading`,
   SET_LEADERBOARD: `${reducerName}/Set leaderboard`,
   SET_NFT_DETAILS: `${reducerName}/Set NFT details`,
 
@@ -22,4 +23,6 @@ export const syncTypes = {
 
   SET_PREDICTION_REQUESTS: `${reducerName}/Set prediction requests data`,
   SET_APPROVED_REQUESTS_COUNT: `${reducerName}/Set approved requests count`,
+
+  SET_ORBIS_CONNECTION: `${reducerName}/Set Orbis connection`,
 };

@@ -15,9 +15,12 @@ export const TweetLength = ({ tweet }) => {
   const { length } = tweet || '';
   return <Text type="secondary">{`${length} / ${MAX_TWEET_LENGTH}`}</Text>;
 };
-TweetLength.propTypes = {
-  tweet: PropTypes.string,
-};
-TweetLength.defaultProps = {
-  tweet: '',
+TweetLength.propTypes = { tweet: PropTypes.string };
+TweetLength.defaultProps = { tweet: '' };
+
+export const getFirstTenCharsOfTweet = (tweetOrThread) => {
+  if (typeof tweetOrThread === 'string') {
+    return tweetOrThread.substring(0, 10);
+  }
+  return (tweetOrThread[0] || '').substring(0, 10);
 };

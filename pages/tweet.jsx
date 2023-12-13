@@ -1,3 +1,3 @@
-import Tweet from 'components/Tweet';
+import { Tweet } from 'components/Tweet';
 
 export default Tweet;

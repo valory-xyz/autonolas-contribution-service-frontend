@@ -6,7 +6,7 @@ import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useProposals } from '../CoOrdinate/Centaur/hooks';
 
 const TweetCard = () => {
-  const { filteredProposals } = useProposals();
+  const { pendingTweetProposals } = useProposals();
 
   return (
     <Card
@@ -18,7 +18,7 @@ const TweetCard = () => {
     >
       <Statistic
         title="Pending tweet proposals"
-        value={filteredProposals?.length || NA}
+        value={pendingTweetProposals?.length || NA}
       />
     </Card>
   );

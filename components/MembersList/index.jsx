@@ -6,11 +6,11 @@ import {
   Table, Typography, Button, notification, Card,
 } from 'antd';
 import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
-import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
+import { areAddressesEqual, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';
+import DisplayName from 'common-util/DisplayName';
 import { fetchVeolasBalance } from './requests';
 
 const { Text } = Typography;
@@ -23,7 +23,7 @@ export const MembersList = () => {
     membersList,
     currentMemoryDetails,
     updateMemoryWithNewCentaur,
-    fetchedUpdatedMemory,
+    fetchUpdatedMemory,
   } = useCentaursFunctionalities();
 
   const addNewMember = async () => {
@@ -37,7 +37,7 @@ export const MembersList = () => {
       // Update the Ceramic stream
       // const commitId = await updateMemoryWithNewCentaur(updatedCentaur);
       await updateMemoryWithNewCentaur(updatedCentaur);
-      notification.success({ message: 'Joined' });
+      notifySuccess('Joined');
 
       // Add action to the centaur
       // const action = {
@@ -47,9 +47,11 @@ export const MembersList = () => {
       //   timestamp: Date.now(),
       // };
 
-      await fetchedUpdatedMemory();
+      await fetchUpdatedMemory();
+
+      // const updateMemoryDetailsList = await fetchUpdatedMemory();
       // Commenting out until fixed
-      // await triggerAction(centaurId, action);
+      // await triggerAction(centaurId, action, updateMemoryDetailsList);
     } catch (error) {
       console.error(error);
     }
@@ -99,12 +101,12 @@ export const MembersList = () => {
 
   const columns = [
     {
-      title: 'Address',
+      title: 'Name',
       dataIndex: 'address',
       width: 160,
       render: (text) => (
         <Text type="secondary">
-          <TruncatedEthereumLink text={text} />
+          <DisplayName actorAddress={text} />
           {areAddressesEqual(text, account) && <>&nbsp;(You)</>}
         </Text>
       ),
