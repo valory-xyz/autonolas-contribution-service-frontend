@@ -173,5 +173,40 @@
     "timestamp": "1696806000",
     "location": "https://x.com/safe/status/1707742185645584744?s=20",
     "description": ""
-  }
+  },
+  {
+    "id": "f0a3788b-1029-4ee2-bb15-572172583444",
+    "title": "Dev Academy 5: Why this matters",
+    "timestamp": "1701961200",
+    "location": "Google Meet",
+    "description": ""
+  },
+  {
+    "id": "bb9f6c7d-0deb-4916-b919-6a77f0e9c579",
+    "title": "Dev Academy 5: Why participate",
+    "timestamp": "1701963000",
+    "location": "Google Meet",
+    "description": ""
+  },
+  {
+    "id": "ebfe9593-2d26-4b33-8872-03f35a4349d7",
+    "title": "Dev Academy 5: Run your first agent",
+    "timestamp": "1702393200",
+    "location": "Google Meet",
+    "description": ""
+  },
+  {
+    "id": "6aa72809-9d71-4f83-9907-bdde91dca42a",
+    "title": "Dev Academy 5: Open Autonomy Framework 101",
+    "timestamp": "1702566000",
+    "location": "Google Meet",
+    "description": ""
+  },
+  {
+    "id": "6b1d712d-6fb1-4cd4-891a-db324e3d90ba",
+    "title": "Dev Academy 5: Modify your agent",
+    "timestamp": "1702567800",
+    "location": "Google Meet",
+    "description": ""
+  }  
 ]
