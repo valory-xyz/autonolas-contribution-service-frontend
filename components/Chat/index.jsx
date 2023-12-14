@@ -50,7 +50,7 @@ const Chat = () => {
   return (
     !screens.xs ? (
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-        <ChatMenu mode="inline" selectedKeys={[id]} inlineIndent={8}>
+        <ChatMenu mode="inline" selectedKeys={[id]} inlineIndent={16}>
           {
           loading && (
             <Skeleton active className="p-24" />
