@@ -164,6 +164,7 @@ const useOrbis = () => {
     disconnect,
     isLoading,
     isOrbisConnected,
+    updateOrbisConnectionState,
     profile,
     address,
     updateUsername,

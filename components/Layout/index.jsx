@@ -27,7 +27,6 @@ import {
   setIsLeaderboardLoading,
 } from 'store/setup/actions';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
-import { checkOrbisConnection } from 'common-util/functions';
 import useOrbis from 'common-util/hooks/useOrbis';
 import Login from '../Login';
 import Footer from './Footer';
@@ -66,8 +65,7 @@ const NavigationBar = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState('homepage');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
-  const { disconnect } = useOrbis();
-  const isOrbisConnected = useSelector((state) => state.setup.isConnected);
+  const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -161,14 +159,14 @@ const NavigationBar = ({ children }) => {
   };
 
   useEffect(() => {
-    checkOrbisConnection();
+    updateOrbisConnectionState();
   }, []);
 
   useEffect(() => {
     const unwatch = watchAccount((newAccount) => {
       if (
         account
-        && (newAccount !== account || !isOrbisConnected)
+        && (newAccount.address !== account || isOrbisConnected)
         && isOrbisConnected !== undefined
       ) {
         disconnect();
