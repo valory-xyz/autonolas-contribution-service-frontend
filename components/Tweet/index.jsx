@@ -29,8 +29,18 @@ const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-export const Tweet = () => {
-  const { signMessageAsync, error: errorFromSignMessage } = useSignMessage();
+const ToProposeTweetText = () => (
+  <Text type="secondary">
+    To propose a tweet, you must
+    {' '}
+    <Link href="/members">join Contribute</Link>
+    {' '}
+    and hold at least 100k veOLAS.
+  </Text>
+);
+
+export const TweetPropose = () => {
+  const { signMessageAsync } = useSignMessage();
   const { isStaging, account } = useHelpers();
   const {
     currentMemoryDetails,
@@ -109,12 +119,7 @@ export const Tweet = () => {
   };
 
   const onTweetChange = useCallback((event) => {
-    try {
-      window.console.log(event); // TODO: needs to removed once performance is fixed
-      setTweet(event.target.value);
-    } catch (e) {
-      window.console.log(e);
-    }
+    setTweet(event.target.value);
   }, []);
 
   const closeThreadModal = () => {
@@ -123,66 +128,61 @@ export const Tweet = () => {
 
   const canSubmit = !isSubmitting && tweet?.length > 0 && account;
 
-  console.log({ errorFromSignMessage }); // TODO: needs to removed once performance is fixed
-
   return (
-    <Row gutter={16}>
-      <Col xs={24} md={24} lg={16} className="mb-24">
-        <SocialPosterContainer>
-          <EducationTitle title="Tweet" educationItem="tweet" />
+    <SocialPosterContainer>
+      <EducationTitle title="Tweet" educationItem="tweet" />
 
-          <TextArea
-            defaultValue={tweet}
-            onChange={onTweetChange}
-            maxLength={MAX_TWEET_LENGTH}
-            rows={4}
-            className="mt-24 mb-12"
+      <TextArea
+        value={tweet}
+        onChange={onTweetChange}
+        maxLength={MAX_TWEET_LENGTH}
+        rows={4}
+        className="mt-24 mb-12"
+      />
+
+      <ProposalCountRow>
+        <TweetLength tweet={tweet} />
+        <Button
+          type="link"
+          disabled={!canSubmit}
+          onClick={() => setIsThreadModalVisible(true)}
+        >
+          <PlusCircleOutlined />
+          &nbsp;Start thread
+        </Button>
+        {isThreadModalVisible && (
+          <ThreadModal
+            firstTweetInThread={tweet}
+            isSubmitting={isSubmitting}
+            closeThreadModal={closeThreadModal}
+            addThread={handleSubmit}
           />
+        )}
+      </ProposalCountRow>
 
-          <ProposalCountRow>
-            <TweetLength tweet={tweet} />
-            <Button
-              type="link"
-              disabled={!canSubmit}
-              onClick={() => setIsThreadModalVisible(true)}
-            >
-              <PlusCircleOutlined />
-              &nbsp;Start thread
-            </Button>
-            {isThreadModalVisible && (
-              <ThreadModal
-                firstTweetInThread={tweet}
-                isSubmitting={isSubmitting}
-                closeThreadModal={closeThreadModal}
-                addThread={handleSubmit}
-              />
-            )}
-          </ProposalCountRow>
-
-          <Button
-            className="mt-12 mb-12"
-            type="primary"
-            disabled={!canSubmit}
-            loading={isSubmitting && !isThreadModalVisible}
-            onClick={() => handleSubmit(tweet)}
-          >
-            Propose
-          </Button>
-          <br />
-          <Text type="secondary">
-            To propose a tweet, you must
-            {' '}
-            <Link href="/members">join Contribute</Link>
-            {' '}
-            and hold at least 100k
-            veOLAS.
-          </Text>
-        </SocialPosterContainer>
-      </Col>
-
-      <Col xs={24} md={24} lg={24}>
-        <Proposals />
-      </Col>
-    </Row>
+      <Button
+        className="mt-12 mb-12"
+        type="primary"
+        disabled={!canSubmit}
+        loading={isSubmitting && !isThreadModalVisible}
+        onClick={() => handleSubmit(tweet)}
+      >
+        Propose
+      </Button>
+      <br />
+      <ToProposeTweetText />
+    </SocialPosterContainer>
   );
 };
+
+export const Tweet = () => (
+  <Row gutter={16}>
+    <Col xs={24} md={24} lg={16} className="mb-24">
+      <TweetPropose />
+    </Col>
+
+    <Col xs={24} md={24} lg={24}>
+      <Proposals />
+    </Col>
+  </Row>
+);
