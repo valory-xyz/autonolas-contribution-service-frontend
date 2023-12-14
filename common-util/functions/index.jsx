@@ -14,7 +14,7 @@ import data from 'common-util/Education/data.json';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import { SUPPORTED_CHAINS } from 'common-util/Login';
-import orbis from 'common-util/orbis';
+import orbis, { checkOrbisStatus } from 'common-util/orbis';
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
 const getSupportedChains = () => (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
@@ -136,7 +136,7 @@ export const isAddressProhibited = (address) => {
 export const checkOrbisConnection = async () => {
   try {
     const res = await orbis.isConnected();
-    return res.status === 200 || res.status === 201;
+    return checkOrbisStatus(res?.status);
   } catch (error) {
     console.error('Error checking Orbis connection:', error);
     return false;
