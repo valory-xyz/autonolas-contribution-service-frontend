@@ -6,6 +6,18 @@ import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { Proposal } from './Proposal';
 import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
 
+const ProposalLoader = () => (
+  <>
+    <Card className="mb-12">
+      <Skeleton active />
+    </Card>
+
+    <Card>
+      <Skeleton active />
+    </Card>
+  </>
+);
+
 export const Proposals = () => {
   const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
@@ -20,15 +32,7 @@ export const Proposals = () => {
       </div>
 
       {isLoading ? (
-        <>
-          <Card className="mb-12">
-            <Skeleton active />
-          </Card>
-
-          <Card>
-            <Skeleton active />
-          </Card>
-        </>
+        <ProposalLoader />
       ) : (
         <>
           {proposals.length > 0 ? (

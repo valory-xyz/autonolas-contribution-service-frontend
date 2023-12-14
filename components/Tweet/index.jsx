@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Profiler, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
@@ -30,9 +29,9 @@ const SocialPosterContainer = styled.div`
   max-width: 500px;
 `;
 
-export const Tweet = () => {
-  const { signMessageAsync } = useSignMessage();
-  const { isStaging } = useHelpers();
+export const WrappedTweet = () => {
+  const { signMessageAsync, error: errorFromSignMessage } = useSignMessage();
+  const { isStaging, account } = useHelpers();
   const {
     currentMemoryDetails,
     getUpdatedCentaurAfterTweetProposal,
@@ -40,7 +39,6 @@ export const Tweet = () => {
     triggerAction,
     fetchUpdatedMemory,
   } = useCentaursFunctionalities();
-  const account = useSelector((state) => state?.setup?.account);
 
   const [tweet, setTweet] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -110,11 +108,22 @@ export const Tweet = () => {
     }
   };
 
+  const onTweetChange = useCallback((event) => {
+    try {
+      window.console.log(event); // TODO: needs to removed once performance is fixed
+      setTweet(event.target.value);
+    } catch (e) {
+      window.console.log(e);
+    }
+  }, []);
+
   const closeThreadModal = () => {
     setIsThreadModalVisible(false);
   };
 
-  const canSubmit = !isSubmitting && tweet.length > 0 && account;
+  const canSubmit = !isSubmitting && tweet?.length > 0 && account;
+
+  console.log({ errorFromSignMessage }); // TODO: needs to removed once performance is fixed
 
   return (
     <Row gutter={16}>
@@ -123,8 +132,8 @@ export const Tweet = () => {
           <EducationTitle title="Tweet" educationItem="tweet" />
 
           <TextArea
-            value={tweet}
-            onChange={(e) => setTweet(e.target.value)}
+            defaultValue={tweet}
+            onChange={onTweetChange}
             maxLength={MAX_TWEET_LENGTH}
             rows={4}
             className="mt-24 mb-12"
@@ -177,3 +186,30 @@ export const Tweet = () => {
     </Row>
   );
 };
+
+export const Tweet = () => (
+  <Profiler
+    id="Tweet"
+    onRender={(
+      id, // the "id" prop of the Profiler tree that has just committed
+      phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
+      actualDuration, // time spent rendering the committed update
+      baseDuration, // estimated time to render the entire subtree without memoization
+      startTime, // when React began rendering this update
+      commitTime, // when React committed this update
+      interactions, // the Set of interactions belonging to this update
+    ) => {
+      window?.console.log({
+        id,
+        phase,
+        actualDuration,
+        baseDuration,
+        startTime,
+        commitTime,
+        interactions,
+      });
+    }}
+  >
+    <WrappedTweet />
+  </Profiler>
+);
