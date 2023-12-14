@@ -6,7 +6,7 @@ import { getVeolasContract } from 'common-util/Contracts';
  */
 export const fetchVeolasBalance = async ({ account }) => {
   const contract = getVeolasContract(true);
-  const balance = await contract.methods.balanceOf(account).call();
+  const balance = await contract.methods.getVotes(account).call();
   return balance;
 };
 
