@@ -1,21 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Form,
-  Skeleton,
-} from 'antd';
-import {
-  notifyError,
-} from '@autonolas/frontend-library';
+import { Form, Skeleton } from 'antd';
+import { notifyError } from '@autonolas/frontend-library';
 import { useRouter } from 'next/router';
 
 import orbis, { createPost } from 'common-util/orbis';
 // import { checkVeolasThreshold } from 'components/MembersList/requests';
 // import { ONE_IN_WEI } from 'util/constants';
 import useOrbis from 'common-util/hooks/useOrbis';
-import {
-  GroupChatContainer,
-} from './styles';
+import { GroupChatContainer } from './styles';
 import { MessageGroups } from './MessageGroups';
 import { MessageInput } from './MessageInput';
 import { EmptyStateMessage } from './EmptyStateMessage';
@@ -46,6 +39,10 @@ export const GroupChat = () => {
       // Check if the current message is from a different sender than the previous message
       const prevMsg = array[index - 1];
       const prevAddress = prevMsg?.creator_details?.metadata?.address || 'unknown';
+      // If the current message is from a different sender
+      // than the previous message or it's the first message,
+      // start a new message group. Otherwise, add the
+      // message to the last group in the current date.
       if (address !== prevAddress || index === 0) {
         acc[dateKey].push({
           address,
@@ -92,7 +89,6 @@ export const GroupChat = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -151,7 +147,7 @@ export const GroupChat = () => {
 
           {hasMessages && !loadingInitial && (
             <div ref={messageWindowRef} className="group-chat-container">
-              <MessageGroups messages={orbisMessages} account={account} />
+              <MessageGroups messages={orbisMessages} />
             </div>
           )}
 

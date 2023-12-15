@@ -1,18 +1,11 @@
 import React from 'react';
 import {
-  Input,
-  Row,
-  Col,
-  Typography,
-  Button,
-  Form,
+  Input, Row, Col, Typography, Button, Form,
 } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
-import {
-  StyledGroupChat,
-} from './styles';
+import { StyledGroupChat } from './styles';
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -62,19 +55,17 @@ export const MessageInput = ({
         </Col>
       </Row>
     </Form>
-    {!account && !isOrbisConnected && (
     <Text type="secondary">
-      To send messages, connect your wallet and sign in to Orbis
+      {!account && !isOrbisConnected && (
+        'To send messages, connect your wallet and sign in to Orbis'
+      )}
+      {account && !isOrbisConnected && (
+        'To send messages, sign in to Orbis'
+      )}
+      {!account && isOrbisConnected && (
+        'To send messages, connect your wallet'
+      )}
     </Text>
-    )}
-    {account && !isOrbisConnected && (
-    <Text type="secondary">To send messages, sign in to Orbis</Text>
-    )}
-    {!account && isOrbisConnected && (
-    <Text type="secondary">
-      To send messages, connect your wallet
-    </Text>
-    )}
   </StyledGroupChat>
 );
 

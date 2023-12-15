@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-  Typography,
-} from 'antd';
-import {
-  COLOR,
-} from '@autonolas/frontend-library';
+import { Typography } from 'antd';
+import { COLOR } from '@autonolas/frontend-library';
 
-import {
-  EmptyState,
-  StyledMessageTwoTone,
-} from './styles';
+import { EmptyState, StyledMessageTwoTone } from './styles';
 
 const { Text } = Typography;
 

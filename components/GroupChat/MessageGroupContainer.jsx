@@ -51,6 +51,10 @@ MessageGroupContainer.propTypes = {
   dateKey: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
   account: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   groupedMessages: PropTypes.array.isRequired,
+};
+
+MessageGroupContainer.defaultProps = {
+  username: '',
 };
