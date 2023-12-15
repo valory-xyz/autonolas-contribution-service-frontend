@@ -20,7 +20,7 @@ export const MessageGroupContainer = ({
   username,
   groupedMessages,
 }) => (
-  <MessageGroup key={dateKey + address}>
+  <MessageGroup key={`${dateKey}-${address}`}>
     <div className="mb-4">
       <DisplayName
         actorAddress={address}
