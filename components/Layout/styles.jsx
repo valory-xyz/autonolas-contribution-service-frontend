@@ -4,8 +4,9 @@ import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
   background: ${COLOR.GREY_3};
+  /* filter: invert(0.95) hue-rotate(39deg); // uncomment this line for dark mode */
   .site-layout {
-    padding: ${({ isPadded }) => (isPadded === 'true' ? '0' : ' 0 20px 100px 20px;')};
+    padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : ' 0 20px 100px 20px;')};
     margin-top: 64px;
     .contribute-footer {
       > div {
@@ -16,7 +17,7 @@ export const CustomLayout = styled(Layout)`
       }
     }
     .site-layout-background {
-      padding: ${({ isPadded }) => (isPadded === 'true' ? '0' : '24px 0;')};
+      padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : '24px 0;')};
       min-height: calc(100vh - 120px);
     }
   }

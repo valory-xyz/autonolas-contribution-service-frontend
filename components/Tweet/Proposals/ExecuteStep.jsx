@@ -76,6 +76,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
         title="Tweet posted successfully!"
         extra={[
           <Button
+            key={`extra-${proposal.action_id}`}
             type="primary"
             ghost
             href={proposal.action_id}

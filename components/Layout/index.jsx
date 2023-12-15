@@ -122,9 +122,7 @@ const NavigationBar = ({ children }) => {
       getMembers();
     }, INTERVAL);
 
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [getMembers]);
 
   /**
@@ -187,7 +185,7 @@ const NavigationBar = ({ children }) => {
   const isPadded = ['chat', 'member-chat'].some((e) => pathname.includes(e));
 
   return (
-    <CustomLayout isPadded={isPadded.toString()}>
+    <CustomLayout ispadded={isPadded.toString()}>
       <CustomHeader>
         {logo}
 

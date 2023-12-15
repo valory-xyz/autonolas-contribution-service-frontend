@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 const Voter = PropTypes.shape({
   address: PropTypes.string,
   signature: PropTypes.string,
-  votingPower: PropTypes.number,
+  /**
+   * For backward compatibility, we need to support the old format of
+   * votingPower, which is a string.
+   */
+  votingPower: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 });
 
-const ProposerPropTypes = PropTypes.oneOfType([
-  PropTypes.string, // TODO: remove once backend is migrated
-  PropTypes.shape({
-    address: PropTypes.string.isRequired, // address of the proposer
-    signature: PropTypes.string, // signature of the message signed
+const ProposerPropTypes = PropTypes.shape({
+  address: PropTypes.string.isRequired, // address of the proposer
+  signature: PropTypes.string, // signature of the message signed
 
-    // if the signature is validated, initially null
-    verified: PropTypes.oneOfType(
-      [PropTypes.bool, PropTypes.null],
-    ),
-  }),
-]);
+  // if the signature is validated, initially null
+  verified: PropTypes.bool,
+});
 
 export const ProposalPropTypes = PropTypes.shape({
   // unique id of the proposal
@@ -45,9 +44,7 @@ export const ProposalPropTypes = PropTypes.shape({
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       // initally null, backend will set to true if verified
-      verified: PropTypes.oneOfType(
-        [PropTypes.bool, PropTypes.null],
-      ),
+      verified: PropTypes.bool,
       dateCreated: PropTypes.number.isRequired,
     }),
   ),
