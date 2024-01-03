@@ -1,17 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Form, Skeleton } from 'antd';
-import { notifyError } from '@autonolas/frontend-library';
+import { Form, Skeleton, Typography } from 'antd';
+import { notifyError, COLOR } from '@autonolas/frontend-library';
 import { useRouter } from 'next/router';
 
 import orbis, { createPost } from 'common-util/orbis';
 // import { checkVeolasThreshold } from 'components/MembersList/requests';
 // import { ONE_IN_WEI } from 'util/constants';
 import useOrbis from 'common-util/hooks/useOrbis';
-import { GroupChatContainer } from './styles';
-import { MessageGroups } from './MessageGroups';
+import { GroupChatContainer, EmptyState, StyledMessageTwoTone } from './styles';
 import { MessageInput } from './MessageInput';
-import { EmptyStateMessage } from './EmptyStateMessage';
+import { MessageGroups } from './MessageGroups';
+
+const { Text } = Typography;
+
+// TODO refactor to use antd's native Result component
+export const EmptyStateMessage = () => {
+  <EmptyState>
+    hello
+    <div>
+      <StyledMessageTwoTone twoToneColor={COLOR.GREY_1} />
+      <br />
+      <Text type="secondary">To start chatting, select a chat</Text>
+    </div>
+  </EmptyState>;
+};
 
 export const GroupChat = () => {
   const [orbisMessages, setOrbisMessages] = useState([]);
@@ -111,13 +124,27 @@ export const GroupChat = () => {
     const { messageContent } = formData;
 
     setIsSending(true);
-    const { result, error } = await createPost(
-      {
-        body: messageContent,
-        context: id,
-      },
-      orbis,
-    );
+
+    // const { result, error } = await createPost(
+    //   {
+    //     body: messageContent,
+    //     context: id,
+    //   },
+    //   orbis,
+    // );
+
+    const postContent = {
+      body: messageContent,
+      context: id,
+    };
+    const {
+      status: postStatus,
+      doc: postId,
+      error,
+      result,
+    } = await orbis.createPost(postContent);
+
+    console.log('postId', postId);
 
     if (error) {
       notifyError('Error sending message: ', error);
@@ -155,13 +182,18 @@ export const GroupChat = () => {
             form={form}
             handleSubmit={handleSubmit}
             isSending={isSending}
-            account={account}
             isOrbisConnected={isOrbisConnected}
             loadingInitial={loadingInitial}
           />
         </>
       ) : (
-        <EmptyStateMessage />
+        <EmptyState>
+          <div>
+            <StyledMessageTwoTone twoToneColor={COLOR.GREY_1} />
+            <br />
+            <Text type="secondary">To start chatting, select a chat</Text>
+          </div>
+        </EmptyState>
       )}
       {/* Modal not currently in use */}
       {/* <VeolasModal
