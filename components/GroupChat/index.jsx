@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Form, Skeleton, Typography } from 'antd';
 import { notifyError, COLOR } from '@autonolas/frontend-library';
 import { useRouter } from 'next/router';
@@ -32,7 +31,6 @@ export const GroupChat = () => {
   // const [showVeOLASModal, setShowVeOLASModal] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(false);
   const messageWindowRef = useRef(null);
-  const account = useSelector((state) => state?.setup?.account);
   const [isSending, setIsSending] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter();
@@ -125,26 +123,13 @@ export const GroupChat = () => {
 
     setIsSending(true);
 
-    // const { result, error } = await createPost(
-    //   {
-    //     body: messageContent,
-    //     context: id,
-    //   },
-    //   orbis,
-    // );
-
-    const postContent = {
-      body: messageContent,
-      context: id,
-    };
-    const {
-      status: postStatus,
-      doc: postId,
-      error,
-      result,
-    } = await orbis.createPost(postContent);
-
-    console.log('postId', postId);
+    const { result, error } = await createPost(
+      {
+        body: messageContent,
+        context: id,
+      },
+      orbis,
+    );
 
     if (error) {
       notifyError('Error sending message: ', error);
