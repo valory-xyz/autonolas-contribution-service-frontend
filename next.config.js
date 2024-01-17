@@ -24,6 +24,10 @@ module.exports = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains',
           },
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=604800, stale-while-revalidate=86400',
+          },
         ],
       },
     ];
