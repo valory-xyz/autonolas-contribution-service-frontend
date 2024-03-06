@@ -91,7 +91,7 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
  */
 export const formatToEth = (value, dv = 0) => {
   if (isNil(value)) return dv || 0;
-  return (+ethers.utils.formatEther(value)).toFixed(2);
+  return (+ethers.formatEther(value)).toFixed(2);
 };
 
 /**
@@ -100,7 +100,7 @@ export const formatToEth = (value, dv = 0) => {
  * input: 1
  * output: 1000000000000000000
  */
-export const ethersToWei = (value) => ethers.utils.parseUnits(value, 'ether');
+export const ethersToWei = (value) => ethers.parseUnits(value, 'ether');
 
 /**
  * returns error message if user can't add memory message
@@ -148,4 +148,6 @@ export const checkOrbisConnection = async () => {
  * @param {string} address - The Ethereum address to truncate
  * @returns {string} The truncated address
  */
-export const truncateAddress = (address) => (address ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}` : '--');
+export const truncateAddress = (address) => (address
+  ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}`
+  : '--');

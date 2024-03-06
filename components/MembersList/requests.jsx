@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers';
+import { ethers } from 'ethers';
 import { getVeolasContract } from 'common-util/Contracts';
 
 /**
@@ -12,7 +12,7 @@ export const fetchVeolasBalance = async ({ account }) => {
 
 export const checkVeolasThreshold = async (account, thresholdInWei) => {
   const balance = await fetchVeolasBalance({ account });
-  const bNBalance = BigNumber.from(balance);
-  const processedThreshold = BigNumber.from(thresholdInWei);
-  return bNBalance.gte(processedThreshold);
+  const bNBalance = ethers.toBigInt(balance);
+  const processedThreshold = ethers.toBigInt(thresholdInWei);
+  return bNBalance >= processedThreshold;
 };
