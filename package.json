@@ -23,7 +23,7 @@
     "axios": "^1.2.1",
     "dayjs": "^1.11.9",
     "dids": "^4.0.0",
-    "ethers": "^5.7.2",
+    "ethers": "^6.11.1",
     "graphql": "^16.8.1",
     "ipfs-http-client": "^57.0.3",
     "key-did-provider-ed25519": "^3.0.0",
