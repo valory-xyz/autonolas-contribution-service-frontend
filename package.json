@@ -43,7 +43,7 @@
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.4.2",
     "remark-gfm": "^3.0.1",
-    "styled-components": "^6.0.7",
+    "styled-components": "^6.1.8",
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13",
     "viem": "^0.3.35",
