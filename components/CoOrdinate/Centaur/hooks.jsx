@@ -149,7 +149,7 @@ export const useProposals = () => {
     const isQuorumAchieved = totalVeolasInWei >= quorumInWei;
 
     const remainingVeolasForApprovalInEth = formatToEth(
-      quorumInWei.sub(totalVeolasInWei),
+      ethers.toBigInt(quorumInWei) - ethers.toBigInt(totalVeolasInWei),
     );
 
     // percentage of veolas invested in the proposal

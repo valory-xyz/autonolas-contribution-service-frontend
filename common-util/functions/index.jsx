@@ -85,7 +85,7 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
 
 /**
  *
- * @param {BigNumber} value value to be converted to Eth
+ * @param {BigInt} value value to be converted to Eth
  * @param {Number} dv Default value to be returned
  * @returns {String} with 2 decimal places
  */
