@@ -27,7 +27,7 @@ import {
   setIsLeaderboardLoading,
 } from 'store/setup/actions';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
-import useOrbis from 'common-util/hooks/useOrbis';
+// import useOrbis from 'common-util/hooks/useOrbis';
 import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
@@ -60,14 +60,12 @@ const menuItems = [
 const INTERVAL = 10000;
 
 const NavigationBar = ({ children }) => {
-  console.log('re-rendering NavigationBar');
-
   const screens = useBreakpoint();
   const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState('homepage');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
-  const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
+  // const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -162,6 +160,7 @@ const NavigationBar = ({ children }) => {
   //   updateOrbisConnectionState();
   // }, []);
 
+  // TODO: watchAccount has been updated - https://wagmi.sh/core/api/actions/watchAccount
   // useEffect(() => {
   //   const unwatch = watchAccount((newAccount) => {
   //     if (
