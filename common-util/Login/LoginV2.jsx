@@ -3,12 +3,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
 import PropTypes from 'prop-types';
-import {
-  useAccount, useNetwork, useBalance, useDisconnect,
-} from 'wagmi';
+import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import styled from 'styled-components';
 import {
-  COLOR,
   CannotConnectAddressOfacError,
   notifyError,
 } from '@autonolas/frontend-library';
@@ -34,10 +31,8 @@ export const LoginV2 = ({
 }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
-  const { chain } = useNetwork();
 
-  const chainId = chain?.id;
-  const { address, connector } = useAccount({
+  const { address, connector, chainId } = useAccount({
     onConnect: ({ address: currentAddress }) => {
       if (isAddressProhibited(currentAddress)) {
         disconnect();

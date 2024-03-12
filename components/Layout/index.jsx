@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { Layout, Grid, Button } from 'antd';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
-import { notifyError } from '@autonolas/frontend-library';
+// import { get } from 'lodash';
+// import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
   FileTextOutlined,
@@ -17,20 +17,20 @@ import {
   TwitterOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { watchAccount } from '@wagmi/core';
+// import { watchAccount } from '@wagmi/core';
 
-import {
-  setIsVerified,
-  setMemoryDetails,
-  setIsMemoryDetailsLoading,
-  setLeaderboard,
-  setIsLeaderboardLoading,
-} from 'store/setup/actions';
-import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
-import useOrbis from 'common-util/hooks/useOrbis';
+// import {
+//   setIsVerified,
+//   setMemoryDetails,
+//   setIsMemoryDetailsLoading,
+//   setLeaderboard,
+//   setIsLeaderboardLoading,
+// } from 'store/setup/actions';
+// import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
+// import useOrbis from 'common-util/hooks/useOrbis';
 import Login from '../Login';
 import Footer from './Footer';
-import { getAddressStatus } from './utils';
+// import { getAddressStatus } from './utils';
 import {
   CustomLayout,
   Logo,
@@ -60,119 +60,121 @@ const menuItems = [
 const INTERVAL = 10000;
 
 const NavigationBar = ({ children }) => {
+  console.log('re-rendering NavigationBar');
+
   const screens = useBreakpoint();
   const router = useRouter();
-  const [selectedMenu, setSelectedMenu] = useState('homepage');
+  // const [selectedMenu, setSelectedMenu] = useState('homepage');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
-  const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
+  // const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
-  const dispatch = useDispatch();
-  const account = useSelector((state) => get(state, 'setup.account'));
-  const chainId = useSelector((state) => get(state, 'setup.chainId'));
+  // const dispatch = useDispatch();
+  // const account = useSelector((state) => get(state, 'setup.account'));
+  // const chainId = useSelector((state) => get(state, 'setup.chainId'));
 
-  const getMembers = useCallback(async () => {
-    const { response } = await getMemoryDetails();
-    dispatch(setMemoryDetails(response));
-  }, [dispatch]);
+  // const getMembers = useCallback(async () => {
+  //   const { response } = await getMemoryDetails();
+  //   dispatch(setMemoryDetails(response));
+  // }, [dispatch]);
 
   // load leaderboard list only once on page load
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        dispatch(setIsLeaderboardLoading(true));
-        const list = await getLeaderboardList();
-        dispatch(setLeaderboard(list));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        dispatch(setIsLeaderboardLoading(false));
-      }
-    };
+  // useEffect(() => {
+  //   const fetchLeaderboard = async () => {
+  //     try {
+  //       dispatch(setIsLeaderboardLoading(true));
+  //       const list = await getLeaderboardList();
+  //       dispatch(setLeaderboard(list));
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       dispatch(setIsLeaderboardLoading(false));
+  //     }
+  //   };
 
-    fetchLeaderboard();
-  }, [chainId, dispatch]);
+  //   fetchLeaderboard();
+  // }, [chainId, dispatch]);
 
-  useEffect(() => {
-    // on first render, if there is no account (ie. wallet not connected),
-    // mark as not verified
-    if (!account) {
-      dispatch(setIsVerified(false));
-    }
+  // useEffect(() => {
+  //   // on first render, if there is no account (ie. wallet not connected),
+  //   // mark as not verified
+  //   if (!account) {
+  //     dispatch(setIsVerified(false));
+  //   }
 
-    const getData = async () => {
-      try {
-        dispatch(setIsMemoryDetailsLoading(true));
-        await getMembers();
-      } catch (error) {
-        notifyError('Error fetching members');
-      } finally {
-        dispatch(setIsMemoryDetailsLoading(false));
-      }
-    };
+  //   const getData = async () => {
+  //     try {
+  //       dispatch(setIsMemoryDetailsLoading(true));
+  //       await getMembers();
+  //     } catch (error) {
+  //       notifyError('Error fetching members');
+  //     } finally {
+  //       dispatch(setIsMemoryDetailsLoading(false));
+  //     }
+  //   };
 
-    getData();
-  }, [account, dispatch, getMembers]);
+  //   getData();
+  // }, [account, dispatch, getMembers]);
 
-  // poll details
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getMembers();
-    }, INTERVAL);
+  // // poll details
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getMembers();
+  //   }, INTERVAL);
 
-    return () => clearInterval(interval);
-  }, [getMembers]);
+  //   return () => clearInterval(interval);
+  // }, [getMembers]);
 
-  /**
-   * fetch if wallet is verified on page load
-   */
-  useEffect(() => {
-    const fn = async () => {
-      if (account && chainId) {
-        try {
-          const response = await getAddressStatus(account);
-          dispatch(setIsVerified(response));
-        } catch (error) {
-          window.console.error(error);
-        }
-      }
-    };
-    fn();
-  }, [account, chainId, dispatch]);
+  // /**
+  //  * fetch if wallet is verified on page load
+  //  */
+  // useEffect(() => {
+  //   const fn = async () => {
+  //     if (account && chainId) {
+  //       try {
+  //         const response = await getAddressStatus(account);
+  //         dispatch(setIsVerified(response));
+  //       } catch (error) {
+  //         window.console.error(error);
+  //       }
+  //     }
+  //   };
+  //   fn();
+  // }, [account, chainId, dispatch]);
 
-  // to set default menu on first render
-  useEffect(() => {
-    if (pathname) {
-      const name = pathname.split('/')[1];
-      setSelectedMenu(name || 'homepage');
-    }
-  }, [pathname]);
+  // // to set default menu on first render
+  // useEffect(() => {
+  //   if (pathname) {
+  //     const name = pathname.split('/')[1];
+  //     setSelectedMenu(name || 'homepage');
+  //   }
+  // }, [pathname]);
 
-  const handleMenuItemClick = ({ key }) => {
-    router.push(key === 'homepage' ? '/' : `/${key}`);
-    setSelectedMenu(key);
-    if (!screens.md) {
-      setIsMenuVisible(false);
-    }
-  };
+  // const handleMenuItemClick = ({ key }) => {
+  //   router.push(key === 'homepage' ? '/' : `/${key}`);
+  //   setSelectedMenu(key);
+  //   if (!screens.md) {
+  //     setIsMenuVisible(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    updateOrbisConnectionState();
-  }, []);
+  // useEffect(() => {
+  //   updateOrbisConnectionState();
+  // }, []);
 
-  useEffect(() => {
-    const unwatch = watchAccount((newAccount) => {
-      if (
-        account
-        && (newAccount.address !== account || isOrbisConnected)
-        && isOrbisConnected !== undefined
-      ) {
-        disconnect();
-      }
-    });
+  // useEffect(() => {
+  //   const unwatch = watchAccount((newAccount) => {
+  //     if (
+  //       account
+  //       && (newAccount.address !== account || isOrbisConnected)
+  //       && isOrbisConnected !== undefined
+  //     ) {
+  //       disconnect();
+  //     }
+  //   });
 
-    return () => unwatch();
-  }, [account, disconnect, isOrbisConnected]);
+  //   return () => unwatch();
+  // }, [account, disconnect, isOrbisConnected]);
 
   const logo = (
     <Logo onClick={() => router.push('/')}>
@@ -204,9 +206,9 @@ const NavigationBar = ({ children }) => {
         <CustomMenu
           theme="light"
           mode="vertical"
-          selectedKeys={[selectedMenu]}
+          // selectedKeys={[selectedMenu]}
           items={menuItems}
-          onClick={handleMenuItemClick}
+          // onClick={handleMenuItemClick}
         />
       )}
 

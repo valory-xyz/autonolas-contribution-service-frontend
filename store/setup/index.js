@@ -1,3 +1,4 @@
+import { HYDRATE } from 'next-redux-wrapper';
 import orderBy from 'lodash/orderBy';
 import lowerCase from 'lodash/lowerCase';
 import { apiTypes, syncTypes } from './_types';
@@ -33,6 +34,9 @@ export default (state = initialState, action = {}) => {
   const { data } = action;
 
   switch (action.type) {
+    case HYDRATE:
+      return { ...state, ...data };
+
     case apiTypes.GET_API: {
       return { ...state, data };
     }

@@ -5,7 +5,7 @@ import {
   notifyError,
   notifySuccess,
 } from '@autonolas/frontend-library';
-import { mainnet, useNetwork } from 'wagmi';
+import { mainnet, useAccount } from 'wagmi';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, { ORBIS_SUPPORTED_CHAIN, checkOrbisNegativeStatus, checkOrbisStatus } from 'common-util/orbis';
@@ -30,7 +30,7 @@ const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
   const connection = useSelector((state) => state.setup.connection);
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
   const dispatch = useDispatch();
 
   // Helper function to manage loading state

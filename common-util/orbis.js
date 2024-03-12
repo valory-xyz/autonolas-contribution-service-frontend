@@ -1,5 +1,33 @@
-import { Orbis } from '@orbisclub/orbis-sdk';
-import { forceIndex } from '@orbisclub/orbis-sdk/utils';
+// import { Orbis } from '@orbisclub/orbis-sdk';
+// import { forceIndex } from '@orbisclub/orbis-sdk/utils';
+
+class Orbis {
+  constructor() {
+    this.orbis = null;
+  }
+
+  async initOrbis() {
+    if (this.orbis) {
+      return this.orbis;
+    }
+
+    this.orbis = new Orbis();
+    return this.orbis;
+  }
+
+  async createPost(postContent) {
+    const orbis = await this.initOrbis();
+    return orbis.createPost(postContent);
+  }
+
+  async isConnected() {
+    const orbis = await this.initOrbis();
+    return orbis.isConnected();
+  }
+}
+
+const forceIndex = () => {};
+
 /**
  * Initialize the Orbis class object:
  * You can make this object available on other components
