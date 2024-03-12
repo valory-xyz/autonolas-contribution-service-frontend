@@ -32,7 +32,10 @@ module.exports = {
       },
     ];
   },
-  publicRuntimeConfig: {},
+  webpack: (config) => {
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    return config;
+  },
   images: {
     domains: ['github.com'],
     remotePatterns: [

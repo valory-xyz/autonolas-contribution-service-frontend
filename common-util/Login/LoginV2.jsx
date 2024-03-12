@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
 import PropTypes from 'prop-types';
-import { Web3Modal, Web3Button } from '@web3modal/react';
 import {
   useAccount, useNetwork, useBalance, useDisconnect,
 } from 'wagmi';
@@ -21,7 +20,6 @@ import {
   isAddressProhibited,
 } from 'common-util/functions';
 import SignInToOrbis from 'components/SignInToOrbis';
-import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -33,7 +31,6 @@ const LoginContainer = styled.div`
 export const LoginV2 = ({
   onConnect: onConnectCb,
   onDisconnect: onDisconnectCb,
-  theme = 'light',
 }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
@@ -150,17 +147,7 @@ export const LoginV2 = ({
       <div className="mr-8">
         <SignInToOrbis />
       </div>
-      <Web3Button balance="hide" avatar="hide" />
-      <Web3Modal
-        projectId={projectId}
-        ethereumClient={ethereumClient}
-        themeMode={theme}
-        themeVariables={{
-          '--w3m-button-border-radius': '5px',
-          '--w3m-accent-color': COLOR.PRIMARY,
-          '--w3m-background-color': COLOR.PRIMARY,
-        }}
-      />
+      <w3m-button />
     </LoginContainer>
   );
 };
@@ -168,11 +155,9 @@ export const LoginV2 = ({
 LoginV2.propTypes = {
   onConnect: PropTypes.func,
   onDisconnect: PropTypes.func,
-  theme: PropTypes.string,
 };
 
 LoginV2.defaultProps = {
   onConnect: undefined,
   onDisconnect: undefined,
-  theme: 'light',
 };

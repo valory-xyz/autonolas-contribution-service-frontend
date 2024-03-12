@@ -19,6 +19,7 @@
     "@wagmi/core": "^1.4.1",
     "@web3modal/ethereum": "^2.7.1",
     "@web3modal/react": "^2.7.1",
+    "@web3modal/wagmi": "3.5.7",
     "antd": "^5.9.0",
     "axios": "^1.2.1",
     "dayjs": "^1.11.9",
@@ -46,8 +47,8 @@
     "styled-components": "^6.0.7",
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13",
-    "viem": "^0.3.35",
-    "wagmi": "^1.4.1",
+    "viem": "1.21.4",
+    "wagmi": "1.4.13",
     "web3": "^1.7.3"
   },
   "devDependencies": {
