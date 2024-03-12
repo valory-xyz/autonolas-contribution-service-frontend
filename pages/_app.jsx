@@ -35,29 +35,19 @@ const MyApp = ({ Component, ...rest }) => {
       <GlobalStyle />
       <Meta />
 
-      {/* <Web3Modal> */}
       <Provider store={store}>
         <ConfigProvider theme={THEME_CONFIG}>
           <WagmiProvider config={wagmiConfig} initialState={initialState}>
-
-            {/* <Layout>
-              <Component {...props.pageProps} />
-            </Layout> */}
-
             <QueryClientProvider client={queryClient}>
-
               <ApolloProvider client={client}>
                 <Layout>
-                  <div>HELLO 123</div>
-
-                  {/* <Component {...props.pageProps} /> */}
+                  <Component {...props.pageProps} />
                 </Layout>
               </ApolloProvider>
             </QueryClientProvider>
           </WagmiProvider>
         </ConfigProvider>
       </Provider>
-      {/* </Web3Modal> */}
     </>
   );
 };
