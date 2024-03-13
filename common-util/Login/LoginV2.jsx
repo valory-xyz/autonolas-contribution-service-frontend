@@ -142,7 +142,7 @@ export const LoginV2 = ({
       <div className="mr-8">
         <SignInToOrbis />
       </div>
-      <w3m-button />
+      <w3m-button balance="hide" />
     </LoginContainer>
   );
 };

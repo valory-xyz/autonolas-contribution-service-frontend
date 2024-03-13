@@ -49,7 +49,7 @@ export const setupSlice = createSlice({
       state.isVerified = action.payload;
     },
     setIsLeaderboardLoading: (state, action) => {
-      state.isVerified = action.payload;
+      state.isLeaderboardLoading = action.payload;
     },
     setLeaderboard: (state, action) => {
       const leaderboard = action.payload;
@@ -81,13 +81,13 @@ export const setupSlice = createSlice({
       state.leaderboard = rankedValues;
     },
     setNftDetails: (state, action) => {
-      state.isVerified = action.payload;
+      state.nftDetails = action.payload;
     },
     setIsMemoryDetailsLoading: (state, action) => {
-      state.isVerified = action.payload;
+      state.isMemoryDetailsLoading = action.payload;
     },
     setMemoryDetails: (state, action) => {
-      state.isVerified = action.payload;
+      state.memoryDetails = action.payload;
     },
     setLogout: (state) => {
       state.account = null;
@@ -96,13 +96,13 @@ export const setupSlice = createSlice({
       state.isVerified = false;
     },
     setPredictionRequests: (state, action) => {
-      state.isVerified = action.payload;
+      state.predictionRequests = action.payload;
     },
     setApprovedRequestsCount: (state, action) => {
-      state.isVerified = action.payload;
+      state.approvedRequestsCount = action.payload;
     },
     setOrbisConnection: (state, action) => {
-      state.isVerified = action.payload;
+      state.connection = action.payload;
     },
   },
 });

@@ -4,17 +4,12 @@ import { ConfigProvider } from 'antd';
 import { ApolloProvider } from '@apollo/client';
 import { THEME_CONFIG } from '@autonolas/frontend-library';
 
-import { wagmiConfig } from 'common-util/Login/config';
-
 /** wagmi config */
-// import { WagmiConfig as WagmiConfigProvider } from 'wagmi';
-// import { wagmiConfig } from 'common-util/Login/config';
 import { WagmiProvider, cookieToInitialState } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { Web3Modal } from '../context/Web3Modal'
+import { wagmiConfig } from 'common-util/Login/config';
 
 /** antd theme config */
-// import Layout from 'components/Layout';
 import GlobalStyle from 'components/GlobalStyles';
 import Meta from 'common-util/meta';
 import dynamic from 'next/dynamic';
