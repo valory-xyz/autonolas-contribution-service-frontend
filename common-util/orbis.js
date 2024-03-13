@@ -1,32 +1,32 @@
-// import { Orbis } from '@orbisclub/orbis-sdk';
-// import { forceIndex } from '@orbisclub/orbis-sdk/utils';
+import { Orbis } from '@orbisclub/orbis-sdk/index';
+import { forceIndex } from '@orbisclub/orbis-sdk/utils';
 
-class Orbis {
-  constructor() {
-    this.orbis = null;
-  }
+// class Orbis {
+//   constructor() {
+//     this.orbis = null;
+//   }
 
-  async initOrbis() {
-    if (this.orbis) {
-      return this.orbis;
-    }
+//   async initOrbis() {
+//     if (this.orbis) {
+//       return this.orbis;
+//     }
 
-    this.orbis = new Orbis();
-    return this.orbis;
-  }
+//     this.orbis = new Orbis();
+//     return this.orbis;
+//   }
 
-  async createPost(postContent) {
-    const orbis = await this.initOrbis();
-    return orbis.createPost(postContent);
-  }
+//   async createPost(postContent) {
+//     const orbis = await this.initOrbis();
+//     return orbis.createPost(postContent);
+//   }
 
-  async isConnected() {
-    const orbis = await this.initOrbis();
-    return orbis.isConnected();
-  }
-}
+//   async isConnected() {
+//     const orbis = await this.initOrbis();
+//     return orbis.isConnected();
+//   }
+// }
 
-const forceIndex = () => {};
+// const forceIndex = () => {};
 
 /**
  * Initialize the Orbis class object:
@@ -77,3 +77,8 @@ export const checkOrbisStatus = (status) => status === 200 || status === 201;
 export const checkOrbisNegativeStatus = (status) => status !== 200 && status !== 201;
 
 export default orbis;
+
+// "@orbisclub/orbis-sdk/@lit-protocol/sdk-browser/@walletconnect/ethereum-provider": "1.7.8"
+// "resolutions": {
+// "@web3modal/**/@walletconnect/ethereum-provider": "2.11.0"
+// },
