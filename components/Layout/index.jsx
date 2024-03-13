@@ -25,7 +25,7 @@ import {
   setIsMemoryDetailsLoading,
   setLeaderboard,
   setIsLeaderboardLoading,
-} from 'store/setup/actions';
+} from 'store/setup';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 // import useOrbis from 'common-util/hooks/useOrbis';
 import Login from '../Login';

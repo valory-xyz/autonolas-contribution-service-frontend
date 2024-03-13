@@ -10,7 +10,7 @@ import {
   notifyError,
 } from '@autonolas/frontend-library';
 
-import { setChainId, setUserBalance } from 'store/setup/actions';
+import { setChainId, setUserBalance } from 'store/setup';
 import {
   getChainId,
   getChainIdOrDefaultToMainnet,

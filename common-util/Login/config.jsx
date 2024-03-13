@@ -5,6 +5,7 @@ import { mainnet, goerli } from 'wagmi/chains';
 import { defaultWagmiConfig } from '@web3modal/wagmi';
 import { createWeb3Modal } from '@web3modal/wagmi/react'; /* eslint-disable-line import/no-unresolved */
 import { COLOR } from '@autonolas/frontend-library';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 
 // import { arbitrum, mainnet } from 'viem/chains'
 
@@ -20,9 +21,9 @@ export const SUPPORTED_CHAINS = (
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
 
 const metadata = {
-  name: 'Autonolas Member',
-  description: 'Manage your veOLAS and buOLAS',
-  url: 'https://member.autonolas.network/',
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
@@ -30,7 +31,7 @@ const metadata = {
  * @type {import('@web3modal/wagmi').WagmiOptions}
  */
 export const wagmiConfig = defaultWagmiConfig({
-  chains: [mainnet, goerli], // required
+  chains: SUPPORTED_CHAINS,
   projectId,
   metadata,
   ssr: true,

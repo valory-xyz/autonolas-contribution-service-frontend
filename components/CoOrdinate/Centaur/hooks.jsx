@@ -7,7 +7,7 @@ import {
   // notifySuccess
 } from '@autonolas/frontend-library';
 
-import { setMemoryDetails } from 'store/setup/actions';
+import { setMemoryDetails } from 'store/setup';
 import { addActionToCentaur } from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';

@@ -19,16 +19,14 @@ import GlobalStyle from 'components/GlobalStyles';
 import Meta from 'common-util/meta';
 import dynamic from 'next/dynamic';
 import client from '../apolloClient';
-import { wrapper } from '../store';
+import { store } from '../store';
 
 const Layout = dynamic(() => import('components/Layout'));
 
 const queryClient = new QueryClient();
 
-const MyApp = ({ Component, ...rest }) => {
+const MyApp = ({ Component, pageProps }) => {
   const initialState = cookieToInitialState(wagmiConfig);
-  const { store, props } = wrapper.useWrappedStore(rest);
-  console.log('rendering app', store.getState());
 
   return (
     <>
@@ -41,7 +39,7 @@ const MyApp = ({ Component, ...rest }) => {
             <QueryClientProvider client={queryClient}>
               <ApolloProvider client={client}>
                 <Layout>
-                  <Component {...props.pageProps} />
+                  <Component {...pageProps} />
                 </Layout>
               </ApolloProvider>
             </QueryClientProvider>

@@ -9,7 +9,7 @@ import { mainnet, useAccount } from 'wagmi';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, { ORBIS_SUPPORTED_CHAIN, checkOrbisNegativeStatus, checkOrbisStatus } from 'common-util/orbis';
-import { setOrbisConnection } from 'store/setup/actions';
+import { setOrbisConnection } from 'store/setup';
 
 // Messages object for success and error notifications
 const messages = {
