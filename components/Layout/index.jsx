@@ -29,7 +29,6 @@ import {
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 import useOrbis from 'common-util/hooks/useOrbis';
 import { wagmiConfig } from 'common-util/Login/config';
-import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
 import {
@@ -40,6 +39,7 @@ import {
   CustomMenu,
 } from './styles';
 
+const Login = dynamic(() => import('../Login'));
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
 const ServiceStatus = dynamic(() => import('./ServiceStatus'), { ssr: false });
 
