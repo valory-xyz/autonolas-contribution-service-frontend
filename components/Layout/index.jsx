@@ -17,7 +17,7 @@ import {
   TwitterOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-// import { watchAccount } from '@wagmi/core';
+import { watchAccount } from '@wagmi/core';
 
 import {
   setIsVerified,
@@ -27,7 +27,8 @@ import {
   setIsLeaderboardLoading,
 } from 'store/setup';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
-// import useOrbis from 'common-util/hooks/useOrbis';
+import useOrbis from 'common-util/hooks/useOrbis';
+import { wagmiConfig } from 'common-util/Login/config';
 import Login from '../Login';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
@@ -65,7 +66,7 @@ const NavigationBar = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState('homepage');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
-  // const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
+  const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -156,24 +157,25 @@ const NavigationBar = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   updateOrbisConnectionState();
-  // }, []);
+  useEffect(() => {
+    updateOrbisConnectionState();
+  }, []);
 
-  // TODO: watchAccount has been updated - https://wagmi.sh/core/api/actions/watchAccount
-  // useEffect(() => {
-  //   const unwatch = watchAccount((newAccount) => {
-  //     if (
-  //       account
-  //       && (newAccount.address !== account || isOrbisConnected)
-  //       && isOrbisConnected !== undefined
-  //     ) {
-  //       disconnect();
-  //     }
-  //   });
+  useEffect(() => {
+    const unwatch = watchAccount(wagmiConfig, {
+      onChange(data) {
+        if (
+          account
+          && (data.address !== account || isOrbisConnected)
+          && isOrbisConnected !== undefined
+        ) {
+          disconnect();
+        }
+      },
+    });
 
-  //   return () => unwatch();
-  // }, [account, disconnect, isOrbisConnected]);
+    return () => unwatch();
+  }, [account, disconnect, isOrbisConnected]);
 
   const logo = (
     <Logo onClick={() => router.push('/')}>

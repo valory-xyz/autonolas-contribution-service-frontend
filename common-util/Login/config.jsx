@@ -1,15 +1,10 @@
 /* eslint-disable jest/require-hook */
-
 import { cookieStorage, createStorage } from 'wagmi';
 import { mainnet, goerli } from 'wagmi/chains';
 import { defaultWagmiConfig } from '@web3modal/wagmi';
 import { createWeb3Modal } from '@web3modal/wagmi/react'; /* eslint-disable-line import/no-unresolved */
 import { COLOR } from '@autonolas/frontend-library';
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
-
-// import { arbitrum, mainnet } from 'viem/chains'
-
-// import { RPC_URLS } from 'common-util/Contracts';
 
 // if the PFP_URL contains staging, use goerli, else use mainnet
 export const SUPPORTED_CHAINS = (

@@ -1,6 +1,5 @@
-import { Orbis } from '@orbisclub/orbis-sdk/index';
+import { Orbis } from '@orbisclub/orbis-sdk';
 import { forceIndex } from '@orbisclub/orbis-sdk/utils';
-
 /**
  * Initialize the Orbis class object:
  * You can make this object available on other components
