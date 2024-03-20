@@ -229,5 +229,61 @@
     "timestamp": "1704380400",
     "location": "Google Meet",
     "description": ""
+  },
+  {
+    "id": "2ec1336d-5ff5-4497-8da4-132547c64289",
+    "title": "Launch of custom-type components",
+    "timestamp": "1704452444",
+    "location": "n/a",
+    "description": "https://olas.network/blog/introducing-developer-rewards-for-custom-type-packages"
+  },
+  {
+    "id": "e5e70707-2cc2-4583-978e-1fbc0cd2ebcd",
+    "title": "Launch of custom-type components",
+    "timestamp": "1704452444",
+    "location": "n/a",
+    "description": "https://olas.network/blog/introducing-developer-rewards-for-custom-type-packages"
+  },
+  {
+    "id": "faba7ed0-a8e6-48ec-b3e6-0d0e672e3761",
+    "title": "Launch of Olas Operate hub",
+    "timestamp": "1705662044",
+    "location": "n/a",
+    "description": "https://twitter.com/autonolas/status/1748390237620076602"
+  },
+  {
+    "id": "e245e247-56cf-427a-a235-4faa725b5280",
+    "title": "Olas Registry support for Solana",
+    "timestamp": "1704452444",
+    "location": "n/a",
+    "description": "https://registry.olas.network/solana/services"
+  },
+  {
+    "id": "221e72dc-f03e-4174-a367-a9b39489070a",
+    "title": "Code Arena audit deadline",
+    "timestamp": "1704711644",
+    "location": "n/a",
+    "description": "https://code4rena.com/audits/2023-12-olas"
+  },
+    {
+    "id": "1539276f-154c-4295-b97d-a4faa00a0a15",
+    "title": "Start of Cantina Solana audit competition",
+    "timestamp": "1704970844",
+    "location": "n/a",
+    "description": "https://cantina.xyz/competitions/829164bf-7fba-4b84-a6b8-76652205bd97"
+  },
+    {
+    "id": "3369f944-da53-496f-9271-75428ce81308",
+    "title": "End of Everest Phase of Staker Expeditions",
+    "timestamp": "1706180444",
+    "location": "n/a",
+    "description": "https://twitter.com/valoryag/status/1750546273118404635"
+  },
+    {
+    "id": "6a150db9-4b23-4ec0-b11e-6da429b4e32f",
+    "title": "David Minarsch on Fintech Blueprint Podcast",
+    "timestamp": "1705921244",
+    "location": "Spotify",
+    "description": "https://open.spotify.com/episode/3KHwwDYtMQl5yNbEYCKA3N?si=taAC0JaTSr-6_huXgiYl4g&nd=1&dlsi=a1d170cb714d4c46"
   }
 ]
