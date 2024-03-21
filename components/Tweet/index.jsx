@@ -58,14 +58,12 @@ export const TweetPropose = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVotingPower(
+      const has100kVotingPower = await checkVotingPower(
         account,
         HUNDRED_K_OLAS_IN_WEI,
       );
 
-      console.log('has100kVeOlas', has100kVeOlas);
-
-      if (!isStaging && !has100kVeOlas) {
+      if (!isStaging && !has100kVotingPower) {
         notifyError('You must hold at least 100k veOLAS to propose a tweet.');
         return;
       }
