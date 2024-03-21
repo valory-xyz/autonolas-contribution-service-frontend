@@ -62,6 +62,9 @@ export const TweetPropose = () => {
         account,
         HUNDRED_K_OLAS_IN_WEI,
       );
+
+      console.log('has100kVeOlas', has100kVeOlas);
+
       if (!isStaging && !has100kVeOlas) {
         notifyError('You must hold at least 100k veOLAS to propose a tweet.');
         return;
