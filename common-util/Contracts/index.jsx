@@ -13,6 +13,10 @@ import {
   // wveOlas
   WVEOLAS_ADDRESS_MAINNET,
   WVEOLAS_ABI_MAINNET,
+
+  // delegateContribute
+  DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
+  DELEGATE_CONTRIBUTE_ABI,
 } from 'common-util/AbiAndAddresses';
 
 import { getChainId, getProvider } from 'common-util/functions';
@@ -22,6 +26,7 @@ const ADDRESSES = {
     mintNft: MINT_NFT_CONTRACT_ADDRESS_MAINNET,
     veOlas: VEOLAS_ADDRESS_MAINNET,
     wveOlas: WVEOLAS_ADDRESS_MAINNET,
+    delegateContribute: DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
   },
   5: {
     mintNft: MINT_NFT_CONTRACT_ADDRESS_GOERLI,
@@ -78,6 +83,12 @@ export const getVeolasContract = (isViewOnly) => {
 
   const { address, abi } = getAddressAndAbi();
   const contract = getContract(abi, address);
+  return contract;
+};
+
+export const getDelegateContributeContract = () => {
+  const { chainId } = getWeb3Details();
+  const contract = getContract(DELEGATE_CONTRIBUTE_ABI, ADDRESSES[chainId].delegateContribute);
   return contract;
 };
 

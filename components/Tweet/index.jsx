@@ -13,7 +13,7 @@ import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_LENGTH } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposals } from './Proposals';
-import { checkVeolasThreshold } from '../MembersList/requests';
+import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import {
   TweetLength,
@@ -58,7 +58,7 @@ export const TweetPropose = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVeOlas = await checkVeolasThreshold(
+      const has100kVeOlas = await checkVotingPower(
         account,
         HUNDRED_K_OLAS_IN_WEI,
       );
