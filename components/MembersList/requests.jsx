@@ -24,8 +24,9 @@ export const checkVeolasThreshold = async (account, thresholdInWei) => {
 };
 
 export const checkVotingPower = async (account, thresholdInWei) => {
-  const balance = await fetchVotingPower({ account });
-  const bNBalance = BigNumber.from(balance);
+  const votingPower = await fetchVotingPower({ account });
+  console.log('votingPower', votingPower);
+  const bNBalance = BigNumber.from(votingPower.totalVotingPower);
   const processedThreshold = BigNumber.from(thresholdInWei);
   return bNBalance.gte(processedThreshold);
 };
