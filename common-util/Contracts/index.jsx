@@ -87,8 +87,7 @@ export const getVeolasContract = (isViewOnly) => {
 };
 
 export const getDelegateContributeContract = () => {
-  const { chainId } = getWeb3Details();
-  const contract = getContract(DELEGATE_CONTRIBUTE_ABI, ADDRESSES[chainId].delegateContribute);
+  const contract = getContract(DELEGATE_CONTRIBUTE_ABI, DELEGATE_CONTRIBUTE_ADDRESS_MAINNET);
   return contract;
 };
 
