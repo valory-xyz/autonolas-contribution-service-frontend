@@ -64,7 +64,7 @@ export const TweetPropose = () => {
       );
 
       if (!isStaging && !has100kVotingPower) {
-        notifyError('You must hold at least 100k veOLAS to propose a tweet.');
+        notifyError('You must have at least 100k veOLAS voting power to propose a tweet.');
         return;
       }
 
