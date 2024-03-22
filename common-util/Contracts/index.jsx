@@ -13,6 +13,10 @@ import {
   // wveOlas
   WVEOLAS_ADDRESS_MAINNET,
   WVEOLAS_ABI_MAINNET,
+
+  // delegateContribute
+  DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
+  DELEGATE_CONTRIBUTE_ABI,
 } from 'common-util/AbiAndAddresses';
 
 import { getChainId, getProvider } from 'common-util/functions';
@@ -78,6 +82,11 @@ export const getVeolasContract = (isViewOnly) => {
 
   const { address, abi } = getAddressAndAbi();
   const contract = getContract(abi, address);
+  return contract;
+};
+
+export const getDelegateContributeContract = () => {
+  const contract = getContract(DELEGATE_CONTRIBUTE_ABI, DELEGATE_CONTRIBUTE_ADDRESS_MAINNET);
   return contract;
 };
 
