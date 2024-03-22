@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "api/**/*.js": {
+      "memory": 3008,
+      "maxDuration": 300
+    },
+    "pages/**/*.{js,ts,jsx,tsx}": {
+      "memory": 3008,
+      "maxDuration": 300
+    }
+  }
+}
