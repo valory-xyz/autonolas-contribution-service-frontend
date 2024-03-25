@@ -91,6 +91,14 @@ const CalendarPage = () => {
               dateCellRender={dateCellRender}
               monthCellRender={monthCellRender}
             />
+            <div style={{ marginTop: '20px' }}>
+              <Text>
+                For a full list of what has happened in the olas ecosystem, follow{' '}
+                <a href="https://twitter.com/autonolas/status/1676576697863507968" target="_blank" rel="noopener noreferrer">
+                  this thread
+                </a>.
+              </Text>
+            </div>
           </Col>
         )}
         <Col span={screens.lg ? 8 : 24}>
