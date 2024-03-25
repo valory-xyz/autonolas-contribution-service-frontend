@@ -238,52 +238,122 @@
     "description": "https://olas.network/blog/introducing-developer-rewards-for-custom-type-packages"
   },
   {
-    "id": "e5e70707-2cc2-4583-978e-1fbc0cd2ebcd",
-    "title": "Launch of custom-type components",
-    "timestamp": "1704452444",
-    "location": "n/a",
-    "description": "https://olas.network/blog/introducing-developer-rewards-for-custom-type-packages"
-  },
-  {
     "id": "faba7ed0-a8e6-48ec-b3e6-0d0e672e3761",
     "title": "Launch of Olas Operate hub",
-    "timestamp": "1705662044",
+    "timestamp": "1705662000",
     "location": "n/a",
     "description": "https://twitter.com/autonolas/status/1748390237620076602"
   },
   {
     "id": "e245e247-56cf-427a-a235-4faa725b5280",
     "title": "Olas Registry support for Solana",
-    "timestamp": "1704452444",
+    "timestamp": "1704452400",
     "location": "n/a",
     "description": "https://registry.olas.network/solana/services"
   },
   {
     "id": "221e72dc-f03e-4174-a367-a9b39489070a",
     "title": "Code Arena audit deadline",
-    "timestamp": "1704711644",
+    "timestamp": "1704711600",
     "location": "n/a",
     "description": "https://code4rena.com/audits/2023-12-olas"
   },
     {
     "id": "1539276f-154c-4295-b97d-a4faa00a0a15",
     "title": "Start of Cantina Solana audit competition",
-    "timestamp": "1704970844",
+    "timestamp": "1704970800",
     "location": "n/a",
     "description": "https://cantina.xyz/competitions/829164bf-7fba-4b84-a6b8-76652205bd97"
   },
     {
     "id": "3369f944-da53-496f-9271-75428ce81308",
     "title": "End of Everest Phase of Staker Expeditions",
-    "timestamp": "1706180444",
+    "timestamp": "1706180400",
     "location": "n/a",
     "description": "https://twitter.com/valoryag/status/1750546273118404635"
   },
     {
     "id": "6a150db9-4b23-4ec0-b11e-6da429b4e32f",
     "title": "David Minarsch on Fintech Blueprint Podcast",
-    "timestamp": "1705921244",
+    "timestamp": "1705921200",
     "location": "Spotify",
     "description": "https://open.spotify.com/episode/3KHwwDYtMQl5yNbEYCKA3N?si=taAC0JaTSr-6_huXgiYl4g&nd=1&dlsi=a1d170cb714d4c46"
+  },
+    {
+    "id": "506fe7a4-f42f-4da2-9ec9-a8898d4e241e",
+    "title": "David Minarsch on Epicenter Podcast",
+    "timestamp": "1706353200",
+    "location": "YouTube",
+    "description": "https://www.youtube.com/watch?v=Qxie-FrJy6M&t=1s"
+  },
+    {
+    "id": "14d1a950-a8aa-4506-a646-75e6c3e726f9",
+    "title": "Olas Currents 1",
+    "timestamp": "1708617600",
+    "location": "X",
+    "description": "https://twitter.com/valoryag/status/1760714958352875735"
+  },
+    {
+    "id": "83952a29-3f43-4d73-b5f7-40ae992657a3",
+    "title": "Olas DAO members at Decentralized AGI in Denver",
+    "timestamp": "1708588800",
+    "location": "Denver",
+    "description": "https://lu.ma/fvoeazk8"
+  },
+    {
+    "id": "b3ed0404-aa27-497c-9881-f2dd1f794ac7",
+    "title": "Agents Unleashed - event hosted by Olas at ETH Denver",
+    "timestamp": "1709280000",
+    "location": "Denver",
+    "description": "https://tokenproof.xyz/event/agentsunleashed"
+  },
+    {
+    "id": "99eb20db-3ba5-42dc-ae56-5e0d9f2832cb",
+    "title": "Olas Currents 2",
+    "timestamp": "1709827200",
+    "location": "X",
+    "description": "https://twitter.com/i/spaces/1OwxWYrqvOnGQ"
+  },
+    {
+    "id": "151b0124-6d28-4346-a592-453c0a365a18",
+    "title": "Olas Currents 3",
+    "timestamp": "1711036800",
+    "location": "X",
+    "description": "https://twitter.com/i/spaces/1ynJOyWepdlKR"
+  },
+    {
+    "id": "616688f9-2982-43b6-bd67-67bdc486ab69",
+    "title": "Staking Workshop",
+    "timestamp": "1711465200",
+    "location": "Discord",
+    "description": "https://discord.gg/RHY6eJ35ar"
+  },
+     {
+    "id": "37cad3a8-18cc-4f89-8f6a-e28014d9c598",
+    "title": "Staking Workshop",
+    "timestamp": "1712066400",
+    "location": "Discord",
+    "description": "https://discord.gg/RHY6eJ35ar"
+  },
+      {
+    "id": "5177a3dd-b7e6-4e7b-974c-de2953fa98a7",
+    "title": "Staking Workshop",
+    "timestamp": "1712671200",
+    "location": "Discord",
+    "description": "https://discord.gg/RHY6eJ35ar"
+  },
+      {
+    "id": "e795f350-dbcd-4745-af64-c82972bfe5fc",
+    "title": "Staking Workshop",
+    "timestamp": "1713276000",
+    "location": "Discord",
+    "description": "https://discord.gg/RHY6eJ35ar"
+  },
+      {
+    "id": "67afb0e5-c690-4d1f-9650-3101e037f244",
+    "title": "Staking Workshop",
+    "timestamp": "1713880800",
+    "location": "Discord",
+    "description": "https://discord.gg/RHY6eJ35ar"
   }
 ]
