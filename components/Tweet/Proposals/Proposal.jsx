@@ -13,7 +13,7 @@ import DisplayName from 'common-util/DisplayName';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { VEOLAS_QUORUM } from 'util/constants';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { fetchVeolasBalance } from '../../MembersList/requests';
+import { fetchVotingPower } from '../../MembersList/requests';
 import {
   useCentaursFunctionalities,
   useProposals,
@@ -64,7 +64,7 @@ export const Proposal = ({ proposal }) => {
       setIsApproveLoading(true);
 
       // Check if the user has at least 1 veOlas
-      const accountVeOlasBalance = await fetchVeolasBalance({ account });
+      const accountVeOlasBalance = await fetchVotingPower({ account });
       const accountVeOlasBalanceInEth = Number(
         ethers.utils.formatEther(accountVeOlasBalance),
       );

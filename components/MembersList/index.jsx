@@ -11,7 +11,7 @@ import { areAddressesEqual, notifyError, notifySuccess } from '@autonolas/fronte
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';
 import DisplayName from 'common-util/DisplayName';
-import { fetchVeolasBalance } from './requests';
+import { fetchVotingPower } from './requests';
 
 const { Text } = Typography;
 
@@ -74,7 +74,7 @@ export const MembersList = () => {
   const onJoin = async () => {
     setJoinLoading(true);
     try {
-      const balance = await fetchVeolasBalance({ account });
+      const balance = await fetchVotingPower({ account });
       if (Number(balance) === 0) {
         notifyError(
           <>

@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import Link from 'next/link';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
 import {

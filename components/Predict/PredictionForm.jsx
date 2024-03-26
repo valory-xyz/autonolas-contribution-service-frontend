@@ -13,7 +13,7 @@ import {
   postPredictionRequest,
 } from 'common-util/api/predictionRequests';
 
-import { checkVeolasThreshold } from '../MembersList/requests';
+import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 
 const { TextArea } = Input;
@@ -45,7 +45,7 @@ const PredictionForm = () => {
       return;
     }
 
-    const thresholdIsMet = checkVeolasThreshold(
+    const thresholdIsMet = checkVotingPower(
       account,
       '5000000000000000000000',
     );

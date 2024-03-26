@@ -8,11 +8,9 @@ import {
   // veOlas
   VEOLAS_ADDRESS_GOERLI,
   VEOLAS_ADDRESS_MAINNET,
-  VEOLAS_ABI,
 
   // wveOlas
   WVEOLAS_ADDRESS_MAINNET,
-  WVEOLAS_ABI_MAINNET,
 
   // delegateContribute
   DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
@@ -62,26 +60,6 @@ export const getMintContract = () => {
     ADDRESSES[chainId].mintNft,
   );
 
-  return contract;
-};
-
-export const getVeolasContract = (isViewOnly) => {
-  const { chainId } = getWeb3Details();
-
-  const getAddressAndAbi = () => {
-    // for view methods use wveolas abi and address
-    if (chainId === 1) {
-      if (isViewOnly) {
-        return { abi: WVEOLAS_ABI_MAINNET, address: WVEOLAS_ADDRESS_MAINNET };
-      }
-      return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_MAINNET };
-    }
-
-    return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_GOERLI };
-  };
-
-  const { address, abi } = getAddressAndAbi();
-  const contract = getContract(abi, address);
   return contract;
 };
 

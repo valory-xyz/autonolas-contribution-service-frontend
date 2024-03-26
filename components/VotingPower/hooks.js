@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { fetchVeolasBalance } from 'components/MembersList/requests';
+import { fetchVotingPower } from 'components/MembersList/requests';
 import { fetchDelegatorList } from './requests';
 
 export const useVeolasBalance = (account) => {
   const [balance, setBalance] = useState();
 
   const getBalance = async () => {
-    const veolasBalance = await fetchVeolasBalance({ account });
+    const veolasBalance = await fetchVotingPower({ account });
     setBalance(veolasBalance);
   };
 
