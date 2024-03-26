@@ -24,6 +24,9 @@ const GlobalStyle = createGlobalStyle`
   .p-0 {
     padding: 0 !important;
   }
+  .p-12 {
+    padding: 12px !important;
+  }
   .px-12 {
     padding: 0 12px !important;
   }
@@ -45,14 +48,14 @@ const GlobalStyle = createGlobalStyle`
   .pl-24 {
     padding-left: 24px;
   }
-  .mb-2 {
-    margin-bottom: 2px !important;
+  .my-4 {
+    margin: 4px 0 !important;
   }
-  .mb-4 {
-    margin-bottom: 4px !important;
+  .my-8 {
+    margin: 8px 0 !important;
   }
-  .mb-48 {
-    margin-bottom: 48px !important;
+  .mr-4 {
+    margin-right: 4px;
   }
   .mr-8 {
     margin-right: 8px !important;
@@ -60,11 +63,11 @@ const GlobalStyle = createGlobalStyle`
   .mr-12 {
     margin-right: 12px !important;
   }
+  .mr-24 {
+    margin-right: 24px;
+  }
   .mr-48 {
     margin-right: 48px !important;
-  }
-  .mt-8 {
-    margin-top: 8px;
   }
   .mb-0 {
     margin-bottom: 0px !important;
@@ -74,6 +77,12 @@ const GlobalStyle = createGlobalStyle`
   }
   .m-24 {
     margin: 24px !important;
+  }
+  .mb-2 {
+    margin-bottom: 2px !important;
+  }
+  .mb-4 {
+    margin-bottom: 4px !important;
   }
   .mb-8 {
     margin-bottom: 8px !important;
@@ -87,11 +96,8 @@ const GlobalStyle = createGlobalStyle`
   .mb-24 {
     margin-bottom: 24px;
   }
-  .mr-8 {
-    margin-right: 8px;
-  }
-  .mr-24 {
-    margin-right: 24px;
+  .mb-48 {
+    margin-bottom: 48px !important;
   }
   .mt-0 {
     margin-top: 0px !important;
