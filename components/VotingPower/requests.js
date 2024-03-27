@@ -1,4 +1,4 @@
-import { getDelegateContributeContract } from 'common-util/Contracts';
+import { getDelegateContributeContract, getVeolasContract } from 'common-util/Contracts';
 
 /**
  * delegatorList - those who delegated veOlas to the provided account
@@ -21,8 +21,14 @@ export const fetchDelegatee = async ({ account }) => {
 /**
  * delegates Contribute voting power to an address.
  */
-export const delegate = async ({ delegatee }) => {
+export const delegate = async ({ account, delegatee }) => {
   const contract = getDelegateContributeContract();
-  const result = await contract.methods.delegate(delegatee).call();
+  const result = await contract.methods.delegate(delegatee).send({ from: account });
   return result;
+};
+
+export const fetchVeolasBalance = async ({ account }) => {
+  const contract = getVeolasContract();
+  const balance = await contract.methods.getVotes(account).call();
+  return balance;
 };

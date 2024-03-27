@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { isValidAddress } from '@autonolas/frontend-library';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { StyledMenu } from './styles';
-import { formatWeiBalanceWithCommas, truncateAddress } from './utils';
+import { DELEGATE_ERRORS_MAP, formatWeiBalanceWithCommas, truncateAddress } from './utils';
 import { useDelegatee, useDelegatorList } from './hooks';
-import { delegate } from './requests';
+import { delegate, fetchVeolasBalance } from './requests';
 
 const { Text, Paragraph } = Typography;
 
@@ -26,7 +26,22 @@ const DelegateMenu = (props) => {
 
     try {
       const { address } = values;
-      await delegate({ delegatee: address });
+
+      if (address === account) {
+        throw new Error('NoSelfDelegation');
+      }
+
+      if (delegatee === address) {
+        throw new Error('AlreadyDelegatedToSameDelegatee');
+      }
+
+      const balance = await fetchVeolasBalance({ account });
+      if (balance === '0') {
+        throw new Error('NoBalance');
+      }
+
+      await delegate({ account, delegatee: address });
+
       setDelegatee(address);
       form.resetFields();
       notification.success({
@@ -35,8 +50,9 @@ const DelegateMenu = (props) => {
       setDelegateFormVisible(false);
     } catch (error) {
       console.error(error);
+
       notification.error({
-        message: 'Couldn’t delegate',
+        message: DELEGATE_ERRORS_MAP[error.message] || 'Couldn\'t delegate',
       });
     } finally {
       setIsSending(false);

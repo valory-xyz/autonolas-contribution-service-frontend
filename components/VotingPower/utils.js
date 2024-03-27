@@ -48,3 +48,9 @@ export const truncateAddress = (address, startLimit = 5, endLimit = 3) => (addre
     address.length - endLimit,
   )}`
   : '--');
+
+export const DELEGATE_ERRORS_MAP = {
+  NoSelfDelegation: 'Can\'t delegate to yourself',
+  AlreadyDelegatedToSameDelegatee: 'You already delegated to this delegatee',
+  NoBalance: 'No balance available to delegate',
+};
