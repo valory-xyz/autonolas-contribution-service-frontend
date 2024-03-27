@@ -10,6 +10,15 @@ export const fetchDelegatorList = async ({ account }) => {
 };
 
 /**
+ * delegatee - who you delegated to
+ */
+export const fetchDelegatee = async ({ account }) => {
+  const contract = getDelegateContributeContract();
+  const delegatee = await contract.methods.mapDelegation(account).call();
+  return delegatee;
+};
+
+/**
  * delegates Contribute voting power to an address.
  */
 export const delegate = async ({ delegatee }) => {

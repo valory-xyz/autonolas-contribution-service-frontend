@@ -30,7 +30,7 @@ const SocialPosterContainer = styled.div`
 
 const ToProposeTweetText = () => (
   <Text type="secondary">
-    To propose a tweet, you must hold at least 100k veOLAS.
+    To propose a tweet, you must have at least 100k veOLAS voting power.
   </Text>
 );
 

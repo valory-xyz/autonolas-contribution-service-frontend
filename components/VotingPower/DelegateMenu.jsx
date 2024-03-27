@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { isValidAddress } from '@autonolas/frontend-library';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { truncateAddress } from 'common-util/functions';
 import { StyledMenu } from './styles';
-import { formatWeiBalanceWithCommas } from './utils';
-import { useDelegatorList } from './hooks';
+import { formatWeiBalanceWithCommas, truncateAddress } from './utils';
+import { useDelegatee, useDelegatorList } from './hooks';
 import { delegate } from './requests';
 
 const { Text, Paragraph } = Typography;
@@ -17,19 +16,18 @@ const DelegateMenu = (props) => {
   const [form] = Form.useForm();
   const { account } = useHelpers();
   const { delegatorList } = useDelegatorList(account);
+  const { delegatee, setDelegatee } = useDelegatee(account);
 
-  const [delegateddAddress, setDelegatedAddress] = useState(null);
   const [delegateFormVisible, setDelegateFormVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   const handleSubmit = async (values) => {
     setIsSending(true);
-    setDelegatedAddress(null);
 
     try {
       const { address } = values;
       await delegate({ delegatee: address });
-      setDelegatedAddress(address);
+      setDelegatee(address);
       form.resetFields();
       notification.success({
         message: 'Delegated voting power',
@@ -53,8 +51,17 @@ const DelegateMenu = (props) => {
       </Paragraph>
       <Divider className="my-8" />
       <Text strong>You’ve delegated to:</Text>
-      <Paragraph className="my-8">
-        {delegateddAddress ? truncateAddress(delegateddAddress) : 'None'}
+      <Paragraph className="my-8" title={delegatee}>
+        {delegatee ? (
+          <a
+            href={`https://etherscan.io/address/${delegatee}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {truncateAddress(delegatee, 7, 5)}
+          </a>
+        )
+          : 'None'}
       </Paragraph>
       {delegateFormVisible && (
         <>
@@ -98,8 +105,14 @@ const DelegateMenu = (props) => {
       <Text strong>Delegated to you:</Text>
       {delegatorList.length > 0 ? (
         delegatorList.map((delegator) => (
-          <Paragraph className="my-4" key={delegator}>
-            {truncateAddress(delegator)}
+          <Paragraph className="my-4" key={delegator} title={delegator}>
+            <a
+              href={`https://etherscan.io/address/${delegator}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {truncateAddress(delegator, 7, 5)}
+            </a>
           </Paragraph>
         ))
       ) : (

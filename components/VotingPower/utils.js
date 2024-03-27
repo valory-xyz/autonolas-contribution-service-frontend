@@ -9,15 +9,15 @@ export const formatWeiBalance = (balanceInWei) => {
 
   const formatNumberWithSuffix = (number) => {
     if (number >= 1e9) {
-      return `${(number / 1e9).toFixed(1)}B`;
+      return `${Math.floor((number / 1e9) * 10) / 10}B`;
     }
     if (number >= 1e6) {
-      return `${(number / 1e6).toFixed(1)}M`;
+      return `${(Math.floor((number / 1e6) * 10) / 10)}M`;
     }
     if (number >= 1e3) {
-      return `${(number / 1e3).toFixed(1)}k`;
+      return `${(Math.floor((number / 1e3) * 10) / 10)}k`;
     }
-    return number.toFixed(1);
+    return Math.floor(number * 10) / 10;
   };
 
   return formatNumberWithSuffix(parseFloat(balanceInEther));
@@ -36,3 +36,15 @@ export const formatWeiBalanceWithCommas = (balanceInWei) => {
 
   return formatNumberWithCommas(parseInt(balanceInEther, 10));
 };
+
+/**
+ * Truncates an Ethereum address to show the first startLimit characters,
+ * a ..., and the last endLimit characters
+ * @param {string} address - The Ethereum address to truncate
+ * @returns {string} The truncated address
+ */
+export const truncateAddress = (address, startLimit = 5, endLimit = 3) => (address
+  ? `${address.substring(0, startLimit)}...${address.substring(
+    address.length - endLimit,
+  )}`
+  : '--');
