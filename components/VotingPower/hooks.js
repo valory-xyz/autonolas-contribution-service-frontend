@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchVotingPower } from 'components/MembersList/requests';
 import { ZERO_ADDRESS } from 'util/constants';
-import { fetchDelegatee, fetchDelegatorList } from './requests';
+import { delegate, fetchDelegatee, fetchDelegatorList } from './requests';
+import { validateBeforeDelegate } from './utils';
 
-export const useVotingPower = (account) => {
+export const useFetchVotingPower = (account) => {
   const [balance, setBalance] = useState();
 
   const getVotingPower = async () => {
@@ -21,7 +22,7 @@ export const useVotingPower = (account) => {
   return { balance };
 };
 
-export const useDelegatorList = (account) => {
+export const useFetchDelegatorList = (account) => {
   const [delegatorList, setDelegatorList] = useState([]);
 
   const getDelegatorList = async () => {
@@ -41,7 +42,7 @@ export const useDelegatorList = (account) => {
   return { delegatorList };
 };
 
-export const useDelegatee = (account) => {
+export const useFetchDelegatee = (account) => {
   const [delegatee, setDelegatee] = useState(null);
 
   const getDelegatee = async () => {
@@ -61,4 +62,58 @@ export const useDelegatee = (account) => {
   }, [account]);
 
   return { delegatee, setDelegatee };
+};
+
+export const useDelegate = (account, delegatee) => {
+  const [isSending, setIsSending] = useState(false);
+
+  const handleDelegate = async ({ values, onSuccess, onError }) => {
+    setIsSending(true);
+
+    try {
+      const { address } = values;
+
+      await validateBeforeDelegate({
+        account,
+        delegatee,
+        newDelegatee: address,
+      });
+
+      await delegate({ account, delegatee: address });
+
+      onSuccess(address);
+    } catch (error) {
+      onError(error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return { isDelegating: isSending, handleDelegate };
+};
+
+export const useUndelegate = (account, delegatee) => {
+  const [isSending, setIsSending] = useState(false);
+
+  const handleUndelegate = async ({ onSuccess, onError }) => {
+    setIsSending(true);
+
+    try {
+      await validateBeforeDelegate({
+        account,
+        delegatee,
+        newDelegatee: ZERO_ADDRESS,
+      });
+
+      await delegate({ account, delegatee: ZERO_ADDRESS });
+
+      onSuccess();
+    } catch (error) {
+      onError(error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return { canUndelegate: !!delegatee, isUndelegating: isSending, handleUndelegate };
 };

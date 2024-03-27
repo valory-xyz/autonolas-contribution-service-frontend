@@ -4,7 +4,7 @@ import { useHelpers } from 'common-util/hooks/useHelpers';
 import { VerticalDivider } from './styles';
 import { formatWeiBalance } from './utils';
 import DelegateMenu from './DelegateMenu';
-import { useVotingPower } from './hooks';
+import { useFetchVotingPower } from './hooks';
 
 const { useBreakpoint } = Grid;
 
@@ -12,7 +12,7 @@ const VotingPower = () => {
   const screens = useBreakpoint();
 
   const { account } = useHelpers();
-  const { balance } = useVotingPower(account);
+  const { balance } = useFetchVotingPower(account);
 
   if (screens.xs) return null;
   if (!balance) return null;

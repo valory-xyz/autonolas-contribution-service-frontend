@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import { fetchVeolasBalance } from './requests';
 /**
  *
  * @param {string} balanceInWei
@@ -48,6 +49,21 @@ export const truncateAddress = (address, startLimit = 5, endLimit = 3) => (addre
     address.length - endLimit,
   )}`
   : '--');
+
+export const validateBeforeDelegate = async ({ account, delegatee, newDelegatee }) => {
+  if (newDelegatee === account) {
+    throw new Error('NoSelfDelegation');
+  }
+
+  if (delegatee === newDelegatee) {
+    throw new Error('AlreadyDelegatedToSameDelegatee');
+  }
+
+  const balance = await fetchVeolasBalance({ account });
+  if (balance === '0') {
+    throw new Error('NoBalance');
+  }
+};
 
 export const DELEGATE_ERRORS_MAP = {
   NoSelfDelegation: 'Can\'t delegate to yourself',

@@ -6,57 +6,67 @@ import { useState } from 'react';
 import { isValidAddress } from '@autonolas/frontend-library';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { StyledMenu } from './styles';
-import { DELEGATE_ERRORS_MAP, formatWeiBalanceWithCommas, truncateAddress } from './utils';
-import { useDelegatee, useDelegatorList } from './hooks';
-import { delegate, fetchVeolasBalance } from './requests';
+import {
+  DELEGATE_ERRORS_MAP,
+  formatWeiBalanceWithCommas,
+  truncateAddress,
+} from './utils';
+import {
+  useFetchDelegatee,
+  useFetchDelegatorList,
+  useDelegate,
+  useUndelegate,
+} from './hooks';
 
 const { Text, Paragraph } = Typography;
 
 const DelegateMenu = (props) => {
   const [form] = Form.useForm();
   const { account } = useHelpers();
-  const { delegatorList } = useDelegatorList(account);
-  const { delegatee, setDelegatee } = useDelegatee(account);
+  const { delegatorList } = useFetchDelegatorList(account);
+  const { delegatee, setDelegatee } = useFetchDelegatee(account);
+
+  const { isDelegating, handleDelegate } = useDelegate(account, delegatee);
+  const { canUndelegate, isUndelegating, handleUndelegate } = useUndelegate(
+    account,
+    delegatee,
+  );
 
   const [delegateFormVisible, setDelegateFormVisible] = useState(false);
-  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = async (values) => {
-    setIsSending(true);
+  const onSubmitDelegate = (values) => {
+    handleDelegate({
+      values,
+      onSuccess: (address) => {
+        setDelegatee(address);
+        form.resetFields();
+        notification.success({
+          message: 'Delegated voting power',
+        });
+        setDelegateFormVisible(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        notification.error({
+          message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't delegate",
+        });
+      },
+    });
+  };
 
-    try {
-      const { address } = values;
-
-      if (address === account) {
-        throw new Error('NoSelfDelegation');
-      }
-
-      if (delegatee === address) {
-        throw new Error('AlreadyDelegatedToSameDelegatee');
-      }
-
-      const balance = await fetchVeolasBalance({ account });
-      if (balance === '0') {
-        throw new Error('NoBalance');
-      }
-
-      await delegate({ account, delegatee: address });
-
-      setDelegatee(address);
-      form.resetFields();
-      notification.success({
-        message: 'Delegated voting power',
-      });
-      setDelegateFormVisible(false);
-    } catch (error) {
-      console.error(error);
-
-      notification.error({
-        message: DELEGATE_ERRORS_MAP[error.message] || 'Couldn\'t delegate',
-      });
-    } finally {
-      setIsSending(false);
-    }
+  const onUndelegateClick = () => {
+    handleUndelegate({
+      onSuccess: () => {
+        setDelegatee(null);
+        form.resetFields();
+      },
+      onError: (error) => {
+        console.error(error);
+        notification.error({
+          message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't undelegate",
+        });
+      },
+    });
   };
 
   return (
@@ -76,8 +86,9 @@ const DelegateMenu = (props) => {
           >
             {truncateAddress(delegatee, 7, 5)}
           </a>
-        )
-          : 'None'}
+        ) : (
+          'None'
+        )}
       </Paragraph>
       {delegateFormVisible && (
         <>
@@ -88,7 +99,7 @@ const DelegateMenu = (props) => {
           >
             Hide
           </Button>
-          <Form onFinish={handleSubmit} form={form}>
+          <Form onFinish={onSubmitDelegate} form={form}>
             <Form.Item
               name="address"
               className="mb-8"
@@ -105,17 +116,29 @@ const DelegateMenu = (props) => {
               <Input placeholder="Address to delegate to" />
             </Form.Item>
             <Form.Item className="mb-8">
-              <Button htmlType="submit" type="primary" loading={isSending}>
-                {isSending ? 'Delegating' : 'Delegate'}
+              <Button htmlType="submit" type="primary" loading={isDelegating}>
+                {isDelegating ? 'Delegating' : 'Delegate'}
               </Button>
             </Form.Item>
           </Form>
         </>
       )}
       {!delegateFormVisible && (
-        <Button size="small" onClick={() => setDelegateFormVisible(true)}>
-          Delegate
-        </Button>
+        <>
+          <Button size="small" onClick={() => setDelegateFormVisible(true)}>
+            Delegate
+          </Button>
+          {canUndelegate && (
+            <Button
+              className="ml-4"
+              size="small"
+              loading={isUndelegating}
+              onClick={onUndelegateClick}
+            >
+              Undelegate
+            </Button>
+          )}
+        </>
       )}
       <Divider className="mt-8 mb-12" />
       <Text strong>Delegated to you:</Text>
