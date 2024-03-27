@@ -1,4 +1,8 @@
-import { getDelegateContributeContract, getVeolasContract } from 'common-util/Contracts';
+import {
+  getDelegateContributeContract,
+  getVeolasContract,
+} from 'common-util/Contracts';
+import { getEstimatedGasLimit } from 'common-util/functions/requests';
 
 /**
  * delegatorList - those who delegated veOlas to the provided account
@@ -23,7 +27,10 @@ export const fetchDelegatee = async ({ account }) => {
  */
 export const delegate = async ({ account, delegatee }) => {
   const contract = getDelegateContributeContract();
-  const result = await contract.methods.delegate(delegatee).send({ from: account });
+  const delegateFn = contract.methods.delegate(delegatee);
+  const estimatedGas = await getEstimatedGasLimit(delegateFn, account);
+  const result = await delegateFn
+    .send({ from: account, gasLimit: estimatedGas });
   return result;
 };
 
