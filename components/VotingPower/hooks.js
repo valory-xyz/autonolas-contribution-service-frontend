@@ -3,17 +3,17 @@ import { fetchVotingPower } from 'components/MembersList/requests';
 import { ZERO_ADDRESS } from 'util/constants';
 import { fetchDelegatee, fetchDelegatorList } from './requests';
 
-export const useVeolasBalance = (account) => {
+export const useVotingPower = (account) => {
   const [balance, setBalance] = useState();
 
-  const getBalance = async () => {
-    const veolasBalance = await fetchVotingPower({ account });
-    setBalance(veolasBalance);
+  const getVotingPower = async () => {
+    const votingPower = await fetchVotingPower({ account });
+    setBalance(votingPower);
   };
 
   useEffect(() => {
     if (account) {
-      getBalance();
+      getVotingPower();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);

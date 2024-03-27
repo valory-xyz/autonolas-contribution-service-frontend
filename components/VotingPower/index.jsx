@@ -1,15 +1,20 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown, Grid } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { VerticalDivider } from './styles';
 import { formatWeiBalance } from './utils';
 import DelegateMenu from './DelegateMenu';
-import { useVeolasBalance } from './hooks';
+import { useVotingPower } from './hooks';
+
+const { useBreakpoint } = Grid;
 
 const VotingPower = () => {
-  const { account } = useHelpers();
-  const { balance } = useVeolasBalance(account);
+  const screens = useBreakpoint();
 
+  const { account } = useHelpers();
+  const { balance } = useVotingPower(account);
+
+  if (screens.xs) return null;
   if (!balance) return null;
 
   return (
