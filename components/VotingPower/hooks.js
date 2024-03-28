@@ -118,7 +118,7 @@ export const useFetchDelegatee = (account) => {
   const getDelegatee = async () => {
     try {
       const result = await fetchDelegatee({ account });
-      if (result !== ethers.constants.AddressZero) {
+      if (result !== ethers.ZeroAddress) {
         setDelegatee(result);
       }
     } catch (error) {
@@ -190,10 +190,9 @@ export const useUndelegate = (account, delegatee, balance) => {
         account,
         balance,
         delegatee,
-        newDelegatee: ethers.constants.AddressZero,
+        newDelegatee: ethers.ZeroAddress,
       });
-
-      await delegate({ account, delegatee: ethers.constants.AddressZero });
+      await delegate({ account, delegatee: ethers.ZeroAddress });
 
       onSuccess();
     } catch (error) {
