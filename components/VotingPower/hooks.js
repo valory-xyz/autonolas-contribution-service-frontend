@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { fetchVotingPower } from 'components/MembersList/requests';
-import { ZERO_ADDRESS } from 'util/constants';
 import { multicall } from '@wagmi/core';
 import {
   VEOLAS_ABI,
@@ -119,7 +118,7 @@ export const useFetchDelegatee = (account) => {
   const getDelegatee = async () => {
     try {
       const result = await fetchDelegatee({ account });
-      if (result !== ZERO_ADDRESS) {
+      if (result !== ethers.constants.AddressZero) {
         setDelegatee(result);
       }
     } catch (error) {
@@ -191,10 +190,10 @@ export const useUndelegate = (account, delegatee, balance) => {
         account,
         balance,
         delegatee,
-        newDelegatee: ZERO_ADDRESS,
+        newDelegatee: ethers.constants.AddressZero,
       });
 
-      await delegate({ account, delegatee: ZERO_ADDRESS });
+      await delegate({ account, delegatee: ethers.constants.AddressZero });
 
       onSuccess();
     } catch (error) {
