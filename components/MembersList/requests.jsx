@@ -1,15 +1,9 @@
 import { ethers, BigNumber } from 'ethers';
-import { getVeolasContract, getDelegateContributeContract } from 'common-util/Contracts';
+import { fetchVeolasBalance, getDelegateContributeContract } from 'common-util/Contracts';
 
 /**
  * balanceOf veOlas contract - it is the amount of veolas locked
  */
-export const fetchVeolasBalance = async ({ account }) => {
-  const contract = getVeolasContract(true);
-  const balance = await contract.methods.getVotes(account).call();
-  return balance;
-};
-
 export const fetchVotingPower = async ({ account }) => {
   const contract = getDelegateContributeContract();
   const votingPower = await contract.methods.votingPower(account).call();

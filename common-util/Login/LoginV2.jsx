@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
@@ -17,6 +16,7 @@ import {
   isAddressProhibited,
 } from 'common-util/functions';
 import SignInToOrbis from 'components/SignInToOrbis';
+import VotingPower from 'components/VotingPower';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -142,6 +142,7 @@ export const LoginV2 = ({
       <div className="mr-8">
         <SignInToOrbis />
       </div>
+      {address && <VotingPower />}
       <w3m-button balance="hide" />
     </LoginContainer>
   );

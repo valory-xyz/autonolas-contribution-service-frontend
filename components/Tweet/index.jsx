@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import Link from 'next/link';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
 import {
@@ -31,11 +30,7 @@ const SocialPosterContainer = styled.div`
 
 const ToProposeTweetText = () => (
   <Text type="secondary">
-    To propose a tweet, you must
-    {' '}
-    <Link href="/members">join Contribute</Link>
-    {' '}
-    and hold at least 100k veOLAS.
+    To propose a tweet, you must have at least 100k veOLAS voting power.
   </Text>
 );
 

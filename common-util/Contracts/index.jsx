@@ -8,15 +8,12 @@ import {
   // veOlas
   VEOLAS_ADDRESS_GOERLI,
   VEOLAS_ADDRESS_MAINNET,
-  VEOLAS_ABI,
-
-  // wveOlas
-  WVEOLAS_ADDRESS_MAINNET,
-  WVEOLAS_ABI_MAINNET,
 
   // delegateContribute
   DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
   DELEGATE_CONTRIBUTE_ABI,
+
+  VEOLAS_ABI,
 } from 'common-util/AbiAndAddresses';
 
 import { getChainId, getProvider } from 'common-util/functions';
@@ -25,12 +22,10 @@ const ADDRESSES = {
   1: {
     mintNft: MINT_NFT_CONTRACT_ADDRESS_MAINNET,
     veOlas: VEOLAS_ADDRESS_MAINNET,
-    wveOlas: WVEOLAS_ADDRESS_MAINNET,
   },
   5: {
     mintNft: MINT_NFT_CONTRACT_ADDRESS_GOERLI,
     veOlas: VEOLAS_ADDRESS_GOERLI,
-    wveOlas: WVEOLAS_ADDRESS_MAINNET,
   },
 };
 
@@ -65,23 +60,8 @@ export const getMintContract = () => {
   return contract;
 };
 
-export const getVeolasContract = (isViewOnly) => {
-  const { chainId } = getWeb3Details();
-
-  const getAddressAndAbi = () => {
-    // for view methods use wveolas abi and address
-    if (chainId === 1) {
-      if (isViewOnly) {
-        return { abi: WVEOLAS_ABI_MAINNET, address: WVEOLAS_ADDRESS_MAINNET };
-      }
-      return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_MAINNET };
-    }
-
-    return { abi: VEOLAS_ABI, address: VEOLAS_ADDRESS_GOERLI };
-  };
-
-  const { address, abi } = getAddressAndAbi();
-  const contract = getContract(abi, address);
+export const getVeolasContract = () => {
+  const contract = getContract(VEOLAS_ABI, VEOLAS_ADDRESS_MAINNET);
   return contract;
 };
 
