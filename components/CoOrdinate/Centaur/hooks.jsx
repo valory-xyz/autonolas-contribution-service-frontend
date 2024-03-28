@@ -7,7 +7,7 @@ import {
   // notifySuccess
 } from '@autonolas/frontend-library';
 
-import { setMemoryDetails } from 'store/setup/actions';
+import { setMemoryDetails } from 'store/setup';
 import { addActionToCentaur } from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
 import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
@@ -142,22 +142,22 @@ export const useProposals = () => {
         ? ethersToWei(`${voter?.votingPower || '0'}`)
         : Object.values(voter)[0];
 
-      return acc.add(ethers.BigNumber.from(currentVeOlasInWei));
-    }, ethers.BigNumber.from(0));
+      return acc + ethers.toBigInt(currentVeOlasInWei);
+    }, 0n);
 
     // check if voters have 2 million veolas in total
-    const isQuorumAchieved = totalVeolasInWei.gte(quorumInWei);
+    const isQuorumAchieved = totalVeolasInWei >= quorumInWei;
 
     const remainingVeolasForApprovalInEth = formatToEth(
-      quorumInWei.sub(totalVeolasInWei),
+      ethers.toBigInt(quorumInWei) - ethers.toBigInt(totalVeolasInWei),
     );
 
     // percentage of veolas invested in the proposal
     // limit it to 2 decimal places
-    const totalVeolasInvestedInPercentage = totalVeolasInWei
-      .mul(ethers.BigNumber.from(100))
-      .div(quorumInWei)
-      .toString();
+    const totalVeolasInvestedInPercentage = (
+      (totalVeolasInWei * 100n)
+      / quorumInWei
+    ).toString();
 
     const isProposalVerified = proposal?.proposer?.verified;
 

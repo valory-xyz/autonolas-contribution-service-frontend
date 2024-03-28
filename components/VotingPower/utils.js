@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
  * @returns formatted balance with appropriate suffix
  */
 export const formatWeiBalance = (balanceInWei) => {
-  const balanceInEther = ethers.utils.formatEther(balanceInWei);
+  const balanceInEther = ethers.formatEther(balanceInWei);
 
   const formatNumberWithSuffix = (number) => {
     if (number >= 1e9) {
@@ -29,7 +29,7 @@ export const formatWeiBalance = (balanceInWei) => {
  * @returns formated balance with commas and no digits after decimal point
  */
 export const formatWeiBalanceWithCommas = (balanceInWei) => {
-  const balanceInEther = ethers.utils.formatEther(balanceInWei);
+  const balanceInEther = ethers.formatEther(balanceInWei);
   function formatNumberWithCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }

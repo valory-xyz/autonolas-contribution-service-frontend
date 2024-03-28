@@ -1,37 +1,49 @@
-import { createWrapper } from 'next-redux-wrapper';
-import { App, ConfigProvider } from 'antd';
 import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { ConfigProvider } from 'antd';
 import { ApolloProvider } from '@apollo/client';
 import { THEME_CONFIG } from '@autonolas/frontend-library';
 
 /** wagmi config */
-import { WagmiConfig as WagmiConfigProvider } from 'wagmi';
+import { WagmiProvider, cookieToInitialState } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { wagmiConfig } from 'common-util/Login/config';
 
 /** antd theme config */
-import Layout from 'components/Layout';
 import GlobalStyle from 'components/GlobalStyles';
 import Meta from 'common-util/meta';
+import dynamic from 'next/dynamic';
 import client from '../apolloClient';
-import initStore from '../store';
+import { store } from '../store';
 
-const MyApp = ({ Component, pageProps }) => (
-  <>
-    <GlobalStyle />
-    <Meta />
-    <ConfigProvider theme={THEME_CONFIG}>
-      <App>
-        <ApolloProvider client={client}>
-          <WagmiConfigProvider config={wagmiConfig}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </WagmiConfigProvider>
-        </ApolloProvider>
-      </App>
-    </ConfigProvider>
-  </>
-);
+const Layout = dynamic(() => import('components/Layout'));
+
+const queryClient = new QueryClient();
+
+const MyApp = ({ Component, pageProps }) => {
+  const initialState = cookieToInitialState(wagmiConfig);
+
+  return (
+    <>
+      <GlobalStyle />
+      <Meta />
+
+      <Provider store={store}>
+        <ConfigProvider theme={THEME_CONFIG}>
+          <WagmiProvider config={wagmiConfig} initialState={initialState}>
+            <QueryClientProvider client={queryClient}>
+              <ApolloProvider client={client}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ApolloProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+        </ConfigProvider>
+      </Provider>
+    </>
+  );
+};
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
   const pageProps = Component.getInitialProps
@@ -47,5 +59,4 @@ MyApp.propTypes = {
   pageProps: PropTypes.shape({}).isRequired,
 };
 
-const wrapper = createWrapper(initStore);
-export default wrapper.withRedux(MyApp);
+export default MyApp;

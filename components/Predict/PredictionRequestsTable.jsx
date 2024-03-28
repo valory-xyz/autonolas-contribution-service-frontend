@@ -12,10 +12,7 @@ import dayjs from 'dayjs';
 import { getPredictionRequests } from 'common-util/api/predictionRequests';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setPredictionRequests,
-  setApprovedRequestsCount,
-} from 'store/setup/actions';
+import { setPredictionRequests, setApprovedRequestsCount } from 'store/setup';
 import { gql } from '@apollo/client';
 import { LoadingOutlined, RedoOutlined, LinkOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
