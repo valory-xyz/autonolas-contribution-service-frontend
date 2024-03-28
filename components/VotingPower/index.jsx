@@ -12,10 +12,10 @@ const VotingPower = () => {
   const screens = useBreakpoint();
 
   const { account } = useHelpers();
-  const { balance } = useFetchVotingPower(account);
+  const { votingPower, refetchVotingPrower } = useFetchVotingPower(account);
 
   if (screens.xs) return null;
-  if (!balance) return null;
+  if (!votingPower) return null;
 
   return (
     <>
@@ -24,12 +24,17 @@ const VotingPower = () => {
         placement="bottomRight"
         arrow
         trigger="click"
-        overlay={<DelegateMenu balance={balance} />}
+        overlay={(
+          <DelegateMenu
+            votingPower={votingPower}
+            refetchVotingPrower={refetchVotingPrower}
+          />
+        )}
       >
         <Button type="text" className="mr-8">
           Voting power:
           {' '}
-          {formatWeiBalance(balance)}
+          {formatWeiBalance(votingPower)}
           <EditOutlined />
         </Button>
       </Dropdown>

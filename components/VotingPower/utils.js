@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { fetchVeolasBalance } from './requests';
 /**
  *
  * @param {string} balanceInWei
@@ -13,10 +12,10 @@ export const formatWeiBalance = (balanceInWei) => {
       return `${Math.floor((number / 1e9) * 10) / 10}B`;
     }
     if (number >= 1e6) {
-      return `${(Math.floor((number / 1e6) * 10) / 10)}M`;
+      return `${Math.floor((number / 1e6) * 10) / 10}M`;
     }
     if (number >= 1e3) {
-      return `${(Math.floor((number / 1e3) * 10) / 10)}k`;
+      return `${Math.floor((number / 1e3) * 10) / 10}k`;
     }
     return Math.floor(number * 10) / 10;
   };
@@ -50,7 +49,12 @@ export const truncateAddress = (address, startLimit = 5, endLimit = 3) => (addre
   )}`
   : '--');
 
-export const validateBeforeDelegate = async ({ account, delegatee, newDelegatee }) => {
+export const validateBeforeDelegate = async ({
+  account,
+  balance,
+  delegatee,
+  newDelegatee,
+}) => {
   if (newDelegatee === account) {
     throw new Error('NoSelfDelegation');
   }
@@ -59,14 +63,13 @@ export const validateBeforeDelegate = async ({ account, delegatee, newDelegatee 
     throw new Error('AlreadyDelegatedToSameDelegatee');
   }
 
-  const balance = await fetchVeolasBalance({ account });
   if (balance === '0') {
     throw new Error('NoBalance');
   }
 };
 
 export const DELEGATE_ERRORS_MAP = {
-  NoSelfDelegation: 'Can\'t delegate to yourself',
+  NoSelfDelegation: "Can't delegate to yourself",
   AlreadyDelegatedToSameDelegatee: 'You already delegated to this delegatee',
   NoBalance: 'No balance available to delegate',
 };

@@ -1,15 +1,30 @@
 import { useEffect, useState } from 'react';
 import { fetchVotingPower } from 'components/MembersList/requests';
 import { ZERO_ADDRESS } from 'util/constants';
-import { delegate, fetchDelegatee, fetchDelegatorList } from './requests';
+import { multicall } from '@wagmi/core';
+import {
+  VEOLAS_ABI,
+  VEOLAS_ADDRESS_MAINNET,
+} from 'common-util/AbiAndAddresses';
+import { ethers } from 'ethers';
+import {
+  delegate,
+  fetchDelegatee,
+  fetchDelegatorList,
+  fetchVeolasBalance,
+} from './requests';
 import { validateBeforeDelegate } from './utils';
 
+/**
+ * @param {string} account
+ * @returns total voting power of the account, refetch data function
+ */
 export const useFetchVotingPower = (account) => {
-  const [balance, setBalance] = useState();
+  const [votingPower, setVotingPower] = useState();
 
   const getVotingPower = async () => {
-    const votingPower = await fetchVotingPower({ account });
-    setBalance(votingPower);
+    const result = await fetchVotingPower({ account });
+    setVotingPower(result);
   };
 
   useEffect(() => {
@@ -19,11 +34,21 @@ export const useFetchVotingPower = (account) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
-  return { balance };
+  return { votingPower, refetchVotingPrower: getVotingPower };
 };
 
-export const useFetchDelegatorList = (account) => {
+/**
+ * @param {string} account
+ * @returns
+ * account's veOlas balance,
+ * total delegated balance to the account,
+ * list of delegators addresses
+ *
+ */
+export const useVotingPowerBreakdown = (account) => {
   const [delegatorList, setDelegatorList] = useState([]);
+  const [balance, setBalance] = useState();
+  const [delegatorsBalance, setDelegatorsBalance] = useState('0');
 
   const getDelegatorList = async () => {
     try {
@@ -34,14 +59,60 @@ export const useFetchDelegatorList = (account) => {
     }
   };
 
+  const getBalance = async () => {
+    try {
+      const result = await fetchVeolasBalance({ account });
+      setBalance(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDelegatedToYou = async () => {
+    try {
+      const response = await multicall({
+        contracts: delegatorList.map((address) => ({
+          address: VEOLAS_ADDRESS_MAINNET,
+          abi: VEOLAS_ABI,
+          functionName: 'getVotes',
+          args: [address],
+        })),
+      });
+
+      let total = ethers.BigNumber.from(0);
+
+      // Calculate total balance delegated to the account
+      for (let i = 0; i < response.length; i += 1) {
+        const bigIntValue = ethers.BigNumber.from(response[i].result);
+        total = total.add(bigIntValue);
+      }
+
+      setDelegatorsBalance(total.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getDelegatorList();
+    getBalance();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
-  return { delegatorList };
+  useEffect(() => {
+    if (delegatorList.length > 0) {
+      getDelegatedToYou();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [delegatorList]);
+
+  return { balance, delegatorsBalance, delegatorList };
 };
 
+/**
+ * @param {string} account
+ * @returns address to which the account has delegated
+ */
 export const useFetchDelegatee = (account) => {
   const [delegatee, setDelegatee] = useState(null);
 
@@ -64,7 +135,15 @@ export const useFetchDelegatee = (account) => {
   return { delegatee, setDelegatee };
 };
 
-export const useDelegate = (account, delegatee) => {
+/**
+ * used for delegating from account to delegatee,
+ * runs validations before delegation
+ * @param {string} account
+ * @param {string} delegatee
+ * @param {string} balance
+ * @returns pending status, delegate handler
+ */
+export const useDelegate = (account, delegatee, balance) => {
   const [isSending, setIsSending] = useState(false);
 
   const handleDelegate = async ({ values, onSuccess, onError }) => {
@@ -75,6 +154,7 @@ export const useDelegate = (account, delegatee) => {
 
       await validateBeforeDelegate({
         account,
+        balance,
         delegatee,
         newDelegatee: address,
       });
@@ -92,7 +172,15 @@ export const useDelegate = (account, delegatee) => {
   return { isDelegating: isSending, handleDelegate };
 };
 
-export const useUndelegate = (account, delegatee) => {
+/**
+ * used for undelegating from account to Zero address,
+ * runs validations before undelegation
+ * @param {string} account
+ * @param {string} delegatee
+ * @param {string} balance
+ * @returns pending status, undelegate handler
+ */
+export const useUndelegate = (account, delegatee, balance) => {
   const [isSending, setIsSending] = useState(false);
 
   const handleUndelegate = async ({ onSuccess, onError }) => {
@@ -101,6 +189,7 @@ export const useUndelegate = (account, delegatee) => {
     try {
       await validateBeforeDelegate({
         account,
+        balance,
         delegatee,
         newDelegatee: ZERO_ADDRESS,
       });
@@ -115,5 +204,9 @@ export const useUndelegate = (account, delegatee) => {
     }
   };
 
-  return { canUndelegate: !!delegatee, isUndelegating: isSending, handleUndelegate };
+  return {
+    canUndelegate: !!delegatee,
+    isUndelegating: isSending,
+    handleUndelegate,
+  };
 };
