@@ -10,7 +10,7 @@ import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 export const SUPPORTED_CHAINS = (
   process.env.NEXT_PUBLIC_PFP_URL || ''
 ).includes('staging')
-  ? [goerli]
+  ? [goerli, mainnet]
   : [mainnet];
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
