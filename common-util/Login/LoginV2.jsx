@@ -21,6 +21,7 @@ import {
   isAddressProhibited,
 } from 'common-util/functions';
 import SignInToOrbis from 'components/SignInToOrbis';
+import VotingPower from 'components/VotingPower';
 import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
@@ -150,6 +151,7 @@ export const LoginV2 = ({
       <div className="mr-8">
         <SignInToOrbis />
       </div>
+      {address && <VotingPower />}
       <Web3Button balance="hide" avatar="hide" />
       <Web3Modal
         projectId={projectId}
