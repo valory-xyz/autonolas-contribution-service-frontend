@@ -57,7 +57,7 @@ const MintNft = () => {
         // once minted, poll the details
         setIsBadgePollLoading(true);
         const response = await pollNftDetails(id);
-        setNftDetails(response);
+        dispatch(setNftDetails({ tokenId: id, ...response }));
         setIsBadgePollLoading(false);
       } catch (error) {
         window.console.error(error);
