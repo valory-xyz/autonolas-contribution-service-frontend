@@ -1,5 +1,8 @@
-import { ethers, BigNumber } from 'ethers';
-import { fetchVeolasBalance, getDelegateContributeContract } from 'common-util/Contracts';
+import { ethers } from 'ethers';
+import {
+  fetchVeolasBalance,
+  getDelegateContributeContract,
+} from 'common-util/Contracts';
 
 /**
  * balanceOf veOlas contract - it is the amount of veolas locked
@@ -19,7 +22,7 @@ export const checkVeolasThreshold = async (account, thresholdInWei) => {
 
 export const checkVotingPower = async (account, thresholdInWei) => {
   const votingPower = await fetchVotingPower({ account });
-  const bNVotingPower = BigNumber.from(votingPower);
-  const thresholdInBn = BigNumber.from(thresholdInWei);
-  return bNVotingPower.gte(thresholdInBn);
+  const bNVotingPower = ethers.toBigInt(votingPower);
+  const thresholdInBn = ethers.toBigInt(thresholdInWei);
+  return bNVotingPower >= thresholdInBn;
 };

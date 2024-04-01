@@ -78,12 +78,12 @@ export const useVotingPowerBreakdown = (account) => {
         })),
       });
 
-      let total = ethers.BigNumber.from(0);
+      let total = 0n;
 
       // Calculate total balance delegated to the account
       for (let i = 0; i < response.length; i += 1) {
-        const bigIntValue = ethers.BigNumber.from(response[i].result);
-        total = total.add(bigIntValue);
+        const bigIntValue = ethers.toBigInt(response[i].result);
+        total += bigIntValue;
       }
 
       setDelegatorsBalance(total.toString());
