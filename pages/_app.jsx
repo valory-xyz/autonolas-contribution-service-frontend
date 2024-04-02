@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { ApolloProvider } from '@apollo/client';
-import { THEME_CONFIG } from '@autonolas/frontend-library';
+import { THEME_CONFIG, COLOR } from '@autonolas/frontend-library';
 
 /** wagmi config */
-import { WagmiProvider, cookieToInitialState } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider, cookieToInitialState } from 'wagmi';
+import { createWeb3Modal } from '@web3modal/wagmi/react'; /* eslint-disable-line import/no-unresolved */
 import { wagmiConfig } from 'common-util/Login/config';
 
 /** antd theme config */
@@ -19,6 +20,20 @@ import { store } from '../store';
 const Layout = dynamic(() => import('components/Layout'));
 
 const queryClient = new QueryClient();
+
+export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
+
+// eslint-disable-next-line jest/require-hook
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  themeMode: 'light',
+  themeVariables: {
+    '--w3m-border-radius-master': '0.7125px',
+    '--w3m-font-size-master': '11px',
+    '--w3m-accent': COLOR.PRIMARY,
+  },
+});
 
 const MyApp = ({ Component, pageProps }) => {
   const initialState = cookieToInitialState(wagmiConfig);
