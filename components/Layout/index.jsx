@@ -25,10 +25,10 @@ import {
   setIsMemoryDetailsLoading,
   setLeaderboard,
   setIsLeaderboardLoading,
-} from 'store/setup/actions';
+} from 'store/setup';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 import useOrbis from 'common-util/hooks/useOrbis';
-import Login from '../Login';
+import { wagmiConfig } from 'common-util/Login/config';
 import Footer from './Footer';
 import { getAddressStatus } from './utils';
 import {
@@ -39,6 +39,7 @@ import {
   CustomMenu,
 } from './styles';
 
+const Login = dynamic(() => import('../Login'));
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
 const ServiceStatus = dynamic(() => import('./ServiceStatus'), { ssr: false });
 
@@ -161,14 +162,16 @@ const NavigationBar = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const unwatch = watchAccount((newAccount) => {
-      if (
-        account
-        && (newAccount.address !== account || isOrbisConnected)
-        && isOrbisConnected !== undefined
-      ) {
-        disconnect();
-      }
+    const unwatch = watchAccount(wagmiConfig, {
+      onChange(data) {
+        if (
+          account
+          && (data.address !== account || isOrbisConnected)
+          && isOrbisConnected !== undefined
+        ) {
+          disconnect();
+        }
+      },
     });
 
     return () => unwatch();

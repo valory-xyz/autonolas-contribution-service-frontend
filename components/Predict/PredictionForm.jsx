@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import { setApprovedRequestsCount } from 'store/setup/actions';
+import { setApprovedRequestsCount } from 'store/setup';
 import {
   getPredictionRequests,
   postPredictionRequest,

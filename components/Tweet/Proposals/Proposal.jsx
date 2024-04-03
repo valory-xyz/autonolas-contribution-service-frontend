@@ -66,7 +66,7 @@ export const Proposal = ({ proposal }) => {
       // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVotingPower({ account });
       const accountVeOlasBalanceInEth = Number(
-        ethers.utils.formatEther(accountVeOlasBalance),
+        ethers.formatEther(accountVeOlasBalance),
       );
       if (!isStaging && accountVeOlasBalanceInEth < 1) {
         notifyError('You need at least 1 veOLAS to approve');

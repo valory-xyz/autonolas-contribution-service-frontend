@@ -1,20 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
 import PropTypes from 'prop-types';
-import { Web3Modal, Web3Button } from '@web3modal/react';
-import {
-  useAccount, useNetwork, useBalance, useDisconnect,
-} from 'wagmi';
+import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import styled from 'styled-components';
 import {
-  COLOR,
   CannotConnectAddressOfacError,
   notifyError,
 } from '@autonolas/frontend-library';
 
-import { setChainId, setUserBalance } from 'store/setup/actions';
+import { setChainId, setUserBalance } from 'store/setup';
 import {
   getChainId,
   getChainIdOrDefaultToMainnet,
@@ -22,7 +17,6 @@ import {
 } from 'common-util/functions';
 import SignInToOrbis from 'components/SignInToOrbis';
 import VotingPower from 'components/VotingPower';
-import { projectId, ethereumClient } from './config';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -34,14 +28,11 @@ const LoginContainer = styled.div`
 export const LoginV2 = ({
   onConnect: onConnectCb,
   onDisconnect: onDisconnectCb,
-  theme = 'light',
 }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
-  const { chain } = useNetwork();
 
-  const chainId = chain?.id;
-  const { address, connector } = useAccount({
+  const { address, connector, chainId } = useAccount({
     onConnect: ({ address: currentAddress }) => {
       if (isAddressProhibited(currentAddress)) {
         disconnect();
@@ -152,17 +143,7 @@ export const LoginV2 = ({
         <SignInToOrbis />
       </div>
       {address && <VotingPower />}
-      <Web3Button balance="hide" avatar="hide" />
-      <Web3Modal
-        projectId={projectId}
-        ethereumClient={ethereumClient}
-        themeMode={theme}
-        themeVariables={{
-          '--w3m-button-border-radius': '5px',
-          '--w3m-accent-color': COLOR.PRIMARY,
-          '--w3m-background-color': COLOR.PRIMARY,
-        }}
-      />
+      <w3m-button balance="hide" />
     </LoginContainer>
   );
 };
@@ -170,11 +151,9 @@ export const LoginV2 = ({
 LoginV2.propTypes = {
   onConnect: PropTypes.func,
   onDisconnect: PropTypes.func,
-  theme: PropTypes.string,
 };
 
 LoginV2.defaultProps = {
   onConnect: undefined,
   onDisconnect: undefined,
-  theme: 'light',
 };

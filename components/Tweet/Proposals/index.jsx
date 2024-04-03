@@ -21,7 +21,7 @@ const ProposalLoader = () => (
 export const Proposals = () => {
   const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
-  const sortedProposals = proposals.sort(
+  const sortedProposals = [...proposals].sort(
     (a, b) => b.createdDate - a.createdDate,
   );
 

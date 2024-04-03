@@ -17,8 +17,8 @@ export async function verifyAddress(account, id) {
 }
 
 function verifyPayload(payload, signature) {
-  const messageHash = ethers.utils.hashMessage(payload);
-  const recoveredAddress = ethers.utils.recoverAddress(messageHash, signature);
+  const messageHash = ethers.hashMessage(payload);
+  const recoveredAddress = ethers.recoverAddress(messageHash, signature);
   return (
     recoveredAddress === process.env.NEXT_PUBLIC_DISCORD_VERIFICATION_ADDRESS
   );

@@ -1,37 +1,64 @@
-import { createWrapper } from 'next-redux-wrapper';
-import { App, ConfigProvider } from 'antd';
 import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { ConfigProvider } from 'antd';
 import { ApolloProvider } from '@apollo/client';
-import { THEME_CONFIG } from '@autonolas/frontend-library';
+import { THEME_CONFIG, COLOR } from '@autonolas/frontend-library';
 
 /** wagmi config */
-import { WagmiConfig as WagmiConfigProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider, cookieToInitialState } from 'wagmi';
+import { createWeb3Modal } from '@web3modal/wagmi/react'; /* eslint-disable-line import/no-unresolved */
 import { wagmiConfig } from 'common-util/Login/config';
 
 /** antd theme config */
-import Layout from 'components/Layout';
 import GlobalStyle from 'components/GlobalStyles';
 import Meta from 'common-util/meta';
+import dynamic from 'next/dynamic';
 import client from '../apolloClient';
-import initStore from '../store';
+import { store } from '../store';
 
-const MyApp = ({ Component, pageProps }) => (
-  <>
-    <GlobalStyle />
-    <Meta />
-    <ConfigProvider theme={THEME_CONFIG}>
-      <App>
-        <ApolloProvider client={client}>
-          <WagmiConfigProvider config={wagmiConfig}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </WagmiConfigProvider>
-        </ApolloProvider>
-      </App>
-    </ConfigProvider>
-  </>
-);
+const Layout = dynamic(() => import('components/Layout'));
+
+const queryClient = new QueryClient();
+
+export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
+
+// eslint-disable-next-line jest/require-hook
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  themeMode: 'light',
+  themeVariables: {
+    '--w3m-border-radius-master': '0.7125px',
+    '--w3m-font-size-master': '11px',
+    '--w3m-accent': COLOR.PRIMARY,
+  },
+});
+
+const MyApp = ({ Component, pageProps }) => {
+  const initialState = cookieToInitialState(wagmiConfig);
+
+  return (
+    <>
+      <GlobalStyle />
+      <Meta />
+
+      <Provider store={store}>
+        <ConfigProvider theme={THEME_CONFIG}>
+          <WagmiProvider config={wagmiConfig} initialState={initialState}>
+            <QueryClientProvider client={queryClient}>
+              <ApolloProvider client={client}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ApolloProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+        </ConfigProvider>
+      </Provider>
+    </>
+  );
+};
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
   const pageProps = Component.getInitialProps
@@ -47,5 +74,4 @@ MyApp.propTypes = {
   pageProps: PropTypes.shape({}).isRequired,
 };
 
-const wrapper = createWrapper(initStore);
-export default wrapper.withRedux(MyApp);
+export default MyApp;

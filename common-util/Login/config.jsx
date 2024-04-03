@@ -1,14 +1,8 @@
-import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider,
-} from '@web3modal/ethereum';
-import { configureChains, createConfig } from 'wagmi';
+import { cookieStorage, createStorage } from 'wagmi';
 import { mainnet, goerli } from 'wagmi/chains';
-import { SafeConnector } from 'wagmi/connectors/safe';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { defaultWagmiConfig } from '@web3modal/wagmi';
 
-import { RPC_URLS } from 'common-util/Contracts';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 
 // if the PFP_URL contains staging, use goerli, else use mainnet
 export const SUPPORTED_CHAINS = (
@@ -19,37 +13,20 @@ export const SUPPORTED_CHAINS = (
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
 
-const { publicClient, webSocketPublicClient, chains } = configureChains(
-  SUPPORTED_CHAINS,
-  [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: RPC_URLS[chain.id],
-      }),
-    }),
-    w3mProvider({ projectId }),
-  ],
-);
+const metadata = {
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
 
-export const wagmiConfig = createConfig({
-  autoConnect: true,
-  logger: { warn: null },
-  connectors: [
-    ...w3mConnectors({
-      projectId,
-      version: 2, // v2 of wallet connect
-      chains,
-    }),
-    new SafeConnector({
-      chains,
-      options: {
-        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-        debug: false,
-      },
-    }),
-  ],
-  publicClient,
-  webSocketPublicClient,
+/**
+ * @type {import('@web3modal/wagmi').WagmiOptions}
+ */
+export const wagmiConfig = defaultWagmiConfig({
+  chains: SUPPORTED_CHAINS,
+  projectId,
+  metadata,
+  ssr: true,
+  storage: createStorage({ storage: cookieStorage }),
 });
-
-export const ethereumClient = new EthereumClient(wagmiConfig, chains);

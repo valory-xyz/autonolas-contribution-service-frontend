@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from 'antd';
 import get from 'lodash/get';
 
-import { setNftDetails } from 'store/setup/actions';
+import { setNftDetails } from 'store/setup';
 import { getLatestMintedNft } from 'common-util/api';
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import { EducationTitle } from './Education';
