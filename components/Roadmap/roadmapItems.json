@@ -19,5 +19,12 @@
     "imageUrl": "/images/roadmap/aip-3.png",
     "link": "https://github.com/valory-xyz/autonolas-aip/blob/aip-3/content/aips/core-enhancing-autonolas-protocol-security.md",
     "date": "2023-12-18"
+  },
+  {
+    "title": "Building the Engine for the Autonomous Agent Economy",
+    "description": "This proposal suggests implementing Olas Staking, a mechanism empowering diverse users, including individuals, groups, companies, and DAOs, to create autonomous agent economies.",
+    "imageUrl": "/images/roadmap/aip-4.png",
+    "link": "https://snapshot.org/#/autonolas.eth/proposal/0x1e83a657148967b395a025f16231031d62eaea3ecf5c947b7a2ee2e963a4eacf",
+    "date": "2024-03-17"
   }
 ]
