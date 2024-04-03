@@ -1,32 +1,35 @@
 import { useState, useCallback } from 'react';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
-import {
-  Button, Input, Row, Col, Typography,
-} from 'antd';
-import styled from 'styled-components';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Input, Row, Col, Typography } from 'antd';
+import { PlusCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
-
-import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_LENGTH } from 'util/constants';
+import {
+  GATEWAY_URL,
+  HUNDRED_K_OLAS_IN_WEI,
+  MAX_TWEET_IMAGES,
+  MAX_TWEET_LENGTH,
+} from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
+import Image from 'next/image';
 import { Proposals } from './Proposals';
 import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import {
-  TweetLength,
-  ProposalCountRow,
-  getFirstTenCharsOfTweet,
-} from './utils';
+import { getFirstTenCharsOfTweet } from './utils';
+import TweetLength from './TweetLength';
 import ThreadModal from './ThreadModal';
+import UploadButton from './UploadButton';
+import {
+  ProposalCountRow,
+  SocialPosterContainer,
+  MediaWrapper,
+  MediaDeleteButton,
+} from './styles';
+import MediaList from './MediaList';
 
 const { Text } = Typography;
 const { TextArea } = Input;
-
-const SocialPosterContainer = styled.div`
-  max-width: 500px;
-`;
 
 const ToProposeTweetText = () => (
   <Text type="secondary">
@@ -46,6 +49,8 @@ export const TweetPropose = () => {
   } = useCentaursFunctionalities();
 
   const [tweet, setTweet] = useState('');
+  const [media, setMedia] = useState([]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isThreadModalVisible, setIsThreadModalVisible] = useState(false);
 
@@ -59,7 +64,9 @@ export const TweetPropose = () => {
       );
 
       if (!isStaging && !has100kVotingPower) {
-        notifyError('You must have at least 100k veOLAS voting power to propose a tweet.');
+        notifyError(
+          'You must have at least 100k veOLAS voting power to propose a tweet.',
+        );
         return;
       }
 
@@ -122,7 +129,8 @@ export const TweetPropose = () => {
     setIsThreadModalVisible(false);
   };
 
-  const canSubmit = !isSubmitting && tweet?.length > 0 && account;
+  const canSubmit =
+    !isSubmitting && (tweet?.length > 0 || media.length > 0) && account;
 
   return (
     <SocialPosterContainer>
@@ -135,20 +143,35 @@ export const TweetPropose = () => {
         rows={4}
         className="mt-24 mb-12"
       />
+      <MediaList
+        media={media}
+        handleDelete={(hash) => setMedia((prev) => prev.filter((currItem) => currItem !== hash))}
+      />
 
       <ProposalCountRow>
         <TweetLength tweet={tweet} />
-        <Button
-          type="link"
-          disabled={!canSubmit}
-          onClick={() => setIsThreadModalVisible(true)}
-        >
-          <PlusCircleOutlined />
-          &nbsp;Start thread
-        </Button>
+        <Row>
+          <UploadButton
+            disabled={
+              !account || isSubmitting || media.length === MAX_TWEET_IMAGES
+            }
+            onUploadMedia={(newMedia) =>
+              setMedia((prev) => [...prev, newMedia])
+            }
+          />
+          <Button
+            type="link"
+            disabled={!canSubmit}
+            onClick={() => setIsThreadModalVisible(true)}
+          >
+            <PlusCircleOutlined />
+            &nbsp;Start thread
+          </Button>
+        </Row>
         {isThreadModalVisible && (
           <ThreadModal
             firstTweetInThread={tweet}
+            firstMediaInThread={media}
             isSubmitting={isSubmitting}
             closeThreadModal={closeThreadModal}
             addThread={handleSubmit}

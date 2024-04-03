@@ -1,59 +1,74 @@
-import PropTypes, { string } from 'prop-types';
-import { Button, Typography, Timeline } from 'antd';
+import PropTypes from 'prop-types';
+import {
+  Button, Typography, Timeline, Row, Col,
+} from 'antd';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
-import styled from 'styled-components';
+import { Fragment } from 'react';
+import { NA } from '@autonolas/frontend-library';
+import { GATEWAY_URL } from 'util/constants';
+import { EachThreadContainer, Media } from './styles';
 
 const { Text } = Typography;
-
-const EachThreadContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  .thread-col-2 {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    width: 160px;
-  }
-`;
 
 export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
   <Timeline
     style={{ paddingTop: 10 }}
-    items={thread.map((e, threadIndex) => ({
+    items={thread.map((tweet, threadIndex) => ({
       children: (
-        <EachThreadContainer key={`thread-${threadIndex}`}>
-          <Text style={{ whiteSpace: 'pre-wrap' }}>{e}</Text>
+        <Fragment key={`thread-${threadIndex}`}>
+          <EachThreadContainer>
+            <Text style={{ whiteSpace: 'pre-wrap' }}>{tweet.text || NA}</Text>
 
-          <div className="thread-col-2">
-            {onEditThread && (
-              <Button
-                ghost
-                type="primary"
-                size="small"
-                icon={<EditFilled />}
-                onClick={() => onEditThread(threadIndex)}
-              />
-            )}
+            <div className="thread-col-2">
+              {onEditThread && (
+                <Button
+                  ghost
+                  type="primary"
+                  size="small"
+                  icon={<EditFilled />}
+                  onClick={() => onEditThread(threadIndex)}
+                />
+              )}
 
-            {e.length > 1 && onRemoveFromThread && (
-              <Button
-                danger
-                className="ml-8"
-                size="small"
-                icon={<CloseOutlined />}
-                onClick={() => onRemoveFromThread(threadIndex)}
-              />
-            )}
-          </div>
-        </EachThreadContainer>
+              {((tweet.text || '').length > 1 || tweet.media.length > 0)
+                && onRemoveFromThread && (
+                  <Button
+                    danger
+                    className="ml-8"
+                    size="small"
+                    icon={<CloseOutlined />}
+                    onClick={() => onRemoveFromThread(threadIndex)}
+                  />
+              )}
+            </div>
+          </EachThreadContainer>
+
+          <Row gutter={[12, 12]}>
+            {tweet.media
+              && tweet.media.map((item) => (
+                <Col>
+                  <Media
+                    src={`${GATEWAY_URL}${item}`}
+                    alt="NFT"
+                    width={30}
+                    height={30}
+                  />
+                </Col>
+              ))}
+          </Row>
+        </Fragment>
       ),
     }))}
   />
 );
 
 ViewThread.propTypes = {
-  thread: PropTypes.arrayOf(string),
+  thread: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      media: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }),
+  ),
   onEditThread: PropTypes.func,
   onRemoveFromThread: PropTypes.func,
 };

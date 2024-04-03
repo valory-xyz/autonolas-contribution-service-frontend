@@ -21,6 +21,7 @@ export const META_TAGS_INFO = {
 export const DEFAULT_COORDINATE_ID = '2';
 
 export const MAX_TWEET_LENGTH = 280;
+export const MAX_TWEET_IMAGES = 4;
 
 export const PREDICT_BASE_URL = process.env.NEXT_PUBLIC_PREDICT_BASE_URL;
 export const PREDICT_PROPOSE_ENDPOINT = '/propose_market';

@@ -27,7 +27,7 @@
     "dids": "^4.0.0",
     "ethers": "^6.11.1",
     "graphql": "^16.8.1",
-    "ipfs-http-client": "^57.0.3",
+    "ipfs-http-client": "^60.0.1",
     "key-did-provider-ed25519": "^3.0.0",
     "key-did-resolver": "^3.0.0",
     "lodash": "^4.17.21",
