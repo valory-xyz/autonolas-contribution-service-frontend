@@ -6,6 +6,7 @@ import {
   VEOLAS_ADDRESS_MAINNET,
 } from 'common-util/AbiAndAddresses';
 import { ethers } from 'ethers';
+import { wagmiConfig } from 'common-util/Login/config';
 import {
   delegate,
   fetchDelegatee,
@@ -69,7 +70,7 @@ export const useVotingPowerBreakdown = (account) => {
 
   const getDelegatedToYou = async () => {
     try {
-      const response = await multicall({
+      const response = await multicall(wagmiConfig, {
         contracts: delegatorList.map((address) => ({
           address: VEOLAS_ADDRESS_MAINNET,
           abi: VEOLAS_ABI,
