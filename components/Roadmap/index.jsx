@@ -6,9 +6,15 @@ import dayjs from 'dayjs';
 import { useScreen } from '@autonolas/frontend-library';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useMemo } from 'react';
+import styled from 'styled-components';
 import roadmapItems from './roadmapItems.json';
 
 const { Text, Title, Link } = Typography;
+
+const ResponsiveImage = styled(Image)`
+  max-width: 100%;
+  object-fit: contain;
+`;
 
 const RoadmapPage = () => {
   const sortedRoadmapItems = roadmapItems.sort(
@@ -37,8 +43,8 @@ const RoadmapPage = () => {
       {sortedRoadmapItems.map((item, index) => (
         <Card className="mb-12" bordered={false} key={`roadmap-${index}`}>
           <Row gutter={16} align="middle">
-            <Col xs={24} md={24} lg={10}>
-              <Image
+            <Col xs={24} md={24} lg={10} align="middle">
+              <ResponsiveImage
                 src={item.imageUrl}
                 alt={item.title}
                 width={imageWidth}
