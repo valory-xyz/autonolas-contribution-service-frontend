@@ -49,11 +49,13 @@ const ThreadModal = ({
       const newThread = [...thread, { text: tweet, media: media || [] }];
       setThread(newThread);
       setTweet(null);
+      setMedia([]);
     } else {
       const newThread = [...thread];
       newThread[currentEditingIndex] = { text: tweet, media: media || [] };
       setThread(newThread);
       setTweet(null);
+      setMedia([]);
       setCurrentEditingIndex(-1);
     }
   };
@@ -70,15 +72,6 @@ const ThreadModal = ({
     setThread((prev) => prev.filter((_, index) => index !== threadIndex));
   };
 
-  // REMOVE media
-  const onRemoveMediaFromThread = (removingHash) => {
-    const newMedia = media.filter((hash) => hash !== removingHash);
-    const newThread = [...thread];
-    newThread[currentEditingIndex] = { text: tweet, media: newMedia };
-    setMedia(newMedia);
-    setThread(newThread);
-  };
-
   // POST the thread to the backend
   const onPostThread = async () => {
     if (thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)) {
@@ -88,7 +81,10 @@ const ThreadModal = ({
 
     try {
       // post the thread & close the modal
-      await addThread(thread);
+      await addThread({
+        text: thread.map((item) => item.text || null),
+        media: thread.map((item) => item.media),
+      });
 
       closeThreadModal();
     } catch (error) {
@@ -128,7 +124,9 @@ const ThreadModal = ({
 
           <MediaList
             media={media}
-            handleDelete={onRemoveMediaFromThread}
+            handleDelete={(removingHash) => setMedia(
+              (prev) => prev.filter((hash) => hash !== removingHash),
+            )}
           />
 
           <ProposalCountRow>

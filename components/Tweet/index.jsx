@@ -1,18 +1,18 @@
 import { useState, useCallback } from 'react';
 import { useSignMessage } from 'wagmi';
 import { v4 as uuid } from 'uuid';
-import { Button, Input, Row, Col, Typography } from 'antd';
-import { PlusCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import {
+  Button, Input, Row, Col, Typography,
+} from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 import {
-  GATEWAY_URL,
   HUNDRED_K_OLAS_IN_WEI,
   MAX_TWEET_IMAGES,
   MAX_TWEET_LENGTH,
 } from 'util/constants';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import Image from 'next/image';
 import { Proposals } from './Proposals';
 import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
@@ -23,8 +23,6 @@ import UploadButton from './UploadButton';
 import {
   ProposalCountRow,
   SocialPosterContainer,
-  MediaWrapper,
-  MediaDeleteButton,
 } from './styles';
 import MediaList from './MediaList';
 
@@ -79,7 +77,9 @@ export const TweetPropose = () => {
       const tweetDetails = {
         request_id: uuid(),
         createdDate: Date.now() / 1000, // in seconds
-        text: tweetOrThread,
+        text: tweetOrThread.text || null,
+        // TODO: uncomment when BE is ready
+        // media_hashes: tweetOrThread.media,
         posted: false,
         proposer: { address: account, signature, verified: null },
         voters: [], // initially no votes
@@ -129,8 +129,7 @@ export const TweetPropose = () => {
     setIsThreadModalVisible(false);
   };
 
-  const canSubmit =
-    !isSubmitting && (tweet?.length > 0 || media.length > 0) && account;
+  const canSubmit = !isSubmitting && (tweet?.length > 0 || media.length > 0) && account;
 
   return (
     <SocialPosterContainer>
@@ -155,9 +154,7 @@ export const TweetPropose = () => {
             disabled={
               !account || isSubmitting || media.length === MAX_TWEET_IMAGES
             }
-            onUploadMedia={(newMedia) =>
-              setMedia((prev) => [...prev, newMedia])
-            }
+            onUploadMedia={(newMedia) => setMedia((prev) => [...prev, newMedia])}
           />
           <Button
             type="link"
@@ -184,7 +181,7 @@ export const TweetPropose = () => {
         type="primary"
         disabled={!canSubmit}
         loading={isSubmitting && !isThreadModalVisible}
-        onClick={() => handleSubmit(tweet)}
+        onClick={() => handleSubmit({ text: tweet, media })}
       >
         Propose
       </Button>

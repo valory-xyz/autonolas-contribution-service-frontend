@@ -24,7 +24,7 @@ const UploadButton = ({
       if (!file) return;
 
       // Validate file type
-      if (!SUPPORTED_FILE_TYPES.contains(file.type)) {
+      if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
         message.error('Unsupported file type. Please select an image file.');
         return;
       }
@@ -42,9 +42,10 @@ const UploadButton = ({
       fileReader.onloadend = async () => {
         try {
           // Upload the file to IPFS
+          const extension = file.type.split('/').pop();
           const hash = await uploadToIpfs(fileReader.result);
 
-          onUploadMedia(hash);
+          onUploadMedia(`${hash}.${extension}`);
         } finally {
           setUploading(false);
         }

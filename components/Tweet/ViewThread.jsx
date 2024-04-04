@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import {
-  Button, Typography, Timeline, Row, Col,
+  Button, Typography, Timeline,
 } from 'antd';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
 import { Fragment } from 'react';
 import { NA } from '@autonolas/frontend-library';
-import { GATEWAY_URL } from 'util/constants';
-import { EachThreadContainer, Media } from './styles';
+import { EachThreadContainer } from './styles';
+import MediaList from './MediaList';
 
 const { Text } = Typography;
 
@@ -42,20 +42,7 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
               )}
             </div>
           </EachThreadContainer>
-
-          <Row gutter={[12, 12]}>
-            {tweet.media
-              && tweet.media.map((item) => (
-                <Col>
-                  <Media
-                    src={`${GATEWAY_URL}${item}`}
-                    alt="NFT"
-                    width={30}
-                    height={30}
-                  />
-                </Col>
-              ))}
-          </Row>
+          <MediaList media={tweet.media} mode="view" />
         </Fragment>
       ),
     }))}

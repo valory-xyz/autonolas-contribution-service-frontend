@@ -11,6 +11,7 @@ import { useHelpers } from 'common-util/hooks/useHelpers';
 import { useMemo } from 'react';
 import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../ViewThread';
+import MediaList from '../MediaList';
 
 const { Text } = Typography;
 
@@ -61,6 +62,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
             <div className="mb-12">
               <Text>{tweetData.tweet.text || NA}</Text>
             </div>
+            <MediaList media={tweetData.tweet.media} mode="view" className="mb-12" />
             <Text type="secondary">
               {tweetData.tweet.text.length || 0}
               /280 characters

@@ -1,6 +1,6 @@
-import { CID } from 'multiformats/cid';
 import { create } from 'ipfs-http-client';
 import { base16 } from 'multiformats/bases/base16';
+import { GATEWAY_URL } from 'util/constants';
 
 export const getFirstTenCharsOfTweet = (tweetOrThread) => {
   if (typeof tweetOrThread === 'string') {
@@ -26,16 +26,9 @@ export const uploadToIpfs = async (file) => {
   return hash;
 };
 
-/**
- *
- * @param {string} hash
- * Gets V0 CID and mark it for garbage collection
- */
-export const unpinFromIpfs = async (hash) => {
-  try {
-    const cid = CID.decode(base16.decode(hash)).toV0().toString();
-    await ipfs.pin.rm(cid);
-  } catch (error) {
-    console.error(error);
-  }
+const extensionRegex = /\.[^.]+$/;
+export const getMediaSrc = (hashWithExtension) => {
+  const hash = hashWithExtension.replace(extensionRegex, '');
+
+  return `${GATEWAY_URL}${hash}`;
 };
