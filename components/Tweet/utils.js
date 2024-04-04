@@ -1,5 +1,6 @@
-import { create } from 'ipfs-http-client';
+/* eslint-disable import/no-unresolved */
 import { base16 } from 'multiformats/bases/base16';
+import { create } from 'ipfs-http-client';
 import { GATEWAY_URL } from 'util/constants';
 
 export const getFirstTenCharsOfTweet = (tweetOrThread) => {
