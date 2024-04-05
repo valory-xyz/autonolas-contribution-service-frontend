@@ -18,7 +18,7 @@ const MediaList = ({
     return (
       <Row gutter={[12, 12]} className={className}>
         {media && media.map((item) => (
-          <Col>
+          <Col key={item.name}>
             <Media
               src={typeof item === 'string' ? getMediaSrc(item) : URL.createObjectURL(item)}
               width={30}
@@ -34,7 +34,7 @@ const MediaList = ({
     return (
       <Row gutter={[12, 12]} className={className}>
         {media.map((file) => (
-          <MediaWrapper>
+          <MediaWrapper key={file.name}>
             <Media src={URL.createObjectURL(file)} width={80} height={80} />
             <MediaDeleteButton
               type="default"

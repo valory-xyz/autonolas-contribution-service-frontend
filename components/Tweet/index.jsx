@@ -70,7 +70,7 @@ export const TweetPropose = () => {
 
       const signature = await signMessageAsync({
         message: `I am signing a message to verify that I propose a tweet starting with ${getFirstTenCharsOfTweet(
-          tweetOrThread,
+          tweetOrThread.text,
         )}`,
       });
 
