@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import { base16 } from 'multiformats/bases/base16';
+import { base32 } from 'multiformats/bases/base32';
 import { create } from 'ipfs-http-client';
 import { GATEWAY_URL } from 'util/constants';
 
@@ -23,7 +23,7 @@ const ipfs = create({
  */
 export const uploadToIpfs = async (file) => {
   const response = await ipfs.add(file);
-  const hash = response.cid.toV1().toString(base16.encoder);
+  const hash = response.cid.toV1().toString(base32.encoder);
   return hash;
 };
 
