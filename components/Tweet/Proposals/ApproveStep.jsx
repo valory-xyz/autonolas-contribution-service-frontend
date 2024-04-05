@@ -43,9 +43,9 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
 
     if (Array.isArray(proposal?.text)) {
       return {
-        thread: proposal?.text.map((text, index) => ({
+        thread: proposal.text.map((text, index) => ({
           text,
-          media: (proposal?.media_hashes || [])[index] || [],
+          media: (proposal.media_hashes || [])[index] || [],
         })),
       };
     }
@@ -70,7 +70,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
           </>
         )}
         {tweetData.thread && (
-          <ViewThread thread={tweetData.thread || []} />
+          <ViewThread thread={tweetData.thread} />
         )}
       </Card>
 

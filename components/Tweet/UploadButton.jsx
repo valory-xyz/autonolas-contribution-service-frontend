@@ -1,8 +1,7 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import { FileImageOutlined } from '@ant-design/icons';
-import { uploadToIpfs } from './utils';
 
 const SUPPORTED_FILE_TYPES = ['image/jpeg', 'image/png'];
 const MAX_IMAGE_SIZE_IN_MB = 5;
@@ -16,44 +15,24 @@ const UploadButton = ({
   ...rest
 }) => {
   const inputRef = useRef();
-  const [uploading, setUploading] = useState(false);
 
   const handleFileInputChange = async (e) => {
-    try {
-      const file = e.target.files[0];
-      if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-      // Validate file type
-      if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
-        message.error('Unsupported file type. Please select an image file.');
-        return;
-      }
-
-      // Validate file size
-      if (file.size > MAX_IMAGE_SIZE) {
-        message.error(`File size limit is ${MAX_IMAGE_SIZE_IN_MB} MB. Please select a smaller file.`);
-        return;
-      }
-
-      setUploading(true);
-
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-      fileReader.onloadend = async () => {
-        try {
-          // Upload the file to IPFS
-          const extension = file.type.split('/').pop();
-          const hash = await uploadToIpfs(fileReader.result);
-
-          onUploadMedia(`${hash}.${extension}`);
-        } finally {
-          setUploading(false);
-        }
-      };
-    } catch (error) {
-      message.error('Error adding image');
-      console.error('Error adding image:', error);
+    // Validate file type
+    if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
+      message.error('Unsupported file type. Please select an image file.');
+      return;
     }
+
+    // Validate file size
+    if (file.size > MAX_IMAGE_SIZE) {
+      message.error(`File size limit is ${MAX_IMAGE_SIZE_IN_MB} MB. Please select a smaller file.`);
+      return;
+    }
+
+    onUploadMedia(file);
   };
 
   return (
@@ -67,10 +46,9 @@ const UploadButton = ({
       />
       <Button
         type="link"
-        disabled={disabled || uploading}
+        disabled={disabled}
         onClick={() => inputRef.current.click()}
         icon={<FileImageOutlined />}
-        loading={uploading}
         {...rest}
       >
         {title}

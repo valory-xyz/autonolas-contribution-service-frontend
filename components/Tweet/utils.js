@@ -27,6 +27,31 @@ export const uploadToIpfs = async (file) => {
   return hash;
 };
 
+export const uploadManyToIpfs = async (media) => {
+  const mediaPromises = [];
+
+  media.forEach((file) => {
+    const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(file);
+    const extension = file.type.split('/').pop(); // Get file extension
+    mediaPromises.push(
+      new Promise((resolve, reject) => {
+        fileReader.onloadend = async () => {
+          try {
+            // Upload the file to IPFS
+            const hash = await uploadToIpfs(fileReader.result);
+            resolve(`${hash}.${extension}`);
+          } catch (error) {
+            reject(error);
+          }
+        };
+      }),
+    );
+  });
+
+  return Promise.all(mediaPromises);
+};
+
 const extensionRegex = /\.[^.]+$/;
 export const getMediaSrc = (hashWithExtension) => {
   const hash = hashWithExtension.replace(extensionRegex, '');

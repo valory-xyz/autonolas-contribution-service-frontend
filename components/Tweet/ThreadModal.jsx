@@ -3,17 +3,12 @@ import {
   Modal, Button, Input, Row, Col, message,
 } from 'antd';
 import PropTypes from 'prop-types';
-import {
-  TwitterOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
+import { TwitterOutlined, PlusOutlined } from '@ant-design/icons';
 import { MAX_TWEET_IMAGES, MAX_TWEET_LENGTH } from 'util/constants';
 import TweetLength from './TweetLength';
 import { ViewThread } from './ViewThread';
 import UploadButton from './UploadButton';
-import {
-  ProposalCountRow,
-} from './styles';
+import { ProposalCountRow } from './styles';
 import MediaList from './MediaList';
 
 const ThreadModal = ({
@@ -39,20 +34,20 @@ const ThreadModal = ({
 
   // ADD the tweet to the thread
   const onAddToThread = () => {
-    if ((!tweet || tweet.trim() === '') && (media.length === 0)) {
+    if ((!tweet || tweet.trim() === '') && media.length === 0) {
       message.error('Tweet cannot be empty.');
       return;
     }
 
     // currently editing a thread
     if (currentEditingIndex === -1) {
-      const newThread = [...thread, { text: tweet, media: media || [] }];
+      const newThread = [...thread, { text: tweet, media }];
       setThread(newThread);
       setTweet(null);
       setMedia([]);
     } else {
       const newThread = [...thread];
-      newThread[currentEditingIndex] = { text: tweet, media: media || [] };
+      newThread[currentEditingIndex] = { text: tweet, media };
       setThread(newThread);
       setTweet(null);
       setMedia([]);
@@ -74,7 +69,9 @@ const ThreadModal = ({
 
   // POST the thread to the backend
   const onPostThread = async () => {
-    if (thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)) {
+    if (
+      thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)
+    ) {
       message.error('One or more tweets are empty. Please fill them all.');
       return;
     }
@@ -124,8 +121,8 @@ const ThreadModal = ({
 
           <MediaList
             media={media}
-            handleDelete={(removingHash) => setMedia(
-              (prev) => prev.filter((hash) => hash !== removingHash),
+            handleDelete={(removingFile) => setMedia(
+              (prev) => prev.filter((file) => file !== removingFile),
             )}
           />
 

@@ -1,5 +1,4 @@
 import { Button, Col, Image } from 'antd';
-// import Image from 'next/image';
 import styled from 'styled-components';
 
 export const ProposalCountRow = styled.div`

@@ -16,7 +16,7 @@ import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposals } from './Proposals';
 import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { getFirstTenCharsOfTweet } from './utils';
+import { getFirstTenCharsOfTweet, uploadManyToIpfs } from './utils';
 import TweetLength from './TweetLength';
 import ThreadModal from './ThreadModal';
 import UploadButton from './UploadButton';
@@ -74,12 +74,13 @@ export const TweetPropose = () => {
         )}`,
       });
 
+      const mediaHashes = await uploadManyToIpfs(tweetOrThread.media);
+
       const tweetDetails = {
         request_id: uuid(),
         createdDate: Date.now() / 1000, // in seconds
         text: tweetOrThread.text || null,
-        // TODO: uncomment when BE is ready
-        // media_hashes: tweetOrThread.media,
+        media_hashes: mediaHashes,
         posted: false,
         proposer: { address: account, signature, verified: null },
         voters: [], // initially no votes
@@ -144,7 +145,7 @@ export const TweetPropose = () => {
       />
       <MediaList
         media={media}
-        handleDelete={(hash) => setMedia((prev) => prev.filter((currItem) => currItem !== hash))}
+        handleDelete={(file) => setMedia((prev) => prev.filter((currItem) => currItem !== file))}
       />
 
       <ProposalCountRow>
