@@ -12,10 +12,17 @@ export const MODE = {
 
 const MediaItem = ({ mode, item, handleDelete }) => {
   const key = typeof item === 'string' ? item : item.name;
-  const src = useMemo(
-    () => (typeof item === 'string' ? getMediaSrc(item) : URL.createObjectURL(item)),
-    [item],
-  );
+  const src = useMemo(() => {
+    try {
+      if (typeof item === 'string') {
+        return getMediaSrc(item);
+      }
+      return URL.createObjectURL(item);
+    } catch {
+      return '';
+    }
+  }, [item]);
+
   const Wrapper = mode === MODE.EDIT ? MediaWrapper : Fragment;
 
   const handleDeleteAndRevoke = () => {

@@ -16,7 +16,7 @@ import { useHelpers } from 'common-util/hooks/useHelpers';
 import { Proposals } from './Proposals';
 import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { getFirstTenCharsOfTweet, uploadManyToIpfs } from './utils';
+import { generateMediaHashes, getFirstTenCharsOfTweet } from './utils';
 import TweetLength from './TweetLength';
 import ThreadModal from './ThreadModal';
 import UploadButton from './UploadButton';
@@ -74,20 +74,7 @@ export const TweetPropose = () => {
         )}`,
       });
 
-      let mediaHashes;
-
-      // generates mediaHashes differently for thread and tweet
-      if (Array.isArray(tweetOrThread.text)) {
-        const threadMediaPromises = [];
-
-        tweetOrThread.media.forEach((files) => {
-          threadMediaPromises.push(uploadManyToIpfs(files));
-        });
-
-        mediaHashes = await Promise.allSettled(threadMediaPromises);
-      } else {
-        mediaHashes = await uploadManyToIpfs(tweetOrThread.media);
-      }
+      const mediaHashes = await generateMediaHashes(tweetOrThread);
 
       const tweetDetails = {
         request_id: uuid(),

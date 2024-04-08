@@ -20,6 +20,8 @@ const UploadButton = ({
     const file = e.target.files[0];
     if (!file) return;
 
+    inputRef.current.value = '';
+
     // Validate file type
     if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
       message.error('Unsupported file type. Please select an image file.');

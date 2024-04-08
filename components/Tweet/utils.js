@@ -42,6 +42,7 @@ export const uploadManyToIpfs = async (files) => {
             const hash = await uploadToIpfs(fileReader.result);
             resolve(`${hash}.${fileExtension}`);
           } catch (error) {
+            console.error(error);
             reject(error);
           }
         };
@@ -58,4 +59,44 @@ export const getMediaSrc = (hashWithExtension) => {
   const hash = hashWithExtension.replace(extensionRegex, '');
 
   return `${GATEWAY_URL}${hash}`;
+};
+
+export const generateMediaHashes = async (tweetOrThread) => {
+  try {
+    // generates mediaHashes differently for thread and tweet
+    if (Array.isArray(tweetOrThread.text)) {
+      const threadMediaPromises = [];
+
+      tweetOrThread.media.forEach((files) => {
+        threadMediaPromises.push(uploadManyToIpfs(files));
+      });
+
+      const uploadedMedia = await Promise.allSettled(threadMediaPromises);
+
+      return uploadedMedia.reduce((result, item) => {
+        if (item.status === 'fulfilled') {
+          const fulfilledValues = item.value.reduce((acc, curr) => {
+            if (curr.status === 'fulfilled') {
+              acc.push(curr.value);
+            }
+            return acc;
+          }, []);
+          result.push(fulfilledValues);
+        }
+        return result;
+      }, []);
+    }
+
+    const uploadedMedia = await uploadManyToIpfs(tweetOrThread.media);
+
+    return uploadedMedia.reduce((result, item) => {
+      if (item.status === 'fulfilled') {
+        result.push(item.value);
+      }
+      return result;
+    }, []);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
