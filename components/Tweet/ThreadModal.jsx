@@ -57,7 +57,9 @@ const ThreadModal = ({
 
   // REMOVE the tweet from the thread
   const onRemoveFromThread = (threadIndex) => {
-    setThread((prev) => prev.filter((_, index) => index !== threadIndex));
+    const newThread = [...thread];
+    newThread.splice(threadIndex, 1);
+    setThread(newThread);
   };
 
   // POST the thread to the backend
