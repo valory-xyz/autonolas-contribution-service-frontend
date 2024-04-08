@@ -60,6 +60,14 @@ const ThreadModal = ({
     const newThread = [...thread];
     newThread.splice(threadIndex, 1);
     setThread(newThread);
+
+    // If the thread is being edited - clear all fields
+    // to avoid incorrect saving
+    if (currentEditingIndex === threadIndex) {
+      setTweet(null);
+      setMedia([]);
+      setCurrentEditingIndex(null);
+    }
   };
 
   // POST the thread to the backend
