@@ -25,40 +25,33 @@ const ThreadModal = ({
   const [media, setMedia] = useState([]);
 
   // index of the tweet currently being edited,
-  // -1 if no tweet is being edited
-  const [currentEditingIndex, setCurrentEditingIndex] = useState(-1);
+  // null if no tweet is being edited
+  const [currentEditingIndex, setCurrentEditingIndex] = useState(null);
 
-  const onModalClose = () => {
-    closeThreadModal();
-  };
-
-  // ADD the tweet to the thread
   const onAddToThread = () => {
     if ((!tweet || tweet.trim() === '') && media.length === 0) {
       message.error('Tweet cannot be empty.');
       return;
     }
 
+    const newThread = [...thread];
+
     // currently editing a thread
-    if (currentEditingIndex === -1) {
-      const newThread = [...thread, { text: tweet, media }];
-      setThread(newThread);
-      setTweet(null);
-      setMedia([]);
+    if (currentEditingIndex === null) {
+      newThread.push({ text: tweet, media });
     } else {
-      const newThread = [...thread];
       newThread[currentEditingIndex] = { text: tweet, media };
-      setThread(newThread);
-      setTweet(null);
-      setMedia([]);
-      setCurrentEditingIndex(-1);
     }
+
+    setThread(newThread);
+    setTweet(null);
+    setMedia([]);
+    setCurrentEditingIndex(null);
   };
 
-  // EDIT the tweet in the thread
   const onEditThread = (threadIndex) => {
-    setTweet(thread[threadIndex].text);
-    setMedia(thread[threadIndex].media || []);
+    setTweet(thread[threadIndex]?.text ?? '');
+    setMedia(thread[threadIndex]?.media ?? []);
     setCurrentEditingIndex(threadIndex);
   };
 
@@ -79,7 +72,7 @@ const ThreadModal = ({
     try {
       // post the thread & close the modal
       await addThread({
-        text: thread.map((item) => item.text || null),
+        text: thread.map((item) => item.text ?? ''),
         media: thread.map((item) => item.media),
       });
 
@@ -95,7 +88,7 @@ const ThreadModal = ({
       title="Twitter Thread"
       width={900}
       onOk={onPostThread}
-      onCancel={onModalClose}
+      onCancel={closeThreadModal}
       footer={[
         <Button
           key="submit"
@@ -133,7 +126,7 @@ const ThreadModal = ({
                 <UploadButton
                   type="primary"
                   ghost
-                  disabled={media.length === MAX_TWEET_IMAGES}
+                  disabled={media.length >= MAX_TWEET_IMAGES}
                   onUploadMedia={(newMedia) => setMedia((prev) => [...prev, newMedia])}
                 />
               </Col>
@@ -145,7 +138,7 @@ const ThreadModal = ({
                   disabled={(tweet || '').trim() === '' && media.length === 0}
                 >
                   <PlusOutlined />
-                  {currentEditingIndex === -1 ? 'Add to thread' : 'Edit thread'}
+                  {currentEditingIndex === null ? 'Add to thread' : 'Edit thread'}
                 </Button>
               </Col>
             </Row>

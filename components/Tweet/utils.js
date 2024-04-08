@@ -50,7 +50,7 @@ export const uploadManyToIpfs = async (files) => {
     );
   });
 
-  return Promise.all(mediaPromises);
+  return Promise.allSettled(mediaPromises);
 };
 
 const extensionRegex = /\.[^.]+$/;

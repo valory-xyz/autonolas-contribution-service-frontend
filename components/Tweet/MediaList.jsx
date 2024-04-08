@@ -63,7 +63,7 @@ MediaItem.propTypes = {
 
 MediaItem.defaultProps = {
   mode: MODE.EDIT,
-  handleDelete: () => {},
+  handleDelete: null,
 };
 
 const MediaList = ({

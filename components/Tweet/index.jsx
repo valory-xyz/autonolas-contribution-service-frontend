@@ -84,7 +84,7 @@ export const TweetPropose = () => {
           threadMediaPromises.push(uploadManyToIpfs(files));
         });
 
-        mediaHashes = await Promise.all(threadMediaPromises);
+        mediaHashes = await Promise.allSettled(threadMediaPromises);
       } else {
         mediaHashes = await uploadManyToIpfs(tweetOrThread.media);
       }
@@ -92,7 +92,7 @@ export const TweetPropose = () => {
       const tweetDetails = {
         request_id: uuid(),
         createdDate: Date.now() / 1000, // in seconds
-        text: tweetOrThread.text || null,
+        text: tweetOrThread.text,
         media_hashes: mediaHashes,
         posted: false,
         proposer: { address: account, signature, verified: null },
@@ -168,7 +168,7 @@ export const TweetPropose = () => {
         <Row>
           <UploadButton
             disabled={
-              !account || isSubmitting || media.length === MAX_TWEET_IMAGES
+              !account || isSubmitting || media.length >= MAX_TWEET_IMAGES
             }
             onUploadMedia={(newMedia) => setMedia((prev) => [...prev, newMedia])}
           />

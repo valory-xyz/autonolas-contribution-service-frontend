@@ -32,20 +32,20 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
     totalVeolasInvestedInPercentage,
     isProposalVerified,
   } = getCurrentProposalInfo(proposal);
-  const hasVoted = votersAddress?.includes(account) || false;
+  const hasVoted = votersAddress?.includes(account) ?? false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
   const isApproveDisabled = !account || !isProposalVerified || proposal?.posted;
 
   const tweetData = useMemo(() => {
     if (typeof proposal?.text === 'string') {
-      return { tweet: { text: proposal?.text, media: proposal?.media_hashes || [] } };
+      return { tweet: { text: proposal.text, media: proposal?.media_hashes ?? [] } };
     }
 
     if (Array.isArray(proposal?.text)) {
       return {
         thread: proposal.text.map((text, index) => ({
           text,
-          media: (proposal.media_hashes || [])[index] || [],
+          media: (proposal?.media_hashes ?? [])[index] ?? [],
         })),
       };
     }
@@ -60,11 +60,11 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
         {tweetData.tweet && (
           <>
             <div className="mb-12">
-              <Text>{tweetData.tweet.text || NA}</Text>
+              <Text>{tweetData.tweet.text ?? NA}</Text>
             </div>
             <MediaList media={tweetData.tweet.media} mode={MODE.VIEW} className="mb-12" />
             <Text type="secondary">
-              {tweetData.tweet.text.length || 0}
+              {tweetData.tweet.text.length}
               /280 characters
             </Text>
           </>
