@@ -126,8 +126,6 @@ const ThreadModal = ({
             <Row className="mt-12" gutter={[8, 8]}>
               <Col>
                 <UploadButton
-                  type="primary"
-                  ghost
                   disabled={media.length >= MAX_TWEET_IMAGES}
                   onUploadMedia={(newMedia) => setMedia((prev) => [...prev, newMedia])}
                 />
