@@ -22,13 +22,13 @@ const ipfs = create({
  * @param {string | ArrayBuffer} file
  * @returns hash to the file
  */
-export const uploadToIpfs = async (file) => {
+export const uploadFileToIpfs = async (file) => {
   const response = await ipfs.add(file);
   const hash = response.cid.toV1().toString(base32.encoder);
   return hash;
 };
 
-export const uploadManyToIpfs = async (files) => {
+export const uploadFilesToIpfs = async (files) => {
   const mediaPromises = [];
 
   files.forEach((file) => {
@@ -39,7 +39,7 @@ export const uploadManyToIpfs = async (files) => {
         fileReader.onloadend = async () => {
           try {
             // Upload the file to IPFS
-            const hash = await uploadToIpfs(fileReader.result);
+            const hash = await uploadFileToIpfs(fileReader.result);
             resolve(`${hash}.${fileExtension}`);
           } catch (error) {
             console.error(error);
@@ -61,40 +61,20 @@ export const getMediaSrc = (hashWithExtension) => {
   return `${GATEWAY_URL}${hash}`;
 };
 
+const handleFulfilled = (items) => items
+  .filter((item) => item.status === 'fulfilled')
+  .map((item) => item.value);
+
 export const generateMediaHashes = async (tweetOrThread) => {
   try {
-    // generates mediaHashes differently for thread and tweet
     if (Array.isArray(tweetOrThread.text)) {
-      const threadMediaPromises = [];
-
-      tweetOrThread.media.forEach((files) => {
-        threadMediaPromises.push(uploadManyToIpfs(files));
-      });
-
+      const threadMediaPromises = tweetOrThread.media.map(uploadFilesToIpfs);
       const uploadedMedia = await Promise.allSettled(threadMediaPromises);
-
-      return uploadedMedia.reduce((result, item) => {
-        if (item.status === 'fulfilled') {
-          const fulfilledValues = item.value.reduce((acc, curr) => {
-            if (curr.status === 'fulfilled') {
-              acc.push(curr.value);
-            }
-            return acc;
-          }, []);
-          result.push(fulfilledValues);
-        }
-        return result;
-      }, []);
+      return handleFulfilled(uploadedMedia).map(handleFulfilled);
     }
 
-    const uploadedMedia = await uploadManyToIpfs(tweetOrThread.media);
-
-    return uploadedMedia.reduce((result, item) => {
-      if (item.status === 'fulfilled') {
-        result.push(item.value);
-      }
-      return result;
-    }, []);
+    const uploadedMedia = await uploadFilesToIpfs(tweetOrThread.media);
+    return handleFulfilled(uploadedMedia);
   } catch (error) {
     console.error(error);
     return [];

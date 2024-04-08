@@ -11,7 +11,6 @@ export const MODE = {
 };
 
 const MediaItem = ({ mode, item, handleDelete }) => {
-  const key = typeof item === 'string' ? item : item.name;
   const src = useMemo(() => {
     try {
       if (typeof item === 'string') {
@@ -32,7 +31,7 @@ const MediaItem = ({ mode, item, handleDelete }) => {
     }
   };
   return (
-    <Col key={key}>
+    <Col>
       <Wrapper>
         <Media
           src={src}
@@ -80,9 +79,12 @@ const MediaList = ({
 
   return (
     <Row gutter={[12, 12]} className={className}>
-      {media.map((item) => (
-        <MediaItem item={item} mode={mode} handleDelete={handleDelete} />
-      ))}
+      {media.map((item) => {
+        const key = typeof item === 'string' ? item : item.name;
+        return (
+          <MediaItem key={key} item={item} mode={mode} handleDelete={handleDelete} />
+        );
+      })}
     </Row>
   );
 };
