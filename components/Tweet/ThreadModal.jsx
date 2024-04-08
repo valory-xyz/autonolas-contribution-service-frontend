@@ -71,6 +71,12 @@ const ThreadModal = ({
       return;
     }
 
+    // Add latest changes to the thread as it's more intuitive to click
+    // propose without saving the changes
+    if ((tweet || '').trim() === '' || media.length === 0) {
+      onAddToThread();
+    }
+
     try {
       // post the thread & close the modal
       await addThread({
