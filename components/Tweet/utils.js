@@ -28,24 +28,24 @@ export const uploadToIpfs = async (file) => {
   return hash;
 };
 
-export const uploadManyToIpfs = async (media) => {
+export const uploadManyToIpfs = async (files) => {
   const mediaPromises = [];
 
-  media.forEach((file) => {
-    const fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
-    const extension = file.type.split('/').pop(); // Get file extension
+  files.forEach((file) => {
     mediaPromises.push(
       new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        const fileExtension = file.type.split('/').pop();
         fileReader.onloadend = async () => {
           try {
             // Upload the file to IPFS
             const hash = await uploadToIpfs(fileReader.result);
-            resolve(`${hash}.${extension}`);
+            resolve(`${hash}.${fileExtension}`);
           } catch (error) {
             reject(error);
           }
         };
+        fileReader.readAsArrayBuffer(file);
       }),
     );
   });

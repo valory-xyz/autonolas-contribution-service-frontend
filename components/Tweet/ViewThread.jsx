@@ -6,7 +6,7 @@ import { CloseOutlined, EditFilled } from '@ant-design/icons';
 import { Fragment } from 'react';
 import { NA } from '@autonolas/frontend-library';
 import { EachThreadContainer } from './styles';
-import MediaList from './MediaList';
+import MediaList, { MODE } from './MediaList';
 
 const { Text } = Typography;
 
@@ -30,7 +30,7 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
                 />
               )}
 
-              {((tweet.text || '').length > 1 || tweet.media.length > 0)
+              {(tweet.text?.length > 1 || tweet.media.length > 0)
                 && onRemoveFromThread && (
                   <Button
                     danger
@@ -42,7 +42,7 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
               )}
             </div>
           </EachThreadContainer>
-          <MediaList media={tweet.media} mode="view" />
+          <MediaList media={tweet.media} mode={MODE.VIEW} className="mt-8" />
         </Fragment>
       ),
     }))}
@@ -52,8 +52,8 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
 ViewThread.propTypes = {
   thread: PropTypes.arrayOf(
     PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      media: PropTypes.arrayOf(PropTypes.string).isRequired,
+      text: PropTypes.string,
+      media: PropTypes.arrayOf(PropTypes.string),
     }),
   ),
   onEditThread: PropTypes.func,

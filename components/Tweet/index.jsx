@@ -74,7 +74,20 @@ export const TweetPropose = () => {
         )}`,
       });
 
-      const mediaHashes = await uploadManyToIpfs(tweetOrThread.media);
+      let mediaHashes;
+
+      // generates mediaHashes differently for thread and tweet
+      if (Array.isArray(tweetOrThread.text)) {
+        const threadMediaPromises = [];
+
+        tweetOrThread.media.forEach((files) => {
+          threadMediaPromises.push(uploadManyToIpfs(files));
+        });
+
+        mediaHashes = await Promise.all(threadMediaPromises);
+      } else {
+        mediaHashes = await uploadManyToIpfs(tweetOrThread.media);
+      }
 
       const tweetDetails = {
         request_id: uuid(),
@@ -105,6 +118,7 @@ export const TweetPropose = () => {
       };
 
       const updatedMemoryDetails = await fetchUpdatedMemory();
+
       await triggerAction(
         currentMemoryDetails.id,
         action,
@@ -114,6 +128,7 @@ export const TweetPropose = () => {
 
       // reset form
       setTweet('');
+      setMedia([]);
     } catch (error) {
       notifyError('Tweet proposal failed');
       console.error(error);

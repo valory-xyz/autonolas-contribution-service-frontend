@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import { isNil, set } from 'lodash';
+import { isNil, set, cloneDeep } from 'lodash';
 import {
   areAddressesEqual,
   // notifySuccess
@@ -80,14 +80,15 @@ export const useCentaursFunctionalities = () => {
     const tweetList = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
     const updatedTweetList = [...tweetList, tweetDetails];
 
+    const updatedCurrentMemoryDetails = cloneDeep(currentMemoryDetails);
     // setting the updated tweet list in the memory
     set(
-      currentMemoryDetails,
+      updatedCurrentMemoryDetails,
       'plugins_data.scheduled_tweet.tweets',
       updatedTweetList,
     );
 
-    return currentMemoryDetails;
+    return updatedCurrentMemoryDetails;
   };
 
   /**
