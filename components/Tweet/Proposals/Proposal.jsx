@@ -41,7 +41,7 @@ export const Proposal = ({ proposal }) => {
   const { getCurrentProposalInfo } = useProposals();
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
-  const hasVoted = votersAddress?.includes(account) || false;
+  const hasVoted = votersAddress?.includes(account) ?? false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
 
   // set current step
@@ -217,7 +217,7 @@ export const Proposal = ({ proposal }) => {
           />
         </Col>
         <Col md={18} xs={24}>
-          <div>{steps[current]?.content || NA}</div>
+          <div>{steps[current]?.content ?? NA}</div>
         </Col>
       </Row>
       <div className="p-24">

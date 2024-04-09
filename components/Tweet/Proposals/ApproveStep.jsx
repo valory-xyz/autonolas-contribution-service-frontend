@@ -8,8 +8,10 @@ import { VEOLAS_QUORUM } from 'util/constants';
 import { getNumberInMillions } from 'common-util/functions';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { useHelpers } from 'common-util/hooks/useHelpers';
+import { useMemo } from 'react';
 import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 import { ViewThread } from '../ViewThread';
+import MediaList, { MODE } from '../MediaList';
 
 const { Text } = Typography;
 
@@ -30,27 +32,45 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
     totalVeolasInvestedInPercentage,
     isProposalVerified,
   } = getCurrentProposalInfo(proposal);
-  const tweetOrThread = proposal?.text;
-  const hasVoted = votersAddress?.includes(account) || false;
+  const hasVoted = votersAddress?.includes(account) ?? false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
   const isApproveDisabled = !account || !isProposalVerified || proposal?.posted;
+
+  const tweetData = useMemo(() => {
+    if (typeof proposal?.text === 'string') {
+      return { tweet: { text: proposal.text, media: proposal?.media_hashes ?? [] } };
+    }
+
+    if (Array.isArray(proposal?.text)) {
+      return {
+        thread: proposal.text.map((text, index) => ({
+          text,
+          media: (proposal?.media_hashes ?? [])[index] ?? [],
+        })),
+      };
+    }
+
+    return {};
+  }, [proposal?.media_hashes, proposal?.text]);
 
   return (
     <>
       <Card className="mb-12" bodyStyle={{ padding: 16 }}>
         {/* If string, just a tweet else a thread (array of string) */}
-        {typeof tweetOrThread === 'string' ? (
+        {tweetData.tweet && (
           <>
             <div className="mb-12">
-              <Text>{tweetOrThread || NA}</Text>
+              <Text>{tweetData.tweet.text ?? NA}</Text>
             </div>
+            <MediaList media={tweetData.tweet.media} mode={MODE.VIEW} className="mb-12" />
             <Text type="secondary">
-              {tweetOrThread.length || 0}
+              {tweetData.tweet.text.length}
               /280 characters
             </Text>
           </>
-        ) : (
-          <ViewThread thread={tweetOrThread || []} />
+        )}
+        {tweetData.thread && (
+          <ViewThread thread={tweetData.thread} />
         )}
       </Card>
 

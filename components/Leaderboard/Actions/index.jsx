@@ -8,15 +8,6 @@ const { Text, Paragraph } = Typography;
 const Actions = () => (
   <>
     <EducationTitle title="Actions" level={3} educationItemSlug="actions" marginBottom="mb-4" />
-    <div className="mb-8">
-      <Text type="secondary">
-        Need inspiration for content? Check out
-        {' '}
-        <a href="https://olas-ripples.oaksprout.repl.co" rel="noopener noreferrer" target="_blank">Olas Ripples</a>
-        {' '}
-        for ideas
-      </Text>
-    </div>
     <Card bodyStyle={{ padding: 0 }}>
       <List
         itemLayout="horizontal"
