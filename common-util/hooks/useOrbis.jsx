@@ -5,7 +5,8 @@ import {
   notifyError,
   notifySuccess,
 } from '@autonolas/frontend-library';
-import { mainnet, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, { ORBIS_SUPPORTED_CHAIN, checkOrbisNegativeStatus, checkOrbisStatus } from 'common-util/orbis';

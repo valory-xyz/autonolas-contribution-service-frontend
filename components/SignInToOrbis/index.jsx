@@ -23,10 +23,7 @@ const SignInToOrbis = () => {
         title="Orbis enables you to use social features like Chat and Private Messages."
         delay={2000}
       >
-        <Button
-          loading={isLoading}
-          onClick={connect}
-        >
+        <Button loading={isLoading} onClick={connect}>
           Sign in to Orbis
         </Button>
       </Tooltip>
@@ -43,7 +40,7 @@ const SignInToOrbis = () => {
             Logout?
           </Menu.Item>
         </Menu>
-          )}
+      )}
       onClick={() => push(`/profile/${address}`)}
       icon={<LogoutOutlined />}
       loading={isLoading}
