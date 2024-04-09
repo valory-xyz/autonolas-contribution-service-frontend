@@ -3,8 +3,6 @@ import { TileDocument } from '@ceramicnetwork/stream-tile';
 import { DID } from 'dids';
 import { Ed25519Provider } from 'key-did-provider-ed25519';
 import { getResolver } from 'key-did-resolver';
-
-// eslint-disable-next-line import/no-unresolved
 import { fromString } from 'uint8arrays';
 
 export const CERAMIC_OBJECT = new CeramicClient(
