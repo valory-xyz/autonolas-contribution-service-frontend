@@ -141,10 +141,11 @@ export const Proposal = ({ proposal }) => {
         { id: uuid(), dateCreated: Date.now(), verified: null },
       ];
 
-      set(proposal, 'executionAttempts', executionAttempts);
+      const updatedProposal = cloneDeep(proposal);
+      set(updatedProposal, 'executionAttempts', executionAttempts);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
-        (tweet) => (tweet.request_id === proposal.request_id ? proposal : tweet),
+        (tweet) => (tweet.request_id === updatedProposal.request_id ? updatedProposal : tweet),
       );
 
       // Update centaur with updated tweets
