@@ -52,6 +52,7 @@ export const setupSlice = createSlice({
       state.isLeaderboardLoading = action.payload;
     },
     setLeaderboard: (state, action) => {
+      console.log(' action.payload', action.payload);
       const leaderboard = action.payload;
 
       // orderBy (sort) 1. points, 2. name

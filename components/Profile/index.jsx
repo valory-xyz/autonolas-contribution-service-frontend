@@ -30,12 +30,14 @@ const ProfileBody = ({ profile, id }) => {
   } = useOrbis();
 
   useEffect(() => {
+    if (!profile.wallet_address) return;
+
     const getData = async () => {
       try {
         setIsBadgeLoading(true);
 
         const { details: badgeDetails } = await getLatestMintedNft(
-          profile?.wallet_address,
+          profile.wallet_address,
         );
         setDetails(badgeDetails);
       } catch (error) {
@@ -46,14 +48,16 @@ const ProfileBody = ({ profile, id }) => {
     };
 
     getData();
-  }, [profile?.wallet_address]);
+  }, [profile.wallet_address]);
 
   const loadOrbisProfile = useCallback(async (delay) => {
+    if (!profile.wallet_address) return null;
+
     if (delay) {
       await new Promise((resolve) => { setTimeout(resolve, 300); });
     }
 
-    const res = await getOrbisProfile(id);
+    const res = await getOrbisProfile(profile.wallet_address);
 
     if (checkOrbisStatus(res?.status)) {
       setOrbisProfile(res?.data);
@@ -64,14 +68,14 @@ const ProfileBody = ({ profile, id }) => {
     console.error(ERROR_MESSAGE, res);
     setOrbisProfile(null);
     return null;
-  }, [id, getOrbisProfile]);
+  }, [profile.wallet_address, getOrbisProfile]);
 
   useEffect(() => {
     loadOrbisProfile();
   }, [loadOrbisProfile]);
 
   const getDiscordHandle = () => {
-    if (profile?.discord_handle) {
+    if (profile.discord_handle) {
       return <Text type="secondary">{profile.discord_handle}</Text>;
     }
     if (account && account === profile.wallet_address) {
@@ -81,7 +85,7 @@ const ProfileBody = ({ profile, id }) => {
   };
 
   const getTwitterHandle = () => {
-    if (profile?.twitter_handle) {
+    if (profile.twitter_handle) {
       return <Text type="secondary">{profile.twitter_handle}</Text>;
     }
     if (account && account === profile.wallet_address) {
@@ -95,7 +99,9 @@ const ProfileBody = ({ profile, id }) => {
       <div style={{ height: 75 }}>
         <Skeleton loading={isOrbisLoading} title paragraph={false} active>
           <div style={{ display: 'flex' }}>
-            <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>{orbisProfile?.username || 'Unknown Olassian'}</Title>
+            <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>
+              {orbisProfile?.username ?? profile.twitter_handle ?? 'Unknown Olassian'}
+            </Title>
             <UpdateUsername loadOrbisProfile={loadOrbisProfile} id={id} />
           </div>
         </Skeleton>
@@ -109,7 +115,7 @@ const ProfileBody = ({ profile, id }) => {
           ) : (
             <>
               {details?.image ? (
-                <ShowBadge image={details?.image} tokenId={details?.tokenId} />
+                <ShowBadge image={details.image} tokenId={details?.tokenId} />
               ) : (
                 <Text>Badge not minted yet</Text>
               )}
@@ -130,7 +136,7 @@ const ProfileBody = ({ profile, id }) => {
               <Col>
                 <Statistic
                   title="Points"
-                  value={profile.points ? profile.points : NA}
+                  value={profile.points ?? NA}
                 />
               </Col>
             </Row>
@@ -142,7 +148,9 @@ const ProfileBody = ({ profile, id }) => {
                 <List.Item.Meta
                   title="Wallet Address"
                   description={
-                    <TruncatedEthereumLink text={id} />
+                    profile.wallet_address
+                      ? <TruncatedEthereumLink text={profile.wallet_address} />
+                      : NA
                   }
                 />
               </List.Item>
@@ -190,7 +198,7 @@ export const Profile = () => {
 
   const { id } = router.query;
   const data = useSelector((state) => state?.setup?.leaderboard);
-  const profile = data.find((item) => item.wallet_address === id);
+  const profile = data.find((item) => item.wallet_address === id || item.twitter_id === id);
 
   if (data?.length === 0) {
     return <Skeleton active />;
