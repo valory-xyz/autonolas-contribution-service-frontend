@@ -16,6 +16,7 @@ import { checkOrbisStatus } from 'common-util/orbis';
 import { DiscordLink } from '../Leaderboard/common';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { UpdateUsername } from './UpdateUsername';
+import PointsShowcase from './PointsShowcase';
 
 const { Title, Text } = Typography;
 
@@ -115,27 +116,7 @@ const ProfileBody = ({ profile, id }) => {
               )}
             </>
           )}
-        </Col>
-
-        <Col xl={12} xs={24}>
-          <div className="mb-48">
-            <Title level={5}>Contribution</Title>
-            <Row gutter={96}>
-              <Col>
-                <Statistic
-                  title="Tier"
-                  value={profile.points ? getTier(profile.points) : NA}
-                />
-              </Col>
-              <Col>
-                <Statistic
-                  title="Points"
-                  value={profile.points ? profile.points : NA}
-                />
-              </Col>
-            </Row>
-          </div>
-          <div>
+          <div className="mt-12">
             <Title level={5}>Details</Title>
             <List bordered>
               <List.Item>
@@ -161,6 +142,29 @@ const ProfileBody = ({ profile, id }) => {
             </List>
           </div>
         </Col>
+
+        <Col xl={12} xs={24}>
+          <div className="mb-48">
+            <Title level={5}>Contribution</Title>
+            <Row gutter={96}>
+              <Col>
+                <Statistic
+                  title="Tier"
+                  value={profile.points ? getTier(profile.points) : NA}
+                />
+              </Col>
+              <Col>
+                <Statistic
+                  title="Points"
+                  value={profile.points ? profile.points : NA}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
+            </Row>
+          </div>
+        </Col>
       </Row>
     </>
   );
@@ -172,6 +176,7 @@ ProfileBody.propTypes = {
     discord_handle: PropTypes.string,
     twitter_handle: PropTypes.string,
     points: PropTypes.number,
+    tweet_id_to_points: PropTypes.objectOf(PropTypes.number),
   }),
   id: PropTypes.string.isRequired,
 };
@@ -182,6 +187,7 @@ ProfileBody.defaultProps = {
     discord_handle: '',
     twitter_handle: '',
     points: 0,
+    tweet_id_to_points: {},
   },
 };
 
