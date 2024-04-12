@@ -103,7 +103,7 @@ const ProfileBody = ({ profile, id }) => {
       </div>
 
       <Row gutter={48}>
-        <Col className="mb-48" xl={10} xs={24}>
+        <Col className="mb-48" xl={8} xs={24}>
           <Title level={5}>Badge</Title>
           {isBadgeLoading ? (
             <BadgeLoading />
@@ -116,7 +116,7 @@ const ProfileBody = ({ profile, id }) => {
               )}
             </>
           )}
-          <div className="mt-12">
+          <div className="mt-24">
             <Title level={5}>Details</Title>
             <List bordered>
               <List.Item>
@@ -143,7 +143,7 @@ const ProfileBody = ({ profile, id }) => {
           </div>
         </Col>
 
-        <Col xl={12} xs={24}>
+        <Col xl={16} xs={24}>
           <div className="mb-48">
             <Title level={5}>Contribution</Title>
             <Row gutter={96}>
@@ -160,9 +160,7 @@ const ProfileBody = ({ profile, id }) => {
                 />
               </Col>
             </Row>
-            <Row>
-              <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
-            </Row>
+            <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
           </div>
         </Col>
       </Row>
