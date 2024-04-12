@@ -92,7 +92,7 @@ TweetEmbed.propTypes = {
 
 const PointsShowcase = ({ tweetIdToPoints }) => {
   const tweets = useMemo(() => {
-    const earnedPointsTweets = Object.entries(tweetIdToPoints).reduce(
+    const earnedPointsTweets = Object.entries(tweetIdToPoints ?? {}).reduce(
       (acc, [key, value]) => {
         if (value > 0) {
           acc.push({ tweetId: key, points: value });
