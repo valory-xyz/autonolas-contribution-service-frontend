@@ -3,6 +3,7 @@ import {
 } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import {
   Card, Spin, Row, Col, Typography,
 } from 'antd';
@@ -109,20 +110,32 @@ const PointsShowcase = ({ tweetIdToPoints }) => {
       <Title level={5} className="mt-24">
         Points Showcase
       </Title>
-      <Paragraph type="secondary">
-        Here is a selection of tweets you have made that have earned points.
-      </Paragraph>
-      <Row gutter={[8, 8]} className="mt-12">
-        {tweets.length > 0 ? (
-          tweets.map((item) => (
-            <StyledCol key={item.tweetId} xs={24} md={8}>
-              <TweetEmbed tweetId={item.tweetId} points={item.points} />
-            </StyledCol>
-          ))
-        ) : (
-          <div />
+      {tweets.length > 0
+        ? (
+          <>
+            <Paragraph type="secondary">
+              Here is a selection of tweets you have made that have earned points.
+            </Paragraph>
+            <Row gutter={[8, 8]} className="mt-12">
+              {tweets.map((item) => (
+                <StyledCol key={item.tweetId} xs={24} md={8}>
+                  <TweetEmbed tweetId={item.tweetId} points={item.points} />
+                </StyledCol>
+              ))}
+            </Row>
+          </>
+        )
+        : (
+          <Paragraph type="secondary" className="mt-24">
+            No tweets found. Connect your Twitter account
+            <br />
+            and start completing
+            {' '}
+            <Link href="/leaderboard">actions</Link>
+            {' '}
+            to earn more points
+          </Paragraph>
         )}
-      </Row>
     </>
   );
 };
