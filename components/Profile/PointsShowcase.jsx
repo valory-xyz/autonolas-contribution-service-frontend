@@ -52,21 +52,44 @@ const TweetEmbed = ({ points, tweetId }) => {
     // Observe changes inside the tweet node,
     // to update loading state in case of success or errors
     const element = document.getElementById(`tweet-container-${tweetId}`);
-    const observer = new MutationObserver((mutationsList) => {
+
+    // Observer for changes in styles of the iframe
+    const iframeObserver = new MutationObserver((mutationsList) => {
       mutationsList.forEach((mutation) => {
-        if (mutation.type === 'childList' && element.childNodes.length > 0) {
+        if (mutation.target.style.cssText.includes('visibility: visible')) {
           handleTweetLoad();
-          observer.disconnect(); // Stop observing once content is added
+          iframeObserver.disconnect();
         }
       });
     });
 
-    observer.observe(element, { childList: true });
+    // Observer for changes in the first child node
+    const tweetContainerObserver = new MutationObserver((mutationsList) => {
+      mutationsList.forEach((mutation) => {
+        const tweetContainer = mutation.target.childNodes[0];
+        if (tweetContainer && tweetContainer.className.includes('rendered')) {
+          // It takes some time to display tweet, iframe in that case gets new styles -
+          // we should start tracking iframe instead, to display more accurate loading state
+          iframeObserver.observe(tweetContainer.querySelector('iframe'), {
+            attributes: true,
+            attributeFilter: ['style'],
+          });
+
+          // Stop observing once content is added
+          tweetContainerObserver.disconnect();
+        }
+      });
+    });
+
+    // Start observing changes in the first child node
+    tweetContainerObserver.observe(element, {
+      childList: true,
+    });
 
     loadTweetEmbedded();
 
     return () => {
-      observer.disconnect();
+      tweetContainerObserver.disconnect();
     };
   }, [isLoading, status, tweetId]);
 
