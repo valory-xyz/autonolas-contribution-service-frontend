@@ -5,7 +5,7 @@ import {
   Col, List, Row, Skeleton, Statistic, Typography,
 } from 'antd';
 import PropTypes from 'prop-types';
-import { NA, notifyError } from '@autonolas/frontend-library';
+import { NA, notifyError, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 import { getLatestMintedNft } from 'common-util/api';
 import { getTier } from 'common-util/functions';
@@ -13,12 +13,35 @@ import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import useOrbis from 'common-util/hooks/useOrbis';
 import { checkOrbisStatus } from 'common-util/orbis';
+import styled from 'styled-components';
 import { DiscordLink } from '../Leaderboard/common';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { UpdateUsername } from './UpdateUsername';
 import PointsShowcase from './PointsShowcase';
 
 const { Title, Text } = Typography;
+
+const ProfileContent = styled.div`
+  display: flex;
+  gap: 24px;
+
+  > div:first-child {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  > div:last-child {
+    width: 100%
+  }
+
+  ${MEDIA_QUERY.tabletL} {
+    flex-direction: column;
+
+    > div:first-child {
+      max-width: 100%;
+    }
+  }
+`;
 
 const ProfileBody = ({ profile, id }) => {
   const [isBadgeLoading, setIsBadgeLoading] = useState(false);
@@ -102,8 +125,8 @@ const ProfileBody = ({ profile, id }) => {
         </Skeleton>
       </div>
 
-      <Row gutter={48}>
-        <Col className="mb-48" xl={8} xs={24}>
+      <ProfileContent>
+        <div className="mb-48">
           <Title level={5}>Badge</Title>
           {isBadgeLoading ? (
             <BadgeLoading />
@@ -141,9 +164,9 @@ const ProfileBody = ({ profile, id }) => {
               </List.Item>
             </List>
           </div>
-        </Col>
+        </div>
 
-        <Col xl={16} xs={24} className="mb-48">
+        <div>
           <Title level={5}>Contribution</Title>
           <Row gutter={96}>
             <Col>
@@ -160,8 +183,8 @@ const ProfileBody = ({ profile, id }) => {
             </Col>
           </Row>
           <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
-        </Col>
-      </Row>
+        </div>
+      </ProfileContent>
     </>
   );
 };
