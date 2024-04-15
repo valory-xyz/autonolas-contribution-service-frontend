@@ -25,6 +25,10 @@ const StyledCard = styled(Card)`
   max-width: 282px;
 `;
 
+const NoTweetsText = styled(Paragraph)`
+  max-width: 400px;
+`;
+
 const TweetEmbed = ({ points, tweetId }) => {
   const tweetLoaded = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -115,15 +119,9 @@ TweetEmbed.propTypes = {
 
 const PointsShowcase = ({ tweetIdToPoints }) => {
   const tweets = useMemo(() => {
-    const earnedPointsTweets = Object.entries(tweetIdToPoints ?? {}).reduce(
-      (acc, [key, value]) => {
-        if (value > 0) {
-          acc.push({ tweetId: key, points: value });
-        }
-        return acc;
-      },
-      [],
-    );
+    const earnedPointsTweets = Object.entries(tweetIdToPoints || {})
+      .map(([tweetId, points]) => ({ tweetId, points }))
+      .filter(({ points }) => points > 0);
 
     return shuffleArray(earnedPointsTweets).slice(0, 3);
   }, [tweetIdToPoints]);
@@ -133,32 +131,28 @@ const PointsShowcase = ({ tweetIdToPoints }) => {
       <Title level={5} className="mt-24">
         Points Showcase
       </Title>
-      {tweets.length > 0
-        ? (
-          <>
-            <Paragraph type="secondary">
-              Here is a selection of tweets you have made that have earned points.
-            </Paragraph>
-            <Row gutter={[8, 8]} className="mt-12">
-              {tweets.map((item) => (
-                <StyledCol key={item.tweetId} xs={24} md={8}>
-                  <TweetEmbed tweetId={item.tweetId} points={item.points} />
-                </StyledCol>
-              ))}
-            </Row>
-          </>
-        )
-        : (
-          <Paragraph type="secondary" className="mt-24">
-            No tweets found. Connect your Twitter account
-            <br />
-            and start completing
-            {' '}
-            <Link href="/leaderboard">actions</Link>
-            {' '}
-            to earn more points
+      {tweets.length > 0 ? (
+        <>
+          <Paragraph type="secondary">
+            Here is a selection of tweets you have made that have earned points.
           </Paragraph>
-        )}
+          <Row gutter={[8, 8]} className="mt-12">
+            {tweets.map((item) => (
+              <StyledCol key={item.tweetId} xs={24} md={8}>
+                <TweetEmbed tweetId={item.tweetId} points={item.points} />
+              </StyledCol>
+            ))}
+          </Row>
+        </>
+      ) : (
+        <NoTweetsText type="secondary" className="mt-24">
+          No tweets found. Connect your Twitter account and start completing
+          {' '}
+          <Link href="/leaderboard">actions</Link>
+          {' '}
+          to earn more points
+        </NoTweetsText>
+      )}
     </>
   );
 };

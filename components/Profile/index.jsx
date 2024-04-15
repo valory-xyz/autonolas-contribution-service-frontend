@@ -143,25 +143,23 @@ const ProfileBody = ({ profile, id }) => {
           </div>
         </Col>
 
-        <Col xl={16} xs={24}>
-          <div className="mb-48">
-            <Title level={5}>Contribution</Title>
-            <Row gutter={96}>
-              <Col>
-                <Statistic
-                  title="Tier"
-                  value={profile.points ? getTier(profile.points) : NA}
-                />
-              </Col>
-              <Col>
-                <Statistic
-                  title="Points"
-                  value={profile.points ? profile.points : NA}
-                />
-              </Col>
-            </Row>
-            <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
-          </div>
+        <Col xl={16} xs={24} className="mb-48">
+          <Title level={5}>Contribution</Title>
+          <Row gutter={96}>
+            <Col>
+              <Statistic
+                title="Tier"
+                value={profile.points ? getTier(profile.points) : NA}
+              />
+            </Col>
+            <Col>
+              <Statistic
+                title="Points"
+                value={profile.points ?? NA}
+              />
+            </Col>
+          </Row>
+          <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
         </Col>
       </Row>
     </>
