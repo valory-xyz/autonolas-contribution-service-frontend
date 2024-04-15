@@ -1,6 +1,5 @@
 import {
-  useEffect, useState, useMemo,
-  useCallback,
+  useEffect, useState, useMemo, useRef, useCallback,
 } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -30,9 +29,29 @@ const NoTweetsText = styled(Paragraph)`
   max-width: 400px;
 `;
 
-const TweetEmbed = ({ points, tweetId }) => {
+const TweetEmbed = ({
+  points, tweetId, isScriptReady, isError, onError,
+}) => {
+  const isLoaded = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+
+  const createTweet = useCallback(() => {
+    try {
+      if (isLoaded.current) return;
+
+      const element = document.getElementById(`tweet-container-${tweetId}`);
+      if (!element) return;
+
+      window.twttr.widgets.createTweet(tweetId, element, {
+        width: 250,
+        cards: 'hidden',
+        conversation: 'none',
+      });
+      isLoaded.current = true;
+    } catch {
+      onError();
+    }
+  }, [tweetId]);
 
   useEffect(() => {
     // Observe changes inside the tweet node,
@@ -78,63 +97,48 @@ const TweetEmbed = ({ points, tweetId }) => {
     };
   }, [tweetId]);
 
-  const onError = () => {
-    setIsLoading(false);
-    setIsError(true);
-  };
-
-  const onReady = useCallback(() => {
-    try {
-      if (!window.twttr?.widgets) return;
-      const element = document.getElementById(`tweet-container-${tweetId}`);
-
-      if (!element) return;
-
-      window.twttr.widgets.createTweet(
-        tweetId,
-        element,
-        { width: 250, cards: 'hidden', conversation: 'none' },
-      );
-    } catch {
-      onError();
+  useEffect(() => {
+    if (isScriptReady) {
+      createTweet();
     }
-  }, [tweetId]);
+  }, [createTweet, isScriptReady]);
 
   return (
-    <>
-      <Script
-        id="twitter-widgets"
-        src="https://platform.twitter.com/widgets.js"
-        onReady={onReady}
-        onError={onError}
-      />
-      <StyledCard
-        title={`Points earned: ${points}`}
-        styles={{ title: { fontSize: '16px' }, body: { padding: '8px 16px' } }}
-      >
-        <div id={`tweet-container-${tweetId}`} />
-        {isLoading && (
+    <StyledCard
+      title={`Points earned: ${points}`}
+      styles={{ title: { fontSize: '16px' }, body: { padding: '8px 16px' } }}
+    >
+      <div id={`tweet-container-${tweetId}`} />
+      {isLoading && (
         <TweetLoader>
           <Spin size="large" />
         </TweetLoader>
-        )}
-        {isError && (
-        <TweetLoader>
-          Error loading tweet
-        </TweetLoader>
-        )}
-      </StyledCard>
-    </>
-
+      )}
+      {isError && <TweetLoader>Error loading tweet</TweetLoader>}
+    </StyledCard>
   );
 };
 
 TweetEmbed.propTypes = {
   tweetId: PropTypes.string.isRequired,
   points: PropTypes.number.isRequired,
+  isScriptReady: PropTypes.bool.isRequired,
+  isError: PropTypes.bool.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
 const PointsShowcase = ({ tweetIdToPoints }) => {
+  const [isScriptReady, setIsScriptReady] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const onError = () => {
+    setIsError(true);
+  };
+
+  const onReady = () => {
+    setIsScriptReady(true);
+  };
+
   const tweets = useMemo(() => {
     const earnedPointsTweets = Object.entries(tweetIdToPoints || {})
       .map(([tweetId, points]) => ({ tweetId, points }))
@@ -153,10 +157,24 @@ const PointsShowcase = ({ tweetIdToPoints }) => {
           <Paragraph type="secondary">
             Here is a selection of tweets you have made that have earned points.
           </Paragraph>
+
+          <Script
+            id="twitter-widgets"
+            src="https://platform.twitter.com/widgets.js"
+            onReady={onReady}
+            onError={onError}
+          />
+
           <Row gutter={[8, 8]} className="mt-12">
             {tweets.map((item) => (
               <StyledCol key={item.tweetId} xs={24} md={8}>
-                <TweetEmbed tweetId={item.tweetId} points={item.points} />
+                <TweetEmbed
+                  tweetId={item.tweetId}
+                  points={item.points}
+                  isScriptReady={isScriptReady}
+                  isError={isError}
+                  onError={onError}
+                />
               </StyledCol>
             ))}
           </Row>
