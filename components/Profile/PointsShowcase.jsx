@@ -9,7 +9,6 @@ import {
   Card, Spin, Row, Col, Typography,
 } from 'antd';
 import Script from 'next/script';
-// import { useScript } from './hooks';
 import { shuffleArray } from './utils';
 
 const { Paragraph, Title } = Typography;
