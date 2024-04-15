@@ -1,5 +1,6 @@
 import {
-  useEffect, useState, useRef, useMemo,
+  useEffect, useState, useMemo,
+  useCallback,
 } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -7,7 +8,8 @@ import Link from 'next/link';
 import {
   Card, Spin, Row, Col, Typography,
 } from 'antd';
-import { useScript } from './hooks';
+import Script from 'next/script';
+// import { useScript } from './hooks';
 import { shuffleArray } from './utils';
 
 const { Paragraph, Title } = Typography;
@@ -30,29 +32,10 @@ const NoTweetsText = styled(Paragraph)`
 `;
 
 const TweetEmbed = ({ points, tweetId }) => {
-  const tweetLoaded = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const status = useScript('https://platform.twitter.com/widgets.js');
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    const handleTweetLoad = () => {
-      setIsLoading(false);
-      tweetLoaded.current = true;
-    };
-
-    const loadTweetEmbedded = () => {
-      if (status !== 'ready') return;
-      if (tweetLoaded.current) return;
-
-      window.twttr.widgets.createTweet(
-        tweetId,
-        document.getElementById(`tweet-container-${tweetId}`),
-        { width: 250, cards: 'hidden', conversation: 'none' },
-      );
-      tweetLoaded.current = true;
-    };
-
     // Observe changes inside the tweet node,
     // to update loading state in case of success or errors
     const element = document.getElementById(`tweet-container-${tweetId}`);
@@ -61,7 +44,7 @@ const TweetEmbed = ({ points, tweetId }) => {
     const iframeObserver = new MutationObserver((mutationsList) => {
       mutationsList.forEach((mutation) => {
         if (mutation.target.style.cssText.includes('visibility: visible')) {
-          handleTweetLoad();
+          setIsLoading(false);
           iframeObserver.disconnect();
         }
       });
@@ -90,25 +73,60 @@ const TweetEmbed = ({ points, tweetId }) => {
       childList: true,
     });
 
-    loadTweetEmbedded();
-
     return () => {
       tweetContainerObserver.disconnect();
+      iframeObserver.disconnect();
     };
-  }, [isLoading, status, tweetId]);
+  }, [tweetId]);
+
+  const onError = () => {
+    setIsLoading(false);
+    setIsError(true);
+  };
+
+  const onReady = useCallback(() => {
+    try {
+      if (!window.twttr?.widgets) return;
+      const element = document.getElementById(`tweet-container-${tweetId}`);
+
+      if (!element) return;
+
+      window.twttr.widgets.createTweet(
+        tweetId,
+        element,
+        { width: 250, cards: 'hidden', conversation: 'none' },
+      );
+    } catch {
+      onError();
+    }
+  }, [tweetId]);
 
   return (
-    <StyledCard
-      title={`Points earned: ${points}`}
-      styles={{ title: { fontSize: '16px' }, body: { padding: '8px 16px' } }}
-    >
-      <div id={`tweet-container-${tweetId}`} />
-      {isLoading && (
+    <>
+      <Script
+        id="twitter-widgets"
+        src="https://platform.twitter.com/widgets.js"
+        onReady={onReady}
+        onError={onError}
+      />
+      <StyledCard
+        title={`Points earned: ${points}`}
+        styles={{ title: { fontSize: '16px' }, body: { padding: '8px 16px' } }}
+      >
+        <div id={`tweet-container-${tweetId}`} />
+        {isLoading && (
         <TweetLoader>
           <Spin size="large" />
         </TweetLoader>
-      )}
-    </StyledCard>
+        )}
+        {isError && (
+        <TweetLoader>
+          Error loading tweet
+        </TweetLoader>
+        )}
+      </StyledCard>
+    </>
+
   );
 };
 
