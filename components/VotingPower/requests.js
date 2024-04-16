@@ -30,7 +30,7 @@ export const delegate = async ({ account, delegatee }) => {
   const delegateFn = contract.methods.delegate(delegatee);
   const estimatedGas = await getEstimatedGasLimit(delegateFn, account);
   const result = await delegateFn
-    .send({ from: account, gasLimit: estimatedGas });
+    .send({ from: account, gas: estimatedGas });
   return result;
 };
 
