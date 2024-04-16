@@ -10,7 +10,7 @@ export const getEstimatedGasLimit = async (fn, account) => {
 
   try {
     const estimatedGas = await fn.estimateGas({ from: account });
-    return Math.floor(estimatedGas);
+    return Math.floor(estimatedGas * 1.1);
   } catch (error) {
     window.console.warn(
       `Error occured on estimating gas, defaulting to ${ESTIMATED_GAS_LIMIT}`,

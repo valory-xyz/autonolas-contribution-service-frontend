@@ -14,7 +14,7 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
   const mintFn = contract.methods.mint();
 
   getEstimatedGasLimit(mintFn, account).then((estimatedGas) => {
-    mintFn.send({ from: account, gasLimit: estimatedGas })
+    mintFn.send({ from: account, gas: estimatedGas })
       .then((response) => {
         notifySuccess('Successfully Minted');
         const id = get(response, 'events.Transfer.returnValues.id');
