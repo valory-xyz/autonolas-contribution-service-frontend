@@ -10,7 +10,7 @@ export const getLeaderboardList = async () => {
   const response = await TileDocument.load(ceramic, process.env.NEXT_PUBLIC_STREAM_ID);
   const users = get(response, 'content.users') || [];
 
-  const usersList = users.filter((e) => !!e.wallet_address)
+  const usersList = Object.values(users).filter((e) => !!e.wallet_address)
     .filter((e) => e.points !== 0)
     .map((user, index) => ({
       ...user,
