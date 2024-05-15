@@ -356,4 +356,52 @@
     "location": "Discord",
     "description": "https://discord.gg/RHY6eJ35ar"
   }
+  ,
+  {
+    "id": "1fa45b79-ef1d-4f7d-a02c-97abb8578538",
+    "title": "David M presenting at 'AI Agents: Value Synergies of Blockchain and AI - Supporting Builders from A to Z'",
+    "timestamp": "1716217200",
+    "location": "CV Labs, Berlin",
+    "description": "https://lu.ma/phurgmbn"
+  }
+  ,
+  {
+    "id": "58368de1-1e3c-4cd3-9c25-1c10b4c726e7",
+    "title": "David M presenting 'How To Bootstrap An Autonomous (AI) Agent Economy' at Dappcon",
+    "timestamp": "1716292800",
+    "location": "Radialsystems, The Blob (Studio A)",
+    "description": "https://www.dappcon.io/#tickets"
+  }
+  ,
+  {
+    "id": "ee80ee77-acb4-498f-9f30-06ad210d0911",
+    "title": "Agents Unleashed - Product Launch",
+    "timestamp": "1716300000",
+    "location": "Locke at East Side Gallery",
+    "description": "https://lu.ma/ezds98r7"
+  }
+  ,
+  {
+    "id": "a47b3182-a7c7-4754-8e63-9fb26463fdce",
+    "title": "'Next-Gen Infrastructure: Unleashing On-chain Potential' panel during Digital Asset Summit, hosted by Finoa",
+    "timestamp": "1716375600",
+    "location": "Berlin",
+    "description": "https://lu.ma/m0miep2i"
+  }
+  ,
+  {
+    "id": "1c18c71c-26ff-4a8a-970a-6a5eeb37dc42",
+    "title": "'Next Frontiers of Smart Accounts' panel at Safe{Con}2",
+    "timestamp": "1716451200",
+    "location": "Berlin",
+    "description": "https://lu.ma/safecon2"
+  }
+  ,
+  {
+    "id": "6db4f66a-5671-4b21-8626-8249d955a8a7",
+    "title": "'De:AI - Parallel Session (Lightning Talk & Workshop)' at AI x HOPE: Towards Futures of Human-AI Interdependence",
+    "timestamp": "1716552000",
+    "location": "Berlin",
+    "description": "https://lu.ma/aix"
+  }
 ]
