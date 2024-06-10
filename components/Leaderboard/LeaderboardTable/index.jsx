@@ -27,6 +27,7 @@ const Leaderboard = () => {
     },
     {
       title: 'Socials',
+      width: 124,
       render: (record) => {
         const {
           wallet_address, twitter_handle, discord_id, rowKeyUi,
@@ -109,12 +110,14 @@ const Leaderboard = () => {
     {
       title: 'Points',
       dataIndex: 'points',
+      width: 120,
     },
     {
       title: 'Tier',
       dataIndex: 'points',
       render: (points) => getTier(points),
       responsive: ['md'],
+      width: 140,
     },
   ];
 
