@@ -9,10 +9,10 @@ import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
   FileTextOutlined,
-  MessageOutlined,
+  // MessageOutlined,
   NodeIndexOutlined,
-  RobotOutlined,
-  StarOutlined,
+  // RobotOutlined,
+  // StarOutlined,
   TrophyOutlined,
   TwitterOutlined,
   // UserOutlined,
@@ -50,11 +50,11 @@ const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
   // { key: 'members', label: 'Members', icon: <UserOutlined /> },
-  { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
-  { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
+  // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
+  // { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
   { key: 'roadmap', label: 'Roadmap', icon: <NodeIndexOutlined /> },
   { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
-  { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
+  // { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
   { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
 ];
 
@@ -159,7 +159,7 @@ const NavigationBar = ({ children }) => {
 
   useEffect(() => {
     updateOrbisConnectionState();
-  }, []);
+  }, [updateOrbisConnectionState]);
 
   useEffect(() => {
     const unwatch = watchAccount(wagmiConfig, {
@@ -215,9 +215,7 @@ const NavigationBar = ({ children }) => {
 
       <Content
         className="site-layout"
-        style={{
-          marginLeft: screens.md ? '200px' : '0',
-        }}
+        style={{ marginLeft: screens.md ? '200px' : '0' }}
       >
         <div className="site-layout-background">{children}</div>
 

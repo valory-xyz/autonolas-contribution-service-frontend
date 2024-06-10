@@ -1,3 +1,7 @@
-import Predict from 'components/Predict';
+// import Predict from 'components/Predict';
+// export default Predict;
+// TODO: It will be added once the page is updated.
 
-export default Predict;
+import { PageDoesNotExist } from 'common-util/PageDoesNotExist';
+
+export default PageDoesNotExist;
