@@ -4,7 +4,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Members = () => (
+export const Members = () => (
   <div id={DOCS_SECTIONS.members}>
     <Title level={2}>Members</Title>
     <Paragraph>
@@ -38,7 +38,6 @@ const Members = () => (
           </a>
         </li>
       </ol>
-
       You need to hold some veOLAS to join as a member. You can join on the
       {' '}
       <Link href="/members">Members</Link>
@@ -46,13 +45,22 @@ const Members = () => (
       page.
     </Paragraph>
     <Paragraph>
-      Members are able to participate in group chat and private chat, both facilitated by
+      Members are able to participate in group chat and private chat, both
+      facilitated by
       {' '}
-      <a href="https://ceramic.network" rel="noopener noreferrer" target="_blank">Ceramic</a>
+      <a
+        href="https://ceramic.network"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Ceramic
+      </a>
       {' '}
       and
       {' '}
-      <a href="https://orbis.club" rel="noopener noreferrer" target="_blank">Orbis</a>
+      <a href="https://orbis.club" rel="noopener noreferrer" target="_blank">
+        Orbis
+      </a>
       . All member chat functionality can be accessed via the
       {' '}
       <Link href="/members">Members</Link>
@@ -65,5 +73,3 @@ const Members = () => (
     <br />
   </div>
 );
-
-export default Members;

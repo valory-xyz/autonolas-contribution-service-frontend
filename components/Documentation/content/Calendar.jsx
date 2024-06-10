@@ -3,7 +3,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Calendar = () => (
+export const Calendar = () => (
   <div id={DOCS_SECTIONS.calendar}>
     <Title level={2}>Calendar</Title>
 
@@ -25,5 +25,3 @@ const Calendar = () => (
 
   </div>
 );
-
-export default Calendar;

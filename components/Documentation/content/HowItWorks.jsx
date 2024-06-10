@@ -3,7 +3,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
 
-const HowItWorks = () => (
+export const HowItWorks = () => (
   <div id={DOCS_SECTIONS['how-it-works']}>
     <Title level={2}>How it works</Title>
 
@@ -90,5 +90,3 @@ const HowItWorks = () => (
     <br />
   </div>
 );
-
-export default HowItWorks;

@@ -1,3 +1,3 @@
-import Documentation from 'components/Documentation';
+import { Documentation } from 'components/Documentation';
 
 export default Documentation;

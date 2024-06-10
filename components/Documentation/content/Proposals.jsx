@@ -4,7 +4,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Proposals = () => (
+export const Proposals = () => (
   <div id={DOCS_SECTIONS.proposals}>
     <Title level={2}>Proposals</Title>
     <Paragraph>
@@ -24,5 +24,3 @@ const Proposals = () => (
     <br />
   </div>
 );
-
-export default Proposals;

@@ -3,7 +3,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Chatbot = () => (
+export const Chatbot = () => (
   <div id={DOCS_SECTIONS.chatbot}>
     <Title level={2}>Chatbot</Title>
     <Paragraph>
@@ -14,7 +14,13 @@ const Chatbot = () => (
       To use Chatbot, users must have an OpenAI API key with a payment card on
       file. You can sign up for one
       {' '}
-      <a href="https://platform.openai.com/signup" rel="noopener noreferrer" target="_blank">here</a>
+      <a
+        href="https://platform.openai.com/signup"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        here
+      </a>
       .
     </Paragraph>
 
@@ -23,5 +29,3 @@ const Chatbot = () => (
     <br />
   </div>
 );
-
-export default Chatbot;

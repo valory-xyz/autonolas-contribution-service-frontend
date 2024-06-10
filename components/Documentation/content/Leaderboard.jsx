@@ -4,12 +4,12 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Leaderboard = () => (
+export const Leaderboard = () => (
   <div id={DOCS_SECTIONS.leaderboard}>
     <Title level={2}>Leaderboard</Title>
     <Paragraph>
-      The Olas Contribute leaderboard ranks each community member according
-      to the number of points they have earned.
+      The Olas Contribute leaderboard ranks each community member according to
+      the number of points they have earned.
     </Paragraph>
 
     <Paragraph>
@@ -23,5 +23,3 @@ const Leaderboard = () => (
     <br />
   </div>
 );
-
-export default Leaderboard;

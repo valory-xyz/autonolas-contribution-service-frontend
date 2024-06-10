@@ -4,7 +4,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Tweet = () => (
+export const Tweet = () => (
   <div id={DOCS_SECTIONS.tweet}>
     <Title level={2}>Tweet</Title>
     <Paragraph>
@@ -49,5 +49,3 @@ const Tweet = () => (
     <br />
   </div>
 );
-
-export default Tweet;
