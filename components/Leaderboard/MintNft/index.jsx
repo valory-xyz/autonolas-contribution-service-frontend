@@ -14,7 +14,7 @@ import { MintNftContainer, WriteFunctionalityContainer } from './styles';
 
 const { Text } = Typography;
 
-const MintNft = () => {
+export const MintNft = () => {
   const [isNftFetchingLoading, setNftFetchingLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
   const chainId = useSelector((state) => state?.setup?.chainId);
@@ -42,7 +42,7 @@ const MintNft = () => {
       }
     };
     fn();
-  }, [account, chainId]);
+  }, [account, chainId, dispatch]);
 
   /**
    * function to mint badge
@@ -132,5 +132,3 @@ const MintNft = () => {
     </MintNftContainer>
   );
 };
-
-export default MintNft;

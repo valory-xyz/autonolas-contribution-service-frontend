@@ -126,14 +126,13 @@ const Leaderboard = () => {
         educationItemSlug="leaderboard"
       />
 
-      <Card bodyStyle={{ padding: 0 }}>
+      <Card styles={{ body: { padding: 0 } }}>
         <div style={{ overflowX: 'auto' }}>
           <Table
             columns={columns}
             dataSource={leaderboard}
             loading={isLoading}
             pagination={false}
-            className="mb-12"
             rowKey="rowKeyUi"
           />
         </div>
