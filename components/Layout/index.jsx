@@ -15,7 +15,7 @@ import {
   StarOutlined,
   TrophyOutlined,
   TwitterOutlined,
-  UserOutlined,
+  // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
 
@@ -49,7 +49,7 @@ const { useBreakpoint } = Grid;
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
-  { key: 'members', label: 'Members', icon: <UserOutlined /> },
+  // { key: 'members', label: 'Members', icon: <UserOutlined /> },
   { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
   { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
   { key: 'roadmap', label: 'Roadmap', icon: <NodeIndexOutlined /> },

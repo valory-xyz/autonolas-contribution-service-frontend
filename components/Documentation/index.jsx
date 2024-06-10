@@ -36,7 +36,7 @@ const Documentation = () => {
     const { asPath } = router;
     const afterHash = asPath.split('#')[1];
     setActiveNav(afterHash || get(DOC_NAV, `[${0}].id`) || '');
-  }, []);
+  }, [router]);
 
   return (
     <Container>
