@@ -51,7 +51,7 @@ const DelegateMenu = (props) => {
           message: 'Delegated voting power',
         });
         setDelegateFormVisible(false);
-        props.refetchVotingPrower();
+        props.refetchVotingPower();
       },
       onError: (error) => {
         console.error(error);
@@ -187,7 +187,7 @@ const DelegateMenu = (props) => {
 
 DelegateMenu.propTypes = {
   votingPower: PropTypes.string.isRequired,
-  refetchVotingPrower: PropTypes.func.isRequired,
+  refetchVotingPower: PropTypes.func.isRequired,
 };
 
 export default DelegateMenu;
