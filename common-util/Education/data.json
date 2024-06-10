@@ -15,25 +15,29 @@
     "id": "c930d146-5e88-4999-bf76-c0ce7935c4ad",
     "component": "badge",
     "text": "Show off your leaderboard rank and promote Olas with a badge that evolves as you contribute.",
-    "docsLink": "#badge"
+    "docsLink": "#badge",
+    "hidden": true
   },
   {
     "id": "4131d7f5-4980-4a28-bb32-5ff2a231d989",
     "component": "members",
     "text": "Any veOLAS holder can join Contribute. Being a member unlocks abilities like updating the Chatbot, proposing tweets and more.",
-    "docsLink": "#members"
+    "docsLink": "#members",
+    "hidden": true
   },
   {
     "id": "e5642991-8b40-445b-8773-3c7e026d282a",
     "component": "chatbot",
     "text": "Chatbot is an easy and fun way to learn about Olas.",
-    "docsLink": "#chatbot"
+    "docsLink": "#chatbot",
+    "hidden": true
   },
   {
     "id": "9b939392-4b49-49de-87de-16d0ed479597",
     "component": "memory",
     "text": "Chatbot bases its responses on its memory. Memory is managed by Contribute members.",
-    "docsLink": "#memory"
+    "docsLink": "#memory",
+    "hidden": true
   },
   {
     "id": "b053ab42-b24e-4e38-b96d-1d56a3f11aab",
@@ -42,15 +46,16 @@
     "docsLink": "#tweet"
   },
   {
-    "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
-    "component": "proposals",
-    "text": "Members can vote to approve or reject tweet proposals. Approved tweets are automatically posted by an Olas-powered service."
-  },
-  {
     "id": "e0cf5a7e-770d-4d13-9845-7b30ee66f223",
     "component": "predict",
     "text": "Ask questions about the future of Olas.",
-    "docsLink": "#predict"
+    "docsLink": "#predict",
+    "hidden": true
+  },
+  {
+    "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
+    "component": "proposals",
+    "text": "Members can vote to approve or reject tweet proposals. Approved tweets are automatically posted by an Olas-powered service."
   },
   {
     "id": "697e205d-e9cc-4a4b-a553-21fc53215062",
