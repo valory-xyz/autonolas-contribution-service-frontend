@@ -22,58 +22,19 @@ export const DOCS_SECTIONS = {
  * navigation titles
  */
 export const DOC_NAV = [
-  {
-    id: DOCS_SECTIONS.overview,
-    title: 'Overview',
-  },
-  {
-    id: DOCS_SECTIONS.leaderboard,
-    title: 'Leaderboard',
-  },
-  {
-    id: DOCS_SECTIONS.actions,
-    title: 'Actions',
-  },
-  {
-    id: DOCS_SECTIONS.badge,
-    title: 'Badge',
-  },
-  {
-    id: DOCS_SECTIONS.members,
-    title: 'Members',
-  },
-  {
-    id: DOCS_SECTIONS.chatbot,
-    title: 'Chatbot',
-  },
-  {
-    id: DOCS_SECTIONS.memory,
-    title: 'Memory',
-  },
-  {
-    id: DOCS_SECTIONS.tweet,
-    title: 'Tweet',
-  },
-  {
-    id: DOCS_SECTIONS.predict,
-    title: 'Predict',
-  },
-  {
-    id: DOCS_SECTIONS.proposals,
-    title: 'Proposals',
-  },
-  {
-    id: DOCS_SECTIONS['how-it-works'],
-    title: 'How It Works',
-  },
-  {
-    id: DOCS_SECTIONS.roadmap,
-    title: 'Roadmap',
-  },
-  {
-    id: DOCS_SECTIONS.calendar,
-    title: 'Calendar',
-  },
+  { id: DOCS_SECTIONS.overview, title: 'Overview' },
+  { id: DOCS_SECTIONS.leaderboard, title: 'Leaderboard' },
+  { id: DOCS_SECTIONS.actions, title: 'Actions' },
+  // { id: DOCS_SECTIONS.badge, title: 'Badge' },
+  // { id: DOCS_SECTIONS.members, title: 'Members' },
+  // { id: DOCS_SECTIONS.chatbot, title: 'Chatbot' },
+  // { id: DOCS_SECTIONS.memory, title: 'Memory' },
+  { id: DOCS_SECTIONS.tweet, title: 'Tweet' },
+  // { id: DOCS_SECTIONS.predict, title: 'Predict' },
+  { id: DOCS_SECTIONS.proposals, title: 'Proposals' },
+  { id: DOCS_SECTIONS['how-it-works'], title: 'How It Works' },
+  { id: DOCS_SECTIONS.roadmap, title: 'Roadmap' },
+  { id: DOCS_SECTIONS.calendar, title: 'Calendar' },
 ];
 
 /**
