@@ -63,7 +63,7 @@ const INTERVAL = 10000;
 const NavigationBar = ({ children }) => {
   const screens = useBreakpoint();
   const router = useRouter();
-  const [selectedMenu, setSelectedMenu] = useState('homepage');
+  const [selectedMenu, setSelectedMenu] = useState('leaderboard');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
   const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
@@ -145,12 +145,12 @@ const NavigationBar = ({ children }) => {
   useEffect(() => {
     if (pathname) {
       const name = pathname.split('/')[1];
-      setSelectedMenu(name || 'homepage');
+      setSelectedMenu(name || 'leaderboard');
     }
   }, [pathname]);
 
   const handleMenuItemClick = ({ key }) => {
-    router.push(key === 'homepage' ? '/' : `/${key}`);
+    router.push(`/${key}`);
     setSelectedMenu(key);
     if (!screens.md) {
       setIsMenuVisible(false);
@@ -207,6 +207,7 @@ const NavigationBar = ({ children }) => {
         <CustomMenu
           theme="light"
           mode="vertical"
+          defaultSelectedKeys={[selectedMenu]}
           selectedKeys={[selectedMenu]}
           items={menuItems}
           onClick={handleMenuItemClick}
