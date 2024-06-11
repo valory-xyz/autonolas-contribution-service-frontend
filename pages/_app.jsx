@@ -35,7 +35,7 @@ createWeb3Modal({
   },
 });
 
-const MyApp = ({ Component, pageProps }) => {
+const ContributeApp = ({ Component, pageProps }) => {
   const initialState = cookieToInitialState(wagmiConfig);
 
   return (
@@ -60,18 +60,10 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  const pageProps = Component.getInitialProps
-    ? await Component.getInitialProps(ctx)
-    : {};
-
-  return { pageProps };
-};
-
-MyApp.propTypes = {
+ContributeApp.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})])
     .isRequired,
   pageProps: PropTypes.shape({}).isRequired,
 };
 
-export default MyApp;
+export default ContributeApp;
