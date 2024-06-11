@@ -4,13 +4,12 @@
     "sourceMap": true,
     "paths": {
       "common-util": ["./common-util"],
+      "context": ["./context"],
       "components": ["./components"],
       "util": ["./util"],
       "static": ["./static"],
       "images": ["./public/images"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

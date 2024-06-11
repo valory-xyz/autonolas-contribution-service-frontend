@@ -8,6 +8,7 @@
         "alias": {
           "util": "./util",
           "common-util": "./common-util",
+          "context": ["./context"],
           "components": "./components",
           "images": "./public/images",
           "store": "./store"

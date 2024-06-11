@@ -31,7 +31,7 @@
     "import/no-unresolved": [
       2,
       {
-        "ignore": ["util", "common-util", "components", "store"]
+        "ignore": ["util", "common-util", "components", "store", "context"]
       }
     ],
     "no-console": ["warn", { "allow": ["error"] }],
@@ -51,7 +51,7 @@
     "react/jsx-no-useless-fragment": [2, { "allowExpressions": true }],
     "no-untyped-mock-factory": "off",
     "jest/no-untyped-mock-factory": "off",
-    "react-hooks/rules-of-hooks": "error", 
-    "react-hooks/exhaustive-deps": "warn" 
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
