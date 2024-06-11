@@ -1,23 +1,28 @@
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+// import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import {
-  Col, List, Row, Skeleton, Statistic, Typography,
+  Flex, List, Skeleton, Statistic, Typography,
 } from 'antd';
 import PropTypes from 'prop-types';
-import { NA, notifyError, MEDIA_QUERY } from '@autonolas/frontend-library';
-
-import { getLatestMintedNft } from 'common-util/api';
-import { getTier } from 'common-util/functions';
-import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
-import useOrbis from 'common-util/hooks/useOrbis';
-import { checkOrbisStatus } from 'common-util/orbis';
 import styled from 'styled-components';
-import { DiscordLink } from '../Leaderboard/common';
+import {
+  NA,
+  // notifyError,
+  MEDIA_QUERY,
+  COLOR,
+} from '@autonolas/frontend-library';
+
+import { getName, getTier } from 'common-util/functions';
+import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
+// import { getLatestMintedNft } from 'common-util/api';
+// import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
+// import useOrbis from 'common-util/hooks/useOrbis';
+// import { checkOrbisStatus } from 'common-util/orbis';
+// import { DiscordLink } from '../Leaderboard/common';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { UpdateUsername } from './UpdateUsername';
-import PointsShowcase from './PointsShowcase';
+// import { UpdateUsername } from './UpdateUsername';
+import { PointsShowcase } from './PointsShowcase';
 
 const { Title, Text } = Typography;
 
@@ -31,7 +36,7 @@ const ProfileContent = styled.div`
   }
 
   > div:last-child {
-    width: 100%
+    width: 100%;
   }
 
   ${MEDIA_QUERY.tabletL} {
@@ -44,65 +49,66 @@ const ProfileContent = styled.div`
 `;
 
 const ProfileBody = ({ profile, id }) => {
-  const [isBadgeLoading, setIsBadgeLoading] = useState(false);
-  const [orbisProfile, setOrbisProfile] = useState(false);
-  const [details, setDetails] = useState(null);
+  // const [orbisProfile, setOrbisProfile] = useState(false);
+  // const [isBadgeLoading, setIsBadgeLoading] = useState(false);
+  // const [details, setDetails] = useState(null);
   const account = useSelector((state) => state?.setup?.account);
-  const {
-    getProfile: getOrbisProfile,
-    isLoading: isOrbisLoading,
-  } = useOrbis();
+  // const { getProfile: getOrbisProfile, isLoading: isOrbisLoading } = useOrbis();
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        setIsBadgeLoading(true);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       setIsBadgeLoading(true);
 
-        const { details: badgeDetails } = await getLatestMintedNft(
-          profile?.wallet_address,
-        );
-        setDetails(badgeDetails);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsBadgeLoading(false);
-      }
-    };
+  //       const { details: badgeDetails } = await getLatestMintedNft(
+  //         profile?.wallet_address,
+  //       );
+  //       setDetails(badgeDetails);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setIsBadgeLoading(false);
+  //     }
+  //   };
 
-    getData();
-  }, [profile?.wallet_address]);
+  //   getData();
+  // }, [profile?.wallet_address]);
 
-  const loadOrbisProfile = useCallback(async (delay) => {
-    if (delay) {
-      await new Promise((resolve) => { setTimeout(resolve, 300); });
-    }
+  // const loadOrbisProfile = useCallback(
+  //   async (delay) => {
+  //     if (delay) {
+  //       await new Promise((resolve) => {
+  //         setTimeout(resolve, 300);
+  //       });
+  //     }
 
-    const res = await getOrbisProfile(id);
+  //     const res = await getOrbisProfile(id);
+  //     if (checkOrbisStatus(res?.status)) {
+  //       setOrbisProfile(res?.data);
+  //       return res;
+  //     }
+  //     const ERROR_MESSAGE = "Couldn't load Orbis profile.";
+  //     notifyError(ERROR_MESSAGE);
+  //     console.error(ERROR_MESSAGE, res);
+  //     setOrbisProfile(null);
+  //     return null;
+  //   },
+  //   [id, getOrbisProfile],
+  // );
 
-    if (checkOrbisStatus(res?.status)) {
-      setOrbisProfile(res?.data);
-      return res;
-    }
-    const ERROR_MESSAGE = "Couldn't load Orbis profile.";
-    notifyError(ERROR_MESSAGE);
-    console.error(ERROR_MESSAGE, res);
-    setOrbisProfile(null);
-    return null;
-  }, [id, getOrbisProfile]);
+  // useEffect(() => {
+  //   loadOrbisProfile();
+  // }, [loadOrbisProfile]);
 
-  useEffect(() => {
-    loadOrbisProfile();
-  }, [loadOrbisProfile]);
-
-  const getDiscordHandle = () => {
-    if (profile?.discord_handle) {
-      return <Text type="secondary">{profile.discord_handle}</Text>;
-    }
-    if (account && account === profile.wallet_address) {
-      return <DiscordLink text="Connect Discord" />;
-    }
-    return NA;
-  };
+  // const getDiscordHandle = () => {
+  //   if (profile?.discord_handle) {
+  //     return <Text type="secondary">{profile.discord_handle}</Text>;
+  //   }
+  //   if (account && account === profile.wallet_address) {
+  //     return <DiscordLink text="Connect Discord" />;
+  //   }
+  //   return NA;
+  // };
 
   const getTwitterHandle = () => {
     if (profile?.twitter_handle) {
@@ -117,17 +123,22 @@ const ProfileBody = ({ profile, id }) => {
   return (
     <>
       <div style={{ height: 75 }}>
-        <Skeleton loading={isOrbisLoading} title paragraph={false} active>
+        {/* <Skeleton loading={isOrbisLoading} title paragraph={false} active>
           <div style={{ display: 'flex' }}>
-            <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>{orbisProfile?.username || 'Unknown Olassian'}</Title>
+            <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>
+              {orbisProfile?.username || 'Unknown Olassian'}
+            </Title>
             <UpdateUsername loadOrbisProfile={loadOrbisProfile} id={id} />
           </div>
-        </Skeleton>
+        </Skeleton> */}
+        <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>
+          {getName(profile)}
+        </Title>
       </div>
 
       <ProfileContent>
         <div className="mb-48">
-          <Title level={5}>Badge</Title>
+          {/* <Title level={5}>Badge</Title>
           {isBadgeLoading ? (
             <BadgeLoading />
           ) : (
@@ -138,24 +149,22 @@ const ProfileBody = ({ profile, id }) => {
                 <Text>Badge not minted yet</Text>
               )}
             </>
-          )}
-          <div className="mt-24">
+          )} */}
+          <div>
             <Title level={5}>Details</Title>
-            <List bordered>
+            <List bordered style={{ background: COLOR.WHITE }}>
               <List.Item>
                 <List.Item.Meta
                   title="Wallet Address"
-                  description={
-                    <TruncatedEthereumLink text={id} />
-                  }
+                  description={<TruncatedEthereumLink text={id} />}
                 />
               </List.Item>
-              <List.Item>
+              {/* <List.Item>
                 <List.Item.Meta
                   title="Discord Handle"
                   description={getDiscordHandle()}
                 />
-              </List.Item>
+              </List.Item> */}
               <List.Item>
                 <List.Item.Meta
                   title="Twitter Handle"
@@ -168,20 +177,13 @@ const ProfileBody = ({ profile, id }) => {
 
         <div>
           <Title level={5}>Contribution</Title>
-          <Row gutter={96}>
-            <Col>
-              <Statistic
-                title="Tier"
-                value={profile.points ? getTier(profile.points) : NA}
-              />
-            </Col>
-            <Col>
-              <Statistic
-                title="Points"
-                value={profile.points ?? NA}
-              />
-            </Col>
-          </Row>
+          <Flex gap={96}>
+            <Statistic
+              title="Tier"
+              value={profile.points ? getTier(profile.points) : NA}
+            />
+            <Statistic title="Points" value={profile.points ?? NA} />
+          </Flex>
           <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
         </div>
       </ProfileContent>

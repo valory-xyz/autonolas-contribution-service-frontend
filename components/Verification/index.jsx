@@ -25,7 +25,7 @@ export const Ol = styled.ol`
 const checkmark = '✅';
 
 const VerificationDisclaimer = () => (
-  <Text type="secondary" className="custom-text-secondary">
+  <Text type="secondary">
     <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
     By connecting and/or verifying your information (including your Discord,
     Twitter and wallet address details) you are creating public information. In

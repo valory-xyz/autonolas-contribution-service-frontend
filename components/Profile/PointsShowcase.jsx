@@ -1,13 +1,13 @@
 import {
   useEffect, useState, useMemo, useRef, useCallback,
 } from 'react';
-import styled from 'styled-components';
+import Script from 'next/script';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import styled from 'styled-components';
 import {
   Card, Spin, Row, Col, Typography,
 } from 'antd';
-import Script from 'next/script';
 import { shuffleArray } from './utils';
 
 const { Paragraph, Title } = Typography;
@@ -17,6 +17,7 @@ const TweetLoader = styled.div`
   justify-content: center;
   margin: 16px 16px 32px;
 `;
+
 const StyledCol = styled(Col)`
   max-width: 290px;
 `;
@@ -127,7 +128,7 @@ TweetEmbed.propTypes = {
   onError: PropTypes.func.isRequired,
 };
 
-const PointsShowcase = ({ tweetIdToPoints }) => {
+export const PointsShowcase = ({ tweetIdToPoints }) => {
   const [isScriptReady, setIsScriptReady] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -180,7 +181,7 @@ const PointsShowcase = ({ tweetIdToPoints }) => {
           </Row>
         </>
       ) : (
-        <NoTweetsText type="secondary" className="mt-24">
+        <NoTweetsText type="secondary" className="mt-12">
           No tweets found. Connect your Twitter account and start completing
           {' '}
           <Link href="/leaderboard">actions</Link>
@@ -195,5 +196,3 @@ const PointsShowcase = ({ tweetIdToPoints }) => {
 PointsShowcase.propTypes = {
   tweetIdToPoints: PropTypes.objectOf(PropTypes.number).isRequired,
 };
-
-export default PointsShowcase;
