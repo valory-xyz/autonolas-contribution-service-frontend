@@ -1,3 +1,7 @@
-import Verification from 'components/Verification';
+// import Verification from 'components/Verification';
+// export default Verification;
+// TODO: It will be added once the page is updated.
 
-export default Verification;
+import { PageDoesNotExist } from 'common-util/PageDoesNotExist';
+
+export default PageDoesNotExist;
