@@ -3,12 +3,21 @@ import { useSelector } from 'react-redux';
 import { Typography, Table, Card } from 'antd';
 import Link from 'next/link';
 import { COLOR, NA } from '@autonolas/frontend-library';
+import styled from 'styled-components';
 
 import { getName, getTier } from 'common-util/functions';
 import { EducationTitle } from '../MintNft/Education';
 import { LeaderboardContent } from './styles';
 
 const { Text } = Typography;
+
+const Name = styled.a`
+  max-width: 280px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
 const Leaderboard = () => {
   const isLoading = useSelector((state) => state?.setup?.isLeaderboardLoading);
@@ -20,18 +29,20 @@ const Leaderboard = () => {
       title: 'Name',
       width: 250,
       render: (record) => (
-        <Link href={`/profile/${record.wallet_address}`}>
-          {getName(record)}
+        <Link
+          href={`/profile/${record.wallet_address}`}
+          passHref
+          legacyBehavior
+        >
+          <Name>{getName(record)}</Name>
         </Link>
-      ) || '--',
+      ),
     },
     {
       title: 'Socials',
-      width: 124,
+      width: 140,
       render: (record) => {
-        const {
-          wallet_address, twitter_handle, discord_id, rowKeyUi,
-        } = record;
+        const { wallet_address, twitter_handle, discord_id, rowKeyUi } = record;
 
         const socials = [
           wallet_address && (
@@ -101,8 +112,7 @@ const Leaderboard = () => {
 
         return socials.map((social, index) => (
           <Text type="secondary" key={`${rowKeyUi}-social-${index}`}>
-            {social}
-            {' '}
+            {social}{' '}
           </Text>
         ));
       },
