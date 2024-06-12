@@ -1,9 +1,7 @@
-// import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import {
-  Flex, List, Skeleton, Statistic, Typography,
-} from 'antd';
+import { Flex, List, Skeleton, Statistic, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -15,8 +13,8 @@ import {
 
 import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-// import { getLatestMintedNft } from 'common-util/api';
-// import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
+import { getLatestMintedNft } from 'common-util/api';
+import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 // import useOrbis from 'common-util/hooks/useOrbis';
 // import { checkOrbisStatus } from 'common-util/orbis';
 // import { DiscordLink } from '../Leaderboard/common';
@@ -50,29 +48,29 @@ const ProfileContent = styled.div`
 
 const ProfileBody = ({ profile, id }) => {
   // const [orbisProfile, setOrbisProfile] = useState(false);
-  // const [isBadgeLoading, setIsBadgeLoading] = useState(false);
-  // const [details, setDetails] = useState(null);
+  const [isBadgeLoading, setIsBadgeLoading] = useState(false);
+  const [details, setDetails] = useState(null);
   const account = useSelector((state) => state?.setup?.account);
   // const { getProfile: getOrbisProfile, isLoading: isOrbisLoading } = useOrbis();
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       setIsBadgeLoading(true);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setIsBadgeLoading(true);
 
-  //       const { details: badgeDetails } = await getLatestMintedNft(
-  //         profile?.wallet_address,
-  //       );
-  //       setDetails(badgeDetails);
-  //     } catch (error) {
-  //       console.error(error);
-  //     } finally {
-  //       setIsBadgeLoading(false);
-  //     }
-  //   };
+        const { details: badgeDetails } = await getLatestMintedNft(
+          profile?.wallet_address,
+        );
+        setDetails(badgeDetails);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsBadgeLoading(false);
+      }
+    };
 
-  //   getData();
-  // }, [profile?.wallet_address]);
+    getData();
+  }, [profile?.wallet_address]);
 
   // const loadOrbisProfile = useCallback(
   //   async (delay) => {
@@ -138,7 +136,7 @@ const ProfileBody = ({ profile, id }) => {
 
       <ProfileContent>
         <div className="mb-48">
-          {/* <Title level={5}>Badge</Title>
+          <Title level={5}>Badge</Title>
           {isBadgeLoading ? (
             <BadgeLoading />
           ) : (
@@ -149,8 +147,9 @@ const ProfileBody = ({ profile, id }) => {
                 <Text>Badge not minted yet</Text>
               )}
             </>
-          )} */}
-          <div>
+          )}
+
+          <div className="mt-24">
             <Title level={5}>Details</Title>
             <List bordered style={{ background: COLOR.WHITE }}>
               <List.Item>
