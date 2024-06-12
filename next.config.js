@@ -1,7 +1,28 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const NextConfig = {
   reactStrictMode: true,
   compiler: {
-    styledComponents: true,
+    styledComponents: {
+      ssr: true,
+      minify: true,
+    },
+  },
+  images: {
+    domains: ['github.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'gateway.autonolas.tech',
+      },
+    ],
+  },
+  webpack: (config) => {
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    /* eslint-disable-next-line no-param-reassign */
+    config.resolve.fallback = {
+      fs: false,
+    };
+    return config;
   },
   async headers() {
     return [
@@ -32,17 +53,5 @@ module.exports = {
       },
     ];
   },
-  webpack: (config) => {
-    config.externals.push('pino-pretty', 'lokijs', 'encoding');
-    return config;
-  },
-  images: {
-    domains: ['github.com'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'gateway.autonolas.tech',
-      },
-    ],
-  },
 };
+module.exports = NextConfig;

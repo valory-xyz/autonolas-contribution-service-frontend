@@ -9,13 +9,13 @@ import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
   FileTextOutlined,
-  MessageOutlined,
+  // MessageOutlined,
   NodeIndexOutlined,
-  RobotOutlined,
-  StarOutlined,
+  // RobotOutlined,
+  // StarOutlined,
   TrophyOutlined,
   TwitterOutlined,
-  UserOutlined,
+  // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
 
@@ -49,12 +49,12 @@ const { useBreakpoint } = Grid;
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
-  { key: 'members', label: 'Members', icon: <UserOutlined /> },
-  { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
-  { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
+  // { key: 'members', label: 'Members', icon: <UserOutlined /> },
+  // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
+  // { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
   { key: 'roadmap', label: 'Roadmap', icon: <NodeIndexOutlined /> },
   { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
-  { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
+  // { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
   { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
 ];
 
@@ -63,7 +63,7 @@ const INTERVAL = 10000;
 const NavigationBar = ({ children }) => {
   const screens = useBreakpoint();
   const router = useRouter();
-  const [selectedMenu, setSelectedMenu] = useState('homepage');
+  const [selectedMenu, setSelectedMenu] = useState('leaderboard');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
   const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
@@ -145,12 +145,12 @@ const NavigationBar = ({ children }) => {
   useEffect(() => {
     if (pathname) {
       const name = pathname.split('/')[1];
-      setSelectedMenu(name || 'homepage');
+      setSelectedMenu(name || 'leaderboard');
     }
   }, [pathname]);
 
   const handleMenuItemClick = ({ key }) => {
-    router.push(key === 'homepage' ? '/' : `/${key}`);
+    router.push(`/${key}`);
     setSelectedMenu(key);
     if (!screens.md) {
       setIsMenuVisible(false);
@@ -159,7 +159,7 @@ const NavigationBar = ({ children }) => {
 
   useEffect(() => {
     updateOrbisConnectionState();
-  }, []);
+  }, [updateOrbisConnectionState]);
 
   useEffect(() => {
     const unwatch = watchAccount(wagmiConfig, {
@@ -207,6 +207,7 @@ const NavigationBar = ({ children }) => {
         <CustomMenu
           theme="light"
           mode="vertical"
+          defaultSelectedKeys={[selectedMenu]}
           selectedKeys={[selectedMenu]}
           items={menuItems}
           onClick={handleMenuItemClick}
@@ -215,9 +216,7 @@ const NavigationBar = ({ children }) => {
 
       <Content
         className="site-layout"
-        style={{
-          marginLeft: screens.md ? '200px' : '0',
-        }}
+        style={{ marginLeft: screens.md ? '200px' : '0' }}
       >
         <div className="site-layout-background">{children}</div>
 

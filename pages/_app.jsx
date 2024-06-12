@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { ConfigProvider } from 'antd';
 import { ApolloProvider } from '@apollo/client';
-import { THEME_CONFIG, COLOR } from '@autonolas/frontend-library';
+import { COLOR } from '@autonolas/frontend-library';
 
 /** wagmi config */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -14,6 +13,7 @@ import { wagmiConfig } from 'common-util/Login/config';
 import GlobalStyle from 'components/GlobalStyles';
 import Meta from 'common-util/meta';
 import dynamic from 'next/dynamic';
+import { ThemeConfigProvider } from 'context/ConfigProvider';
 import client from '../apolloClient';
 import { store } from '../store';
 
@@ -35,7 +35,7 @@ createWeb3Modal({
   },
 });
 
-const MyApp = ({ Component, pageProps }) => {
+const ContributeApp = ({ Component, pageProps }) => {
   const initialState = cookieToInitialState(wagmiConfig);
 
   return (
@@ -44,7 +44,7 @@ const MyApp = ({ Component, pageProps }) => {
       <Meta />
 
       <Provider store={store}>
-        <ConfigProvider theme={THEME_CONFIG}>
+        <ThemeConfigProvider>
           <WagmiProvider config={wagmiConfig} initialState={initialState}>
             <QueryClientProvider client={queryClient}>
               <ApolloProvider client={client}>
@@ -54,24 +54,16 @@ const MyApp = ({ Component, pageProps }) => {
               </ApolloProvider>
             </QueryClientProvider>
           </WagmiProvider>
-        </ConfigProvider>
+        </ThemeConfigProvider>
       </Provider>
     </>
   );
 };
 
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  const pageProps = Component.getInitialProps
-    ? await Component.getInitialProps(ctx)
-    : {};
-
-  return { pageProps };
-};
-
-MyApp.propTypes = {
+ContributeApp.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})])
     .isRequired,
   pageProps: PropTypes.shape({}).isRequired,
 };
 
-export default MyApp;
+export default ContributeApp;

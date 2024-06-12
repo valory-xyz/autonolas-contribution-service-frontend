@@ -1,3 +1,7 @@
-import Chat from 'components/Chat';
+// import Chat from 'components/Chat';
+// export default Chat;
+// TODO: It will be added once the page is updated.
 
-export default Chat;
+import { PageDoesNotExist } from 'common-util/PageDoesNotExist';
+
+export default PageDoesNotExist;

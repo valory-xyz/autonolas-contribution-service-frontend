@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 const { useBreakpoint } = Grid;
 
-const SignInToOrbis = () => {
+export const SignInToOrbis = () => {
   const {
     connect, disconnect, isLoading, isOrbisConnected, profile, address,
   } = useOrbis();
@@ -49,5 +49,3 @@ const SignInToOrbis = () => {
     </Dropdown.Button>
   );
 };
-
-export default SignInToOrbis;

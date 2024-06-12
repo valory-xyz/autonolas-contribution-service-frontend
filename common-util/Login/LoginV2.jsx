@@ -15,7 +15,7 @@ import {
   getChainIdOrDefaultToMainnet,
   isAddressProhibited,
 } from 'common-util/functions';
-import SignInToOrbis from 'components/SignInToOrbis';
+// import { SignInToOrbis } from 'components/SignInToOrbis';
 import VotingPower from 'components/VotingPower';
 
 const LoginContainer = styled.div`
@@ -57,7 +57,7 @@ export const LoginV2 = ({
     if (balance?.formatted) {
       dispatch(setUserBalance(balance.formatted));
     }
-  }, [balance?.formatted]);
+  }, [balance?.formatted, dispatch]);
 
   useEffect(() => {
     // if chainId is undefined, the wallet is not connected & default to mainnet
@@ -74,7 +74,7 @@ export const LoginV2 = ({
       const tempChainId = getChainIdOrDefaultToMainnet(chainId);
       dispatch(setChainId(tempChainId));
     }
-  }, [chainId]);
+  }, [chainId, dispatch]);
 
   useEffect(() => {
     const getData = async () => {
@@ -139,9 +139,9 @@ export const LoginV2 = ({
 
   return (
     <LoginContainer>
-      <div className="mr-8">
+      {/* <div className="mr-8">
         <SignInToOrbis />
-      </div>
+      </div> */}
       {address && <VotingPower />}
       <w3m-button balance="hide" />
     </LoginContainer>

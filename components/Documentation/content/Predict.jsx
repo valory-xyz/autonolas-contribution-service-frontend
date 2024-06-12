@@ -4,7 +4,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
 
-const Predict = () => (
+export const Predict = () => (
   <div id={DOCS_SECTIONS.predict}>
     <Title level={2}>Predict</Title>
     <Paragraph>
@@ -112,5 +112,3 @@ const Predict = () => (
     <br />
   </div>
 );
-
-export default Predict;

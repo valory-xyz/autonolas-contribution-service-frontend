@@ -4,12 +4,12 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Memory = () => (
+export const Memory = () => (
   <div id={DOCS_SECTIONS.memory}>
     <Title level={2}>Memory</Title>
     <Paragraph>
-      Members collectively manage Chatbot&apos;s memory. Members can keep it up to
-      date, give it a personality, and make it more useful.
+      Members collectively manage Chatbot&apos;s memory. Members can keep it up
+      to date, give it a personality, and make it more useful.
     </Paragraph>
 
     <Paragraph>
@@ -30,5 +30,3 @@ const Memory = () => (
     <br />
   </div>
 );
-
-export default Memory;

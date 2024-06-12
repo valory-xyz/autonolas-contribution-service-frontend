@@ -34,7 +34,7 @@ export const useFetchVotingPower = (account) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
-  return { votingPower, refetchVotingPrower: getVotingPower };
+  return { votingPower, refetchVotingPower: getVotingPower };
 };
 
 /**

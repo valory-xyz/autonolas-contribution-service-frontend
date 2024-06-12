@@ -3,7 +3,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const Roadmap = () => (
+export const Roadmap = () => (
   <div id={DOCS_SECTIONS.roadmap}>
     <Title level={2}>Roadmap</Title>
 
@@ -28,5 +28,3 @@ const Roadmap = () => (
     <br />
   </div>
 );
-
-export default Roadmap;

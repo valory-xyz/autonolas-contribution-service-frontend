@@ -79,6 +79,12 @@ const CalendarPage = () => {
     );
   };
 
+  const cellRender = (current, info) => {
+    if (info.type === 'date') return dateCellRender(current);
+    if (info.type === 'month') return monthCellRender(current);
+    return info.originNode;
+  };
+
   return (
     <div>
       <div className="mb-8">
@@ -87,15 +93,17 @@ const CalendarPage = () => {
       <Row gutter={16}>
         {screens.lg && (
           <Col span={16}>
-            <Calendar
-              dateCellRender={dateCellRender}
-              monthCellRender={monthCellRender}
-            />
+            <Calendar cellRender={cellRender} />
             <div style={{ marginTop: '20px' }}>
               <Text>
-                For a full list of what has happened in the Olas ecosystem, follow
+                For a full list of what has happened in the Olas ecosystem,
+                follow
                 {' '}
-                <a href="https://twitter.com/autonolas/status/1676576697863507968" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://twitter.com/autonolas/status/1676576697863507968"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   this thread
                 </a>
                 .
@@ -132,7 +140,9 @@ const CalendarPage = () => {
                       </Link>
                       <br />
                       <Text type="secondary">
-                        {moment.unix(event.timestamp).format('HH:mm UTC · DD MMM YYYY')}
+                        {moment
+                          .unix(event.timestamp)
+                          .format('HH:mm UTC · DD MMM YYYY')}
                       </Text>
                     </Fragment>
                   ),

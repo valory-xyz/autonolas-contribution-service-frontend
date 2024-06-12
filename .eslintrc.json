@@ -3,16 +3,20 @@
     "browser": true,
     "es6": true
   },
-  "parser": "@babel/eslint-parser",
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "airbnb",
-    "plugin:jest/all"
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
   ],
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "jsconfig": {
+        "config": "jsconfig.json"
+      }
     }
   },
   "parserOptions": {
@@ -22,7 +26,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react", "jsx-a11y", "import", "jest", "react-hooks"],
+  "plugins": ["react", "jsx-a11y", "import", "jest", "react-hooks", "prettier"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
@@ -31,7 +35,7 @@
     "import/no-unresolved": [
       2,
       {
-        "ignore": ["util", "common-util", "components", "store"]
+        "ignore": ["util", "common-util", "components", "store", "context"]
       }
     ],
     "no-console": ["warn", { "allow": ["error"] }],
@@ -51,7 +55,20 @@
     "react/jsx-no-useless-fragment": [2, { "allowExpressions": true }],
     "no-untyped-mock-factory": "off",
     "jest/no-untyped-mock-factory": "off",
-    "react-hooks/rules-of-hooks": "error", 
-    "react-hooks/exhaustive-deps": "warn" 
-  }
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.*"],
+      "plugins": ["jest"],
+      "env": {
+        "jest/globals": true
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": "off",
+        "no-untyped-mock-factory": "off"
+      }
+    }
+  ]
 }

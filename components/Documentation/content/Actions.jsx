@@ -3,7 +3,7 @@ import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
 
-const ActionsDocs = () => (
+export const ActionsDocs = () => (
   <div id={DOCS_SECTIONS.actions}>
     <Title level={2}>Actions</Title>
     <Paragraph>
@@ -25,5 +25,3 @@ const ActionsDocs = () => (
     <br />
   </div>
 );
-
-export default ActionsDocs;

@@ -2,27 +2,28 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Anchor, Typography, Grid } from 'antd';
 import { get } from 'lodash';
-import Overview from './content/1_Overview';
-import Badge from './content/3_Badge';
-import Leaderboard from './content/4_Leaderboard';
-import HowItWorks from './content/5_HowItWorks';
-import Calendar from './content/Calendar';
+
+import { Overview } from './content/Overview';
+import { ActionsDocs } from './content/Actions';
+// import { Badge } from './content/3_Badge';
+import { Leaderboard } from './content/Leaderboard';
+import { HowItWorks } from './content/HowItWorks';
+import { Calendar } from './content/Calendar';
 import { DOC_NAV, NavWrapper } from './helpers';
+// import { Members } from './content/Members';
+// import { Chatbot } from './content/Chatbot';
+// import { Memory } from './content/Memory';
+import { Tweet } from './content/Tweet';
+import { Proposals } from './content/Proposals';
+import { Roadmap } from './content/Roadmap';
+// import Predict from './content/Predict';
 import { Container, DocSection } from './styles';
-import ActionsDocs from './content/2_Actions';
-import Members from './content/Members';
-import Chatbot from './content/Chatbot';
-import Memory from './content/Memory';
-import Tweet from './content/Tweet';
-import Proposals from './content/Proposals';
-import Roadmap from './content/Roadmap';
-import Predict from './content/Predict';
 
 const { Title } = Typography;
 const { Link } = Anchor;
 const { useBreakpoint } = Grid;
 
-const Documentation = () => {
+export const Documentation = () => {
   const [activeNav, setActiveNav] = useState(null);
   const router = useRouter();
   const screens = useBreakpoint();
@@ -36,7 +37,7 @@ const Documentation = () => {
     const { asPath } = router;
     const afterHash = asPath.split('#')[1];
     setActiveNav(afterHash || get(DOC_NAV, `[${0}].id`) || '');
-  }, []);
+  }, [router]);
 
   return (
     <Container>
@@ -64,16 +65,16 @@ const Documentation = () => {
           <Overview />
           <Leaderboard />
           <ActionsDocs />
-          <Badge />
-          <Members />
-          <Chatbot />
-          <Memory />
+          {/* <Badge /> */}
+          {/* <Members /> */}
+          {/* <Chatbot /> */}
+          {/* <Memory /> */}
           <Tweet />
+          {/* <Predict /> */}
           <Proposals />
           <HowItWorks />
           <Roadmap />
           <Calendar />
-          <Predict />
         </div>
       </DocSection>
       <br />
@@ -82,5 +83,3 @@ const Documentation = () => {
     </Container>
   );
 };
-
-export default Documentation;

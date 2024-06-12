@@ -1,7 +1,7 @@
 import { Button, Dropdown, Grid } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { VerticalDivider } from './styles';
+// import { VerticalDivider } from './styles';
 import { formatWeiBalance } from './utils';
 import DelegateMenu from './DelegateMenu';
 import { useFetchVotingPower } from './hooks';
@@ -12,14 +12,14 @@ const VotingPower = () => {
   const screens = useBreakpoint();
 
   const { account } = useHelpers();
-  const { votingPower, refetchVotingPrower } = useFetchVotingPower(account);
+  const { votingPower, refetchVotingPower } = useFetchVotingPower(account);
 
   if (screens.xs) return null;
   if (!votingPower) return null;
 
   return (
     <>
-      <VerticalDivider />
+      {/* <VerticalDivider /> */}
       <Dropdown
         placement="bottomRight"
         arrow
@@ -27,7 +27,7 @@ const VotingPower = () => {
         overlay={(
           <DelegateMenu
             votingPower={votingPower}
-            refetchVotingPrower={refetchVotingPrower}
+            refetchVotingPower={refetchVotingPower}
           />
         )}
       >

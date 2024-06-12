@@ -9,7 +9,11 @@ import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 import { RPC_URLS } from 'common-util/Contracts';
-import orbis, { ORBIS_SUPPORTED_CHAIN, checkOrbisNegativeStatus, checkOrbisStatus } from 'common-util/orbis';
+import orbis, {
+  ORBIS_SUPPORTED_CHAIN,
+  //  checkOrbisNegativeStatus,
+  checkOrbisStatus,
+} from 'common-util/orbis';
 import { setOrbisConnection } from 'store/setup';
 
 // Messages object for success and error notifications
@@ -98,11 +102,11 @@ const useOrbis = () => {
 
     const res = orbis.logout();
 
-    if (checkOrbisNegativeStatus(res?.status)) {
-      notifyError(messages.signOutError);
-    } else {
-      notifySuccess(messages.signOutSuccess);
-    }
+    // if (checkOrbisNegativeStatus(res?.status)) {
+    //   notifyError(messages.signOutError);
+    // } else {
+    //   notifySuccess(messages.signOutSuccess);
+    // }
     setLoadingState(false);
     dispatch(setOrbisConnection(null));
     return checkOrbisStatus(res?.status) ? res : null;

@@ -3,24 +3,29 @@ import dynamic from 'next/dynamic';
 import { Col, Row, Typography } from 'antd';
 
 import Actions from './Actions';
-import MintNft from './MintNft';
+// import { MintNft } from './MintNft';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { CustomAlert } from './styles';
 
 const { Title } = Typography;
 const LeaderboardTable = dynamic(() => import('./LeaderboardTable'));
 
+const EARNING_POINTS_SHOWN = 'start_earning_points_shown';
+
 const Leaderboard = () => {
   const isVerified = useSelector((state) => state?.setup?.isVerified);
 
   const onClose = () => {
-    // TODO: store in localstorage
+    localStorage.setItem(EARNING_POINTS_SHOWN, 'true');
   };
 
   return (
     <>
-      {!isVerified && (
+      {!isVerified && localStorage.getItem(EARNING_POINTS_SHOWN) !== 'true' && (
         <CustomAlert
+          type="info"
+          closable
+          onClose={onClose}
           message={(
             <>
               <Title level={2} className="mb-24">
@@ -29,9 +34,6 @@ const Leaderboard = () => {
               <ConnectTwitterModal />
             </>
           )}
-          type="info"
-          closable
-          onClose={onClose}
         />
       )}
 
@@ -40,9 +42,9 @@ const Leaderboard = () => {
           <LeaderboardTable />
         </Col>
         <Col xs={24} lg={10}>
-          <div className="mb-48">
+          {/* <div className="mb-48">
             <MintNft />
-          </div>
+          </div> */}
           <Actions />
         </Col>
       </Row>
