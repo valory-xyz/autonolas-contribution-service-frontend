@@ -1,5 +1,6 @@
 import { Typography } from 'antd';
 import Link from 'next/link';
+import { VEOLAS_URL } from 'util/constants';
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
@@ -35,7 +36,7 @@ export const Tweet = () => (
       be able to participate in Contribute, DAO voting and service donations.
       {' '}
       <a
-        href="https://member.olas.network"
+        href={VEOLAS_URL}
         rel="noopener noreferrer"
         target="_blank"
       >
