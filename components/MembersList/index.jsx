@@ -11,6 +11,7 @@ import { areAddressesEqual, notifyError, notifySuccess } from '@autonolas/fronte
 import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { cloneDeep } from 'lodash';
 import DisplayName from 'common-util/DisplayName';
+import { VEOLAS_URL } from 'util/constants';
 import { fetchVotingPower } from './requests';
 
 const { Text } = Typography;
@@ -80,7 +81,7 @@ export const MembersList = () => {
           <>
             You must hold veOLAS to join.&nbsp;
             <a
-              href="https://member.olas.network/"
+              href={VEOLAS_URL}
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -1,5 +1,6 @@
 import { Typography } from 'antd';
 import Link from 'next/link';
+import { VEOLAS_URL } from 'util/constants';
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph, Text } = Typography;
@@ -41,7 +42,7 @@ export const Predict = () => (
       on Ethereum mainnet and
       {' '}
       <a
-        href="https://member.olas.network"
+        href={VEOLAS_URL}
         target="_blank"
         rel="noopener noreferrer"
       >

@@ -4,6 +4,7 @@ import {
   Modal,
   Collapse,
 } from 'antd';
+import { VEOLAS_URL } from 'util/constants';
 
 const { Text, Title } = Typography;
 
@@ -47,7 +48,7 @@ export const VeolasModal = ({ showVeOLASModal, setShowVeOLASModal }) => {
         Lock your OLAS at
         {' '}
         <a
-          href="https://member.olas.network"
+          href={VEOLAS_URL}
           target="_blank"
           rel="noopener noreferrer"
         >

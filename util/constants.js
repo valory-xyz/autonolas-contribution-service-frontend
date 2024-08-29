@@ -2,7 +2,8 @@ export const GATEWAY_URL = 'https://gateway.autonolas.tech/ipfs/';
 
 export const SITE_URL = 'https://contribute.olas.network';
 export const SITE_TITLE = 'Olas Contribute';
-export const SITE_DESCRIPTION = 'Contribute to the Olas DAO by completing actions, earning points, climbing the rankings and upgrading your badge';
+export const SITE_DESCRIPTION =
+  'Contribute to the Olas DAO by completing actions, earning points, climbing the rankings and upgrading your badge';
 export const SITE_META_TAG_IMAGE = `${SITE_URL}/images/site-metadata/site-metatag.jpg`;
 
 export const META_TAGS_INFO = {
@@ -26,3 +27,5 @@ export const ONE_MILLION = 1000000;
 export const VEOLAS_QUORUM = ONE_MILLION * 2;
 export const ONE_IN_WEI = '1000000000000000000';
 export const HUNDRED_K_OLAS_IN_WEI = '100000000000000000000000';
+
+export const VEOLAS_URL = 'https://govern.olas.network/veolas';

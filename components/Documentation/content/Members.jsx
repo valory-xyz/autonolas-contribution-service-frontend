@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Typography } from 'antd';
+import { VEOLAS_URL } from 'util/constants';
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
@@ -30,7 +31,7 @@ export const Members = () => (
         </li>
         <li>
           <a
-            href="https://member.olas.network"
+            href={VEOLAS_URL}
             rel="noopener noreferrer"
             target="_blank"
           >
