@@ -58,6 +58,7 @@ The roadmap item structure is as follows (all fields are required):
 ```
 {
     "title": string – item name – e.g. "Build-A-PoSe",
+    "tag": "WIP" || "Proposed" || "Approved" || "Implemented" || "Rejected",
     "description": string – what this item is about – "This workstream implements Build-A-PoSe, a structured programme operated by the DAO to consistently deliver new Olas-owned services.",
     "imageUrl": url – path to image – "https://github.com/valory-xyz/autonolas-aip/blob/aip-2/content/imgs/Build-A-PoSe.png?raw=true",
     "link": url – path to learn more about this item – "https://github.com/valory-xyz/autonolas-aip/blob/aip-2/content/aips/core-build-a-pose.md",

@@ -1,5 +1,5 @@
 import {
-  Card, Typography, Row, Col,
+  Card, Typography, Row, Col, Tag, Popover
 } from 'antd';
 import Image from 'next/image';
 import dayjs from 'dayjs';
@@ -15,6 +15,21 @@ const ResponsiveImage = styled(Image)`
   max-width: 100%;
   object-fit: contain;
 `;
+
+const getTagItems = (tag) => {
+  switch (tag) {
+    case "Approved":
+      return ["blue", "AIP that has been accepted for implementation by the Autonolas community"];
+    case "Proposed":
+      return ["blue", "AIP that is ready to be proposed on-chain"];
+    case "Implemented":
+      return ["green", "AIP that has been released to mainnet"];
+    case "Rejected":
+      return ["red", "AIP that has been rejected"];
+    default:
+      return ["", "AIP that is still being developed"];
+  }
+};
 
 const RoadmapPage = () => {
   const sortedRoadmapItems = roadmapItems.sort(
@@ -52,13 +67,31 @@ const RoadmapPage = () => {
               />
             </Col>
             <Col xs={24} md={24} lg={14}>
+            <Popover 
+              content={<>
+                {getTagItems(item.tag)[1]}
+                  <>
+                    <br />
+                    <Link href={"https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses"}>More about AIP statuses ↗</Link>
+                  </>
+              </>} 
+              trigger="hover"
+              overlayStyle={{width: "400px"}}
+            >
+              <Tag className="mb-12" bordered={true} color={getTagItems(item.tag)[0]} style={{
+                fontWeight: '500', 
+                fontSize: '14px',
+                fontFamily: 'Inter',
+                padding: '4px'
+              }}>{item.tag}</Tag>
+            </Popover>
+            
               <Title level={4}>{item.title}</Title>
               <p>{item.description}</p>
               <Text strong>Initial Proposal</Text>
               <br />
               <Text type="secondary">
                 <Link
-                  type="secondary"
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -67,7 +100,6 @@ const RoadmapPage = () => {
                 </Link>
                 {' · '}
                 <Link
-                  type="secondary"
                   href="https://discord.com/channels/899649805582737479/1121019872839729152"
                   target="_blank"
                   rel="noopener noreferrer"
