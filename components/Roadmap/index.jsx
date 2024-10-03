@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import roadmapItems from './roadmapItems.json';
 
-const { Text, Title, Link } = Typography;
+const { Text, Title } = Typography;
 
 const ResponsiveImage = styled(Image)`
   max-width: 100%;
@@ -19,15 +19,15 @@ const ResponsiveImage = styled(Image)`
 const getTagItems = (tag) => {
   switch (tag) {
     case "Approved":
-      return {color: "blue", text: "AIP that has been accepted for implementation by the Autonolas community"};
+      return { color: "blue", text: "AIP that has been accepted for implementation by the Autonolas community" };
     case "Proposed":
-      return {color: "blue", text: "AIP that is ready to be proposed on-chain"};
+      return { color: "blue", text: "AIP that is ready to be proposed on-chain" };
     case "Implemented":
-      return {color: "green", text: "AIP that has been released to mainnet"};
+      return { color: "green", text: "AIP that has been released to mainnet" };
     case "Rejected":
-      return {color: "red", text: "AIP that has been rejected"};
+      return { color: "red", text: "AIP that has been rejected" };
     default:
-      return {color: "", text: "AIP that is still being developed"};
+      return { color: "", text: "AIP that is still being developed" }; 
   }
 };
 
@@ -46,10 +46,9 @@ const RoadmapLink = ({ text, link }) => {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
+      style={{ textDecoration: 'none' }}
     >
-      <Link style={{ textDecoration: 'none' }}>
-        {text} ↗
-      </Link>
+      {text} ↗
     </a>
   );
 };
