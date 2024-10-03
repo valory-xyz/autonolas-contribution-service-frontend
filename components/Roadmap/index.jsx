@@ -19,16 +19,39 @@ const ResponsiveImage = styled(Image)`
 const getTagItems = (tag) => {
   switch (tag) {
     case "Approved":
-      return ["blue", "AIP that has been accepted for implementation by the Autonolas community"];
+      return {color: "blue", text: "AIP that has been accepted for implementation by the Autonolas community"};
     case "Proposed":
-      return ["blue", "AIP that is ready to be proposed on-chain"];
+      return {color: "blue", text: "AIP that is ready to be proposed on-chain"};
     case "Implemented":
-      return ["green", "AIP that has been released to mainnet"];
+      return {color: "green", text: "AIP that has been released to mainnet"};
     case "Rejected":
-      return ["red", "AIP that has been rejected"];
+      return {color: "red", text: "AIP that has been rejected"};
     default:
-      return ["", "AIP that is still being developed"];
+      return {color: "", text: "AIP that is still being developed"};
   }
+};
+
+const RoadmapTag = styled(Tag)`
+  font-weight: 500;
+  font-size: 14px;
+  font-family: Inter;
+  line-height: 20px;
+  padding: 2px 8px 2px 8px;
+  margin-bottom: 12px;
+`; 
+
+const RoadmapLink = ({ text, link }) => {
+  return (
+    <a 
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Link style={{ textDecoration: 'none' }}>
+        {text} ↗
+      </Link>
+    </a>
+  );
 };
 
 const RoadmapPage = () => {
@@ -69,50 +92,33 @@ const RoadmapPage = () => {
             <Col xs={24} md={24} lg={14}>
             <Popover 
               content={<>
-                {getTagItems(item.tag)[1]}
-                  <>
-                    <br />
-                    <Link 
-                      href={"https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses"}
-                      style={{textDecoration: "none"}}
-                    >
-                      More about AIP statuses ↗
-                    </Link>
-                  </>
+                {getTagItems(item.tag).text}
+                  <br />
+                  <RoadmapLink 
+                    text="More about AIP statuses" 
+                    link="https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses" 
+                  />
               </>} 
               trigger="hover"
-              overlayStyle={{maxWidth: "400px"}}
+              overlayStyle={{ maxWidth: "400px" }}
             >
-              <Tag className="mb-12" bordered={true} color={getTagItems(item.tag)[0]} style={{
-                fontWeight: '500', 
-                fontSize: '14px',
-                fontFamily: 'Inter',
-                padding: '4px'
-              }}>{item.tag}</Tag>
+              <RoadmapTag bordered={true} color={getTagItems(item.tag).color}>{item.tag}</RoadmapTag>
             </Popover>
             
               <Title level={4}>{item.title}</Title>
               <p>{item.description}</p>
               <Text strong>Initial Proposal</Text>
               <br />
-              <Text type="secondary">
-                <Link
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{textDecoration: "none"}}
-                >
-                  Read ↗
-                </Link>
-                {' · '}
-                <Link
-                  href="https://discord.com/channels/899649805582737479/1121019872839729152"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{textDecoration: "none"}}
-                >
-                  Discuss ↗
-                </Link>
+                <RoadmapLink 
+                  text="Read" 
+                  link={item.link} 
+                />
+                <Text type="secondary">{' · '}</Text>
+                <RoadmapLink 
+                  text="Discuss" 
+                  link="https://discord.com/channels/899649805582737479/1121019872839729152" 
+                />
+                <Text type="secondary">
                 {` · Proposed: ${dayjs(item.date).format('MMMM D YYYY')}`}
               </Text>
             </Col>
