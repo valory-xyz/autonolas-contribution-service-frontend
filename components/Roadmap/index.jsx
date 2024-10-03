@@ -76,7 +76,7 @@ const RoadmapPage = () => {
                   </>
               </>} 
               trigger="hover"
-              overlayStyle={{width: "400px"}}
+              overlayStyle={{maxWidth: "400px"}}
             >
               <Tag className="mb-12" bordered={true} color={getTagItems(item.tag)[0]} style={{
                 fontWeight: '500', 
