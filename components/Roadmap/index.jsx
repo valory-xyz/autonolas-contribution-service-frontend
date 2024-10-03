@@ -1,13 +1,11 @@
-import {
-  Card, Typography, Row, Col, Tag, Popover
-} from 'antd';
-import Image from 'next/image';
-import dayjs from 'dayjs';
-import { useScreen } from '@autonolas/frontend-library';
-import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { useMemo } from 'react';
-import styled from 'styled-components';
-import roadmapItems from './roadmapItems.json';
+import { Card, Typography, Row, Col, Tag, Popover } from "antd";
+import Image from "next/image";
+import dayjs from "dayjs";
+import { useScreen } from "@autonolas/frontend-library";
+import { EducationTitle } from "common-util/Education/EducationTitle";
+import { useMemo } from "react";
+import styled from "styled-components";
+import roadmapItems from "./roadmapItems.json";
 
 const { Text, Title } = Typography;
 
@@ -19,15 +17,21 @@ const ResponsiveImage = styled(Image)`
 const getTagItems = (tag) => {
   switch (tag) {
     case "Approved":
-      return { color: "blue", text: "AIP that has been accepted for implementation by the Autonolas community" };
+      return {
+        color: "blue",
+        text: "AIP that has been accepted for implementation by the Autonolas community",
+      };
     case "Proposed":
-      return { color: "blue", text: "AIP that is ready to be proposed on-chain" };
+      return {
+        color: "blue",
+        text: "AIP that is ready to be proposed on-chain",
+      };
     case "Implemented":
       return { color: "green", text: "AIP that has been released to mainnet" };
     case "Rejected":
       return { color: "red", text: "AIP that has been rejected" };
     default:
-      return { color: "", text: "AIP that is still being developed" }; 
+      return { color: "", text: "AIP that is still being developed" };
   }
 };
 
@@ -38,15 +42,15 @@ const RoadmapTag = styled(Tag)`
   line-height: 20px;
   padding: 2px 8px 2px 8px;
   margin-bottom: 12px;
-`; 
+`;
 
 const RoadmapLink = ({ text, link }) => {
   return (
-    <a 
+    <a
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ textDecoration: 'none' }}
+      style={{ textDecoration: "none" }}
     >
       {text} ↗
     </a>
@@ -55,7 +59,7 @@ const RoadmapLink = ({ text, link }) => {
 
 const RoadmapPage = () => {
   const sortedRoadmapItems = roadmapItems.sort(
-    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix(),
+    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix()
   );
 
   const { isMobile, isTablet } = useScreen();
@@ -89,36 +93,37 @@ const RoadmapPage = () => {
               />
             </Col>
             <Col xs={24} md={24} lg={14}>
-            <Popover 
-              content={<>
-                {getTagItems(item.tag).text}
-                  <br />
-                  <RoadmapLink 
-                    text="More about AIP statuses" 
-                    link="https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses" 
-                  />
-              </>} 
-              trigger="hover"
-              overlayStyle={{ maxWidth: "400px" }}
-            >
-              <RoadmapTag bordered={true} color={getTagItems(item.tag).color}>{item.tag}</RoadmapTag>
-            </Popover>
-            
+              <Popover
+                content={
+                  <>
+                    {getTagItems(item.tag).text}
+                    <br />
+                    <RoadmapLink
+                      text="More about AIP statuses"
+                      link="https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses"
+                    />
+                  </>
+                }
+                trigger="hover"
+                overlayStyle={{ maxWidth: "400px" }}
+              >
+                <RoadmapTag bordered={true} color={getTagItems(item.tag).color}>
+                  {item.tag}
+                </RoadmapTag>
+              </Popover>
+
               <Title level={4}>{item.title}</Title>
               <p>{item.description}</p>
               <Text strong>Initial Proposal</Text>
               <br />
-                <RoadmapLink 
-                  text="Read" 
-                  link={item.link} 
-                />
-                <Text type="secondary">{' · '}</Text>
-                <RoadmapLink 
-                  text="Discuss" 
-                  link="https://discord.com/channels/899649805582737479/1121019872839729152" 
-                />
-                <Text type="secondary">
-                {` · Proposed: ${dayjs(item.date).format('MMMM D YYYY')}`}
+              <RoadmapLink text="Read" link={item.link} />
+              <Text type="secondary">{" · "}</Text>
+              <RoadmapLink
+                text="Discuss"
+                link="https://discord.com/channels/899649805582737479/1121019872839729152"
+              />
+              <Text type="secondary">
+                {` · Proposed: ${dayjs(item.date).format("MMMM D YYYY")}`}
               </Text>
             </Col>
           </Row>
