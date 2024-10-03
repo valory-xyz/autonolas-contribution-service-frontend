@@ -72,7 +72,12 @@ const RoadmapPage = () => {
                 {getTagItems(item.tag)[1]}
                   <>
                     <br />
-                    <Link href={"https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses"}>More about AIP statuses ↗</Link>
+                    <Link 
+                      href={"https://github.com/valory-xyz/autonolas-aip/tree/aip-2?tab=readme-ov-file#aip-statuses"}
+                      style={{textDecoration: "none"}}
+                    >
+                      More about AIP statuses ↗
+                    </Link>
                   </>
               </>} 
               trigger="hover"
@@ -95,6 +100,7 @@ const RoadmapPage = () => {
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{textDecoration: "none"}}
                 >
                   Read ↗
                 </Link>
@@ -103,6 +109,7 @@ const RoadmapPage = () => {
                   href="https://discord.com/channels/899649805582737479/1121019872839729152"
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{textDecoration: "none"}}
                 >
                   Discuss ↗
                 </Link>
