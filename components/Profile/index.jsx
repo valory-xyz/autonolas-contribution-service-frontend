@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Flex, List, Skeleton, Statistic, Typography } from 'antd';
+import { Flex, List, Skeleton, Statistic, Typography, Button } from 'antd';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -9,6 +10,7 @@ import {
   // notifyError,
   MEDIA_QUERY,
   COLOR,
+  areAddressesEqual,
 } from '@autonolas/frontend-library';
 
 import { getName, getTier } from 'common-util/functions';
@@ -22,7 +24,7 @@ import ConnectTwitterModal from '../ConnectTwitter/Modal';
 // import { UpdateUsername } from './UpdateUsername';
 import { PointsShowcase } from './PointsShowcase';
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const ProfileContent = styled.div`
   display: flex;
@@ -175,7 +177,21 @@ const ProfileBody = ({ profile, id }) => {
         </div>
 
         <div>
-          <Title level={5}>Contribution</Title>
+          {areAddressesEqual(id, account) &&
+            <>
+              <Title level={5}>Staking</Title>
+              <Paragraph type="secondary">
+                Staking allows you to earn OLAS rewards when you complete actions
+                and earn leaderboard points.
+              </Paragraph>
+              <Link href="/set-up-staking">
+                <Button type="primary">Set up staking</Button>
+              </Link>
+            </>
+          }
+          <Title level={5} className="mt-24">
+            Contribution
+          </Title>
           <Flex gap={96}>
             <Statistic
               title="Tier"

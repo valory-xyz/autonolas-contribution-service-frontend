@@ -2,20 +2,21 @@ import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import { Typography } from 'antd';
 import Socials from './Socials';
 
-const { Link } = Typography;
+const { Link, Text } = Typography;
 
 const Footer = () => (
   <CommonFooter
     centerContent={(
       <>
         <div className="mb-12">
-          ©&nbsp;Autonolas DAO&nbsp;
-          {new Date().getFullYear()}
-          &nbsp;•&nbsp;
-          <Link type="secondary" href="/disclaimer">Disclaimer</Link>
+          <Text type="secondary">
+            ©&nbsp;Autonolas DAO&nbsp;
+            {new Date().getFullYear()}
+            &nbsp;•&nbsp;
+          </Text>
+          <Link href="/disclaimer">Disclaimer</Link>
           &nbsp;•&nbsp;
           <Link
-            type="secondary"
             href="https://gateway.autonolas.tech/ipfs/bafybeibrhz6hnxsxcbv7dkzerq4chssotexb276pidzwclbytzj7m4t47u"
             target="_blank"
             rel="noopener noreferrer"
