@@ -12,6 +12,14 @@ import {
 } from 'common-util/AbiAndAddresses';
 import { wagmiConfig } from 'common-util/Login/config';
 
+// Value in wei that should be sent with CreateAndStake transaction
+// 1 wei for the service registration activation,
+// and 1 wei for agent instance bond, which is always equal to 1 for now
+const CREATE_AND_STAKE_VALUE = 2;
+
+// (1 + NUM_AGENT_INSTANCES), where NUM_AGENT_INSTANCES is always equal to 1 for now
+const TOTAL_BOND_WRAP = 2n;
+
 export const useTotalBond = () => {
   const { data, isLoading } = useReadContract({
     address: CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE,
@@ -22,8 +30,7 @@ export const useTotalBond = () => {
 
   // Calculate the total bond required for the service deployment
   // by the formula: (1 + NUM_AGENT_INSTANCES) * minStakingDeposit
-  // where NUM_AGENT_INSTANCES always equals to 1 for this contract
-  const totalBond = data ? 2n * data : null
+  const totalBond = data ? TOTAL_BOND_WRAP * data : null
 
   return { totalBond, isLoading };
 };
@@ -31,7 +38,7 @@ export const useTotalBond = () => {
 /**
  * Check if the OLAS token allowance is sufficient for transfer to the Contribute Manager.
  */
-const hasSufficientTokenRequest = async ({ account, amountToApprove }) => {
+const hasSufficientOlasAllowanceForManager = async ({ account, amountToApprove }) => {
   try {
     const allowance = await readContract(wagmiConfig, {
       address: OLAS_ADDRESS_BASE,
@@ -50,7 +57,7 @@ const hasSufficientTokenRequest = async ({ account, amountToApprove }) => {
 /**
  * Approve Olas transfer to the Contribute Manager
  */
-const approveToken = async ({ amountToApprove }) => {
+const approveOlasForManager = async ({ amountToApprove }) => {
   try {
     const hash = await writeContract(wagmiConfig, {
       address: OLAS_ADDRESS_BASE,
@@ -70,14 +77,14 @@ const approveToken = async ({ amountToApprove }) => {
 /**
  * Check and approve token transfer if not yet approved
  */
-export const checkAndApproveToken = async ({ account, amountToApprove }) => {
-  const hasTokenBalance = await hasSufficientTokenRequest({
+export const checkAndApproveOlasForManager = async ({ account, amountToApprove }) => {
+  const hasTokenBalance = await hasSufficientOlasAllowanceForManager({
     account,
     amountToApprove,
   });
 
   if (!hasTokenBalance) {
-    const response = await approveToken({
+    const response = await approveOlasForManager({
       amountToApprove,
     });
     return response;
@@ -97,7 +104,7 @@ export const createAndStake = async ({ socialId }) => {
       chainId: base.id,
       functionName: 'createAndStake',
       args: [socialId, CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE],
-      value: 2
+      value: CREATE_AND_STAKE_VALUE,
     });
     // Wait for the transaction receipt
     const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: base.id, hash });

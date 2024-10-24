@@ -5,11 +5,17 @@ import Link from 'next/link';
 import { notifyError } from '@autonolas/frontend-library';
 import { truncateAddress, formatToEth, getAddressFromBytes32 } from 'common-util/functions';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { useTotalBond, checkAndApproveToken, createAndStake } from './requests';
+import { useTotalBond, checkAndApproveOlasForManager, createAndStake } from './requests';
+import { base } from 'viem/chains';
 
 const { Paragraph, Text } = Typography;
 
-const XDAI_FOR_GAS = 2;
+const ETH_FOR_GAS = 2;
+const STAKING_STEPS = {
+  CONNECT_TWITTER: 0,
+  SET_UP_AND_STAKE: 1,
+  TWEET_AND_EARN: 2,
+}
 
 const ConnectTwitter = ({ account }) => {
   if (account) {
@@ -46,7 +52,7 @@ const SetUpAndStake = ({ disabled, twitterId, onNextStep }) => {
     setIsLoading(true);
 
     try {
-      await checkAndApproveToken({
+      await checkAndApproveOlasForManager({
         account,
         amountToApprove: totalBond,
       })
@@ -75,8 +81,8 @@ const SetUpAndStake = ({ disabled, twitterId, onNextStep }) => {
   if (multisig) {
     return (
       <Text type="secondary">
-        Your contribute service Safe address:{' '}
-        <a href={`https://gnosisscan.io/address/${multisig}`} target="_blank">
+        Your Contribute service Safe address:{' '}
+        <a href={`${base.blockExplorers.default.url}/address/${multisig}`} target="_blank">
           {truncateAddress(multisig)} ↗
         </a>
       </Text>
@@ -92,7 +98,7 @@ const SetUpAndStake = ({ disabled, twitterId, onNextStep }) => {
             {isTotalBondLoading ? <Skeleton.Button size="small"/> : `${formatToEth(totalBond, 0, 0)}`}{' '}
             OLAS on Base Chain for staking
           </li>
-          <li>{XDAI_FOR_GAS} XDAI on Base Chain for gas</li>
+          <li>{ETH_FOR_GAS} ETH on Base Chain for gas</li>
         </ul>
       </Paragraph>
       <Button type="primary" disabled={disabled} loading={isLoading} onClick={handleSetUpAndStake}>
@@ -106,7 +112,7 @@ const TweetAndEarn = ({ disabled }) => (
   <>
     <Paragraph type="secondary">
       Visit Leaderboard and participate in tweet campaigns to earn points.
-      If you earn enough points for the epoch, you might be eligible to earn staking rewards.
+      If you earn enough points for the epoch, you could be eligible to earn staking rewards.
     </Paragraph>
     <Link href="/leaderboard">
       <Button type="primary" disabled={disabled}>Visit Leaderboard</Button>
@@ -115,7 +121,9 @@ const TweetAndEarn = ({ disabled }) => (
 )
 
 export const StakingStepper = ({ twitterAccount, twitterId }) => {
-  const [step, setStep] = useState(twitterAccount ? 1 : 0);
+  const [step, setStep] = useState(
+    twitterAccount ? STAKING_STEPS.SET_UP_AND_STAKE : STAKING_STEPS.CONNECT_TWITTER
+  );
 
   const handleNext = () => {
     setStep((prev) => prev + 1);
@@ -147,7 +155,7 @@ export const StakingStepper = ({ twitterAccount, twitterId }) => {
             title: <Text>Set up on-chain account and stake funds</Text>,
             description: (
               <SetUpAndStake
-                disabled={step < 1}
+                disabled={step < STAKING_STEPS.SET_UP_AND_STAKE}
                 onNextStep={handleNext}
                 twitterId={twitterId}
               />
@@ -156,7 +164,7 @@ export const StakingStepper = ({ twitterAccount, twitterId }) => {
           {
             key: 'tweetAndEarn',
             title: <Text>Tweet about Olas. Earn points. Earn rewards.</Text>,
-            description: <TweetAndEarn disabled={step < 2}/>
+            description: <TweetAndEarn disabled={step < STAKING_STEPS.TWEET_AND_EARN}/>
           }
         ]}
       />
