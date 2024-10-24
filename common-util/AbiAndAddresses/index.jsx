@@ -5,4 +5,3 @@ export * from './delegateContributeContract';
 export * from './contributeManager';
 export * from './stakingToken';
 export * from './olas';
-export * from './genericErc20';

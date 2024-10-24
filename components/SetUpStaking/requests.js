@@ -7,7 +7,7 @@ import {
   CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE,
   STAKING_TOKEN_ABI,
   OLAS_ADDRESS_BASE,
-  GENERIC_ERC20_ABI,
+  OLAS_ABI,
   CONTRIBUTE_MANAGER_ABI
 } from 'common-util/AbiAndAddresses';
 import { wagmiConfig } from 'common-util/Login/config';
@@ -35,7 +35,7 @@ const hasSufficientTokenRequest = async ({ account, amountToApprove }) => {
   try {
     const allowance = await readContract(wagmiConfig, {
       address: OLAS_ADDRESS_BASE,
-      abi: GENERIC_ERC20_ABI,
+      abi: OLAS_ABI,
       chainId: base.id,
       functionName: 'allowance',
       args: [account, CONTRIBUTE_MANAGER_ADDRESS_BASE],
@@ -54,7 +54,7 @@ const approveToken = async ({ amountToApprove }) => {
   try {
     const hash = await writeContract(wagmiConfig, {
       address: OLAS_ADDRESS_BASE,
-      abi: GENERIC_ERC20_ABI,
+      abi: OLAS_ABI,
       chainId: base.id,
       functionName: 'approve',
       args: [CONTRIBUTE_MANAGER_ADDRESS_BASE, amountToApprove],
