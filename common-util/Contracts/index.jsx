@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import { mainnet, goerli, base } from 'viem/chains';
 import {
   MINT_NFT_CONTRACT_ADDRESS_GOERLI,
   MINT_NFT_CONTRACT_ABI_GOERLI,
@@ -71,6 +72,7 @@ export const getDelegateContributeContract = () => {
 };
 
 export const RPC_URLS = {
-  1: process.env.NEXT_PUBLIC_MAINNET_URL,
-  5: process.env.NEXT_PUBLIC_GOERLI_URL,
+  [mainnet.id]: process.env.NEXT_PUBLIC_MAINNET_URL,
+  [goerli.id]: process.env.NEXT_PUBLIC_GOERLI_URL,
+  [base.id]: process.env.NEXT_PUBLIC_BASE_URL,
 };

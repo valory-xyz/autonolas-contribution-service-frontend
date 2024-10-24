@@ -13,7 +13,7 @@ import {
 import data from 'common-util/Education/data.json';
 
 import { RPC_URLS } from 'common-util/Contracts';
-import { SUPPORTED_CHAINS } from 'common-util/Login';
+import { SUPPORTED_CHAINS } from 'common-util/Login/config';
 import orbis, { checkOrbisStatus } from 'common-util/orbis';
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
@@ -87,11 +87,12 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
  *
  * @param {BigInt} value value to be converted to Eth
  * @param {Number} dv Default value to be returned
+ * @param {Number} fractionDigits Number of digits after the decimal point
  * @returns {String} with 2 decimal places
  */
-export const formatToEth = (value, dv = 0) => {
+export const formatToEth = (value, dv = 0, fractionDigits = 2) => {
   if (isNil(value)) return dv || 0;
-  return (+ethers.formatEther(value)).toFixed(2);
+  return (+ethers.formatEther(value)).toFixed(fractionDigits);
 };
 
 /**
@@ -151,3 +152,7 @@ export const checkOrbisConnection = async () => {
 export const truncateAddress = (address) => (address
   ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}`
   : '--');
+
+export const getAddressFromBytes32 = (address) => {
+    return ('0x' + address.slice(-40));
+};

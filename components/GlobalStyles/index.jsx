@@ -210,12 +210,11 @@ const GlobalStyle = createGlobalStyle`
   a.ant-typography,
   .ant-typography a {
     color: ${COLOR.PRIMARY};
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration: none;
     &:hover,
     &:active {
-      text-decoration: underline;
-      color: inherit;
+      text-decoration: none;
+      color: #b972e8;
     }
   }
 

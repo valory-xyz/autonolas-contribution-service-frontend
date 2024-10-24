@@ -3,7 +3,7 @@ import { Layout, Menu } from 'antd';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const CustomLayout = styled(Layout)`
-  background: ${COLOR.GREY_3};
+  background: #F2F4F9;
   /* filter: invert(0.95) hue-rotate(39deg); // uncomment this line for dark mode */
   .site-layout {
     padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : ' 0 20px 100px 20px;')};
@@ -18,7 +18,7 @@ export const CustomLayout = styled(Layout)`
     }
     .site-layout-background {
       padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : '24px 0;')};
-      min-height: calc(100vh - 120px);
+      min-height: calc(100vh - 164px);
     }
   }
 
