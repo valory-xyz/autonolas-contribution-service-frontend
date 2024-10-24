@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Flex, Steps, Typography, Button } from 'antd';
+import { useSelector } from 'react-redux';
+import { Flex, Steps, Typography, Button, Skeleton } from 'antd';
 import Link from 'next/link';
-import { truncateAddress } from 'common-util/functions';
+import { notifyError } from '@autonolas/frontend-library';
+import { truncateAddress, formatToEth, getAddressFromBytes32 } from 'common-util/functions';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
+import { useTotalBond, checkAndApproveToken, createAndStake } from './requests';
 
 const { Paragraph, Text } = Typography;
+
+const XDAI_FOR_GAS = 2;
 
 const ConnectTwitter = ({ account }) => {
   if (account) {
@@ -25,19 +30,46 @@ const ConnectTwitter = ({ account }) => {
   )
 }
 
-const SetUpAndStake = ({ disabled, onNextStep }) => {
+const SetUpAndStake = ({ disabled, twitterId, onNextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [multisig, setMultisig] = useState(null);
 
-  // TODO: add contract logic
-  const handleSetUpAndStake = () => {
+  const account = useSelector((state) => state?.setup?.account);
+
+  const { totalBond, isLoading: isTotalBondLoading } = useTotalBond()
+
+  const handleSetUpAndStake = async () => {
+    if (!account) return;
+    if (!twitterId) return;
+    if (!totalBond) return;
+
     setIsLoading(true);
-    setTimeout(() => {
-      setMultisig('0x0001A500A6B18995B03f44bb040A5fFc28E45CB0')
+
+    try {
+      await checkAndApproveToken({
+        account,
+        amountToApprove: totalBond,
+      })
+      
+      const result = await createAndStake({
+        socialId: twitterId,
+      })
+
+      if (result) {
+        const logs = result.logs;
+        const createdAndStakedEvent = logs[logs.length - 1];
+        const multisig = getAddressFromBytes32(createdAndStakedEvent.topics[3]);
+        // TODO: write multisig to ceramic
+        setMultisig(multisig)
+        onNextStep()
+      }
+
+    } catch (error) {
+      notifyError('Error: could not set up & stake');
+      console.error(error);
+    } finally {
       setIsLoading(false);
-      onNextStep()
-    }, 3000);
-    
+    }
   };
 
   if (multisig) {
@@ -51,15 +83,16 @@ const SetUpAndStake = ({ disabled, onNextStep }) => {
     )
   }
 
-  // TODO: get OLAS amount and chain name from on-chain
-  // once staking contracts is created
   return (
     <>
       <Paragraph type="secondary">
         Ensure you have:
         <ul>
-          <li>40 OLAS on Gnosis Chain for staking</li>
-          <li>2 XDAI on Gnosis Chain for gas</li>
+          <li>
+            {isTotalBondLoading ? <Skeleton.Button size="small"/> : `${formatToEth(totalBond, 0, 0)}`}{' '}
+            OLAS on Base Chain for staking
+          </li>
+          <li>{XDAI_FOR_GAS} XDAI on Base Chain for gas</li>
         </ul>
       </Paragraph>
       <Button type="primary" disabled={disabled} loading={isLoading} onClick={handleSetUpAndStake}>
@@ -81,7 +114,7 @@ const TweetAndEarn = ({ disabled }) => (
   </>
 )
 
-export const StakingStepper = ({ twitterAccount }) => {
+export const StakingStepper = ({ twitterAccount, twitterId }) => {
   const [step, setStep] = useState(twitterAccount ? 1 : 0);
 
   const handleNext = () => {
@@ -112,7 +145,13 @@ export const StakingStepper = ({ twitterAccount }) => {
           {
             key: 'setUpAndStake',
             title: <Text>Set up on-chain account and stake funds</Text>,
-            description: <SetUpAndStake disabled={step < 1} onNextStep={handleNext}/>
+            description: (
+              <SetUpAndStake
+                disabled={step < 1}
+                onNextStep={handleNext}
+                twitterId={twitterId}
+              />
+            )
           },
           {
             key: 'tweetAndEarn',

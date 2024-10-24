@@ -16,9 +16,16 @@ export const SetUpStakingPage = () => {
   const leaderboard = useSelector((state) => state?.setup?.leaderboard);
   const account = useSelector((state) => state?.setup?.account);
 
-  const twitterAccount = useMemo(() => {
+  // TODO: need to switch to Base chain at some point here
+  // Otherwise create&stake won't work
+  // Requires discussion with Roman
+
+  const twitterProfile = useMemo(() => {
     const profile = leaderboard.find((item) => item.wallet_address === account);
-    return profile?.twitter_handle
+    return {
+      account: profile?.twitter_handle,
+      id: profile?.twitter_id,
+    }
   }, [leaderboard])
 
   return (
@@ -26,7 +33,12 @@ export const SetUpStakingPage = () => {
       <Card>
         <Title level={4}>Set up staking</Title>
         {!account && <ConnectWallet />}
-        {account && <StakingStepper twitterAccount={twitterAccount} />}
+        {account && (
+          <StakingStepper
+            twitterAccount={twitterProfile.account}
+            twitterId={twitterProfile.id}
+          />
+        )}
       </Card>
     </Root>
   );
