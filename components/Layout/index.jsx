@@ -1,13 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { Layout, Grid, Button } from 'antd';
+import { Layout, Grid, Button, Typography } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
+  DollarOutlined,
   FileTextOutlined,
   // MessageOutlined,
   NodeIndexOutlined,
@@ -33,11 +36,14 @@ import Footer from './Footer';
 import { getAddressStatus } from './utils';
 import {
   CustomLayout,
+  CustomHeaderContent,
+  Banner,
   Logo,
   RightMenu,
   CustomHeader,
   CustomMenu,
 } from './styles';
+import { MENU_WIDTH } from 'util/constants';
 
 const Login = dynamic(() => import('../Login'));
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
@@ -45,9 +51,11 @@ const ServiceStatus = dynamic(() => import('./ServiceStatus'), { ssr: false });
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
+const { Text } = Typography;
 
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
+  { key: 'staking', label: 'Staking', icon: <DollarOutlined /> },
   { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
   // { key: 'members', label: 'Members', icon: <UserOutlined /> },
   // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
@@ -67,6 +75,9 @@ const NavigationBar = ({ children }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { pathname } = router;
   const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
+
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const handleBannerClose = () => setIsBannerVisible(false)
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -146,6 +157,10 @@ const NavigationBar = ({ children }) => {
     if (pathname) {
       const name = pathname.split('/')[1];
       setSelectedMenu(name || 'leaderboard');
+
+      if (pathname.includes('staking')) {
+        setIsBannerVisible(false)
+      }
     }
   }, [pathname]);
 
@@ -185,22 +200,46 @@ const NavigationBar = ({ children }) => {
 
   const isPadded = ['chat', 'member-chat'].some((e) => pathname.includes(e));
 
-  return (
-    <CustomLayout ispadded={isPadded.toString()}>
-      <CustomHeader>
-        {logo}
+ 
 
-        <RightMenu>
-          {!screens.md && (
-            <Button
-              className="mr-8"
-              onClick={() => setIsMenuVisible(!isMenuVisible)}
-            >
-              Menu
-            </Button>
-          )}
-          <Login />
-        </RightMenu>
+  return (
+    <CustomLayout ispadded={isPadded.toString()} isBannerVisible={isBannerVisible.toString()}>
+      <CustomHeader isBannerVisible={isBannerVisible.toString()}>
+        {isBannerVisible && (
+          <Banner
+            message={(
+              <Text>
+                <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }}/>
+                Contribute staking is live!
+                Set up staking now
+                Contribute staking is live! Spread the word about Olas on Twitter and have a chance to earn rewards.
+                {' '}
+                <Link
+                  href="/staking"
+                >
+                  Set up staking now
+                </Link>
+              </Text>
+            )}
+            type="info"
+            closable
+            onClose={handleBannerClose}
+          />
+        )}
+        <CustomHeaderContent>
+          {logo}
+          <RightMenu>
+            {!screens.md && (
+              <Button
+                className="mr-8"
+                onClick={() => setIsMenuVisible(!isMenuVisible)}
+              >
+                Menu
+              </Button>
+            )}
+            <Login />
+          </RightMenu>
+        </CustomHeaderContent>
       </CustomHeader>
 
       {(screens.md || isMenuVisible) && (
@@ -210,13 +249,14 @@ const NavigationBar = ({ children }) => {
           defaultSelectedKeys={[selectedMenu]}
           selectedKeys={[selectedMenu]}
           items={menuItems}
+          isBannerVisible={isBannerVisible.toString()}
           onClick={handleMenuItemClick}
         />
       )}
 
       <Content
         className="site-layout"
-        style={{ marginLeft: screens.md ? '200px' : '0' }}
+        style={{ marginLeft: screens.md ? `${MENU_WIDTH}px` : '0' }}
       >
         <div className="site-layout-background">{children}</div>
 

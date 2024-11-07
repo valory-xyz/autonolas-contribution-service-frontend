@@ -55,7 +55,7 @@ export const getMintContract = () => {
     chainId === 5
       ? MINT_NFT_CONTRACT_ABI_GOERLI
       : MINT_NFT_CONTRACT_ABI_MAINNET,
-    ADDRESSES[chainId].mintNft,
+    ADDRESSES[chainId]?.mintNft,
   );
 
   return contract;

@@ -75,4 +75,7 @@ export const CustomAlert = styled(Alert)`
     rgba(255, 255, 255, 1) 43.4%
   );
   margin-bottom: 24px;
+  &.ant-alert-info {
+    color: rgba(0, 0, 0, 0.88);
+  }
 `;

@@ -1,13 +1,17 @@
 import styled from 'styled-components';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Alert } from 'antd';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+import { MENU_WIDTH } from 'util/constants';
+
+const BANNER_HEIGHT = 56;
+const HEADER_HEIGHT = 64;
 
 export const CustomLayout = styled(Layout)`
   background: #F2F4F9;
   /* filter: invert(0.95) hue-rotate(39deg); // uncomment this line for dark mode */
   .site-layout {
-    padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : ' 0 20px 100px 20px;')};
-    margin-top: 64px;
+    padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : ' 0 20px 40px 20px;')};
+    margin-top:${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
     .contribute-footer {
       > div {
         height: 100px;
@@ -88,24 +92,50 @@ export const NextUpdateTimer = styled.div`
   }
 `;
 
+export const Banner = styled(Alert)`
+  &.ant-alert {
+    min-height: ${BANNER_HEIGHT}px;
+    z-index: 10;
+    border-radius: 0;
+    border: 0;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
 export const CustomHeader = styled(Layout.Header)`
+  &.ant-layout-header {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    max-height: ${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
+  }
+`;
+
+export const CustomHeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
   background-color: ${COLOR.WHITE};
+  height: ${HEADER_HEIGHT}px;
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
-`;
+`
 
 export const CustomMenu = styled(Menu)`
   position: fixed;
-  top: 64px;
+  top: ${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
   bottom: 0;
   left: 0;
-  width: 200px;
+  width: ${MENU_WIDTH}px;
+  padding: 16px;
   border-right: 1px solid ${COLOR.BORDER_GREY} !important;
   z-index: 2;
   li {
     line-height: 40px;
     height: 40px;
+    &:not(.ant-menu-item-selected) svg {
+      color: #606F85;
+    }
   }
 `;

@@ -126,6 +126,9 @@ const GlobalStyle = createGlobalStyle`
   .w-100 {
     width: 100%;
   }
+  .block {
+    display: block;
+  }
   .text-center {
     text-align: center !important;
   }
@@ -150,20 +153,32 @@ const GlobalStyle = createGlobalStyle`
   .border-right {
     border-left: 1px solid ${COLOR.BORDER_GREY};
   }
+  .font-weight-600 {
+    font-weight: 600 !important;
+  }
   .ant-alert {
-    border-radius: 5px;
+    align-items: flex-start;
+    &-info {
+      color: #003EB3;
+    }
+    &-warning {
+      color: #612500;
+    }
+    &-error {
+      color: #A8071A;
+    }
+    .ant-typography {
+      color: inherit;
+    }
+    .anticon {
+      margin-top: 5px;
+    }
   }
   .show-only-sm {
     display: none;
   }
   .hide-only-sm {
     display: initial;
-  }
-
-  .ant-menu-item {
-    border-radius: 0 !important;
-    margin: 0 !important;
-    background-color: white !important;
   }
 
   /* layout */

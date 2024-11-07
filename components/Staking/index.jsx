@@ -12,19 +12,16 @@ const Root = styled.div`
   margin: auto;
 `;
 
-export const SetUpStakingPage = () => {
+export const StakingPage = () => {
   const leaderboard = useSelector((state) => state?.setup?.leaderboard);
   const account = useSelector((state) => state?.setup?.account);
-
-  // TODO: need to switch to Base chain at some point here
-  // Otherwise create&stake won't work
-  // Requires discussion with Roman
 
   const twitterProfile = useMemo(() => {
     const profile = leaderboard.find((item) => item.wallet_address === account);
     return {
       account: profile?.twitter_handle,
       id: profile?.twitter_id,
+      multisig: profile?.service_multisig
     }
   }, [leaderboard])
 
@@ -37,6 +34,7 @@ export const SetUpStakingPage = () => {
           <StakingStepper
             twitterAccount={twitterProfile.account}
             twitterId={twitterProfile.id}
+            multisigAddress={twitterProfile.multisig}
           />
         )}
       </Card>

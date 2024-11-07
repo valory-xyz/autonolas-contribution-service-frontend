@@ -1,11 +1,7 @@
-
-import { useReadContract } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
 import {
   CONTRIBUTE_MANAGER_ADDRESS_BASE,
-  CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE,
-  STAKING_TOKEN_ABI,
   OLAS_ADDRESS_BASE,
   OLAS_ABI,
   CONTRIBUTE_MANAGER_ABI
@@ -16,24 +12,6 @@ import { wagmiConfig } from 'common-util/Login/config';
 // 1 wei for the service registration activation,
 // and 1 wei for agent instance bond, which is always equal to 1 for now
 const CREATE_AND_STAKE_VALUE = 2;
-
-// (1 + NUM_AGENT_INSTANCES), where NUM_AGENT_INSTANCES is always equal to 1 for now
-const TOTAL_BOND_WRAP = 2n;
-
-export const useTotalBond = () => {
-  const { data, isLoading } = useReadContract({
-    address: CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE,
-    abi: STAKING_TOKEN_ABI,
-    chainId: base.id,
-    functionName: 'minStakingDeposit',
-  });
-
-  // Calculate the total bond required for the service deployment
-  // by the formula: (1 + NUM_AGENT_INSTANCES) * minStakingDeposit
-  const totalBond = data ? TOTAL_BOND_WRAP * data : null
-
-  return { totalBond, isLoading };
-};
 
 /**
  * Check if the OLAS token allowance is sufficient for transfer to the Contribute Manager.
@@ -96,14 +74,14 @@ export const checkAndApproveOlasForManager = async ({ account, amountToApprove }
 /**
  * Create, deploy and stake a service
  */
-export const createAndStake = async ({ socialId }) => {
+export const createAndStake = async ({ socialId, stakingInstance }) => {
   try {
     const hash = await writeContract(wagmiConfig, {
       address: CONTRIBUTE_MANAGER_ADDRESS_BASE,
       abi: CONTRIBUTE_MANAGER_ABI,
       chainId: base.id,
       functionName: 'createAndStake',
-      args: [socialId, CONTRIBUTE_STAKING_INSTANCE_ADDRESS_BASE],
+      args: [socialId, stakingInstance],
       value: CREATE_AND_STAKE_VALUE,
     });
     // Wait for the transaction receipt
