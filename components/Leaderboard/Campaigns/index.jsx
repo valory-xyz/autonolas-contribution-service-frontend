@@ -2,12 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Table, Typography } from 'antd';
 import { get } from 'lodash';
-import { COLOR } from '@autonolas/frontend-library';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
 import { getTimeAgo } from 'common-util/functions/time';
 
-const { Title, Text, Paragraph } = Typography;
-
+const { Title, Paragraph } = Typography;
 
 const columns = [
   {
@@ -36,8 +34,9 @@ export const Campaigns = () => {
         Campaigns
       </Title>
       <Paragraph>
-        Mention <Text style={{ color: COLOR.PRIMARY }}>@autonolas</Text> and include at least one of the following
-        tags to earn leaderboard points and be eligible for staking rewards.
+        Mention <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">@autonolas</a>
+        {' '}and include at least one of the following tags to earn leaderboard points and be eligible 
+        for staking rewards.
       </Paragraph>
       <Paragraph>
       The leaderboard points you can earn by tweeting vary according to the AI's evaluation.

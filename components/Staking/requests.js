@@ -15,6 +15,23 @@ import { wagmiConfig } from 'common-util/Login/config';
 const CREATE_AND_STAKE_VALUE = 2;
 
 /**
+ * Check if user has enough OLAS balance
+ */
+export const checkHasEnoughOlas = async (account, amountInWei) => {
+  const result = await readContract(wagmiConfig, {
+    address: OLAS_ADDRESS_BASE,
+    abi: OLAS_ABI,
+    chainId: base.id,
+    functionName: 'balanceOf',
+    args: [account],
+  });
+
+  console.log('result', result)
+
+  return result ? BigInt(result) >= BigInt(amountInWei) : false;
+};
+
+/**
  * Check if the OLAS token allowance is sufficient for transfer to the Contribute Manager.
  */
 const hasSufficientOlasAllowanceForManager = async ({ account, amountToApprove }) => {

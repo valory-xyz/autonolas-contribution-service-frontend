@@ -177,7 +177,7 @@ const ProfileBody = ({ profile, id }) => {
         </div>
 
         <div>
-          {areAddressesEqual(id, account) &&
+          {areAddressesEqual(id, account) && !profile.service_multisig && 
             <>
               <Title level={5}>Staking</Title>
               <Paragraph type="secondary">
@@ -211,6 +211,7 @@ ProfileBody.propTypes = {
     wallet_address: PropTypes.string,
     discord_handle: PropTypes.string,
     twitter_handle: PropTypes.string,
+    service_multisig: PropTypes.string,
     points: PropTypes.number,
     tweet_id_to_points: PropTypes.objectOf(PropTypes.number),
   }),
@@ -222,6 +223,7 @@ ProfileBody.defaultProps = {
     wallet_address: '',
     discord_handle: '',
     twitter_handle: '',
+    service_multisig: '',
     points: 0,
     tweet_id_to_points: {},
   },

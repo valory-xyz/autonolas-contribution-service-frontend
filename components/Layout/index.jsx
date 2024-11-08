@@ -10,7 +10,7 @@ import { get } from 'lodash';
 import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
-  DollarOutlined,
+  NotificationOutlined,
   FileTextOutlined,
   // MessageOutlined,
   NodeIndexOutlined,
@@ -55,7 +55,7 @@ const { Text } = Typography;
 
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
-  { key: 'staking', label: 'Staking', icon: <DollarOutlined /> },
+  { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> },
   { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
   // { key: 'members', label: 'Members', icon: <UserOutlined /> },
   // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },

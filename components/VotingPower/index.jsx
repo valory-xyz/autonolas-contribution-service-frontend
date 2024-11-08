@@ -31,7 +31,7 @@ const VotingPower = () => {
           />
         )}
       >
-        <Button type="text" className="mr-8">
+        <Button type="text">
           Voting power:
           {' '}
           {formatWeiBalance(votingPower)}

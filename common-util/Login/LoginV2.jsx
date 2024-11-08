@@ -4,6 +4,8 @@ import Web3 from 'web3';
 import PropTypes from 'prop-types';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import styled from 'styled-components';
+import { Button } from 'antd';
+import Link from 'next/link';
 import {
   CannotConnectAddressOfacError,
   notifyError,
@@ -23,6 +25,7 @@ const LoginContainer = styled.div`
   align-items: center;
   font-size: 18px;
   line-height: normal;
+  gap: 8px;
 `;
 
 export const LoginV2 = ({
@@ -145,7 +148,18 @@ export const LoginV2 = ({
       {/* <div className="mr-8">
         <SignInToOrbis />
       </div> */}
-      {address && <VotingPower />}
+      {address && <>
+        <VotingPower />
+        <Link
+          href={`/profile/${address}`}
+          passHref
+        >
+          <Button>
+            Your profile
+          </Button>
+        </Link>
+        
+      </>}
       <w3m-button balance="hide" />
     </LoginContainer>
   );

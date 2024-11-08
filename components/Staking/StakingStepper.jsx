@@ -10,7 +10,7 @@ import { CONTRIBUTE_MANAGER_ABI } from 'common-util/AbiAndAddresses';
 import { updateUserStakingData } from 'common-util/api';
 import { STAKING_CONTRACTS_DETAILS, OPERATE_APP_URL, GOVERN_APP_URL } from 'util/constants';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { checkAndApproveOlasForManager, createAndStake } from './requests';
+import { checkAndApproveOlasForManager, createAndStake, checkHasEnoughOlas } from './requests';
 
 const { Paragraph, Text } = Typography;
 
@@ -67,10 +67,19 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
         await switchChainAsync({ chainId: base.id });
       }
 
+      const olasRequiredInWei = ethersToWei(`${selectedContract.totalBond}`)
+
+      // Check that user has enough OLAS
+      const hasEnoughOlas = await checkHasEnoughOlas(account, olasRequiredInWei)
+      if (!hasEnoughOlas) {
+        notifyError('Error: you don\'t have enough OLAS to continue');
+        return
+      }
+
       // Approve OLAS for Contribute Manager contract
       await checkAndApproveOlasForManager({
         account,
-        amountToApprove: ethersToWei(`${selectedContract.totalBond}`),
+        amountToApprove: olasRequiredInWei,
       })
       
       // Create service and stake
@@ -184,17 +193,21 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
   )
 }
 
-const TweetAndEarn = ({ disabled }) => (
-  <>
-    <Paragraph type="secondary">
-      Visit Leaderboard and participate in tweet campaigns to earn points.
-      If you earn enough points for the epoch, you could be eligible to earn staking rewards.
-    </Paragraph>
-    <Link href="/leaderboard">
-      <Button type="primary" disabled={disabled}>Visit Leaderboard</Button>
-    </Link>
-  </>
-)
+const TweetAndEarn = ({ disabled }) => {
+  const { address } = useAccount();
+
+  return (
+    <>
+      <Paragraph type="secondary">
+        Visit your user profile page and participate in tweet campaigns.
+        If you post enough for the epoch, you might be eligible to earn staking rewards.
+      </Paragraph>
+      <Link href={`/profile/${address}`} passHref>
+        <Button type="primary" disabled={disabled}>Visit user profile</Button>
+      </Link>
+    </>
+  )
+}
 
 export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) => {
   const [step, setStep] = useState(
