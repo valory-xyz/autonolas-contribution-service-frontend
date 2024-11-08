@@ -1,15 +1,16 @@
-import { cookieStorage, createStorage } from 'wagmi';
-import { mainnet, goerli } from 'wagmi/chains';
+import { cookieStorage, createStorage, http } from 'wagmi';
+import { mainnet, goerli, base} from 'wagmi/chains';
 import { defaultWagmiConfig } from '@web3modal/wagmi';
 
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
+import { RPC_URLS } from 'common-util/Contracts';
 
-// if the PFP_URL contains staging, use goerli, else use mainnet
+// if the PFP_URL contains staging, include goerli
 export const SUPPORTED_CHAINS = (
   process.env.NEXT_PUBLIC_PFP_URL || ''
 ).includes('staging')
-  ? [goerli, mainnet]
-  : [mainnet];
+  ? [goerli, mainnet, base]
+  : [mainnet, base];
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
 
@@ -29,4 +30,8 @@ export const wagmiConfig = defaultWagmiConfig({
   metadata,
   ssr: true,
   storage: createStorage({ storage: cookieStorage }),
+  transports: SUPPORTED_CHAINS.reduce(
+    (acc, chain) => Object.assign(acc, { [chain.id]: http(RPC_URLS[chain.id]) }),
+    {},
+  ),
 });

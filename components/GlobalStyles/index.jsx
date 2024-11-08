@@ -126,6 +126,9 @@ const GlobalStyle = createGlobalStyle`
   .w-100 {
     width: 100%;
   }
+  .block {
+    display: block;
+  }
   .text-center {
     text-align: center !important;
   }
@@ -150,20 +153,32 @@ const GlobalStyle = createGlobalStyle`
   .border-right {
     border-left: 1px solid ${COLOR.BORDER_GREY};
   }
+  .font-weight-600 {
+    font-weight: 600 !important;
+  }
   .ant-alert {
-    border-radius: 5px;
+    align-items: flex-start;
+    &-info {
+      color: #003EB3;
+    }
+    &-warning {
+      color: #612500;
+    }
+    &-error {
+      color: #A8071A;
+    }
+    .ant-typography {
+      color: inherit;
+    }
+    .anticon {
+      margin-top: 5px;
+    }
   }
   .show-only-sm {
     display: none;
   }
   .hide-only-sm {
     display: initial;
-  }
-
-  .ant-menu-item {
-    border-radius: 0 !important;
-    margin: 0 !important;
-    background-color: white !important;
   }
 
   /* layout */
@@ -210,12 +225,11 @@ const GlobalStyle = createGlobalStyle`
   a.ant-typography,
   .ant-typography a {
     color: ${COLOR.PRIMARY};
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration: none;
     &:hover,
     &:active {
-      text-decoration: underline;
-      color: inherit;
+      text-decoration: none;
+      color: #b972e8;
     }
   }
 
@@ -333,6 +347,47 @@ const GlobalStyle = createGlobalStyle`
   .ant-notification {
     .ant-notification-notice-message {
       margin-bottom: 0 !important;
+    }
+  }
+
+  /* table */
+  .ant-table {
+    .ant-table-thead {
+      > tr > th {
+        padding: 12px 16px;
+        &:not(:last-child):not(.ant-table-selection-column):not(
+            .ant-table-row-expand-icon-cell
+          ):not([colspan])::before {
+          background-color: transparent;
+        }
+      }
+    }
+    .ant-table-tbody > tr {
+      &:last-child {
+        td {
+          &:first-child {
+            border-bottom-left-radius: 5px;
+          }
+          &:last-child {
+            border-bottom-right-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+  .ant-table:not(.ant-table-bordered) {
+    .ant-table-cell:first-child {
+      border-left: 1px solid #dfe5ee;
+    }
+    .ant-table-cell:last-child {
+      border-right: 1px solid #dfe5ee;
+    }
+    .ant-table-thead {
+      > tr > th {
+        font-weight: 500;
+        border-top: 1px solid #dfe5ee;
+        border-bottom: 1px solid #dfe5ee;
+      }
     }
   }
 `;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
-import { Alert } from 'antd';
+import { Card } from 'antd';
 
 export const HomeContainer = styled.div``;
 
@@ -66,13 +66,18 @@ export const CreateLockContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const CustomAlert = styled(Alert)`
-  border-color: ${COLOR.BORDER_GREY};
-  padding: 2rem;
-  background: linear-gradient(
-    339.03deg,
-    rgba(216, 180, 254, 0.7) -8.56%,
-    rgba(255, 255, 255, 1) 43.4%
-  );
+export const TwitterCard = styled(Card)`
   margin-bottom: 24px;
+  .ant-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+
+    &::before,
+    &::after {
+      display: none
+    }
+  }
 `;

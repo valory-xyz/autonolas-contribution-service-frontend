@@ -7,6 +7,7 @@ import { findIndex, toLower, memoize } from 'lodash';
 const getTotalSupply = memoize(async () => {
   try {
     const contract = getMintContract();
+    if (!contract) return;
     const total = await contract.methods.totalSupply().call();
     return total;
   } catch (e) {
@@ -18,6 +19,8 @@ const getTotalSupply = memoize(async () => {
 export const getLatestMintedNft = memoize(async (account) => {
   try {
     const contract = getMintContract();
+    if (!contract) return { details: null, tokenId: null };
+
     const total = await getTotalSupply();
     const nftImages = [];
     for (let i = 1; i <= total; i += 1) {
