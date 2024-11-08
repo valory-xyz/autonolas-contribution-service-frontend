@@ -4,8 +4,9 @@ import {
   CONTRIBUTE_MANAGER_ADDRESS_BASE,
   OLAS_ADDRESS_BASE,
   OLAS_ABI,
-  CONTRIBUTE_MANAGER_ABI
 } from 'common-util/AbiAndAddresses';
+import { getContributeManagerContract } from 'common-util/Contracts';
+import { getEstimatedGasLimit } from 'common-util/functions/requests';
 import { wagmiConfig } from 'common-util/Login/config';
 
 // Value in wei that should be sent with CreateAndStake transaction
@@ -74,20 +75,17 @@ export const checkAndApproveOlasForManager = async ({ account, amountToApprove }
 /**
  * Create, deploy and stake a service
  */
-export const createAndStake = async ({ socialId, stakingInstance }) => {
+export const createAndStake = async ({ account, socialId, stakingInstance }) => {
   try {
-    const hash = await writeContract(wagmiConfig, {
-      address: CONTRIBUTE_MANAGER_ADDRESS_BASE,
-      abi: CONTRIBUTE_MANAGER_ABI,
-      chainId: base.id,
-      functionName: 'createAndStake',
-      args: [socialId, stakingInstance],
-      value: CREATE_AND_STAKE_VALUE,
-    });
-    // Wait for the transaction receipt
-    const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: base.id, hash });
+    const contract = getContributeManagerContract();
+    const createAndStakeFn = contract.methods.createAndStake(socialId, stakingInstance);
+    const estimatedGas = await getEstimatedGasLimit(createAndStakeFn, account, CREATE_AND_STAKE_VALUE);
+    const result = await createAndStakeFn
+      .send({ from: account, gas: estimatedGas, value: CREATE_AND_STAKE_VALUE });
+    const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: base.id, hash: result.transactionHash });
     return receipt;
   } catch (error) {
     console.error('Error creating and staking:', error);
+    throw error
   }
 };

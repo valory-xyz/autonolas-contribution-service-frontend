@@ -14,6 +14,10 @@ import {
   DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
   DELEGATE_CONTRIBUTE_ABI,
 
+  // Contribute manager
+  CONTRIBUTE_MANAGER_ADDRESS_BASE,
+  CONTRIBUTE_MANAGER_ABI,
+
   VEOLAS_ABI,
 } from 'common-util/AbiAndAddresses';
 
@@ -68,6 +72,11 @@ export const getVeolasContract = () => {
 
 export const getDelegateContributeContract = () => {
   const contract = getContract(DELEGATE_CONTRIBUTE_ABI, DELEGATE_CONTRIBUTE_ADDRESS_MAINNET);
+  return contract;
+};
+
+export const getContributeManagerContract = () => {
+  const contract = getContract(CONTRIBUTE_MANAGER_ABI, CONTRIBUTE_MANAGER_ADDRESS_BASE);
   return contract;
 };
 

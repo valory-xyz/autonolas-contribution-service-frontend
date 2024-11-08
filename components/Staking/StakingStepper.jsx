@@ -75,6 +75,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
       
       // Create service and stake
       const result = await createAndStake({
+        account,
         socialId: twitterId,
         stakingInstance: getAddressFromBytes32(contract)
       })

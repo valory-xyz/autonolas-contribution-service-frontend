@@ -3,13 +3,13 @@ const ESTIMATED_GAS_LIMIT = 500_000;
 /**
  * function to estimate gas limit
  */
-export const getEstimatedGasLimit = async (fn, account) => {
+export const getEstimatedGasLimit = async (fn, account, value) => {
   if (!account) {
     throw new Error('Invalid account passed to estimate gas limit');
   }
 
   try {
-    const estimatedGas = await fn.estimateGas({ from: account });
+    const estimatedGas = await fn.estimateGas({ from: account, value });
     return Math.ceil(estimatedGas * 1.2);
   } catch (error) {
     window.console.warn(
