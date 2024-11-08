@@ -6,10 +6,8 @@ import { COLOR, NA } from '@autonolas/frontend-library';
 import styled from 'styled-components';
 
 import { getName, getTier } from 'common-util/functions';
-import { EducationTitle } from '../MintNft/Education';
-import { LeaderboardContent } from './styles';
 
-const { Text } = Typography;
+const { Text, Title, Paragraph } = Typography;
 
 const Name = styled.a`
   max-width: 280px;
@@ -19,7 +17,7 @@ const Name = styled.a`
   white-space: nowrap;
 `;
 
-const Leaderboard = () => {
+export const LeaderboardTable = () => {
   const isLoading = useSelector((state) => state?.setup?.isLeaderboardLoading);
   const leaderboard = useSelector((state) => state?.setup?.leaderboard);
 
@@ -133,26 +131,17 @@ const Leaderboard = () => {
   ];
 
   return (
-    <LeaderboardContent className="section">
-      <EducationTitle
-        title="Leaderboard"
-        level={3}
-        educationItemSlug="leaderboard"
+    <Card className="section">
+      <Title level={3} className="mt-0 mb-8">Leaderboard</Title>
+      <Paragraph type="secondary">Climb the leaderboard by completing actions that contribute to Olas’ success.</Paragraph>
+      <Table
+        columns={columns}
+        dataSource={leaderboard}
+        loading={isLoading}
+        pagination={false}
+        rowKey="rowKeyUi"
+        scroll={{ x: 'max-content' }}
       />
-
-      <Card styles={{ body: { padding: 0 } }}>
-        <div style={{ overflowX: 'auto' }}>
-          <Table
-            columns={columns}
-            dataSource={leaderboard}
-            loading={isLoading}
-            pagination={false}
-            rowKey="rowKeyUi"
-          />
-        </div>
-      </Card>
-    </LeaderboardContent>
+    </Card>
   );
 };
-
-export default Leaderboard;

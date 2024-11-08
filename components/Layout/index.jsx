@@ -200,26 +200,22 @@ const NavigationBar = ({ children }) => {
 
   const isPadded = ['chat', 'member-chat'].some((e) => pathname.includes(e));
 
- 
-
   return (
     <CustomLayout ispadded={isPadded.toString()} isBannerVisible={isBannerVisible.toString()}>
       <CustomHeader isBannerVisible={isBannerVisible.toString()}>
         {isBannerVisible && (
           <Banner
             message={(
-              <Text>
-                <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }}/>
-                Contribute staking is live!
-                Set up staking now
-                Contribute staking is live! Spread the word about Olas on Twitter and have a chance to earn rewards.
+              <>
+                <Text ellipsis>
+                  <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }}/>
+                  Contribute staking is live! Spread the word about Olas on Twitter and have a chance to earn rewards.
+                </Text>
                 {' '}
-                <Link
-                  href="/staking"
-                >
-                  Set up staking now
-                </Link>
-              </Text>
+                <Link href="/staking">
+                Set up staking now
+              </Link>
+             </>
             )}
             type="info"
             closable
