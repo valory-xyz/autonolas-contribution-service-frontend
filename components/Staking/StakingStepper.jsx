@@ -89,30 +89,30 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
         stakingInstance: getAddressFromBytes32(contract)
       })
 
-      if (result) {
-        const logs = result.logs;
-        const createdAndStakedEvent = logs[logs.length - 1];
-        
-        // get all non-indexed inputs of CreatedAndStaked event
-        const abiInputs = CONTRIBUTE_MANAGER_ABI.find(
-          (item) => item.name === "CreatedAndStaked"
-        )?.inputs.filter((item) => !item.indexed);
-        // decode event data
-        const decodedData = AbiCoder.defaultAbiCoder().decode(
-          abiInputs.map((item) => item.type),
-          createdAndStakedEvent.data,
-        );
-        // get serviceId from the decoded data
-        const serviceId = Number(decodedData[abiInputs.findIndex(item => item.name === 'serviceId')])
-        // get multisig address from event topics
-        const multisig = getAddressFromBytes32(createdAndStakedEvent.topics[3]);
+      if (!result) return;
+      
+      const logs = result.logs;
+      const createdAndStakedEvent = logs[logs.length - 1];
+      
+      // get all non-indexed inputs of CreatedAndStaked event
+      const abiInputs = CONTRIBUTE_MANAGER_ABI.find(
+        (item) => item.name === "CreatedAndStaked"
+      )?.inputs.filter((item) => !item.indexed);
+      // decode event data
+      const decodedData = AbiCoder.defaultAbiCoder().decode(
+        abiInputs.map((item) => item.type),
+        createdAndStakedEvent.data,
+      );
+      // get serviceId from the decoded data
+      const serviceId = Number(decodedData[abiInputs.findIndex(item => item.name === 'serviceId')])
+      // get multisig address from event topics
+      const multisig = getAddressFromBytes32(createdAndStakedEvent.topics[3]);
 
-        // write multisig and serviceId to Ceramic
-        updateUserStakingData(twitterId, multisig, `${serviceId}`)
+      // write multisig and serviceId to Ceramic
+      updateUserStakingData(twitterId, multisig, `${serviceId}`)
 
-        setMultisig(multisig)
-        onNextStep()
-      }
+      setMultisig(multisig)
+      onNextStep()
     } catch (error) {
       notifyError('Error: could not set up & stake');
       console.error(error);
