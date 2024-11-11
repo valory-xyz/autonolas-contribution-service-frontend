@@ -14,12 +14,12 @@ const columns = [
     render: (hashtag) => (`#${hashtag}`),
     width: 120,
   },
-  {
-    title: 'Start Date',
-    dataIndex: 'start_ts',
-    render: (start_ts) => (start_ts ? getTimeAgo(start_ts * 1000) : '-'),
-    width: 140,
-  },
+  // {
+  //   title: 'Start Date',
+  //   dataIndex: 'start_ts',
+  //   render: (start_ts) => (start_ts ? getTimeAgo(start_ts * 1000) : '-'),
+  //   width: 140,
+  // },
 ];
 
 export const Campaigns = () => {
