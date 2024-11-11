@@ -27,7 +27,7 @@ export const StakingPage = () => {
 
   return (
     <Root>
-      <Card>
+      <Card bordered={false}>
         <Title level={4}>Set up staking</Title>
         {!account && <ConnectWallet />}
         {account && (

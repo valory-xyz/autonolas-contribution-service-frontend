@@ -26,8 +26,6 @@ export const checkHasEnoughOlas = async (account, amountInWei) => {
     args: [account],
   });
 
-  console.log('result', result)
-
   return result ? BigInt(result) >= BigInt(amountInWei) : false;
 };
 

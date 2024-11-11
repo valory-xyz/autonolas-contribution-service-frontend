@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import { AbiCoder } from 'ethers';
-import { Flex, Steps, Typography, Button, Radio, Space } from 'antd';
+import { Flex, Steps, Typography, Button, Radio, Space, Skeleton } from 'antd';
 import Link from 'next/link';
 import { base, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { notifyError, NA } from '@autonolas/frontend-library';
-import { truncateAddress, getAddressFromBytes32, ethersToWei } from 'common-util/functions';
+import { truncateAddress, getBytes32FromAddress, getAddressFromBytes32, ethersToWei } from 'common-util/functions';
 import { CONTRIBUTE_MANAGER_ABI } from 'common-util/AbiAndAddresses';
 import { updateUserStakingData } from 'common-util/api';
 import { STAKING_CONTRACTS_DETAILS, OPERATE_APP_URL, GOVERN_APP_URL } from 'util/constants';
+import { useAccountServiceInfo } from 'util/staking'
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { checkAndApproveOlasForManager, createAndStake, checkHasEnoughOlas } from './requests';
 
@@ -47,6 +48,20 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
 
   const { chainId, address: account } = useAccount();
   const { switchChainAsync, switchChain } = useSwitchChain();
+
+  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo({ account })
+
+  useEffect(() => {
+    if (multisigAddress) {
+      setMultisig(multisigAddress)
+    }
+  }, [multisigAddress])
+
+  useEffect(() => {
+    if (serviceInfo && serviceInfo.stakingInstance) {
+      setContract(getBytes32FromAddress(serviceInfo.stakingInstance))
+    }
+  }, [serviceInfo])
 
   const handleSelectContract = (e) => {
     setContract(e.target.value)
@@ -127,21 +142,17 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
     }
   };
 
-
   if (multisig) {
     const selectedContract = STAKING_CONTRACTS_DETAILS[contract];
     return (
       <Flex vertical gap={8}>
         <Text type="secondary">
           Your staking contract:{' '}
-          {selectedContract ? (
+          {isServiceInfoLoading && !selectedContract && <Skeleton.Input size="small" active/> }
+          {selectedContract && (
             <a href={`${GOVERN_APP_URL}/contracts/${contract}`} target="_blank">
               {selectedContract.name} ↗
             </a>
-          ) : (
-            // TODO: can be NA when go back to this page after finishing set up staking
-            // Need to request the contract from the contribute manager
-            NA
           )}
         </Text>
         <Text type="secondary">

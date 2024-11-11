@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Flex, List, Skeleton, Statistic, Typography, Button } from 'antd';
-import Link from 'next/link';
+import { Flex, Card, List, Skeleton, Statistic, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
   NA,
-  // notifyError,
   MEDIA_QUERY,
   COLOR,
   areAddressesEqual,
@@ -17,14 +15,23 @@ import { getName, getTier } from 'common-util/functions';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { getLatestMintedNft } from 'common-util/api';
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
-// import useOrbis from 'common-util/hooks/useOrbis';
-// import { checkOrbisStatus } from 'common-util/orbis';
-// import { DiscordLink } from '../Leaderboard/common';
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-// import { UpdateUsername } from './UpdateUsername';
 import { PointsShowcase } from './PointsShowcase';
+import { Staking } from './Staking';
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
+
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 880px;
+  margin: auto;
+
+  .ant-statistic-content {
+    line-height: 1;
+  }
+`;
 
 const ProfileContent = styled.div`
   display: flex;
@@ -32,7 +39,7 @@ const ProfileContent = styled.div`
 
   > div:first-child {
     width: 100%;
-    max-width: 300px;
+    max-width: 225px;
   }
 
   > div:last-child {
@@ -49,11 +56,9 @@ const ProfileContent = styled.div`
 `;
 
 const ProfileBody = ({ profile, id }) => {
-  // const [orbisProfile, setOrbisProfile] = useState(false);
   const [isBadgeLoading, setIsBadgeLoading] = useState(false);
   const [details, setDetails] = useState(null);
   const account = useSelector((state) => state?.setup?.account);
-  // const { getProfile: getOrbisProfile, isLoading: isOrbisLoading } = useOrbis();
 
   useEffect(() => {
     const getData = async () => {
@@ -74,136 +79,90 @@ const ProfileBody = ({ profile, id }) => {
     getData();
   }, [profile?.wallet_address]);
 
-  // const loadOrbisProfile = useCallback(
-  //   async (delay) => {
-  //     if (delay) {
-  //       await new Promise((resolve) => {
-  //         setTimeout(resolve, 300);
-  //       });
-  //     }
-
-  //     const res = await getOrbisProfile(id);
-  //     if (checkOrbisStatus(res?.status)) {
-  //       setOrbisProfile(res?.data);
-  //       return res;
-  //     }
-  //     const ERROR_MESSAGE = "Couldn't load Orbis profile.";
-  //     notifyError(ERROR_MESSAGE);
-  //     console.error(ERROR_MESSAGE, res);
-  //     setOrbisProfile(null);
-  //     return null;
-  //   },
-  //   [id, getOrbisProfile],
-  // );
-
-  // useEffect(() => {
-  //   loadOrbisProfile();
-  // }, [loadOrbisProfile]);
-
-  // const getDiscordHandle = () => {
-  //   if (profile?.discord_handle) {
-  //     return <Text type="secondary">{profile.discord_handle}</Text>;
-  //   }
-  //   if (account && account === profile.wallet_address) {
-  //     return <DiscordLink text="Connect Discord" />;
-  //   }
-  //   return NA;
-  // };
-
   const getTwitterHandle = () => {
     if (profile?.twitter_handle) {
       return <Text type="secondary">{profile.twitter_handle}</Text>;
     }
-    if (account && account === profile.wallet_address) {
-      return <ConnectTwitterModal />;
+    if (account && areAddressesEqual(id, account)) {
+      return (
+        <>
+          <Text type="secondary">Twitter not connected</Text>
+          <ConnectTwitterModal />
+        </>
+      );
     }
     return NA;
   };
 
   return (
-    <>
-      <div style={{ height: 75 }}>
-        {/* <Skeleton loading={isOrbisLoading} title paragraph={false} active>
-          <div style={{ display: 'flex' }}>
-            <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>
-              {orbisProfile?.username || 'Unknown Olassian'}
-            </Title>
-            <UpdateUsername loadOrbisProfile={loadOrbisProfile} id={id} />
-          </div>
-        </Skeleton> */}
-        <Title level={3} style={{ maxWidth: 500, marginRight: 16 }}>
-          {getName(profile)}
+    <Root>
+      <Card bordered={false}>
+        <Title level={3} className="mb-32">
+          {getName(profile, account)}
         </Title>
-      </div>
 
-      <ProfileContent>
-        <div className="mb-48">
-          <Title level={5}>Badge</Title>
-          {isBadgeLoading ? (
-            <BadgeLoading />
-          ) : (
-            <>
-              {details?.image ? (
-                <ShowBadge image={details?.image} tokenId={details?.tokenId} />
-              ) : (
-                <Text>Badge not minted yet</Text>
-              )}
-            </>
-          )}
-
-          <div className="mt-24">
-            <Title level={5}>Details</Title>
+        <ProfileContent>
+          <div>
+            <Title level={5}>Badge</Title>
+            {isBadgeLoading ? (
+              <BadgeLoading />
+            ) : (
+              <>
+                {details?.image ? (
+                  <ShowBadge image={details?.image} tokenId={details?.tokenId} />
+                ) : (
+                  <Text type="secondary">No badge yet</Text>
+                )}
+              </>
+            )}
+            <Title level={5} className="mt-24">Details</Title>
             <List bordered style={{ background: COLOR.WHITE }}>
               <List.Item>
-                <List.Item.Meta
-                  title="Wallet Address"
-                  description={<TruncatedEthereumLink text={id} />}
-                />
+                <Flex vertical gap={8}>
+                  <Text>Wallet Address</Text>
+                  <TruncatedEthereumLink text={id} />
+                </Flex>
               </List.Item>
-              {/* <List.Item>
-                <List.Item.Meta
-                  title="Discord Handle"
-                  description={getDiscordHandle()}
-                />
-              </List.Item> */}
               <List.Item>
-                <List.Item.Meta
-                  title="Twitter Handle"
-                  description={getTwitterHandle()}
-                />
+                <Flex vertical gap={8}>
+                  <Text>Twitter Handle</Text>
+                  {getTwitterHandle()}
+                </Flex>
               </List.Item>
             </List>
           </div>
-        </div>
 
-        <div>
-          {areAddressesEqual(id, account) && !profile.service_multisig && 
-            <>
-              <Title level={5}>Staking</Title>
-              <Paragraph type="secondary">
-                Staking allows you to earn OLAS rewards when you complete actions
-                and earn leaderboard points.
-              </Paragraph>
-              <Link href="/set-up-staking">
-                <Button type="primary">Set up staking</Button>
-              </Link>
-            </>
-          }
-          <Title level={5} className="mt-24">
-            Contribution
-          </Title>
-          <Flex gap={96}>
-            <Statistic
-              title="Tier"
-              value={profile.points ? getTier(profile.points) : NA}
-            />
-            <Statistic title="Points" value={profile.points ?? NA} />
-          </Flex>
-          <PointsShowcase tweetIdToPoints={profile.tweet_id_to_points} />
-        </div>
-      </ProfileContent>
-    </>
+          <div>
+            <Title level={5}>
+              Leaderboard
+            </Title>
+            <Flex gap={96} className="mb-24">
+              <Statistic
+                title="Tier"
+                value={profile.points ? getTier(profile.points) : NA}
+                formatter={value => <Text className="font-weight-600">{value}</Text>}
+              />
+              <Statistic
+                title="Points"
+                value={profile.points ?? NA}
+                formatter={value => <Text className="font-weight-600">{value}</Text>}
+              />
+            </Flex>
+            <PointsShowcase tweetsData={profile.tweets} />
+          </div>
+        </ProfileContent>
+      </Card>
+
+      {account && areAddressesEqual(id, account) && <Staking profile={profile}/>}
+    </Root>
   );
+};
+
+const TweetShape = {
+  epoch: PropTypes.number,
+  points: PropTypes.number.isRequired,
+  campaign: PropTypes.string,
+  timestamp: PropTypes.string,
 };
 
 ProfileBody.propTypes = {
@@ -213,7 +172,7 @@ ProfileBody.propTypes = {
     twitter_handle: PropTypes.string,
     service_multisig: PropTypes.string,
     points: PropTypes.number,
-    tweet_id_to_points: PropTypes.objectOf(PropTypes.number),
+    tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
   }),
   id: PropTypes.string.isRequired,
 };
@@ -225,7 +184,7 @@ ProfileBody.defaultProps = {
     twitter_handle: '',
     service_multisig: '',
     points: 0,
-    tweet_id_to_points: {},
+    tweets: {},
   },
 };
 
