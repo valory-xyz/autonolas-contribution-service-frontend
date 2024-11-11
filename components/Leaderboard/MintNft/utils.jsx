@@ -10,7 +10,7 @@ export const getAutonolasTokenUri = (tokenUri) => (tokenUri || '').replace(patte
 
 export const mintNft = (account) => new Promise((resolve, reject) => {
   const contract = getMintContract();
-
+  if (!contract) return;
   const mintFn = contract.methods.mint();
 
   getEstimatedGasLimit(mintFn, account).then((estimatedGas) => {
@@ -30,6 +30,7 @@ export const mintNft = (account) => new Promise((resolve, reject) => {
 
 export async function pollNftDetails(id) {
   const contract = getMintContract();
+  if (!contract) return;
   const infoUrl = await contract.methods.tokenURI(`${id}`).call();
 
   return new Promise((resolve, reject) => {

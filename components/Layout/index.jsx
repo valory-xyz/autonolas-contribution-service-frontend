@@ -213,8 +213,8 @@ const NavigationBar = ({ children }) => {
                 </Text>
                 {' '}
                 <Link href="/staking">
-                Set up staking now
-              </Link>
+                  Set up staking now
+                </Link>
              </>
             )}
             type="info"

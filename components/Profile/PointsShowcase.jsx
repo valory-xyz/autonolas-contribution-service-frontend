@@ -10,20 +10,24 @@ import {
 } from 'antd';
 import { shuffleArray } from './utils';
 
-const { Paragraph, Title } = Typography;
+const MAX_TWEETS_SHOWN = 2;
+
+const { Paragraph, Text } = Typography;
 
 const TweetLoader = styled.div`
   display: flex;
   justify-content: center;
-  margin: 16px 16px 32px;
+  margin: 16px;
 `;
 
 const StyledCol = styled(Col)`
-  max-width: 290px;
+  flex: auto;
+  max-width: 306px;
 `;
 
 const StyledCard = styled(Card)`
   max-width: 282px;
+  width: 100%;
 `;
 
 const NoTweetsText = styled(Paragraph)`
@@ -128,7 +132,7 @@ TweetEmbed.propTypes = {
   onError: PropTypes.func.isRequired,
 };
 
-export const PointsShowcase = ({ tweetIdToPoints }) => {
+export const PointsShowcase = ({ tweetsData }) => {
   const [isScriptReady, setIsScriptReady] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -141,18 +145,18 @@ export const PointsShowcase = ({ tweetIdToPoints }) => {
   };
 
   const tweets = useMemo(() => {
-    const earnedPointsTweets = Object.entries(tweetIdToPoints || {})
-      .map(([tweetId, points]) => ({ tweetId, points }))
+    const earnedPointsTweets = Object.entries(tweetsData || {})
+      .map(([tweetId, tweet]) => ({ tweetId, points: tweet.points }))
       .filter(({ points }) => points > 0);
 
-    return shuffleArray(earnedPointsTweets).slice(0, 3);
-  }, [tweetIdToPoints]);
+    return shuffleArray(earnedPointsTweets).slice(0, MAX_TWEETS_SHOWN);
+  }, [tweetsData]);
 
   return (
     <>
-      <Title level={5} className="mt-24">
+      <Text className="font-weight-600 mt-24" type="secondary">
         Points Showcase
-      </Title>
+      </Text>
       {tweets.length > 0 ? (
         <>
           <Paragraph type="secondary">
@@ -166,7 +170,7 @@ export const PointsShowcase = ({ tweetIdToPoints }) => {
             onError={onError}
           />
 
-          <Row gutter={[8, 8]} className="mt-12">
+          <Row gutter={[16, 16]} className="mt-12">
             {tweets.map((item) => (
               <StyledCol key={item.tweetId} xs={24} md={8}>
                 <TweetEmbed
@@ -193,6 +197,14 @@ export const PointsShowcase = ({ tweetIdToPoints }) => {
   );
 };
 
+
+const TweetShape = {
+  epoch: PropTypes.number,
+  points: PropTypes.number.isRequired,
+  campaign: PropTypes.string,
+  timestamp: PropTypes.string,
+};
+
 PointsShowcase.propTypes = {
-  tweetIdToPoints: PropTypes.objectOf(PropTypes.number).isRequired,
+  tweetsData: PropTypes.objectOf(PropTypes.shape(TweetShape)).isRequired,
 };

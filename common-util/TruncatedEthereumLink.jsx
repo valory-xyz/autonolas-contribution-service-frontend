@@ -11,7 +11,7 @@ function TruncatedEthereumLink({ text, isTransaction, className }) {
   return (
     <Tooltip title={text}>
       <a href={etherscanLink} target="_blank" rel="noopener noreferrer" className={className}>
-        {truncateAddress(text)}
+        {`${truncateAddress(text)} ↗`}
       </a>
     </Tooltip>
   );

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import { getAutonolasTokenUri } from '../components/Leaderboard/MintNft/utils';
 
-const IMAGE_SIZE = 300;
+const IMAGE_SIZE = 160;
 const { Text } = Typography;
 
 export const ShowBadge = ({ image, tokenId }) => {

@@ -94,7 +94,10 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 16px;
   }
   .mb-24 {
-    margin-bottom: 24px;
+    margin-bottom: 24px !important;
+  }
+  .mb-32 {
+    margin-bottom: 32px !important;
   }
   .mb-48 {
     margin-bottom: 48px !important;
@@ -350,7 +353,7 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  /* table */
+  /* antd table */
   .ant-table {
     .ant-table-thead {
       > tr > th {

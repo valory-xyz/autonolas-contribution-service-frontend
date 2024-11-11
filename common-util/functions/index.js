@@ -64,9 +64,10 @@ export const getTier = (points) => {
   }
 };
 
-export const getName = (profile) => profile.twitter_handle
+export const getName = (profile, address) => profile.twitter_handle
   || profile.discord_handle
   || profile.wallet_address
+  || address && truncateAddress(address)
   || 'Unknown name';
 
 // TODO: move to autonolas library
@@ -155,4 +156,8 @@ export const truncateAddress = (address) => (address
 
 export const getAddressFromBytes32 = (address) => {
     return ('0x' + address.slice(-40));
+};
+
+export const getBytes32FromAddress = (address) => {
+  return ethers.zeroPadValue(address, 32);
 };
