@@ -10,7 +10,7 @@ import {
   STAKING_TOKEN_ABI,
 } from 'common-util/AbiAndAddresses';
 import { formatToEth } from 'common-util/functions';
-import  {STAKING_CONTRACTS_BASE_SUBGRAPH_URL } from 'util/constants';
+import  { STAKING_CONTRACTS_BASE_SUBGRAPH_URL } from 'util/constants';
 
 export const useAccountServiceInfo = (account) =>  {
   const { data, isLoading } = useReadContract({
@@ -31,43 +31,43 @@ export const useAccountServiceInfo = (account) =>  {
   return { data, isLoading };
 }
 
+export const useStakingContractConstant = (functionName, address, chainId) => (
+  useReadContract({
+    address,
+    abi: STAKING_TOKEN_ABI,
+    chainId,
+    functionName,
+    query: {
+      enabled: !!address,
+    },
+  })
+)
+
+const checkpointQuery = gql`
+  {
+    checkpoints(orderBy: epoch, orderDirection: desc) {
+      id
+      epoch
+      contractAddress
+      rewards
+      blockTimestamp
+      serviceIds
+    }
+  }
+`;
+
 export const useStakingDetails = (serviceId, stakingInstance) =>  {
   const { data, isLoading } = useQuery({
-    queryKey: ['checkpoints'],
+    queryKey: ["checkpoints", serviceId],
     enabled: !!serviceId,
-    queryFn: async () => await request(STAKING_CONTRACTS_BASE_SUBGRAPH_URL, gql`
-      {
-        checkpoints(orderBy: epoch, orderDirection: desc) {
-          id
-          epoch
-          contractAddress
-          rewards
-          blockTimestamp
-          serviceIds
-        }
-      }
-    `),
+    queryFn: async () =>
+      await request(STAKING_CONTRACTS_BASE_SUBGRAPH_URL, checkpointQuery),
   });
 
-  const { data: livenessPeriod, isLoading: isLivenessPeriodLoading } = useReadContract({
-    address: stakingInstance,
-    abi: STAKING_TOKEN_ABI,
-    chainId: base.id,
-    functionName: 'livenessPeriod',
-    query: {
-      enabled: !!stakingInstance,
-    },
-  })
-
-  const { data: rewardsPerSecond, isLoading: isRewardsPerSecondLoading } = useReadContract({
-    address: stakingInstance,
-    abi: STAKING_TOKEN_ABI,
-    chainId: base.id,
-    functionName: 'rewardsPerSecond',
-    query: {
-      enabled: !!stakingInstance,
-    },
-  })
+  const { data: livenessPeriod, isLoading: isLivenessPeriodLoading } =
+    useStakingContractConstant("livenessPeriod", stakingInstance, base.id);
+  const { data: rewardsPerSecond, isLoading: isRewardsPerSecondLoading } =
+    useStakingContractConstant("rewardsPerSecond", stakingInstance, base.id);
 
   const totalRewards = useMemo(() => {
     if (!data) return 0;
@@ -85,29 +85,27 @@ export const useStakingDetails = (serviceId, stakingInstance) =>  {
     return formatToEth(totalRewardsInWei.toString())
   }, [data, serviceId])
 
-  const epochData = useMemo(() => {
+  const epochDetails = useMemo(() => {
     if (!data) return null;
     if ((data.checkpoints || []).length === 0) return null;
     if (!livenessPeriod) return null;
     if (!rewardsPerSecond) return null
 
     const lastEpoch = data.checkpoints.find(item => areAddressesEqual(item.contractAddress, stakingInstance));
-    if (lastEpoch) {
-      return {
-        epochEndTimestamp: Number(lastEpoch.blockTimestamp) + Number(livenessPeriod),
-        epochCounter: Number(lastEpoch.epoch),
-        rewardsPerEpoch: formatToEth((livenessPeriod * rewardsPerSecond).toString())
-      }
+    if (!lastEpoch) return null;
+    return {
+      epochEndTimestamp: Number(lastEpoch.blockTimestamp) + Number(livenessPeriod),
+      epochCounter: Number(lastEpoch.epoch),
+      rewardsPerEpoch: formatToEth((livenessPeriod * rewardsPerSecond).toString())
     }
-    return null;
   }, [data, stakingInstance, livenessPeriod, rewardsPerSecond])
 
   return {
     data: {
       totalRewards,
-      rewardsPerEpoch: epochData?.rewardsPerEpoch || null,
-      epochEndTimestamp: epochData?.epochEndTimestamp || null,
-      epochCounter: epochData?.epochCounter || null,
+      rewardsPerEpoch: epochDetails?.rewardsPerEpoch ?? null,
+      epochEndTimestamp: epochDetails?.epochEndTimestamp ?? null,
+      epochCounter: epochDetails?.epochCounter ?? null,
     },
     isLoading: isLoading || isLivenessPeriodLoading || isRewardsPerSecondLoading,
   };

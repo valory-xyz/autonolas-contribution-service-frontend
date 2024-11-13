@@ -6,6 +6,7 @@ import { Flex, Card, Row, Col, Typography, Button, Skeleton, Tooltip, Tag } from
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isNil, isNumber } from 'lodash';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking'
 import { STAKING_CONTRACTS_DETAILS, GOVERN_APP_URL, OLAS_UNICODE_SYMBOL } from 'util/constants';
@@ -18,26 +19,37 @@ const ImageContainer = styled.div`
   }
 `;
 
-const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonText }) => (
-  <Col span={8}>
-    <Text type="secondary" className="block">{title}</Text>
-    {isLoading && <Skeleton.Input active size="small"/>}
-    {!!value !== undefined && !isLoading && (
-      <Text className="font-weight-600">{value}</Text>
-    )}
-    {link !== undefined && !isLoading && (
-      <a href={link.href} target="_blank">
-        {link.text} ↗
-      </a>
-    )}
-    {!isLoading && children}
-    {comingSoonButtonText && (
-      <Tooltip title="Coming soon">
-        <Button size="small" disabled className="block mt-8">{comingSoonButtonText}</Button>
-      </Tooltip>
-    )}
-  </Col>
-)
+const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonText }) => {
+  let content = null;
+
+  if (isLoading) {
+    content = <Skeleton.Input active size="small"/>
+  } else {
+    if (!isNil(value)) {
+      content = <Text className="font-weight-600">{value}</Text>
+    } else if (!isNil(link)) {
+      content = (
+        <a href={link.href} target="_blank">
+          {link.text} ↗
+        </a>
+      )
+    } else if (!isNil(children)) {
+      content = children
+    }
+  }
+
+  return (
+    <Col xs={24} lg={8}>
+      <Text type="secondary" className="block">{title}</Text>
+      {content}
+      {comingSoonButtonText && (
+        <Tooltip title="Coming soon">
+          <Button size="small" disabled className="block mt-8">{comingSoonButtonText}</Button>
+        </Tooltip>
+      )}
+    </Col>
+  )
+}
 
 const SetupStaking = () => (
   <>
@@ -61,18 +73,18 @@ const StakingDetails = ({ profile }) => {
   const account = useSelector((state) => state?.setup?.account);
   const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account)
 
-  const serviceId = serviceInfo && serviceInfo.serviceId ? serviceInfo.serviceId.toString() : null
-  const contractAddress = serviceInfo && serviceInfo.stakingInstance ? getBytes32FromAddress(serviceInfo.stakingInstance) : null
+  const serviceId =serviceInfo?.serviceId?.toString() ?? null
+  const contractAddress = serviceInfo?.stakingInstance ? getBytes32FromAddress(serviceInfo.stakingInstance) : null
   const contractDetails = contractAddress && STAKING_CONTRACTS_DETAILS[getBytes32FromAddress(serviceInfo.stakingInstance)];
 
   const { data: stakingDetails, isLoading: isStakingDetailsLoading } =
     useStakingDetails(
       serviceId,
-      serviceInfo ? serviceInfo.stakingInstance : null
+      serviceInfo?.stakingInstance,
     );
 
   const tweetsMade = useMemo(() => {
-    if (typeof stakingDetails.epochCounter !== "number") return 0;
+    if (isNumber(stakingDetails.epochCounter)) return 0;
     // Only count tweets with campaigns and epoch > than last checkpoint
     return Object.values(profile.tweets).filter(
       (tweet) =>
@@ -134,14 +146,16 @@ const StakingDetails = ({ profile }) => {
           title="OLAS rewards this epoch"
           isLoading={isStakingDetailsLoading}
         >
-          {contractDetails && stakingDetails && stakingDetails.rewardsPerEpoch ? (
-            <Flex gap={8}><Text className="font-weight-600">
-              {`${OLAS_UNICODE_SYMBOL}${stakingDetails.rewardsPerEpoch}`}
-            </Text>
-            {tweetsMade >= contractDetails.tweetsPerEpoch ? (
+         {contractDetails &&
+          stakingDetails?.rewardsPerEpoch ? (
+            <Flex gap={8} wrap>
+              <Text className="font-weight-600">
+                {`${OLAS_UNICODE_SYMBOL}${stakingDetails.rewardsPerEpoch}`}
+              </Text>
+              {tweetsMade >= contractDetails.tweetsPerEpoch ? (
                 <Tag color="success">Earned</Tag>
-               ) : (
-               <Tag color="blue">Not yet earned</Tag>
+              ) : (
+                <Tag color="blue">Not yet earned</Tag>
               )}
             </Flex>
           ) : null}
@@ -150,7 +164,7 @@ const StakingDetails = ({ profile }) => {
           title="Epoch end time"
           isLoading={isStakingDetailsLoading}
           value={stakingDetails.epochEndTimestamp ?
-            new Date(stakingDetails.epochEndTimestamp * 1000).toLocaleString()
+            `~ ${new Date(stakingDetails.epochEndTimestamp * 1000).toLocaleString()}`
           : undefined}
         />
       </Row>
