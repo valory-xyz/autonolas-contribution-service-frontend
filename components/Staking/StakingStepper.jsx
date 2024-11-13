@@ -49,7 +49,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
   const { chainId, address: account } = useAccount();
   const { switchChainAsync, switchChain } = useSwitchChain();
 
-  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo({ account })
+  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account)
 
   useEffect(() => {
     if (multisigAddress) {
