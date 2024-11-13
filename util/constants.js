@@ -51,3 +51,6 @@ export const STAKING_CONTRACTS_DETAILS = {
     tweetsPerEpoch: 5,
   },
 }
+
+export const STAKING_CONTRACTS_BASE_SUBGRAPH_URL = 'https://api.studio.thegraph.com/query/67875/olas-base-staking-rewards-history/version/latest'
+export const OLAS_UNICODE_SYMBOL = '☴';
