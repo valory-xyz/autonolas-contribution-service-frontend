@@ -84,7 +84,7 @@ const StakingDetails = ({ profile }) => {
     );
 
   const tweetsMade = useMemo(() => {
-    if (isNumber(stakingDetails.epochCounter)) return 0;
+    if (!isNumber(stakingDetails.epochCounter)) return 0;
     // Only count tweets with campaigns and epoch > than last checkpoint
     return Object.values(profile.tweets).filter(
       (tweet) =>
