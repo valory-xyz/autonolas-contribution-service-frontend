@@ -4,25 +4,25 @@ import Head from 'next/head';
 import { META_TAGS_INFO } from 'util/constants';
 
 const Meta = ({ meta }) => {
-  const metaInfo = meta || META_TAGS_INFO;
+  const metaInfo = {...META_TAGS_INFO, ...(meta || {})}; 
 
   return (
     <Head>
       <title>{metaInfo.title}</title>
-      <meta name="title" content={metaInfo.title} />
-      <meta name="description" content={metaInfo.description} />
+      <meta name="title" content={metaInfo.title} key="title" />
+      <meta name="description" content={metaInfo.description} key="description" />
 
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={metaInfo.siteUrl} />
-      <meta property="og:title" content={metaInfo.title} />
-      <meta property="og:description" content={metaInfo.description} />
-      <meta property="og:image" content={metaInfo.image} />
+      <meta property="og:type" content="website" key="og:type" />
+      <meta property="og:url" content={metaInfo.siteUrl} key="og:url" />
+      <meta property="og:title" content={metaInfo.title} key="og:title" />
+      <meta property="og:description" content={metaInfo.description} key="og.description" />
+      <meta property="og:image" content={metaInfo.image} key="og:image" />
 
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={metaInfo.siteUrl} />
-      <meta property="twitter:title" content={metaInfo.title} />
-      <meta property="twitter:description" content={metaInfo.description} />
-      <meta property="twitter:image" content={metaInfo.image} />
+      <meta property="twitter:card" content="summary_large_image" key="twitter:card" />
+      <meta property="twitter:url" content={metaInfo.siteUrl} key="twitter:url" />
+      <meta property="twitter:title" content={metaInfo.title} key="twitter:title" />
+      <meta property="twitter:description" content={metaInfo.description} key="twitter:description" />
+      <meta property="twitter:image" content={metaInfo.image} key="twitter:image" />
     </Head>
   );
 };

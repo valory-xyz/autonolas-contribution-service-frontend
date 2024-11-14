@@ -57,7 +57,7 @@ const RoadmapLink = ({ text, link }) => {
   );
 };
 
-const RoadmapPage = () => {
+const Roadmap = () => {
   const sortedRoadmapItems = roadmapItems.sort(
     (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix()
   );
@@ -133,4 +133,4 @@ const RoadmapPage = () => {
   );
 };
 
-export default RoadmapPage;
+export default Roadmap;

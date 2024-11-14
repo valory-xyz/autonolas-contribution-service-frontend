@@ -19,7 +19,7 @@ import { Cell } from './styles';
 const { Text, Title } = Typography;
 const { useBreakpoint } = Grid;
 
-const CalendarPage = () => {
+const CalendarComponent = () => {
   const [hidePastEvents, setHidePastEvents] = useState(true);
 
   const screens = useBreakpoint();
@@ -155,4 +155,4 @@ const CalendarPage = () => {
     </div>
   );
 };
-export default CalendarPage;
+export default CalendarComponent;
