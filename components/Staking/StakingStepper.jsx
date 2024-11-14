@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { AbiCoder } from 'ethers';
+import { AbiCoder, ZeroAddress } from 'ethers';
 import { Flex, Steps, Typography, Button, Radio, Space, Skeleton } from 'antd';
 import Link from 'next/link';
 import { base, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { notifyError, NA } from '@autonolas/frontend-library';
+import { notifyError, NA, areAddressesEqual } from '@autonolas/frontend-library';
 import { truncateAddress, getBytes32FromAddress, getAddressFromBytes32, ethersToWei } from 'common-util/functions';
 import { CONTRIBUTE_MANAGER_ABI } from 'common-util/AbiAndAddresses';
 import { updateUserStakingData } from 'common-util/api';
@@ -58,10 +58,21 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
   }, [multisigAddress])
 
   useEffect(() => {
-    if (serviceInfo && serviceInfo.stakingInstance) {
+    if (serviceInfo && !areAddressesEqual(serviceInfo.stakingInstance, ZeroAddress)) {
       setContract(getBytes32FromAddress(serviceInfo.stakingInstance))
     }
   }, [serviceInfo])
+
+  useEffect(() => {
+    // In case the service info wasn't written to Ceramic, but the service was created,
+    // try writing it again
+    if (serviceInfo && !areAddressesEqual(serviceInfo.multisig, ZeroAddress) && !multisigAddress) {
+      updateUserStakingData(twitterId, serviceInfo.multisig, `${serviceInfo.serviceId}`)
+        .then(() => {
+          setMultisig(serviceInfo.multisig)
+        })
+    }
+  }, [serviceInfo, multisigAddress ])
 
   const handleSelectContract = (e) => {
     setContract(e.target.value)
@@ -124,7 +135,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
       const multisig = getAddressFromBytes32(createdAndStakedEvent.topics[3]);
 
       // write multisig and serviceId to Ceramic
-      updateUserStakingData(twitterId, multisig, `${serviceId}`)
+      await updateUserStakingData(twitterId, multisig, `${serviceId}`)
 
       setMultisig(multisig)
       onNextStep()

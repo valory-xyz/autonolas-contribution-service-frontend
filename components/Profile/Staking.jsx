@@ -7,6 +7,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isNil, isNumber } from 'lodash';
+import { COLOR } from '@autonolas/frontend-library';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking'
 import { STAKING_CONTRACTS_DETAILS, GOVERN_APP_URL, OLAS_UNICODE_SYMBOL } from 'util/constants';
@@ -18,6 +19,34 @@ const ImageContainer = styled.div`
     position: relative !important;
   }
 `;
+
+const HintText = styled(Text)`
+  display: block;
+  width: max-content;
+  color: #606F85;
+  border-bottom: 1px dashed #606F85;
+`;
+
+const TweetCountTooltip = () => (
+  <Tooltip
+    color={COLOR.WHITE}
+    title={
+      <>
+        <Paragraph>
+          Contribute is regularly checking tweets in the background to capture eligible posts. 
+        </Paragraph>
+        <Paragraph>
+          Due to Twitter API restrictions, some of your tweets may not be counted. 
+        </Paragraph>
+        <Paragraph className="mb-0">
+          Please ensure your tweets are public, include the required tags, and meet all eligibility guidelines.
+        </Paragraph>
+      </>
+    }
+  >
+    <HintText>Why wasn’t my tweet counted?</HintText>
+  </Tooltip>
+)
 
 const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonText }) => {
   let content = null;
@@ -33,8 +62,6 @@ const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonT
           {link.text} ↗
         </a>
       )
-    } else if (!isNil(children)) {
-      content = children
     }
   }
 
@@ -42,8 +69,9 @@ const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonT
     <Col xs={24} lg={8}>
       <Text type="secondary" className="block">{title}</Text>
       {content}
+      {children}
       {comingSoonButtonText && (
-        <Tooltip title="Coming soon">
+        <Tooltip title={<Text>Coming soon</Text>} color={COLOR.WHITE}>
           <Button size="small" disabled className="block mt-8">{comingSoonButtonText}</Button>
         </Tooltip>
       )}
@@ -141,7 +169,9 @@ const StakingDetails = ({ profile }) => {
           title="Tweets made this epoch"
           isLoading={isServiceInfoLoading}
           value={contractDetails ? `${tweetsMade}/${contractDetails.tweetsPerEpoch}` : undefined}
-        />
+        >
+          {!isServiceInfoLoading && <TweetCountTooltip />}
+        </InfoColumn>
         <InfoColumn
           title="OLAS rewards this epoch"
           isLoading={isStakingDetailsLoading}
