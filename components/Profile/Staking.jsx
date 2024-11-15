@@ -1,16 +1,23 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import { base } from 'viem/chains';
+import { base, mainnet } from 'viem/chains';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { Flex, Card, Row, Col, Typography, Button, Skeleton, Tooltip, Tag } from 'antd';
+import { QuestionCircleOutlined, WarningFilled } from '@ant-design/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isNil, isNumber } from 'lodash';
-import { COLOR } from '@autonolas/frontend-library';
+import { COLOR, NA, notifyError } from '@autonolas/frontend-library';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
+import { formatDynamicTimeRange } from 'common-util/functions/time';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking'
-import { STAKING_CONTRACTS_DETAILS, GOVERN_APP_URL, OLAS_UNICODE_SYMBOL } from 'util/constants';
+import {
+  STAKING_CONTRACTS_DETAILS,
+  GOVERN_APP_URL,
+  OLAS_UNICODE_SYMBOL,
+} from 'util/constants';
+import { unstake, stake } from './requests';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -24,6 +31,7 @@ const HintText = styled(Text)`
   display: block;
   width: max-content;
   color: #606F85;
+  margin-top: 4px;
   border-bottom: 1px dashed #606F85;
 `;
 
@@ -67,7 +75,7 @@ const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonT
 
   return (
     <Col xs={24} lg={8}>
-      <Text type="secondary" className="block">{title}</Text>
+      <Text type="secondary" className="block mb-4">{title}</Text>
       {content}
       {children}
       {comingSoonButtonText && (
@@ -98,10 +106,13 @@ const SetupStaking = () => (
 )
 
 const StakingDetails = ({ profile }) => {
-  const account = useSelector((state) => state?.setup?.account);
+  const { chainId, address: account } = useAccount();
+  const { switchChainAsync, switchChain } = useSwitchChain();
   const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account)
 
-  const serviceId =serviceInfo?.serviceId?.toString() ?? null
+  const [isRestaking, setIsRestaking] = useState(false);
+
+  const serviceId = serviceInfo?.serviceId?.toString() ?? null
   const contractAddress = serviceInfo?.stakingInstance ? getBytes32FromAddress(serviceInfo.stakingInstance) : null
   const contractDetails = contractAddress && STAKING_CONTRACTS_DETAILS[getBytes32FromAddress(serviceInfo.stakingInstance)];
 
@@ -111,8 +122,46 @@ const StakingDetails = ({ profile }) => {
       serviceInfo?.stakingInstance,
     );
 
+  const handleRestake = async () => {
+    if (!account) return;
+    if (!contractDetails) return;
+    if (!serviceInfo) return;
+
+    setIsRestaking(true);
+
+    try {
+      // Switch to base
+      if (chainId !== base.id) {
+        await switchChainAsync({ chainId: base.id });
+      }
+
+      // First unstake
+      await unstake({ account })
+      // Then stake to the same contract
+      await stake({
+        account,
+        socialId: profile.twitter_id,
+        serviceId,
+        stakingInstance: serviceInfo.stakingInstance
+      })
+
+    } catch (error) {
+      notifyError('Error: could not restake');
+      console.error(error);
+    } finally {
+      setIsRestaking(false);
+
+      // Suggest the user to switch back to mainnet to avoid any
+      // further errors while they interact with the app
+      if (chainId !== mainnet.id) {
+        switchChain({ chainId: mainnet.id });
+      }
+    }
+  };
+
   const tweetsMade = useMemo(() => {
     if (!isNumber(stakingDetails.epochCounter)) return 0;
+    if (stakingDetails.stakingStatus !== 'Staked') return 0;
     // Only count tweets with campaigns and epoch > than last checkpoint
     return Object.values(profile.tweets).filter(
       (tweet) =>
@@ -120,55 +169,88 @@ const StakingDetails = ({ profile }) => {
     ).length;
   }, [profile, stakingDetails]);
 
+  const stakingStatusColumnData = useMemo(() => {
+    if (!serviceInfo) return;
+
+    let value;
+    let comingSoonButtonText;
+    let children;
+
+    if (stakingDetails.stakingStatus === "Unstaked") {
+      value = "Not staked";
+    }
+    if (contractDetails && stakingDetails.stakingStatus === "Staked") {
+      value = `Staked · ${contractDetails.totalBond} OLAS`;
+      comingSoonButtonText = "Unstake"
+    }
+    if (stakingDetails.stakingStatus === "Evicted") {
+      value = (
+        <Flex gap={4}>
+          <WarningFilled style={{ color: '#FA8C16'}}/>
+          Temporarily evicted
+          <Tooltip
+            color={COLOR.WHITE}
+            title={
+              <Text>
+                You didn't post enough tweets and missed the epoch target
+                multiple times.
+              </Text>
+            }
+          >
+            <QuestionCircleOutlined style={{ color: '#4D596A'}}/>
+          </Tooltip>
+        </Flex>
+      );
+      if (stakingDetails.isEligibleForStaking) {
+        children = (
+          <Button
+            size="small"
+            isLoading={isRestaking}
+            onClick={handleRestake}
+            className="block mt-8"
+          >
+            Restake
+          </Button>
+        )
+      } else {
+        children = (
+          <Tooltip
+            title={
+              <Text>
+                You’ll be able to restake at approximately {formatDynamicTimeRange(stakingDetails.evictionExpiresTimestamp)}.
+              </Text>
+            }
+            color={COLOR.WHITE}
+          >
+            <Button size="small" disabled className="block mt-8">
+              Restake
+            </Button>
+          </Tooltip>
+        );
+      }
+    }
+
+    return { value, comingSoonButtonText, children }
+  }, [
+    serviceInfo,
+    stakingDetails.stakingStatus,
+    stakingDetails.isEligibleForStaking,
+    stakingDetails.evictionExpiresAt
+  ]);
 
   return (
     <>
-      <Text type="secondary" className="block">Your account address</Text>
-      <a
-        href={`${base.blockExplorers.default.url}/address/${profile.service_multisig}`}
-        target="_blank"
-        className="block mb-24"
-      >
-        {truncateAddress(profile.service_multisig)} ↗
-      </a>
-      <Row
-        gutter={[16, 16]}
-        className="w-100 mb-24"
-      >
-        <InfoColumn
-          title="Total OLAS rewards"
-          isLoading={isStakingDetailsLoading}
-          value={stakingDetails.totalRewards !== null ? `${OLAS_UNICODE_SYMBOL}${stakingDetails.totalRewards}` : undefined}
-          comingSoonButtonText="Claim"
-        />
-        <InfoColumn
-          title="OLAS staked"
-          isLoading={isServiceInfoLoading}
-          value={contractDetails ? `${OLAS_UNICODE_SYMBOL}${contractDetails.totalBond}` : undefined}
-          comingSoonButtonText="Withdraw"
-        />
-        <InfoColumn
-          title="Staking contract"
-          isLoading={isServiceInfoLoading}
-          link={contractDetails ? {
-            href: `${GOVERN_APP_URL}/contracts/${contractAddress}`,
-            text: contractDetails.name,
-          } : undefined}
-          comingSoonButtonText="Change"
-        />
-      </Row>
-
       <Title level={5}>
-        Epoch summary
+        Rewards
       </Title>
       <Row
-        gutter={[16, 16]}
-        className="w-100 mb-24"
+        gutter={[16, 24]}
+        className="w-100 mb-32"
       >
         <InfoColumn
           title="Tweets made this epoch"
           isLoading={isServiceInfoLoading}
-          value={contractDetails ? `${tweetsMade}/${contractDetails.tweetsPerEpoch}` : undefined}
+          value={contractDetails ? `${tweetsMade} / ${contractDetails.tweetsPerEpoch}` : undefined}
         >
           {!isServiceInfoLoading && <TweetCountTooltip />}
         </InfoColumn>
@@ -191,11 +273,54 @@ const StakingDetails = ({ profile }) => {
           ) : null}
         </InfoColumn>
         <InfoColumn
+          title="Total OLAS rewards"
+          isLoading={isStakingDetailsLoading}
+          value={stakingDetails.totalRewards !== null ? `${OLAS_UNICODE_SYMBOL}${stakingDetails.totalRewards}` : undefined}
+        />
+        <InfoColumn
           title="Epoch end time"
           isLoading={isStakingDetailsLoading}
           value={stakingDetails.epochEndTimestamp ?
-            `~ ${new Date(stakingDetails.epochEndTimestamp * 1000).toLocaleString()}`
+            formatDynamicTimeRange(stakingDetails.epochEndTimestamp)
           : undefined}
+        />
+        <InfoColumn
+          title="Epoch length"
+          isLoading={isStakingDetailsLoading}
+          value={stakingDetails.epochLength ?? undefined}
+        />
+      </Row>
+
+      <Title level={5}>
+        Details
+      </Title>
+      <Row
+        gutter={[16, 24]}
+        className="w-100 mb-32"
+      >
+        <InfoColumn
+          title="Status"
+          isLoading={isServiceInfoLoading || isStakingDetailsLoading}
+          value={stakingStatusColumnData?.value}
+          comingSoonButtonText={stakingStatusColumnData?.comingSoonButtonText}
+        >
+          {stakingStatusColumnData?.children}
+        </InfoColumn>
+        <InfoColumn
+          title="Staking contract"
+          isLoading={isServiceInfoLoading}
+          link={contractDetails ? {
+            href: `${GOVERN_APP_URL}/contracts/${contractAddress}`,
+            text: contractDetails.name,
+          } : NA}
+          comingSoonButtonText="Change"
+        />
+        <InfoColumn
+          title="Your Safe address"
+          link={{
+            href: `${base.blockExplorers.default.url}/address/${profile.service_multisig}`,
+            text: truncateAddress(profile.service_multisig),
+          }}
         />
       </Row>
 
@@ -238,6 +363,7 @@ Staking.propTypes = {
   profile: PropTypes.shape({
     wallet_address: PropTypes.string,
     discord_handle: PropTypes.string,
+    twitter_id: PropTypes.string,
     twitter_handle: PropTypes.string,
     service_multisig: PropTypes.string,
     points: PropTypes.number,
@@ -249,6 +375,7 @@ Staking.defaultProps = {
   profile: {
     wallet_address: '',
     discord_handle: '',
+    twitter_id: '',
     twitter_handle: '',
     service_multisig: '',
     points: 0,

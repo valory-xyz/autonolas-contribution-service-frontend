@@ -102,8 +102,8 @@ export const LoginV2 = ({
           if (modalProvider?.on) {
             // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
             const handleChainChanged = () => {
-              // Temp hack not to reload page when switch to base chain on staking page
-              if (!window.location.pathname.includes('staking')) {
+              // Temp hack not to reload page when switch to base chain on staking or profile page
+              if (!['staking', 'profile'].some(segment => window.location.pathname.includes(segment))) {
                 window.location.reload();
               }
             };
