@@ -1,6 +1,10 @@
 import axios from 'axios';
+
 import {
-  PREDICT_APPROVE_ENDPOINT, PREDICT_BASE_URL, PREDICT_GET_ALL_ENDPOINT, PREDICT_PROPOSE_ENDPOINT,
+  PREDICT_APPROVE_ENDPOINT,
+  PREDICT_BASE_URL,
+  PREDICT_GET_ALL_ENDPOINT,
+  PREDICT_PROPOSE_ENDPOINT,
 } from 'util/constants';
 
 export const getPredictionRequests = async () => {
@@ -17,17 +21,13 @@ export const getPredictionRequests = async () => {
     key: requests[key].id,
   }));
 
-  const allRequests = prefilteredRequests.filter(
-    (market) => market.source === 'contribute',
-  );
+  const allRequests = prefilteredRequests.filter((market) => market.source === 'contribute');
 
   const processedRequests = allRequests.filter(
     (market) => market.state === 'PROCESSED' && market.fpmm_id,
   );
 
-  const approvedRequestsCount = allRequests.filter(
-    (market) => market.state === 'APPROVED',
-  ).length;
+  const approvedRequestsCount = allRequests.filter((market) => market.state === 'APPROVED').length;
 
   return {
     allRequests,
@@ -42,11 +42,9 @@ export const postPredictionRequest = async (payload) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await axios.post(
-    PREDICT_BASE_URL + PREDICT_PROPOSE_ENDPOINT,
-    payload,
-    { headers },
-  );
+  const response = await axios.post(PREDICT_BASE_URL + PREDICT_PROPOSE_ENDPOINT, payload, {
+    headers,
+  });
 
   // Extract the id from the response data
   // Respond structure data.info = "Market ID {id} created successfully."

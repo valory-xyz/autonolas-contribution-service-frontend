@@ -1,25 +1,28 @@
 /* eslint-disable max-len */
 import { ethers } from 'ethers';
-import { toLower, isNil, lowerCase } from 'lodash';
+import { isNil, lowerCase, toLower } from 'lodash';
+
 import {
-  getProvider as getProviderFn,
-  getEthersProvider as getEthersProviderFn,
+  LOCAL_FORK_ID,
   getChainId as getChainIdFn,
   getChainIdOrDefaultToMainnet as getChainIdOrDefaultToMainnetFn,
+  getEthersProvider as getEthersProviderFn,
   getIsValidChainId as getIsValidChainIdFn,
+  getProvider as getProviderFn,
   sendTransaction as sendTransactionFn,
-  LOCAL_FORK_ID,
 } from '@autonolas/frontend-library';
-import data from 'common-util/Education/data.json';
 
 import { RPC_URLS } from 'common-util/Contracts';
+import data from 'common-util/Education/data.json';
 import { SUPPORTED_CHAINS } from 'common-util/Login/config';
 import orbis, { checkOrbisStatus } from 'common-util/orbis';
+
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
-const getSupportedChains = () => (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
-  ? [...SUPPORTED_CHAINS, { id: LOCAL_FORK_ID }]
-  : SUPPORTED_CHAINS);
+const getSupportedChains = () =>
+  process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true'
+    ? [...SUPPORTED_CHAINS, { id: LOCAL_FORK_ID }]
+    : SUPPORTED_CHAINS;
 
 /**
  * re-usable functions
@@ -31,7 +34,8 @@ export const getEthersProvider = () => getEthersProviderFn(getSupportedChains(),
 
 export const getIsValidChainId = (chainId) => getIsValidChainIdFn(getSupportedChains(), chainId);
 
-export const getChainIdOrDefaultToMainnet = (chainId) => getChainIdOrDefaultToMainnetFn(getSupportedChains(), chainId);
+export const getChainIdOrDefaultToMainnet = (chainId) =>
+  getChainIdOrDefaultToMainnetFn(getSupportedChains(), chainId);
 
 export const getChainId = (chainId = null) => {
   if (process.env.NEXT_PUBLIC_IS_CONNECTED_TO_LOCAL === 'true') {
@@ -40,14 +44,16 @@ export const getChainId = (chainId = null) => {
   return getChainIdFn(getSupportedChains(), chainId);
 };
 
-export const sendTransaction = (fn, account) => sendTransactionFn(fn, account, {
-  supportedChains: getSupportedChains(),
-  rpcUrls: RPC_URLS,
-});
+export const sendTransaction = (fn, account) =>
+  sendTransactionFn(fn, account, {
+    supportedChains: getSupportedChains(),
+    rpcUrls: RPC_URLS,
+  });
 
 export const isGoerli = (id) => id === 5;
 
-export const getEducationItemByComponent = (component) => data.filter((item) => component === item.component)[0];
+export const getEducationItemByComponent = (component) =>
+  data.filter((item) => component === item.component)[0];
 
 export const getTier = (points) => {
   switch (true) {
@@ -64,11 +70,12 @@ export const getTier = (points) => {
   }
 };
 
-export const getName = (profile, address) => profile.twitter_handle
-  || profile.discord_handle
-  || profile.wallet_address
-  || address && truncateAddress(address)
-  || 'Unknown name';
+export const getName = (profile, address) =>
+  profile.twitter_handle ||
+  profile.discord_handle ||
+  profile.wallet_address ||
+  (address && truncateAddress(address)) ||
+  'Unknown name';
 
 // TODO: move to autonolas library
 /**
@@ -79,8 +86,8 @@ export const getName = (profile, address) => profile.twitter_handle
  */
 export const getHash = (router) => router?.asPath?.split('#')[1] || '';
 
-export const isDevOrStaging = process.env.NODE_ENV === 'development'
-  || process.env.NODE_VERCEL_ENV === 'staging';
+export const isDevOrStaging =
+  process.env.NODE_ENV === 'development' || process.env.NODE_VERCEL_ENV === 'staging';
 
 export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
 
@@ -111,9 +118,7 @@ export const ethersToWei = (value) => ethers.parseUnits(value, 'ether');
 export const canAddMemoryMessaage = (list, account) => {
   if (!account) return 'To add to memory, connect wallet';
 
-  const isPresent = list.some(
-    (item) => lowerCase(item.address) === lowerCase(account),
-  );
+  const isPresent = list.some((item) => lowerCase(item.address) === lowerCase(account));
   if (!isPresent) return 'To add to memory, join this centaur';
 
   return null;
@@ -150,12 +155,11 @@ export const checkOrbisConnection = async () => {
  * @param {string} address - The Ethereum address to truncate
  * @returns {string} The truncated address
  */
-export const truncateAddress = (address) => (address
-  ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}`
-  : '--');
+export const truncateAddress = (address) =>
+  address ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}` : '--';
 
 export const getAddressFromBytes32 = (address) => {
-    return ('0x' + address.slice(-40));
+  return '0x' + address.slice(-40);
 };
 
 export const getBytes32FromAddress = (address) => {

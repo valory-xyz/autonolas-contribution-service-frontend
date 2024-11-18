@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { MobileTwoTone } from '@ant-design/icons';
+import { Grid, Menu, Skeleton, Typography } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  Menu, Skeleton, Grid, Typography,
-} from 'antd';
-import { MobileTwoTone } from '@ant-design/icons';
+import { useCallback, useEffect, useState } from 'react';
+
 import { COLOR } from '@autonolas/frontend-library';
 
 import orbis from 'common-util/orbis';
+
 import { GroupChat } from '../GroupChat';
 import { ChatMenu } from './styles';
 
@@ -24,7 +24,7 @@ const Chat = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const loadChats = async () => {
+  const loadChats = useCallback(async () => {
     try {
       // Set loading to true only on the first run
       if (firstLoad) {
@@ -32,9 +32,7 @@ const Chat = () => {
         setFirstLoad(false);
       }
 
-      const { data, error } = await orbis.getContexts(
-        process.env.NEXT_PUBLIC_ORBIS_PROJECT_ID,
-      );
+      const { data, error } = await orbis.getContexts(process.env.NEXT_PUBLIC_ORBIS_PROJECT_ID);
 
       if (error) {
         setChatsError(error?.message || 'Could not load chats');
@@ -48,11 +46,11 @@ const Chat = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [firstLoad]);
 
   useEffect(() => {
     loadChats();
-  }, []);
+  }, [loadChats]);
 
   if (screens.xs) {
     return (
@@ -62,9 +60,7 @@ const Chat = () => {
           twoToneColor={COLOR.GREY_1}
         />
         <br />
-        <Typography.Text type="secondary">
-          Chat is not available on mobile
-        </Typography.Text>
+        <Typography.Text type="secondary">Chat is not available on mobile</Typography.Text>
       </div>
     );
   }
@@ -83,9 +79,7 @@ const Chat = () => {
             ) : (
               chats.map((chat) => (
                 <Menu.Item key={chat.stream_id}>
-                  <Link href={`/chat/${chat.stream_id}`}>
-                    {chat.content.displayName}
-                  </Link>
+                  <Link href={`/chat/${chat.stream_id}`}>{chat.content.displayName}</Link>
                 </Menu.Item>
               ))
             )}

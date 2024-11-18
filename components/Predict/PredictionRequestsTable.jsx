@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import {
-  List,
-  Typography,
-  Spin,
-  Progress,
-  Card,
-  Statistic,
-  Button,
-} from 'antd';
+import { LinkOutlined, LoadingOutlined, RedoOutlined } from '@ant-design/icons';
+import { gql } from '@apollo/client';
+import { Button, Card, List, Progress, Spin, Statistic, Typography } from 'antd';
 import dayjs from 'dayjs';
-import { getPredictionRequests } from 'common-util/api/predictionRequests';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setPredictionRequests, setApprovedRequestsCount } from 'store/setup';
-import { gql } from '@apollo/client';
-import { LoadingOutlined, RedoOutlined, LinkOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
+import { getPredictionRequests } from 'common-util/api/predictionRequests';
+import { setApprovedRequestsCount, setPredictionRequests } from 'store/setup';
+
 import client from '../../apolloClient';
 import { ProcessingBanner } from './styles';
 
@@ -56,9 +49,7 @@ const PredictionMarketLink = ({ fpmmId }) => (
     rel="noopener noreferrer"
     style={{ color: 'rgba(0, 0, 0, 0.45)' }}
   >
-    See prediction market
-    {' '}
-    <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
+    See prediction market <LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
   </a>
 );
 
@@ -70,52 +61,51 @@ const PredictionRequestsTable = () => {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const { predictionRequests: data, approvedRequestsCount } = useSelector(
-    (state) => state?.setup,
+  const { predictionRequests: data, approvedRequestsCount } = useSelector((state) => state?.setup);
+
+  const fetchData = useCallback(
+    async (initialLoad = false) => {
+      if (initialLoad) {
+        setLoading(true);
+      }
+
+      const { processedRequests: predictionRequests, approvedRequestsCount: count } =
+        await getPredictionRequests();
+      dispatch(setApprovedRequestsCount(count));
+
+      const requestFpmmIds = predictionRequests.map((item) => item.fpmm_id.toLowerCase());
+
+      const queryResponse = await client.query({
+        query: GET_FIXED_PRODUCT_MARKET_MAKERS,
+        variables: {
+          ids: requestFpmmIds,
+        },
+        fetchPolicy: 'network-only',
+      });
+
+      const mergedData = predictionRequests.map((item) => {
+        const queryItem = queryResponse.data.fixedProductMarketMakers.find(
+          (matchedItem) => matchedItem.id === item.fpmm_id.toLowerCase(),
+        );
+
+        const tradeCount = queryResponse.data.fpmmTrades.filter((tradeItem) => {
+          const tradeItemId = tradeItem.id;
+          return tradeItemId.startsWith(item.fpmm_id.toLowerCase());
+        }).length;
+
+        const withoutQueryItem = { ...item, tradeCount };
+        const withQueryItem = { ...item, ...queryItem, tradeCount };
+
+        return queryItem ? withQueryItem : withoutQueryItem;
+      });
+
+      dispatch(setPredictionRequests(mergedData));
+      if (initialLoad) {
+        setLoading(false);
+      }
+    },
+    [dispatch],
   );
-
-  const fetchData = async (initialLoad = false) => {
-    if (initialLoad) {
-      setLoading(true);
-    }
-
-    const {
-      processedRequests: predictionRequests,
-      approvedRequestsCount: count,
-    } = await getPredictionRequests();
-    dispatch(setApprovedRequestsCount(count));
-
-    const requestFpmmIds = predictionRequests.map((item) => item.fpmm_id.toLowerCase());
-
-    const queryResponse = await client.query({
-      query: GET_FIXED_PRODUCT_MARKET_MAKERS,
-      variables: {
-        ids: requestFpmmIds,
-      },
-      fetchPolicy: 'network-only',
-    });
-
-    const mergedData = predictionRequests.map((item) => {
-      const queryItem = queryResponse.data.fixedProductMarketMakers.find(
-        (matchedItem) => matchedItem.id === item.fpmm_id.toLowerCase(),
-      );
-
-      const tradeCount = queryResponse.data.fpmmTrades.filter((tradeItem) => {
-        const tradeItemId = tradeItem.id;
-        return tradeItemId.startsWith(item.fpmm_id.toLowerCase());
-      }).length;
-
-      const withoutQueryItem = { ...item, tradeCount };
-      const withQueryItem = { ...item, ...queryItem, tradeCount };
-
-      return queryItem ? withQueryItem : withoutQueryItem;
-    });
-
-    dispatch(setPredictionRequests(mergedData));
-    if (initialLoad) {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchData(true);
@@ -124,14 +114,13 @@ const PredictionRequestsTable = () => {
     }, 10000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchData]);
 
   const router = useRouter();
 
   const DescriptionNoTitle = (
     <Text>
-      Creating prediction market... You may need to
-      {' '}
+      Creating prediction market... You may need to{' '}
       <Button type="ghost" underline onClick={() => router.reload()}>
         <RedoOutlined />
         Refresh
@@ -143,14 +132,14 @@ const PredictionRequestsTable = () => {
     <>
       {approvedRequestsCount > 0 && (
         <ProcessingBanner
-          message={(
+          message={
             <>
               <Spin className="mr-12" indicator={spinIcon} />
               {`Processing ${approvedRequestsCount} question${
                 approvedRequestsCount > 1 ? 's' : ''
               } – can take up to 10 minutes`}
             </>
-          )}
+          }
           showIcon={false}
           banner
           className="mb-12"
@@ -166,9 +155,7 @@ const PredictionRequestsTable = () => {
       >
         <List
           itemLayout="horizontal"
-          dataSource={data.sort(
-            (a, b) => b.utc_timestamp_processed - a.utc_timestamp_processed,
-          )}
+          dataSource={data.sort((a, b) => b.utc_timestamp_processed - a.utc_timestamp_processed)}
           loading={loading}
           renderItem={(item) => {
             const {
@@ -206,8 +193,7 @@ const PredictionRequestsTable = () => {
               <Text type="secondary">
                 {`Final answer will be available on ${dayjs
                   .unix(resolutionTime)
-                  .format(answerDateFormat)} ·`}
-                {' '}
+                  .format(answerDateFormat)} ·`}{' '}
                 <PredictionMarketLink fpmmId={fpmmId} />
               </Text>
             );
@@ -255,17 +241,12 @@ const PredictionRequestsTable = () => {
                 {answerStatus === STATUS.FINAL && (
                   <>
                     <Statistic
-                      value={
-                        parseInt(currentAnswer?.slice(-1), 10) === 0
-                          ? 'Yes'
-                          : 'No'
-                      }
+                      value={parseInt(currentAnswer?.slice(-1), 10) === 0 ? 'Yes' : 'No'}
                     />
                     <Text type="secondary">
                       {`Answered on ${dayjs
                         .unix(answerFinalizedTimestamp)
-                        .format(answerDateFormat)} ·`}
-                      {' '}
+                        .format(answerDateFormat)} ·`}{' '}
                       <PredictionMarketLink fpmmId={fpmmId} />
                     </Text>
                   </>
@@ -279,17 +260,13 @@ const PredictionRequestsTable = () => {
                   title={
                     title ? (
                       <div style={{ maxWidth: '600px' }} className="mb-12">
-                        <Text
-                          style={{ fontSize: '24px', wordWrap: 'break-word' }}
-                        >
+                        <Text style={{ fontSize: '24px', wordWrap: 'break-word' }}>
                           {item.title}
                         </Text>
                       </div>
                     ) : null
                   }
-                  description={
-                    title ? <ListItemDescription /> : <DescriptionNoTitle />
-                  }
+                  description={title ? <ListItemDescription /> : <DescriptionNoTitle />}
                 />
               </List.Item>
             );

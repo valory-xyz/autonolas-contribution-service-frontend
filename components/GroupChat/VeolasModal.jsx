@@ -1,9 +1,6 @@
+import { Collapse, Modal, Typography } from 'antd';
 import React from 'react';
-import {
-  Typography,
-  Modal,
-  Collapse,
-} from 'antd';
+
 import { VEOLAS_URL } from 'util/constants';
 
 const { Text, Title } = Typography;
@@ -23,9 +20,8 @@ export const VeolasModal = ({ showVeOLASModal, setShowVeOLASModal }) => {
           label: "What's veOLAS?",
           children: (
             <Text>
-              veOLAS is a locked form of the Olas ecosystem&apos;s token, called
-              OLAS. When you lock OLAS into veOLAS you get access to
-              functionality.
+              veOLAS is a locked form of the Olas ecosystem&apos;s token, called OLAS. When you lock
+              OLAS into veOLAS you get access to functionality.
             </Text>
           ),
         },
@@ -45,20 +41,15 @@ export const VeolasModal = ({ showVeOLASModal, setShowVeOLASModal }) => {
         </a>
       </li>
       <li>
-        Lock your OLAS at
-        {' '}
-        <a
-          href={VEOLAS_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        Lock your OLAS at{' '}
+        <a href={VEOLAS_URL} target="_blank" rel="noopener noreferrer">
           Olas Member ↗
         </a>
       </li>
     </ol>
     <Text type="secondary">
-      Note: it&apos;s worth locking more than 1 veOLAS because your veOLAS
-      amount will reduce over time.
+      Note: it&apos;s worth locking more than 1 veOLAS because your veOLAS amount will reduce over
+      time.
     </Text>
   </Modal>;
 };

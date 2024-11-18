@@ -1,17 +1,17 @@
+import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Button, Card, Table, Typography, notification } from 'antd';
+import { cloneDeep } from 'lodash';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSignMessage } from 'wagmi';
-import { useRouter } from 'next/router';
-import {
-  Table, Typography, Button, notification, Card,
-} from 'antd';
-import { MessageOutlined, UserAddOutlined } from '@ant-design/icons';
+
 import { areAddressesEqual, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
-import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
-import { cloneDeep } from 'lodash';
 import DisplayName from 'common-util/DisplayName';
+import { useCentaursFunctionalities } from 'components/CoOrdinate/Centaur/hooks';
 import { VEOLAS_URL } from 'util/constants';
+
 import { fetchVotingPower } from './requests';
 
 const { Text } = Typography;
@@ -20,12 +20,8 @@ export const MembersList = () => {
   const router = useRouter();
   const [joinLoading, setJoinLoading] = useState(false);
   const account = useSelector((state) => state?.setup?.account);
-  const {
-    membersList,
-    currentMemoryDetails,
-    updateMemoryWithNewCentaur,
-    fetchUpdatedMemory,
-  } = useCentaursFunctionalities();
+  const { membersList, currentMemoryDetails, updateMemoryWithNewCentaur, fetchUpdatedMemory } =
+    useCentaursFunctionalities();
 
   const addNewMember = async () => {
     try {
@@ -80,11 +76,7 @@ export const MembersList = () => {
         notifyError(
           <>
             You must hold veOLAS to join.&nbsp;
-            <a
-              href={VEOLAS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={VEOLAS_URL} target="_blank" rel="noopener noreferrer">
               Get veOLAS
             </a>
           </>,
@@ -139,9 +131,7 @@ export const MembersList = () => {
                   });
                 }}
               >
-                <MessageOutlined />
-                {' '}
-                Message
+                <MessageOutlined /> Message
               </Button>
             )}
           </>
@@ -163,6 +153,7 @@ export const MembersList = () => {
             type="primary"
             className="mr-12"
             disabled={!account}
+            key="join"
             loading={joinLoading}
             onClick={onJoin}
           >
@@ -171,6 +162,7 @@ export const MembersList = () => {
         ),
         <Button
           disabled={!account}
+          key="invite"
           onClick={() => {
             notification.success({ message: 'Link copied' });
             navigator.clipboard.writeText(document.URL);

@@ -1,17 +1,13 @@
 import { LogoutOutlined } from '@ant-design/icons';
-import {
-  Button, Tooltip, Grid, Dropdown, Menu,
-} from 'antd';
+import { Button, Dropdown, Grid, Menu, Tooltip } from 'antd';
+import { useRouter } from 'next/router';
 
 import useOrbis from 'common-util/hooks/useOrbis';
-import { useRouter } from 'next/router';
 
 const { useBreakpoint } = Grid;
 
 export const SignInToOrbis = () => {
-  const {
-    connect, disconnect, isLoading, isOrbisConnected, profile, address,
-  } = useOrbis();
+  const { connect, disconnect, isLoading, isOrbisConnected, profile, address } = useOrbis();
   const screens = useBreakpoint();
   const { push } = useRouter();
 
@@ -32,15 +28,13 @@ export const SignInToOrbis = () => {
 
   return (
     <Dropdown.Button
-      overlay={(
+      overlay={
         <Menu>
           <Menu.Item key="logout" onClick={disconnect}>
-            <LogoutOutlined />
-            {' '}
-            Logout?
+            <LogoutOutlined /> Logout?
           </Menu.Item>
         </Menu>
-      )}
+      }
       onClick={() => push(`/profile/${address}`)}
       icon={<LogoutOutlined />}
       loading={isLoading}

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import {
-  Modal, Button, Input, Row, Col, message,
-} from 'antd';
+import { PlusOutlined, TwitterOutlined } from '@ant-design/icons';
+import { Button, Col, Input, Modal, Row, message } from 'antd';
 import PropTypes from 'prop-types';
-import { TwitterOutlined, PlusOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+
 import { MAX_TWEET_IMAGES, MAX_TWEET_LENGTH } from 'util/constants';
-import TweetLength from './TweetLength';
-import { ViewThread } from './ViewThread';
-import UploadButton from './UploadButton';
-import { ProposalCountRow } from './styles';
+
 import MediaList from './MediaList';
+import TweetLength from './TweetLength';
+import UploadButton from './UploadButton';
+import { ViewThread } from './ViewThread';
+import { ProposalCountRow } from './styles';
 
 const ThreadModal = ({
   firstTweetInThread,
@@ -18,9 +18,7 @@ const ThreadModal = ({
   addThread,
   closeThreadModal,
 }) => {
-  const [thread, setThread] = useState([
-    { text: firstTweetInThread, media: firstMediaInThread },
-  ]);
+  const [thread, setThread] = useState([{ text: firstTweetInThread, media: firstMediaInThread }]);
   const [tweet, setTweet] = useState();
   const [media, setMedia] = useState([]);
 
@@ -72,9 +70,7 @@ const ThreadModal = ({
 
   // POST the thread to the backend
   const onPostThread = async () => {
-    if (
-      thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)
-    ) {
+    if (thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)) {
       message.error('One or more tweets are empty. Please fill them all.');
       return;
     }
@@ -130,9 +126,9 @@ const ThreadModal = ({
 
           <MediaList
             media={media}
-            handleDelete={(removingFile) => setMedia(
-              (prev) => prev.filter((file) => file !== removingFile),
-            )}
+            handleDelete={(removingFile) =>
+              setMedia((prev) => prev.filter((file) => file !== removingFile))
+            }
           />
 
           <ProposalCountRow>
@@ -159,11 +155,7 @@ const ThreadModal = ({
           </ProposalCountRow>
         </Col>
 
-        <Col
-          md={12}
-          xs={24}
-          style={{ maxHeight: '400px', minHeight: '300px', overflow: 'auto' }}
-        >
+        <Col md={12} xs={24} style={{ maxHeight: '400px', minHeight: '300px', overflow: 'auto' }}>
           <ViewThread
             thread={thread}
             onEditThread={onEditThread}

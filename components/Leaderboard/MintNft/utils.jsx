@@ -1,32 +1,35 @@
 import get from 'lodash/get';
+
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { getMintContract } from 'common-util/Contracts';
-import { GATEWAY_URL } from 'util/constants';
 import { getEstimatedGasLimit } from 'common-util/functions/requests';
+import { GATEWAY_URL } from 'util/constants';
 
 const pattern = /ipfs:\/\/+/g;
 export const getAutonolasTokenUri = (tokenUri) => (tokenUri || '').replace(pattern, GATEWAY_URL);
 
-export const mintNft = (account) => new Promise((resolve, reject) => {
-  const contract = getMintContract();
-  if (!contract) return;
-  const mintFn = contract.methods.mint();
+export const mintNft = (account) =>
+  new Promise((resolve, reject) => {
+    const contract = getMintContract();
+    if (!contract) return;
+    const mintFn = contract.methods.mint();
 
-  getEstimatedGasLimit(mintFn, account).then((estimatedGas) => {
-    mintFn.send({ from: account, gas: estimatedGas })
-      .then((response) => {
-        notifySuccess('Successfully Minted');
-        const id = get(response, 'events.Transfer.returnValues.id');
-        resolve(id);
-      })
-      .catch((e) => {
-        notifyError('Error: could not mint NFT');
-        window.console.log('Error occurred on minting NFT');
-        reject(e);
-      });
+    getEstimatedGasLimit(mintFn, account).then((estimatedGas) => {
+      mintFn
+        .send({ from: account, gas: estimatedGas })
+        .then((response) => {
+          notifySuccess('Successfully Minted');
+          const id = get(response, 'events.Transfer.returnValues.id');
+          resolve(id);
+        })
+        .catch((e) => {
+          notifyError('Error: could not mint NFT');
+          window.console.log('Error occurred on minting NFT');
+          reject(e);
+        });
+    });
   });
-});
 
 export async function pollNftDetails(id) {
   const contract = getMintContract();

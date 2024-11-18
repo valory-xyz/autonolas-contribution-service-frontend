@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
-import {
-  Form, Input, Button, DatePicker, Modal, Alert,
-} from 'antd';
-import { v4 as uuid } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
+import { Alert, Button, DatePicker, Form, Input, Modal } from 'antd';
 import Link from 'next/link';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
+
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
+import { getPredictionRequests, postPredictionRequest } from 'common-util/api/predictionRequests';
 import { setApprovedRequestsCount } from 'store/setup';
-import {
-  getPredictionRequests,
-  postPredictionRequest,
-} from 'common-util/api/predictionRequests';
 
-import { checkVotingPower } from '../MembersList/requests';
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import { checkVotingPower } from '../MembersList/requests';
 
 const { TextArea } = Input;
 
@@ -45,10 +41,7 @@ const PredictionForm = () => {
       return;
     }
 
-    const thresholdIsMet = checkVotingPower(
-      account,
-      '5000000000000000000000',
-    );
+    const thresholdIsMet = checkVotingPower(account, '5000000000000000000000');
 
     if (!thresholdIsMet) {
       notifyError('Get at least 5k veOLAS to ask questions');
@@ -98,7 +91,12 @@ const PredictionForm = () => {
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
-        <Alert className="mb-12" type="info" showIcon message={<Link href="/docs#predict">Learn how to ask a good question</Link>} />
+        <Alert
+          className="mb-12"
+          type="info"
+          showIcon
+          message={<Link href="/docs#predict">Learn how to ask a good question</Link>}
+        />
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             label="Question"
@@ -113,9 +111,7 @@ const PredictionForm = () => {
             label="Final answer date"
             name="resolution_time"
             extra="When will it be possible to definitively answer the question?"
-            rules={[
-              { required: true, message: 'Please pick the final answer date' },
-            ]}
+            rules={[{ required: true, message: 'Please pick the final answer date' }]}
           >
             <DatePicker showTime />
           </Form.Item>

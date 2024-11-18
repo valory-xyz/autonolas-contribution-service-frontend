@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
+
 import { ServiceStatusInfo } from '@autonolas/frontend-library';
 
-import { setLeaderboard, setNftDetails } from 'store/setup';
-import { getLeaderboardList, getLatestMintedNft } from 'common-util/api';
+import { getLatestMintedNft, getLeaderboardList } from 'common-util/api';
 import { useHealthCheckup } from 'common-util/hooks/useHealthCheckup';
 import { useHelpers } from 'common-util/hooks/useHelpers';
+import { setLeaderboard, setNftDetails } from 'store/setup';
 
 const MINUTE = 60 * 1000;
 

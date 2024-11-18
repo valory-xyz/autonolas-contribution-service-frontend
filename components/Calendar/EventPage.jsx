@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Card, Typography } from 'antd';
 import moment from 'moment';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
 import { NA } from '@autonolas/frontend-library';
+
 import events from './events.json';
 
 const { Text, Title } = Typography;
@@ -29,28 +31,17 @@ const EventPage = () => {
         <p>{moment.unix(event.timestamp).format('h:mm a MMMM D YYYY') || NA}</p>
         <Text strong>Location</Text>
         <p>
-          {
-            event.location && (
-              // Check if event location is a URL
-              /^http(s)?:\/\//.test(event.location) ? (
-                <a
-                  href={event.location}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {event.location}
-                  {' '}
-                  ↗
-                </a>
-              ) : (
-                // If event location is not a URL, display it as is
-                event.location
-              )
-            )
-               }
-          {!event.location && (
-            NA
-          )}
+          {event.location &&
+            // Check if event location is a URL
+            (/^http(s)?:\/\//.test(event.location) ? (
+              <a href={event.location} target="_blank" rel="noopener noreferrer">
+                {event.location} ↗
+              </a>
+            ) : (
+              // If event location is not a URL, display it as is
+              event.location
+            ))}
+          {!event.location && NA}
         </p>
         <Text strong>Description</Text>
         <p>{event.description || NA}</p>

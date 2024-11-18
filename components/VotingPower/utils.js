@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+
 /**
  *
  * @param {string} balanceInWei
@@ -43,18 +44,12 @@ export const formatWeiBalanceWithCommas = (balanceInWei) => {
  * @param {string} address - The Ethereum address to truncate
  * @returns {string} The truncated address
  */
-export const truncateAddress = (address, startLimit = 5, endLimit = 3) => (address
-  ? `${address.substring(0, startLimit)}...${address.substring(
-    address.length - endLimit,
-  )}`
-  : '--');
+export const truncateAddress = (address, startLimit = 5, endLimit = 3) =>
+  address
+    ? `${address.substring(0, startLimit)}...${address.substring(address.length - endLimit)}`
+    : '--';
 
-export const validateBeforeDelegate = async ({
-  account,
-  balance,
-  delegatee,
-  newDelegatee,
-}) => {
+export const validateBeforeDelegate = async ({ account, balance, delegatee, newDelegatee }) => {
   if (newDelegatee === account) {
     throw new Error('NoSelfDelegation');
   }

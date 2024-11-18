@@ -5,7 +5,7 @@
  */
 export const getTimeAgo = (ms, showPostfix = true) => {
   const differenceInMs = Date.now() - ms;
-  return formatTimeDifference(differenceInMs, showPostfix ? 'ago' : '')
+  return formatTimeDifference(differenceInMs, showPostfix ? 'ago' : '');
 };
 
 export const formatTimeDifference = (differenceInMs, postfix) => {
@@ -26,9 +26,9 @@ export const formatTimeDifference = (differenceInMs, postfix) => {
   } else {
     return `${differenceInMinutes} minute${differenceInMinutes > 1 ? 's' : ''}${postfixWithSpace}`;
   }
-}
+};
 
-const ONE_HOUR_IN_MS = 3600 * 1000
+const ONE_HOUR_IN_MS = 3600 * 1000;
 
 const getHourAndPeriod = (time) => {
   let [hour, ,] = time.split(':').map(Number);
@@ -38,8 +38,8 @@ const getHourAndPeriod = (time) => {
 };
 
 /**
- * 
- * @param {*} epochEndTimestamp 
+ *
+ * @param {*} epochEndTimestamp
  * @returns returns formatted time range of current hour and next hour
  * Possible results:
  * 8-9am, 14/11/24
@@ -50,12 +50,10 @@ export const formatDynamicTimeRange = (timestamp, timeOffsetMs = ONE_HOUR_IN_MS)
   const timestampInMs = timestamp * 1000;
 
   // Get current date and time in the format: "17/11/2024" and "13:39:07"
-  const [currentDate, currentTime] = new Date(timestampInMs)
-    .toLocaleString().split(', ');
+  const [currentDate, currentTime] = new Date(timestampInMs).toLocaleString().split(', ');
 
-   // Get next date and time
-  const [nextDate, nextTime] = new Date(timestampInMs + timeOffsetMs)
-    .toLocaleString().split(', ');
+  // Get next date and time
+  const [nextDate, nextTime] = new Date(timestampInMs + timeOffsetMs).toLocaleString().split(', ');
 
   const { hour: currentHour, period: currentPeriod } = getHourAndPeriod(currentTime);
   const { hour: nextHour, period: nextPeriod } = getHourAndPeriod(nextTime);
@@ -76,4 +74,4 @@ export const formatDynamicTimeRange = (timestamp, timeOffsetMs = ONE_HOUR_IN_MS)
   } else {
     return `${timeRange}, ${currentDate} - ${nextDate}`;
   }
-}
+};

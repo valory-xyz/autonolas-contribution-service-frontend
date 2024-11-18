@@ -1,5 +1,6 @@
-import { getDelegateContributeContract } from 'common-util/Contracts';
 import { ethers } from 'ethers';
+
+import { getDelegateContributeContract } from 'common-util/Contracts';
 
 /**
  * balanceOf veOlas contract - it is the amount of veolas locked

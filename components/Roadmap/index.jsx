@@ -1,11 +1,14 @@
-import { Card, Typography, Row, Col, Tag, Popover } from "antd";
-import Image from "next/image";
-import dayjs from "dayjs";
-import { useScreen } from "@autonolas/frontend-library";
-import { EducationTitle } from "common-util/Education/EducationTitle";
-import { useMemo } from "react";
-import styled from "styled-components";
-import roadmapItems from "./roadmapItems.json";
+import { Card, Col, Popover, Row, Tag, Typography } from 'antd';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import { useMemo } from 'react';
+import styled from 'styled-components';
+
+import { useScreen } from '@autonolas/frontend-library';
+
+import { EducationTitle } from 'common-util/Education/EducationTitle';
+
+import roadmapItems from './roadmapItems.json';
 
 const { Text, Title } = Typography;
 
@@ -16,22 +19,22 @@ const ResponsiveImage = styled(Image)`
 
 const getTagItems = (tag) => {
   switch (tag) {
-    case "Approved":
+    case 'Approved':
       return {
-        color: "blue",
-        text: "AIP that has been accepted for implementation by the Autonolas community",
+        color: 'blue',
+        text: 'AIP that has been accepted for implementation by the Autonolas community',
       };
-    case "Proposed":
+    case 'Proposed':
       return {
-        color: "blue",
-        text: "AIP that is ready to be proposed on-chain",
+        color: 'blue',
+        text: 'AIP that is ready to be proposed on-chain',
       };
-    case "Implemented":
-      return { color: "green", text: "AIP that has been released to mainnet" };
-    case "Rejected":
-      return { color: "red", text: "AIP that has been rejected" };
+    case 'Implemented':
+      return { color: 'green', text: 'AIP that has been released to mainnet' };
+    case 'Rejected':
+      return { color: 'red', text: 'AIP that has been rejected' };
     default:
-      return { color: "", text: "AIP that is still being developed" };
+      return { color: '', text: 'AIP that is still being developed' };
   }
 };
 
@@ -46,12 +49,7 @@ const RoadmapTag = styled(Tag)`
 
 const RoadmapLink = ({ text, link }) => {
   return (
-    <a
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ textDecoration: "none" }}
-    >
+    <a href={link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
       {text} ↗
     </a>
   );
@@ -59,7 +57,7 @@ const RoadmapLink = ({ text, link }) => {
 
 const Roadmap = () => {
   const sortedRoadmapItems = roadmapItems.sort(
-    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix()
+    (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix(),
   );
 
   const { isMobile, isTablet } = useScreen();
@@ -105,7 +103,7 @@ const Roadmap = () => {
                   </>
                 }
                 trigger="hover"
-                overlayStyle={{ maxWidth: "400px" }}
+                overlayStyle={{ maxWidth: '400px' }}
               >
                 <RoadmapTag bordered={true} color={getTagItems(item.tag).color}>
                   {item.tag}
@@ -117,13 +115,13 @@ const Roadmap = () => {
               <Text strong>Initial Proposal</Text>
               <br />
               <RoadmapLink text="Read" link={item.link} />
-              <Text type="secondary">{" · "}</Text>
+              <Text type="secondary">{' · '}</Text>
               <RoadmapLink
                 text="Discuss"
                 link="https://discord.com/channels/899649805582737479/1121019872839729152"
               />
               <Text type="secondary">
-                {` · Proposed: ${dayjs(item.date).format("MMMM D YYYY")}`}
+                {` · Proposed: ${dayjs(item.date).format('MMMM D YYYY')}`}
               </Text>
             </Col>
           </Row>

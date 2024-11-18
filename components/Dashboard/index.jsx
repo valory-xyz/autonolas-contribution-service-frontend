@@ -1,10 +1,10 @@
 import { Col, Row } from 'antd';
 
 import ChatbotCard from '../Chatbot/ChatbotCard';
-import MembersCard from '../Members/MembersCard';
-import TweetCard from '../Tweet/TweetCard';
 import { LeaderboardCard } from '../Leaderboard/LeaderboardCard';
+import MembersCard from '../Members/MembersCard';
 import { ProfileCard } from '../Profile/ProfileCard';
+import TweetCard from '../Tweet/TweetCard';
 
 const Dashboard = () => (
   <Row gutter={24}>

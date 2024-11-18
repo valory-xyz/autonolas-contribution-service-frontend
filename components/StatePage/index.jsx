@@ -13,12 +13,10 @@ const StatePage = () => {
 
   useEffect(() => {
     fetchUpdatedMemory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <StyledPre>{JSON.stringify(currentMemoryDetails, undefined, 2)}</StyledPre>
-  );
+  return <StyledPre>{JSON.stringify(currentMemoryDetails, undefined, 2)}</StyledPre>;
 };
 
 export default StatePage;

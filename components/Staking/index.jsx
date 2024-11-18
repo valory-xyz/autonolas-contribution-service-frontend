@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
 import { Card, Typography } from 'antd';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import { ConnectWallet } from './ConnectWallet';
 import { StakingStepper } from './StakingStepper';
 
@@ -21,9 +22,9 @@ export const StakingPage = () => {
     return {
       account: profile?.twitter_handle,
       id: profile?.twitter_id,
-      multisig: profile?.service_multisig
-    }
-  }, [leaderboard])
+      multisig: profile?.service_multisig,
+    };
+  }, [account, leaderboard]);
 
   return (
     <Root>

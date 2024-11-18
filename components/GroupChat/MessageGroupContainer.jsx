@@ -1,32 +1,17 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Moment from 'react-moment';
-import {
-  areAddressesEqual,
-} from '@autonolas/frontend-library';
-import PropTypes from 'prop-types';
+
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
-import {
-  MessageBody,
-  MessageContainer,
-  MessageGroup,
-  MessageTimestamp,
-} from './styles';
 
-export const MessageGroupContainer = ({
-  dateKey,
-  address,
-  account,
-  username,
-  groupedMessages,
-}) => (
+import { MessageBody, MessageContainer, MessageGroup, MessageTimestamp } from './styles';
+
+export const MessageGroupContainer = ({ dateKey, address, account, username, groupedMessages }) => (
   <MessageGroup key={`${dateKey}-${address}`}>
     <div className="mb-4">
-      <DisplayName
-        actorAddress={address}
-        account={account}
-        username={username}
-      />
+      <DisplayName actorAddress={address} account={account} username={username} />
       {areAddressesEqual(address, account) && ' (You)'}
     </div>
     {groupedMessages?.map((msg, index) => (

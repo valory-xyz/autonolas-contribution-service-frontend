@@ -1,10 +1,11 @@
-import Image from 'next/image';
-import { Skeleton, Typography } from 'antd';
 import { LinkOutlined } from '@ant-design/icons';
-import { isGoerli } from '@autonolas/frontend-library';
-import { useSelector } from 'react-redux';
+import { Skeleton, Typography } from 'antd';
+import Image from 'next/image';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { isGoerli } from '@autonolas/frontend-library';
 
 import { getAutonolasTokenUri } from '../components/Leaderboard/MintNft/utils';
 

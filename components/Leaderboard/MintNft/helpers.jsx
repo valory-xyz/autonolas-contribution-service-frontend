@@ -1,5 +1,6 @@
 import { Space, Typography } from 'antd';
 import Image from 'next/image';
+
 import { MintBadgeCardContainer } from './styles';
 
 const { Text } = Typography;
@@ -18,9 +19,7 @@ export const MintBadgeCard = () => (
         />
       </Space>
 
-      <Text>
-        Mint your badge, watch it evolve as you contribute
-      </Text>
+      <Text>Mint your badge, watch it evolve as you contribute</Text>
       <Text type="secondary">To mint, connect a wallet</Text>
     </Space>
   </MintBadgeCardContainer>

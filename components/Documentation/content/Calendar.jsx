@@ -1,4 +1,5 @@
 import { Typography } from 'antd';
+
 import { DOCS_SECTIONS } from '../helpers';
 
 const { Title, Paragraph } = Typography;
@@ -11,8 +12,7 @@ export const Calendar = () => (
       Calendar is a community-created resource to show past and prior events in the Olas ecosytem.
     </Paragraph>
     <Paragraph>
-      To propose an event, follow the instructions in the
-      {' '}
+      To propose an event, follow the instructions in the{' '}
       <a
         href="https://github.com/valory-xyz/autonolas-contribution-service-frontend#contribution-service-frontend"
         target="_blank"
@@ -22,6 +22,5 @@ export const Calendar = () => (
       </a>
       .
     </Paragraph>
-
   </div>
 );

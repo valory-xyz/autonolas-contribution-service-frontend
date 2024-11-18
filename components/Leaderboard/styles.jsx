@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 import { Card } from 'antd';
+import styled from 'styled-components';
+
+import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 export const HomeContainer = styled.div``;
 
@@ -77,7 +78,7 @@ export const TwitterCard = styled(Card)`
 
     &::before,
     &::after {
-      display: none
+      display: none;
     }
   }
 `;

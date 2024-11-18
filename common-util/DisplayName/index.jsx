@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+
 import { truncateAddress } from 'common-util/functions';
 
 const DisplayName = ({ actorAddress, username }) => (
-  <Link href={`/profile/${actorAddress}`}>
-    {username || truncateAddress(actorAddress)}
-  </Link>
+  <Link href={`/profile/${actorAddress}`}>{username || truncateAddress(actorAddress)}</Link>
 );
 
 DisplayName.propTypes = {

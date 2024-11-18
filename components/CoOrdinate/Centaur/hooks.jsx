@@ -1,17 +1,18 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
+import { cloneDeep, isNil, set } from 'lodash';
 import { useRouter } from 'next/router';
-import { isNil, set, cloneDeep } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
-  areAddressesEqual,
-  // notifySuccess
+  areAddressesEqual, // notifySuccess
 } from '@autonolas/frontend-library';
 
+import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
+import { ethersToWei, formatToEth } from 'common-util/functions';
 import { setMemoryDetails } from 'store/setup';
 import { addActionToCentaur } from 'util/addActionToCentaur';
 import { DEFAULT_COORDINATE_ID, VEOLAS_QUORUM } from 'util/constants';
-import { getMemoryDetails, updateMemoryDetails } from 'common-util/api';
-import { ethersToWei, formatToEth } from 'common-util/functions';
+
 // import dummyMemory from './resetMemoryDetails.json';
 
 /**
@@ -29,9 +30,7 @@ import { ethersToWei, formatToEth } from 'common-util/functions';
 const useCentaurs = () => {
   const router = useRouter();
   const centaurId = router?.query?.id || DEFAULT_COORDINATE_ID;
-  const memoryDetailsList = useSelector(
-    (state) => state?.setup?.memoryDetails || [],
-  );
+  const memoryDetailsList = useSelector((state) => state?.setup?.memoryDetails || []);
   const currentMemoryDetails = memoryDetailsList.find((c) => c.id === centaurId) || {};
 
   return {
@@ -43,9 +42,7 @@ const useCentaurs = () => {
 export const useCentaursFunctionalities = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state?.setup?.account);
-  const isMemoryDetailsLoading = useSelector(
-    (state) => state?.setup?.isMemoryDetailsLoading,
-  );
+  const isMemoryDetailsLoading = useSelector((state) => state?.setup?.isMemoryDetailsLoading);
 
   const { currentMemoryDetails, memoryDetailsList } = useCentaurs();
 
@@ -82,11 +79,7 @@ export const useCentaursFunctionalities = () => {
 
     const updatedCurrentMemoryDetails = cloneDeep(currentMemoryDetails);
     // setting the updated tweet list in the memory
-    set(
-      updatedCurrentMemoryDetails,
-      'plugins_data.scheduled_tweet.tweets',
-      updatedTweetList,
-    );
+    set(updatedCurrentMemoryDetails, 'plugins_data.scheduled_tweet.tweets', updatedTweetList);
 
     return updatedCurrentMemoryDetails;
   };
@@ -155,10 +148,7 @@ export const useProposals = () => {
 
     // percentage of veolas invested in the proposal
     // limit it to 2 decimal places
-    const totalVeolasInvestedInPercentage = (
-      (totalVeolasInWei * 100n)
-      / quorumInWei
-    ).toString();
+    const totalVeolasInvestedInPercentage = ((totalVeolasInWei * 100n) / quorumInWei).toString();
 
     const isProposalVerified = proposal?.proposer?.verified;
 

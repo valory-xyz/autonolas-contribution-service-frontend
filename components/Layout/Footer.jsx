@@ -1,12 +1,14 @@
-import { Footer as CommonFooter } from '@autonolas/frontend-library';
 import { Typography } from 'antd';
+
+import { Footer as CommonFooter } from '@autonolas/frontend-library';
+
 import Socials from './Socials';
 
 const { Link, Text } = Typography;
 
 const Footer = () => (
   <CommonFooter
-    centerContent={(
+    centerContent={
       <>
         <div className="mb-12">
           <Text type="secondary">
@@ -28,7 +30,7 @@ const Footer = () => (
           <Socials />
         </div>
       </>
-    )}
+    }
   />
 );
 

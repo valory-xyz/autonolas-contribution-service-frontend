@@ -1,38 +1,30 @@
-import { useState, useCallback } from 'react';
-import { useSignMessage } from 'wagmi';
-import { v4 as uuid } from 'uuid';
-import {
-  Button, Input, Row, Col, Typography,
-} from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Col, Input, Row, Typography } from 'antd';
+import { useCallback, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { useSignMessage } from 'wagmi';
+
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
-import {
-  HUNDRED_K_OLAS_IN_WEI,
-  MAX_TWEET_IMAGES,
-  MAX_TWEET_LENGTH,
-} from 'util/constants';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { Proposals } from './Proposals';
-import { checkVotingPower } from '../MembersList/requests';
+import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_IMAGES, MAX_TWEET_LENGTH } from 'util/constants';
+
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
-import { generateMediaHashes, getFirstTenCharsOfTweet } from './utils';
-import TweetLength from './TweetLength';
-import ThreadModal from './ThreadModal';
-import UploadButton from './UploadButton';
-import {
-  ProposalCountRow,
-  SocialPosterContainer,
-} from './styles';
+import { checkVotingPower } from '../MembersList/requests';
 import MediaList from './MediaList';
+import { Proposals } from './Proposals';
+import ThreadModal from './ThreadModal';
+import TweetLength from './TweetLength';
+import UploadButton from './UploadButton';
+import { ProposalCountRow, SocialPosterContainer } from './styles';
+import { generateMediaHashes, getFirstTenCharsOfTweet } from './utils';
 
 const { Text } = Typography;
 const { TextArea } = Input;
 
 const ToProposeTweetText = () => (
-  <Text type="secondary">
-    To propose a tweet, you must have at least 100k veOLAS voting power.
-  </Text>
+  <Text type="secondary">To propose a tweet, you must have at least 100k veOLAS voting power.</Text>
 );
 
 export const TweetPropose = () => {
@@ -56,15 +48,10 @@ export const TweetPropose = () => {
     setIsSubmitting(true);
 
     try {
-      const has100kVotingPower = await checkVotingPower(
-        account,
-        HUNDRED_K_OLAS_IN_WEI,
-      );
+      const has100kVotingPower = await checkVotingPower(account, HUNDRED_K_OLAS_IN_WEI);
 
       if (!isStaging && !has100kVotingPower) {
-        notifyError(
-          'You must have at least 100k veOLAS voting power to propose a tweet.',
-        );
+        notifyError('You must have at least 100k veOLAS voting power to propose a tweet.');
         return;
       }
 
@@ -106,11 +93,7 @@ export const TweetPropose = () => {
 
       const updatedMemoryDetails = await fetchUpdatedMemory();
 
-      await triggerAction(
-        currentMemoryDetails.id,
-        action,
-        updatedMemoryDetails,
-      );
+      await triggerAction(currentMemoryDetails.id, action, updatedMemoryDetails);
       notifySuccess('Tweet proposed');
 
       // reset form
@@ -154,16 +137,10 @@ export const TweetPropose = () => {
         <TweetLength tweet={tweet} />
         <Row>
           <UploadButton
-            disabled={
-              !account || isSubmitting || media.length >= MAX_TWEET_IMAGES
-            }
+            disabled={!account || isSubmitting || media.length >= MAX_TWEET_IMAGES}
             onUploadMedia={(newMedia) => setMedia((prev) => [...prev, newMedia])}
           />
-          <Button
-            type="link"
-            disabled={!canSubmit}
-            onClick={() => setIsThreadModalVisible(true)}
-          >
+          <Button type="link" disabled={!canSubmit} onClick={() => setIsThreadModalVisible(true)}>
             <PlusCircleOutlined />
             &nbsp;Start thread
           </Button>

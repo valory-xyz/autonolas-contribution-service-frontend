@@ -1,9 +1,7 @@
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Col, Popover, Row, Typography } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import {
-  Col, Popover, Row, Typography,
-} from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
 
 import { getEducationItemByComponent } from 'common-util/functions';
 
@@ -28,12 +26,7 @@ PopoverContent.propTypes = {
   }).isRequired,
 };
 
-export const EducationTitle = ({
-  title,
-  level,
-  educationItemSlug,
-  marginBottom,
-}) => {
+export const EducationTitle = ({ title, level, educationItemSlug, marginBottom }) => {
   const educationItem = getEducationItemByComponent(educationItemSlug);
 
   return (

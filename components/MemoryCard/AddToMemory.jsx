@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import { Button, Modal, Input } from 'antd';
-import { SaveOutlined, PlusOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
-export const AddToMemory = ({
-  updateMemoryAndOwnership,
-  addMemoryErrorMsg,
-}) => {
+export const AddToMemory = ({ updateMemoryAndOwnership, addMemoryErrorMsg }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(null);
@@ -61,11 +58,7 @@ export const AddToMemory = ({
             </Button>,
           ]}
         >
-          <Input.TextArea
-            rows={12}
-            onChange={(e) => setInput(e.target.value)}
-            value={input}
-          />
+          <Input.TextArea rows={12} onChange={(e) => setInput(e.target.value)} value={input} />
         </Modal>
       )}
     </>

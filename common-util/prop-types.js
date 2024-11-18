@@ -27,9 +27,7 @@ export const ProposalPropTypes = PropTypes.shape({
 
   // tweet = the `text` is string
   // thread = the `text` is array of string (array of tweets)
-  text: PropTypes.oneOfType(
-    [PropTypes.string, PropTypes.arrayOf(PropTypes.string)],
-  ).isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 
   // if the tweet is posted
   posted: PropTypes.bool.isRequired,

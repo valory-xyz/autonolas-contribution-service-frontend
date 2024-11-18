@@ -1,19 +1,23 @@
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
-import { COLOR } from '@autonolas/frontend-library';
 
 /** wagmi config */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
+import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 import { WagmiProvider, cookieToInitialState } from 'wagmi';
-import { createWeb3Modal } from '@web3modal/wagmi/react'; /* eslint-disable-line import/no-unresolved */
+
+import { COLOR } from '@autonolas/frontend-library';
+
+/* eslint-disable-line import/no-unresolved */
 import { wagmiConfig } from 'common-util/Login/config';
+import Meta from 'common-util/meta';
 
 /** antd theme config */
 import GlobalStyle from 'components/GlobalStyles';
-import Meta from 'common-util/meta';
-import dynamic from 'next/dynamic';
 import { ThemeConfigProvider } from 'context/ConfigProvider';
+
 import client from '../apolloClient';
 import { store } from '../store';
 
@@ -23,7 +27,6 @@ const queryClient = new QueryClient();
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
 
-// eslint-disable-next-line jest/require-hook
 createWeb3Modal({
   wagmiConfig,
   projectId,
@@ -61,8 +64,7 @@ const ContributeApp = ({ Component, pageProps }) => {
 };
 
 ContributeApp.propTypes = {
-  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})])
-    .isRequired,
+  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]).isRequired,
   pageProps: PropTypes.shape({}).isRequired,
 };
 

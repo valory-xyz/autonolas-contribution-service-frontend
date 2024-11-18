@@ -1,10 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Head from 'next/head';
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import { META_TAGS_INFO } from 'util/constants';
 
 const Meta = ({ meta }) => {
-  const metaInfo = {...META_TAGS_INFO, ...(meta || {})}; 
+  const metaInfo = { ...META_TAGS_INFO, ...(meta || {}) };
 
   return (
     <Head>
@@ -21,7 +22,11 @@ const Meta = ({ meta }) => {
       <meta property="twitter:card" content="summary_large_image" key="twitter:card" />
       <meta property="twitter:url" content={metaInfo.siteUrl} key="twitter:url" />
       <meta property="twitter:title" content={metaInfo.title} key="twitter:title" />
-      <meta property="twitter:description" content={metaInfo.description} key="twitter:description" />
+      <meta
+        property="twitter:description"
+        content={metaInfo.description}
+        key="twitter:description"
+      />
       <meta property="twitter:image" content={metaInfo.image} key="twitter:image" />
     </Head>
   );

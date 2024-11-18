@@ -1,26 +1,19 @@
+import { base, goerli, mainnet } from 'viem/chains';
 import Web3 from 'web3';
-import { mainnet, goerli, base } from 'viem/chains';
-import {
-  MINT_NFT_CONTRACT_ADDRESS_GOERLI,
-  MINT_NFT_CONTRACT_ABI_GOERLI,
-  MINT_NFT_CONTRACT_ADDRESS_MAINNET,
-  MINT_NFT_CONTRACT_ABI_MAINNET,
 
-  // veOlas
+import {
+  CONTRIBUTE_MANAGER_ABI, // Contribute manager
+  CONTRIBUTE_MANAGER_ADDRESS_BASE,
+  DELEGATE_CONTRIBUTE_ABI, // delegateContribute
+  DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
+  MINT_NFT_CONTRACT_ABI_GOERLI,
+  MINT_NFT_CONTRACT_ABI_MAINNET,
+  MINT_NFT_CONTRACT_ADDRESS_GOERLI,
+  MINT_NFT_CONTRACT_ADDRESS_MAINNET,
+  VEOLAS_ABI, // veOlas
   VEOLAS_ADDRESS_GOERLI,
   VEOLAS_ADDRESS_MAINNET,
-
-  // delegateContribute
-  DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
-  DELEGATE_CONTRIBUTE_ABI,
-
-  // Contribute manager
-  CONTRIBUTE_MANAGER_ADDRESS_BASE,
-  CONTRIBUTE_MANAGER_ABI,
-
-  VEOLAS_ABI,
 } from 'common-util/AbiAndAddresses';
-
 import { getChainId, getProvider } from 'common-util/functions';
 
 const ADDRESSES = {
@@ -60,9 +53,7 @@ export const getMintContract = () => {
   }
 
   const contract = getContract(
-    chainId === 5
-      ? MINT_NFT_CONTRACT_ABI_GOERLI
-      : MINT_NFT_CONTRACT_ABI_MAINNET,
+    chainId === 5 ? MINT_NFT_CONTRACT_ABI_GOERLI : MINT_NFT_CONTRACT_ABI_MAINNET,
     ADDRESSES[chainId].mintNft,
   );
 

@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import {
-  Button, Modal, Form, Input, Tooltip,
-} from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+
+import { areAddressesEqual } from '@autonolas/frontend-library';
 
 import useOrbis from 'common-util/hooks/useOrbis';
-import { areAddressesEqual } from '@autonolas/frontend-library';
 
 export const UpdateUsername = ({ loadOrbisProfile, id }) => {
   const [updateNameModalVisible, setUpdateNameModalVisible] = useState(false);
-  const {
-    updateUsername, address: orbisAddress, isLoading, profile,
-  } = useOrbis();
+  const { updateUsername, address: orbisAddress, isLoading, profile } = useOrbis();
   const [form] = Form.useForm();
 
   const handleUpdateUsername = async (values) => {
@@ -39,11 +36,19 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
 
   return (
     <>
-      <Tooltip title={!isIdAndOrbisProfileMatch ? 'To update, you must be signed in to Orbis with the owner wallet' : ''}>
-        <Button className="mb-24" onClick={() => setUpdateNameModalVisible(true)} disabled={!isIdAndOrbisProfileMatch}>
-          <EditOutlined />
-          {' '}
-          Update name
+      <Tooltip
+        title={
+          !isIdAndOrbisProfileMatch
+            ? 'To update, you must be signed in to Orbis with the owner wallet'
+            : ''
+        }
+      >
+        <Button
+          className="mb-24"
+          onClick={() => setUpdateNameModalVisible(true)}
+          disabled={!isIdAndOrbisProfileMatch}
+        >
+          <EditOutlined /> Update name
         </Button>
       </Tooltip>
       <Modal
@@ -53,11 +58,7 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
         onCancel={() => setUpdateNameModalVisible(false)}
         okButtonProps={{ loading: isLoading }}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{ username: profile?.username }}
-        >
+        <Form form={form} layout="vertical" initialValues={{ username: profile?.username }}>
           <Form.Item
             name="username"
             rules={[{ required: true, message: 'Please input your new username!' }]}

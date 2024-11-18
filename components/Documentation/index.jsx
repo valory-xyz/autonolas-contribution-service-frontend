@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Anchor, Typography, Grid } from 'antd';
+import { Anchor, Grid, Typography } from 'antd';
 import { get } from 'lodash';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-import { Overview } from './content/Overview';
 import { ActionsDocs } from './content/Actions';
+import { Calendar } from './content/Calendar';
+import { HowItWorks } from './content/HowItWorks';
 // import { Badge } from './content/3_Badge';
 import { Leaderboard } from './content/Leaderboard';
-import { HowItWorks } from './content/HowItWorks';
-import { Calendar } from './content/Calendar';
-import { DOC_NAV, NavWrapper } from './helpers';
+import { Overview } from './content/Overview';
+import { Proposals } from './content/Proposals';
+import { Roadmap } from './content/Roadmap';
 // import { Members } from './content/Members';
 // import { Chatbot } from './content/Chatbot';
 // import { Memory } from './content/Memory';
 import { Tweet } from './content/Tweet';
-import { Proposals } from './content/Proposals';
-import { Roadmap } from './content/Roadmap';
+import { DOC_NAV, NavWrapper } from './helpers';
 // import Predict from './content/Predict';
 import { Container, DocSection } from './styles';
 

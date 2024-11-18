@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 
 // const GlobalStyles = styled.div`

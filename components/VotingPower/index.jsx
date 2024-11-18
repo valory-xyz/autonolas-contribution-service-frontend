@@ -1,10 +1,12 @@
-import { Button, Dropdown, Grid } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Grid } from 'antd';
+
 import { useHelpers } from 'common-util/hooks/useHelpers';
-// import { VerticalDivider } from './styles';
-import { formatWeiBalance } from './utils';
+
 import DelegateMenu from './DelegateMenu';
 import { useFetchVotingPower } from './hooks';
+// import { VerticalDivider } from './styles';
+import { formatWeiBalance } from './utils';
 
 const { useBreakpoint } = Grid;
 
@@ -24,17 +26,10 @@ const VotingPower = () => {
         placement="bottomRight"
         arrow
         trigger="click"
-        overlay={(
-          <DelegateMenu
-            votingPower={votingPower}
-            refetchVotingPower={refetchVotingPower}
-          />
-        )}
+        overlay={<DelegateMenu votingPower={votingPower} refetchVotingPower={refetchVotingPower} />}
       >
         <Button type="text">
-          Voting power:
-          {' '}
-          {formatWeiBalance(votingPower)}
+          Voting power: {formatWeiBalance(votingPower)}
           <EditOutlined />
         </Button>
       </Dropdown>

@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Alert, Button, Col, Row, Typography } from 'antd';
+import get from 'lodash/get';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  Typography, Col, Row, Button, Alert,
-} from 'antd';
-import get from 'lodash/get';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { setIsVerified } from 'store/setup';
-import Login from '../Login';
+
 import { getAddressStatus } from '../Layout/utils';
-import { verifyAddress, isRouteValid } from './utils';
+import Login from '../Login';
+import { isRouteValid, verifyAddress } from './utils';
 
 const { Title, Text } = Typography;
 
@@ -27,10 +27,9 @@ const checkmark = '✅';
 const VerificationDisclaimer = () => (
   <Text type="secondary">
     <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
-    By connecting and/or verifying your information (including your Discord,
-    Twitter and wallet address details) you are creating public information. In
-    particular, the leaderboard functionality will display a link between your
-    provided Discord and Twitter handles.
+    By connecting and/or verifying your information (including your Discord, Twitter and wallet
+    address details) you are creating public information. In particular, the leaderboard
+    functionality will display a link between your provided Discord and Twitter handles.
   </Text>
 );
 
@@ -66,14 +65,11 @@ const Verification = () => {
       <Alert
         type="error"
         showIcon
-        message={(
+        message={
           <Text>
-            Invalid verification link. Please
-            {' '}
-            <a href="/verification">try again</a>
-            .
+            Invalid verification link. Please <Link href="/verification">try again</Link>.
           </Text>
-        )}
+        }
         style={{ marginTop: '2rem' }}
       />
     );

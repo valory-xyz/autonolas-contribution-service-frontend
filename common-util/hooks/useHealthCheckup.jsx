@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const POLLING_TYPE = {
   STANDARD: 'standard',
@@ -7,30 +7,24 @@ const POLLING_TYPE = {
 
 const fetchUrl = (URL) => fetch(URL).then((response) => response.json());
 
-export const useHealthCheckup = (
-  apiEndpoint,
-  pollingInterval,
-  pollingCallback,
-) => {
+export const useHealthCheckup = (apiEndpoint, pollingInterval, pollingCallback) => {
   const [isServiceHealthy, setIsServiceHealthy] = useState(false);
 
   // polling type will be decided based on the health of the service
   const [pollingType, setPollingType] = useState(null);
 
   // function to fetch data from the API
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await fetchUrl(apiEndpoint);
       const isHealthy = !!response.is_transitioning_fast;
 
       setIsServiceHealthy(isHealthy);
-      setPollingType(
-        isHealthy ? POLLING_TYPE.STANDARD : POLLING_TYPE.DISRUPTED,
-      );
+      setPollingType(isHealthy ? POLLING_TYPE.STANDARD : POLLING_TYPE.DISRUPTED);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [apiEndpoint]);
 
   // Trigger polling at the specified interval
   useEffect(() => {
@@ -49,12 +43,12 @@ export const useHealthCheckup = (
     );
 
     return () => clearInterval(interval);
-  }, [isServiceHealthy, pollingType]);
+  }, [fetchData, isServiceHealthy, pollingCallback, pollingInterval, pollingType]);
 
   // Initial fetch of data (1st render)
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return [isServiceHealthy];
 };

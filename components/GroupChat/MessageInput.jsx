@@ -1,11 +1,10 @@
-import React from 'react';
-import {
-  Input, Row, Col, Typography, Button, Form,
-} from 'antd';
 import { SendOutlined } from '@ant-design/icons';
+import { Button, Col, Form, Input, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 import { useHelpers } from 'common-util/hooks/useHelpers';
+
 import { StyledGroupChat } from './styles';
 
 const { TextArea } = Input;
@@ -33,11 +32,7 @@ export const MessageInput = ({
           }
         }}
       >
-        <Row
-          gutter={[16, 16]}
-          className="w-100"
-          style={{ display: 'flex', alignItems: 'center' }}
-        >
+        <Row gutter={[16, 16]} className="w-100" style={{ display: 'flex', alignItems: 'center' }}>
           <Col flex="auto">
             <Form.Item name="messageContent">
               <TextArea rows={1} className="w-100" disabled={isSending} />
@@ -50,24 +45,18 @@ export const MessageInput = ({
                 disabled={!account || !isOrbisConnected}
                 loading={isSending}
               >
-                {!loadingInitial && <SendOutlined />}
-                {' '}
-                Send
+                {!loadingInitial && <SendOutlined />} Send
               </Button>
             </Form.Item>
           </Col>
         </Row>
       </Form>
       <Text type="secondary">
-        {!account && !isOrbisConnected && (
-          'To send messages, connect your wallet and sign in to Orbis'
-        )}
-        {account && !isOrbisConnected && (
-          'To send messages, sign in to Orbis'
-        )}
-        {!account && isOrbisConnected && (
-          'To send messages, connect your wallet'
-        )}
+        {!account &&
+          !isOrbisConnected &&
+          'To send messages, connect your wallet and sign in to Orbis'}
+        {account && !isOrbisConnected && 'To send messages, sign in to Orbis'}
+        {!account && isOrbisConnected && 'To send messages, connect your wallet'}
       </Text>
     </StyledGroupChat>
   );

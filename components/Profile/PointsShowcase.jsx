@@ -1,13 +1,10 @@
-import {
-  useEffect, useState, useMemo, useRef, useCallback,
-} from 'react';
+import { Card, Col, Row, Spin, Typography } from 'antd';
+import Link from 'next/link';
 import Script from 'next/script';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import {
-  Card, Spin, Row, Col, Typography,
-} from 'antd';
+
 import { shuffleArray } from './utils';
 
 const MAX_TWEETS_SHOWN = 2;
@@ -34,9 +31,7 @@ const NoTweetsText = styled(Paragraph)`
   max-width: 400px;
 `;
 
-const TweetEmbed = ({
-  points, tweetId, isScriptReady, isError, onError,
-}) => {
+const TweetEmbed = ({ points, tweetId, isScriptReady, isError, onError }) => {
   const isLoaded = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,7 +51,7 @@ const TweetEmbed = ({
     } catch {
       onError();
     }
-  }, [tweetId]);
+  }, [onError, tweetId]);
 
   useEffect(() => {
     // Observe changes inside the tweet node,
@@ -186,17 +181,13 @@ export const PointsShowcase = ({ tweetsData }) => {
         </>
       ) : (
         <NoTweetsText type="secondary" className="mt-12">
-          No tweets found. Connect your Twitter account and start completing
-          {' '}
-          <Link href="/leaderboard">actions</Link>
-          {' '}
-          to earn more points
+          No tweets found. Connect your Twitter account and start completing{' '}
+          <Link href="/leaderboard">actions</Link> to earn more points
         </NoTweetsText>
       )}
     </>
   );
 };
-
 
 const TweetShape = {
   epoch: PropTypes.number,

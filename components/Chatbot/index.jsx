@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import {
-  Input, Button, List, Space, Drawer, Card, Row, Col,
-} from 'antd';
 import { SendOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Drawer, Input, List, Row, Space } from 'antd';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+
 import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import MemoryCard from '../MemoryCard';
+
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
+import MemoryCard from '../MemoryCard';
 import { ApiKeyModal } from './ApiKeyModal';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
@@ -37,7 +37,7 @@ const Chatbot = ({ name }) => {
     if (storedApiKey) {
       setApiKey(storedApiKey);
     }
-  }, []);
+  }, [memory]);
 
   const handleApiKeyChange = (e) => {
     setApiKey(e.target.value);
@@ -98,9 +98,7 @@ const Chatbot = ({ name }) => {
       ]);
     } catch (error) {
       console.error(error);
-      notifyError(
-        'Error sending the message. Please check your API key and try again.',
-      );
+      notifyError('Error sending the message. Please check your API key and try again.');
     } finally {
       setInputMessage('');
       setLoading(false);
@@ -112,9 +110,7 @@ const Chatbot = ({ name }) => {
       <Col xs={24} md={12}>
         <Card
           title={<EducationTitle title="Chatbot" educationItem="chatbot" />}
-          extra={
-            <Button onClick={() => setDrawerOpen(true)}>Edit memory</Button>
-          }
+          extra={<Button onClick={() => setDrawerOpen(true)}>Edit memory</Button>}
         >
           <Space direction="vertical" className="chatbot-body-container">
             <Input
@@ -144,9 +140,7 @@ const Chatbot = ({ name }) => {
             </Space>
             <List
               locale={{
-                emptyText: `Send your first message${
-                  name ? ` to ${name}` : ''
-                }!`,
+                emptyText: `Send your first message${name ? ` to ${name}` : ''}!`,
               }}
               dataSource={messages
                 .filter((e) => e.role !== 'system')

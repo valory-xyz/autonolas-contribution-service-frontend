@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { List } from 'antd';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import { areAddressesEqual } from '@autonolas/frontend-library';
 
 export const Conversations = ({ isLoading, messages }) => {
   const account = useSelector((state) => state?.setup?.account);
+
+  const messagesLength = (messages || []).length;
 
   useEffect(() => {
     if (document) {
@@ -14,7 +17,7 @@ export const Conversations = ({ isLoading, messages }) => {
         listDiv.scrollTop = listDiv.scrollHeight;
       }
     }
-  }, [(messages || []).length]);
+  }, [messagesLength]);
 
   return (
     <List
@@ -29,9 +32,7 @@ export const Conversations = ({ isLoading, messages }) => {
           return { ...e, role: 'Member' };
         })}
       renderItem={(item) => (
-        <List.Item
-          className={areAddressesEqual(item.address, account) ? 'bot-chat' : ''}
-        >
+        <List.Item className={areAddressesEqual(item.address, account) ? 'bot-chat' : ''}>
           <List.Item.Meta title={item.role} description={item.message}>
             {item.message}
           </List.Item.Meta>
