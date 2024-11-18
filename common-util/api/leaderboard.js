@@ -3,18 +3,18 @@ import { TileDocument } from '@ceramicnetwork/stream-tile';
 import { DID } from 'dids';
 import { Ed25519Provider } from 'key-did-provider-ed25519';
 import { getResolver } from 'key-did-resolver';
+import { cloneDeep, get } from 'lodash';
 import { fromString } from 'uint8arrays';
-import { get, cloneDeep } from 'lodash';
 
 const API_URL = 'https://ceramic-valory.hirenodes.io';
 const CERAMIC_OBJECT = new CeramicClient(API_URL);
-
 
 export const getLeaderboardList = async () => {
   const response = await TileDocument.load(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID);
   const users = get(response, 'content.users') || [];
 
-  const usersList = Object.values(users).filter((e) => !!e.wallet_address)
+  const usersList = Object.values(users)
+    .filter((e) => !!e.wallet_address)
     .filter((e) => e.points !== 0)
     .map((user, index) => ({
       ...user,
@@ -26,20 +26,15 @@ export const getLeaderboardList = async () => {
 };
 
 export const updateUserStakingData = async (twitterId, multisig, serviceId) => {
-  const provider = new Ed25519Provider(
-    fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'),
-  );
+  const provider = new Ed25519Provider(fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'));
   const did = new DID({ provider, resolver: getResolver() });
   // Authenticate the DID with the provider
   await did.authenticate();
   // The Ceramic client can create and update streams using the authenticated DID
   CERAMIC_OBJECT.did = did;
 
-  const response = await TileDocument.load(
-    CERAMIC_OBJECT,
-    process.env.NEXT_PUBLIC_STREAM_ID,
-  );
-  
+  const response = await TileDocument.load(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID);
+
   const newContent = cloneDeep(response.content);
 
   // Find a user by the provided twitterId
@@ -55,4 +50,3 @@ export const updateUserStakingData = async (twitterId, multisig, serviceId) => {
   // Update the data
   await response.update(newContent);
 };
-

@@ -35,5 +35,5 @@ export const EachThreadContainer = styled.div`
 `;
 
 export const Media = styled(Image)`
-  object-fit:  contain;
+  object-fit: contain;
 `;

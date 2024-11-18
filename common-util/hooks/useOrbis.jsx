@@ -1,17 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getProvider,
-  notifyError,
-  notifySuccess,
-} from '@autonolas/frontend-library';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
+import { getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
+
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, {
-  ORBIS_SUPPORTED_CHAIN,
-  //  checkOrbisNegativeStatus,
+  ORBIS_SUPPORTED_CHAIN, //  checkOrbisNegativeStatus,
   checkOrbisStatus,
 } from 'common-util/orbis';
 import { setOrbisConnection } from 'store/setup';
@@ -43,22 +39,25 @@ const useOrbis = () => {
     setIsLoading(state);
   };
 
-  const updateOrbisConnectionState = useCallback(async (updatedConnection) => {
-    setLoadingState(true);
-    const res = await orbis.isConnected();
+  const updateOrbisConnectionState = useCallback(
+    async (updatedConnection) => {
+      setLoadingState(true);
+      const res = await orbis.isConnected();
 
-    if (checkOrbisStatus(res?.status)) {
-      const positiveConnection = updatedConnection || res;
-      dispatch(setOrbisConnection(positiveConnection));
+      if (checkOrbisStatus(res?.status)) {
+        const positiveConnection = updatedConnection || res;
+        dispatch(setOrbisConnection(positiveConnection));
+        setLoadingState(false);
+        return positiveConnection;
+      }
+
+      const negativeConnection = null;
+      dispatch(setOrbisConnection(negativeConnection));
       setLoadingState(false);
-      return positiveConnection;
-    }
-
-    const negativeConnection = null;
-    dispatch(setOrbisConnection(negativeConnection));
-    setLoadingState(false);
-    return null;
-  }, [dispatch]);
+      return null;
+    },
+    [dispatch],
+  );
 
   const connect = useCallback(async () => {
     setLoadingState(true);
@@ -138,31 +137,34 @@ const useOrbis = () => {
   const profile = connection?.details?.profile || null;
   const address = connection?.details?.metadata?.address || null;
 
-  const updateUsername = useCallback(async (username) => {
-    setLoadingState(true);
+  const updateUsername = useCallback(
+    async (username) => {
+      setLoadingState(true);
 
-    if (!username) {
-      console.error(messages.usernameRequiredError);
+      if (!username) {
+        console.error(messages.usernameRequiredError);
+        setLoadingState(false);
+        return null;
+      }
+
+      const res = await orbis.updateProfile({ username });
+
+      if (checkOrbisStatus(res?.status)) {
+        const updatedConnection = {
+          ...connection,
+          details: { ...connection.details, profile: { username } },
+        };
+        await updateOrbisConnectionState(updatedConnection);
+        notifySuccess(messages.updateUsernameSuccess);
+      } else {
+        notifyError(messages.updateUsernameError);
+        console.error('Error updating username:', res);
+      }
       setLoadingState(false);
-      return null;
-    }
-
-    const res = await orbis.updateProfile({ username });
-
-    if (checkOrbisStatus(res?.status)) {
-      const updatedConnection = {
-        ...connection,
-        details: { ...connection.details, profile: { username } },
-      };
-      await updateOrbisConnectionState(updatedConnection);
-      notifySuccess(messages.updateUsernameSuccess);
-    } else {
-      notifyError(messages.updateUsernameError);
-      console.error('Error updating username:', res);
-    }
-    setLoadingState(false);
-    return res;
-  }, [connection, updateOrbisConnectionState]);
+      return res;
+    },
+    [connection, updateOrbisConnectionState],
+  );
 
   return {
     connect,

@@ -1,25 +1,21 @@
-import { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { isNil, last } from 'lodash';
-import {
-  Button, Typography, Popconfirm, Alert, Result,
-} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Alert, Button, Popconfirm, Result, Typography } from 'antd';
+import { isNil, last } from 'lodash';
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+
 import { COLOR } from '@autonolas/frontend-library';
 
-import { ProposalPropTypes } from 'common-util/prop-types';
 import { useHelpers } from 'common-util/hooks/useHelpers';
+import { ProposalPropTypes } from 'common-util/prop-types';
+
 import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
 
 const TweetValidating = () => (
   <>
-    <Alert
-      type="warning"
-      message="Validating approvals and quorum amount…"
-      showIcon
-    />
+    <Alert type="warning" message="Validating approvals and quorum amount…" showIcon />
     <br />
   </>
 );
@@ -47,10 +43,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   } = getCurrentProposalInfo(proposal);
 
   const isPosted = proposal?.posted;
-  const executionAttempts = useMemo(
-    () => proposal?.executionAttempts || [],
-    [proposal],
-  );
+  const executionAttempts = useMemo(() => proposal?.executionAttempts || [], [proposal]);
 
   // If the last execution attempt is "null" & the proposal is not posted,
   // it means the proposal is BEING VALIDATED
@@ -104,9 +97,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
           ghost
           type="primary"
           loading={isExecuteLoading}
-          disabled={
-            !account || !isQuorumAchieved || !isProposalVerified || isValidating
-          }
+          disabled={!account || !isQuorumAchieved || !isProposalVerified || isValidating}
           className="mb-12"
         >
           Execute & post tweet

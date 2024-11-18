@@ -1,7 +1,9 @@
 /* eslint-disable import/no-unresolved */
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { create } from 'ipfs-http-client';
 import { base32 } from 'multiformats/bases/base32';
+
 import { GATEWAY_URL } from 'util/constants';
 
 export const getFirstTenCharsOfTweet = (tweetOrThread) => {
@@ -61,9 +63,8 @@ export const getMediaSrc = (hashWithExtension) => {
   return `${GATEWAY_URL}${hash}`;
 };
 
-const handleFulfilled = (items) => items
-  .filter((item) => item.status === 'fulfilled')
-  .map((item) => item.value);
+const handleFulfilled = (items) =>
+  items.filter((item) => item.status === 'fulfilled').map((item) => item.value);
 
 export const generateMediaHashes = async (tweetOrThread) => {
   try {

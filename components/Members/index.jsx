@@ -1,5 +1,7 @@
 import { Col, Row } from 'antd';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+
 import { MembersList } from '../MembersList';
 
 const Members = () => (

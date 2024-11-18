@@ -1,19 +1,14 @@
-import { useRef } from 'react';
+import { FileImageOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import PropTypes from 'prop-types';
-import { FileImageOutlined } from '@ant-design/icons';
+import { useRef } from 'react';
 
 const SUPPORTED_FILE_TYPES = ['image/jpeg', 'image/png'];
 const MAX_IMAGE_SIZE_IN_MB = 5;
 const MAX_IMAGE_SIZE = MAX_IMAGE_SIZE_IN_MB * 1024 * 1024;
 const ACCEPT = SUPPORTED_FILE_TYPES.join(',');
 
-const UploadButton = ({
-  disabled,
-  title,
-  onUploadMedia,
-  ...rest
-}) => {
+const UploadButton = ({ disabled, title, onUploadMedia, ...rest }) => {
   const inputRef = useRef();
 
   const handleFileInputChange = async (e) => {

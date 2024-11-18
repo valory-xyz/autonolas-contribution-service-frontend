@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { orderBy, lowerCase } from 'lodash';
+import { lowerCase, orderBy } from 'lodash';
 
 const initialState = {
   account: null,
@@ -55,10 +55,11 @@ export const setupSlice = createSlice({
       const leaderboard = action.payload;
 
       // orderBy (sort) 1. points, 2. name
-      const values = orderBy(leaderboard, [
-        (e) => parseInt(e.points, 10),
-        (e) => lowerCase(e.name),
-      ], ['desc', 'asc']);
+      const values = orderBy(
+        leaderboard,
+        [(e) => parseInt(e.points, 10), (e) => lowerCase(e.name)],
+        ['desc', 'asc'],
+      );
 
       const rankedValues = [];
       values.forEach((e, index) => {
@@ -71,9 +72,7 @@ export const setupSlice = createSlice({
             ...e,
             rank:
               // if points are same as previous member, then same rank else add 1
-              previousMember.points === e.points
-                ? previousMember.rank
-                : previousMember.rank + 1,
+              previousMember.points === e.points ? previousMember.rank : previousMember.rank + 1,
           });
         }
       });

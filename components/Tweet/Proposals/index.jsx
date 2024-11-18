@@ -1,10 +1,9 @@
-import {
-  Alert, Card, List, Skeleton,
-} from 'antd';
+import { Alert, Card, List, Skeleton } from 'antd';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
-import { Proposal } from './Proposal';
+
 import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
+import { Proposal } from './Proposal';
 
 const ProposalLoader = () => (
   <>
@@ -21,9 +20,7 @@ const ProposalLoader = () => (
 export const Proposals = () => {
   const { isMemoryDetailsLoading: isLoading, currentMemoryDetails } = useCentaursFunctionalities();
   const proposals = currentMemoryDetails?.plugins_data?.scheduled_tweet?.tweets || [];
-  const sortedProposals = [...proposals].sort(
-    (a, b) => b.createdDate - a.createdDate,
-  );
+  const sortedProposals = [...proposals].sort((a, b) => b.createdDate - a.createdDate);
 
   return (
     <>

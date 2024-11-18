@@ -1,13 +1,14 @@
+import { readContract, waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { base } from 'wagmi/chains';
-import { readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
+
 import {
   CONTRIBUTE_MANAGER_ADDRESS_BASE,
-  OLAS_ADDRESS_BASE,
   OLAS_ABI,
+  OLAS_ADDRESS_BASE,
 } from 'common-util/AbiAndAddresses';
 import { getContributeManagerContract } from 'common-util/Contracts';
-import { getEstimatedGasLimit } from 'common-util/functions/requests';
 import { wagmiConfig } from 'common-util/Login/config';
+import { getEstimatedGasLimit } from 'common-util/functions/requests';
 
 // Value in wei that should be sent with CreateAndStake transaction
 // 1 wei for the service registration activation,
@@ -61,7 +62,10 @@ const approveOlasForManager = async ({ amountToApprove }) => {
       args: [CONTRIBUTE_MANAGER_ADDRESS_BASE, amountToApprove],
     });
     // Wait for the transaction receipt
-    const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: base.id, hash });
+    const receipt = await waitForTransactionReceipt(wagmiConfig, {
+      chainId: base.id,
+      hash,
+    });
     return receipt;
   } catch (error) {
     console.error('Error approving tokens:', error);
@@ -94,13 +98,23 @@ export const createAndStake = async ({ account, socialId, stakingInstance }) => 
   try {
     const contract = getContributeManagerContract();
     const createAndStakeFn = contract.methods.createAndStake(socialId, stakingInstance);
-    const estimatedGas = await getEstimatedGasLimit(createAndStakeFn, account, CREATE_AND_STAKE_VALUE);
-    const result = await createAndStakeFn
-      .send({ from: account, gas: estimatedGas, value: CREATE_AND_STAKE_VALUE });
-    const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: base.id, hash: result.transactionHash });
+    const estimatedGas = await getEstimatedGasLimit(
+      createAndStakeFn,
+      account,
+      CREATE_AND_STAKE_VALUE,
+    );
+    const result = await createAndStakeFn.send({
+      from: account,
+      gas: estimatedGas,
+      value: CREATE_AND_STAKE_VALUE,
+    });
+    const receipt = await waitForTransactionReceipt(wagmiConfig, {
+      chainId: base.id,
+      hash: result.transactionHash,
+    });
     return receipt;
   } catch (error) {
     console.error('Error creating and staking:', error);
-    throw error
+    throw error;
   }
 };

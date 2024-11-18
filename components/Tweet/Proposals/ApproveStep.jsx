@@ -1,17 +1,17 @@
+import { Button, Card, Progress, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import {
-  Button, Typography, Card, Progress,
-} from 'antd';
+import { useMemo } from 'react';
+
 import { NA } from '@autonolas/frontend-library';
 
-import { VEOLAS_QUORUM } from 'util/constants';
 import { getNumberInMillions } from 'common-util/functions';
-import { ProposalPropTypes } from 'common-util/prop-types';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { useMemo } from 'react';
+import { ProposalPropTypes } from 'common-util/prop-types';
+import { VEOLAS_QUORUM } from 'util/constants';
+
 import { useProposals } from '../../CoOrdinate/Centaur/hooks';
-import { ViewThread } from '../ViewThread';
 import MediaList, { MODE } from '../MediaList';
+import { ViewThread } from '../ViewThread';
 
 const { Text } = Typography;
 
@@ -38,7 +38,9 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
 
   const tweetData = useMemo(() => {
     if (typeof proposal?.text === 'string') {
-      return { tweet: { text: proposal.text, media: proposal?.media_hashes ?? [] } };
+      return {
+        tweet: { text: proposal.text, media: proposal?.media_hashes ?? [] },
+      };
     }
 
     if (Array.isArray(proposal?.text)) {
@@ -69,9 +71,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
             </Text>
           </>
         )}
-        {tweetData.thread && (
-          <ViewThread thread={tweetData.thread} />
-        )}
+        {tweetData.thread && <ViewThread thread={tweetData.thread} />}
       </Card>
 
       {hasVoted ? (
@@ -93,9 +93,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
       )}
 
       <div className="mb-12">
-        <div>
-          {`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}
-        </div>
+        <div>{`${getNumberInMillions(totalVeolasInEth)} veOLAS has approved`}</div>
         <div>
           {`Quorum ${canMoveToExecuteStep ? '' : 'not '} achieved ${
             canMoveToExecuteStep ? '✅ ' : ''

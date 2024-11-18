@@ -1,15 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
 import { Form, Skeleton, Typography } from 'antd';
-import { notifyError, COLOR } from '@autonolas/frontend-library';
 import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import orbis, { createPost } from 'common-util/orbis';
+import { COLOR, notifyError } from '@autonolas/frontend-library';
+
 // import { checkVeolasThreshold } from 'components/MembersList/requests';
 // import { ONE_IN_WEI } from 'util/constants';
 import useOrbis from 'common-util/hooks/useOrbis';
-import { GroupChatContainer, EmptyState, StyledMessageTwoTone } from './styles';
-import { MessageInput } from './MessageInput';
+import orbis, { createPost } from 'common-util/orbis';
+
 import { MessageGroups } from './MessageGroups';
+import { MessageInput } from './MessageInput';
+import { EmptyState, GroupChatContainer, StyledMessageTwoTone } from './styles';
 
 const { Text } = Typography;
 
@@ -37,59 +39,63 @@ export const GroupChat = () => {
   const { id } = router.query;
   const { isOrbisConnected } = useOrbis();
 
-  const groupMessages = (messages) => Object.entries(
-    messages.reduce((acc, msg, index, array) => {
-      // Group messages by creator address
-      const address = msg?.creator_details?.metadata?.address || 'unknown';
-      const { timestamp } = msg;
-      const date = new Date(timestamp * 1000);
-      const dateKey = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-      if (!acc[dateKey]) {
-        acc[dateKey] = [];
-      }
-      // Check if the current message is from a different sender than the previous message
-      const prevMsg = array[index - 1];
-      const prevAddress = prevMsg?.creator_details?.metadata?.address || 'unknown';
-      // If the current message is from a different sender
-      // than the previous message or it's the first message,
-      // start a new message group. Otherwise, add the
-      // message to the last group in the current date.
-      if (address !== prevAddress || index === 0) {
-        acc[dateKey].push({
-          address,
-          messages: [msg],
-        });
-      } else {
-        acc[dateKey][acc[dateKey].length - 1]?.messages.push(msg);
-      }
-      return acc;
-    }, {}),
-  );
-
-  const loadMessages = async (initialLoad = false) => {
-    if (!id) return;
-
-    if (initialLoad) setLoadingInitial(true);
-
-    const { data, error } = await orbis.getPosts(
-      {
-        context: id,
-      },
-      undefined,
-      undefined,
-      true,
+  const groupMessages = (messages) =>
+    Object.entries(
+      messages.reduce((acc, msg, index, array) => {
+        // Group messages by creator address
+        const address = msg?.creator_details?.metadata?.address || 'unknown';
+        const { timestamp } = msg;
+        const date = new Date(timestamp * 1000);
+        const dateKey = date.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+        if (!acc[dateKey]) {
+          acc[dateKey] = [];
+        }
+        // Check if the current message is from a different sender than the previous message
+        const prevMsg = array[index - 1];
+        const prevAddress = prevMsg?.creator_details?.metadata?.address || 'unknown';
+        // If the current message is from a different sender
+        // than the previous message or it's the first message,
+        // start a new message group. Otherwise, add the
+        // message to the last group in the current date.
+        if (address !== prevAddress || index === 0) {
+          acc[dateKey].push({
+            address,
+            messages: [msg],
+          });
+        } else {
+          acc[dateKey][acc[dateKey].length - 1]?.messages.push(msg);
+        }
+        return acc;
+      }, {}),
     );
 
-    const groupedMessages = groupMessages(data);
+  const loadMessages = useCallback(
+    async (initialLoad = false) => {
+      if (!id) return;
 
-    setOrbisMessages(groupedMessages);
-    if (error) {
-      console.error('Error loading messages:', error);
-      setOrbisMessagesError(error.message);
-    }
+      if (initialLoad) setLoadingInitial(true);
 
-    if (initialLoad) setLoadingInitial(false);
-  };
+      const { data, error } = await orbis.getPosts(
+        {
+          context: id,
+        },
+        undefined,
+        undefined,
+        true,
+      );
+
+      const groupedMessages = groupMessages(data);
+
+      setOrbisMessages(groupedMessages);
+      if (error) {
+        console.error('Error loading messages:', error);
+        setOrbisMessagesError(error.message);
+      }
+
+      if (initialLoad) setLoadingInitial(false);
+    },
+    [id],
+  );
 
   // Initial load of messages and poll for new messages every 5 seconds
   useEffect(() => {
@@ -100,7 +106,7 @@ export const GroupChat = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [id]);
+  }, [loadMessages, id]);
 
   useEffect(() => {
     if (messageWindowRef.current) {
@@ -154,8 +160,7 @@ export const GroupChat = () => {
         <>
           {loadingInitial && <Skeleton active />}
 
-          {orbisMessagesError
-            && `Error loading messages: ${orbisMessagesError}`}
+          {orbisMessagesError && `Error loading messages: ${orbisMessagesError}`}
 
           {hasMessages && !loadingInitial && (
             <div ref={messageWindowRef} className="group-chat-container">

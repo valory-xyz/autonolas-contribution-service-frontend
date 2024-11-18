@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setChainId } from 'store/setup';
+
 import { getChainId } from '../functions';
 
 export const useHelpers = () => {

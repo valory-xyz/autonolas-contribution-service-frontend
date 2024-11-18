@@ -1,12 +1,11 @@
-import React from 'react';
 import { Tooltip } from 'antd';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { truncateAddress } from './functions';
 
 function TruncatedEthereumLink({ text, isTransaction, className }) {
-  const etherscanLink = `https://etherscan.io/${
-    isTransaction ? 'tx' : 'address'
-  }/${text}`;
+  const etherscanLink = `https://etherscan.io/${isTransaction ? 'tx' : 'address'}/${text}`;
 
   return (
     <Tooltip title={text}>

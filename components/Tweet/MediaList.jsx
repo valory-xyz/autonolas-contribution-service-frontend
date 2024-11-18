@@ -1,9 +1,10 @@
-import { useMemo, Fragment } from 'react';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import { Col, Row } from 'antd';
 import PropTypes from 'prop-types';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { Fragment, useMemo } from 'react';
+
+import { Media, MediaDeleteButton, MediaWrapper } from './styles';
 import { getMediaSrc } from './utils';
-import { MediaWrapper, MediaDeleteButton, Media } from './styles';
 
 export const MODE = {
   VIEW: 'view',
@@ -72,18 +73,14 @@ MediaItem.defaultProps = {
   handleDelete: null,
 };
 
-const MediaList = ({
-  media, handleDelete, mode, className,
-}) => {
+const MediaList = ({ media, handleDelete, mode, className }) => {
   if (media.length === 0) return null;
 
   return (
     <Row gutter={[12, 12]} className={className}>
       {media.map((item) => {
         const key = typeof item === 'string' ? item : item.name;
-        return (
-          <MediaItem key={key} item={item} mode={mode} handleDelete={handleDelete} />
-        );
+        return <MediaItem key={key} item={item} mode={mode} handleDelete={handleDelete} />;
       })}
     </Row>
   );

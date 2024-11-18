@@ -6,22 +6,23 @@ const WALLET_STATUS = {
   linking: 'linking',
 };
 
-const pollStatus = async (url) => new Promise((resolve, reject) => {
-  const interval = setInterval(async () => {
-    try {
-      const response = await axios.get(url);
-      const walletStatus = response?.data?.status;
+const pollStatus = async (url) =>
+  new Promise((resolve, reject) => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await axios.get(url);
+        const walletStatus = response?.data?.status;
 
-      // if linking, poll the status
-      if (walletStatus !== WALLET_STATUS.linking) {
-        clearInterval(interval);
-        resolve(walletStatus === WALLET_STATUS.linked);
+        // if linking, poll the status
+        if (walletStatus !== WALLET_STATUS.linking) {
+          clearInterval(interval);
+          resolve(walletStatus === WALLET_STATUS.linked);
+        }
+      } catch (error) {
+        reject(error);
       }
-    } catch (error) {
-      reject(error);
-    }
-  }, 4000);
-});
+    }, 4000);
+  });
 
 export async function getAddressStatus(account) {
   return new Promise((resolve, reject) => {

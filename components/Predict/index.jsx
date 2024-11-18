@@ -1,6 +1,8 @@
-import React from 'react';
 import { Col, Row } from 'antd';
+import React from 'react';
+
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+
 import PredictionForm from './PredictionForm';
 import PredictionRequestsTable from './PredictionRequestsTable';
 

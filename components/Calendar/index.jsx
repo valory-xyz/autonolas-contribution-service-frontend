@@ -1,18 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import { Calendar, Card, Col, Grid, Row, Switch, Timeline, Typography } from 'antd';
 import moment from 'moment';
 import Link from 'next/link';
-import {
-  Switch,
-  Calendar,
-  Typography,
-  Row,
-  Col,
-  Timeline,
-  Card,
-  Grid,
-} from 'antd';
+import React, { Fragment, useState } from 'react';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+
 import events from './events.json';
 import { Cell } from './styles';
 
@@ -42,9 +34,7 @@ const CalendarComponent = () => {
 
   const dateCellRender = (value) => {
     // Generate a date from the timestamp and format it in the Chinese format
-    const listData = processedEvents.filter(
-      (event) => value.format('YYYY-MM-DD') === event.date,
-    );
+    const listData = processedEvents.filter((event) => value.format('YYYY-MM-DD') === event.date);
 
     return (
       <>
@@ -62,8 +52,7 @@ const CalendarComponent = () => {
   const monthCellRender = (value) => {
     // Filter events for the month
     const monthData = processedEvents.filter(
-      (event) => value.format('YYYY-MM')
-        === moment.unix(event.timestamp).format('YYYY-MM'),
+      (event) => value.format('YYYY-MM') === moment.unix(event.timestamp).format('YYYY-MM'),
     );
 
     return (
@@ -96,9 +85,7 @@ const CalendarComponent = () => {
             <Calendar cellRender={cellRender} />
             <div style={{ marginTop: '20px' }}>
               <Text>
-                For a full list of what has happened in the Olas ecosystem,
-                follow
-                {' '}
+                For a full list of what has happened in the Olas ecosystem, follow{' '}
                 <a
                   href="https://twitter.com/autonolas/status/1676576697863507968"
                   target="_blank"
@@ -117,10 +104,7 @@ const CalendarComponent = () => {
               Events
             </Title>
             <div className="mb-24">
-              <Switch
-                checked={hidePastEvents}
-                onChange={(checked) => setHidePastEvents(checked)}
-              />
+              <Switch checked={hidePastEvents} onChange={(checked) => setHidePastEvents(checked)} />
               <Text type="secondary">Hide past events</Text>
             </div>
 
@@ -132,17 +116,12 @@ const CalendarComponent = () => {
                 items={eventsList.map((event) => ({
                   children: (
                     <Fragment key={event.id}>
-                      <Link
-                        className="cell-text"
-                        href={`/calendar/events/${event.id}`}
-                      >
+                      <Link className="cell-text" href={`/calendar/events/${event.id}`}>
                         {event.title}
                       </Link>
                       <br />
                       <Text type="secondary">
-                        {moment
-                          .unix(event.timestamp)
-                          .format('HH:mm UTC · DD MMM YYYY')}
+                        {moment.unix(event.timestamp).format('HH:mm UTC · DD MMM YYYY')}
                       </Text>
                     </Fragment>
                   ),

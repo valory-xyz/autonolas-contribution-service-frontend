@@ -1,20 +1,17 @@
+import { Card, Flex, List, Skeleton, Statistic, Typography } from 'antd';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { Flex, Card, List, Skeleton, Statistic, Typography } from 'antd';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {
-  NA,
-  MEDIA_QUERY,
-  COLOR,
-  areAddressesEqual,
-} from '@autonolas/frontend-library';
 
-import { getName, getTier } from 'common-util/functions';
+import { COLOR, MEDIA_QUERY, NA, areAddressesEqual } from '@autonolas/frontend-library';
+
+import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { getLatestMintedNft } from 'common-util/api';
-import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
+import { getName, getTier } from 'common-util/functions';
+
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { PointsShowcase } from './PointsShowcase';
 import { Staking } from './Staking';
@@ -65,9 +62,7 @@ const ProfileBody = ({ profile, id }) => {
       try {
         setIsBadgeLoading(true);
 
-        const { details: badgeDetails } = await getLatestMintedNft(
-          profile?.wallet_address,
-        );
+        const { details: badgeDetails } = await getLatestMintedNft(profile?.wallet_address);
         setDetails(badgeDetails);
       } catch (error) {
         console.error(error);
@@ -115,7 +110,9 @@ const ProfileBody = ({ profile, id }) => {
                 )}
               </>
             )}
-            <Title level={5} className="mt-24">Details</Title>
+            <Title level={5} className="mt-24">
+              Details
+            </Title>
             <List bordered style={{ background: COLOR.WHITE }}>
               <List.Item>
                 <Flex vertical gap={8}>
@@ -133,19 +130,17 @@ const ProfileBody = ({ profile, id }) => {
           </div>
 
           <div>
-            <Title level={5}>
-              Leaderboard
-            </Title>
+            <Title level={5}>Leaderboard</Title>
             <Flex gap={96} className="mb-24">
               <Statistic
                 title="Tier"
                 value={profile.points ? getTier(profile.points) : NA}
-                formatter={value => <Text className="font-weight-600">{value}</Text>}
+                formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
               <Statistic
                 title="Points"
                 value={profile.points ?? NA}
-                formatter={value => <Text className="font-weight-600">{value}</Text>}
+                formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
             </Flex>
             <PointsShowcase tweetsData={profile.tweets} />
@@ -153,7 +148,7 @@ const ProfileBody = ({ profile, id }) => {
         </ProfileContent>
       </Card>
 
-      {account && areAddressesEqual(id, account) && <Staking profile={profile}/>}
+      {account && areAddressesEqual(id, account) && <Staking profile={profile} />}
     </Root>
   );
 };

@@ -1,17 +1,20 @@
+import { Alert, Layout, Menu } from 'antd';
 import styled from 'styled-components';
-import { Layout, Menu, Alert } from 'antd';
+
 import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+
 import { MENU_WIDTH } from 'util/constants';
 
 const BANNER_HEIGHT = 56;
 const HEADER_HEIGHT = 64;
 
 export const CustomLayout = styled(Layout)`
-  background: #F2F4F9;
+  background: #f2f4f9;
   /* filter: invert(0.95) hue-rotate(39deg); // uncomment this line for dark mode */
   .site-layout {
     padding: ${({ ispadded }) => (ispadded === 'true' ? '0' : ' 0 20px 40px 20px;')};
-    margin-top:${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
+    margin-top: ${({ isBannerVisible }) =>
+      isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`};
     .contribute-footer {
       > div {
         height: 100px;
@@ -108,7 +111,8 @@ export const CustomHeader = styled(Layout.Header)`
     display: flex;
     flex-direction: column;
     padding: 0;
-    max-height: ${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
+    max-height: ${({ isBannerVisible }) =>
+      isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`};
   }
 `;
 
@@ -120,11 +124,12 @@ export const CustomHeaderContent = styled.div`
   background-color: ${COLOR.WHITE};
   height: ${HEADER_HEIGHT}px;
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
-`
+`;
 
 export const CustomMenu = styled(Menu)`
   position: fixed;
-  top: ${({ isBannerVisible }) => (isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`)};
+  top: ${({ isBannerVisible }) =>
+    isBannerVisible === 'true' ? `${HEADER_HEIGHT + BANNER_HEIGHT}px` : `${HEADER_HEIGHT}px`};
   bottom: 0;
   left: 0;
   width: ${MENU_WIDTH}px;
@@ -135,7 +140,7 @@ export const CustomMenu = styled(Menu)`
     line-height: 40px;
     height: 40px;
     &:not(.ant-menu-item-selected) svg {
-      color: #606F85;
+      color: #606f85;
     }
   }
 `;

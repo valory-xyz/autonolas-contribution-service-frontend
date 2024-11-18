@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
 import { Col, Row, Typography } from 'antd';
+import { useSelector } from 'react-redux';
+
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { TwitterCard } from './styles';
-import { LeaderboardTable } from './LeaderboardTable'
 import { Campaigns } from './Campaigns';
+import { LeaderboardTable } from './LeaderboardTable';
+import { TwitterCard } from './styles';
 
 const { Text } = Typography;
 
@@ -15,9 +16,7 @@ const Leaderboard = () => {
       <Col xs={24} lg={14}>
         {!isVerified && (
           <TwitterCard>
-            <Text>
-              Connect Twitter and start earning points
-            </Text>
+            <Text>Connect Twitter and start earning points</Text>
             <ConnectTwitterModal />
           </TwitterCard>
         )}

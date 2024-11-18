@@ -1,11 +1,5 @@
 export const PoweredBy = () => (
-  <svg
-    width="150"
-    height="53"
-    viewBox="0 0 150 53"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="150" height="53" viewBox="0 0 150 53" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="150" height="53" rx="5" fill="black" />
     <g clipPath="url(#clip0_33_124)">
       <path
@@ -59,12 +53,7 @@ export const PoweredBy = () => (
     />
     <defs>
       <clipPath id="clip0_33_124">
-        <rect
-          width="30"
-          height="33.0769"
-          fill="white"
-          transform="translate(10 10)"
-        />
+        <rect width="30" height="33.0769" fill="white" transform="translate(10 10)" />
       </clipPath>
     </defs>
   </svg>

@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from 'antd';
 import get from 'lodash/get';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setNftDetails } from 'store/setup';
-import { getLatestMintedNft } from 'common-util/api';
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
-import { EducationTitle } from './Education';
-import { mintNft, pollNftDetails } from './utils';
+import { getLatestMintedNft } from 'common-util/api';
+import { setNftDetails } from 'store/setup';
+
 import { DiscordLink } from '../common';
+import { EducationTitle } from './Education';
 import { MintBadgeCard } from './helpers';
 import { MintNftContainer, WriteFunctionalityContainer } from './styles';
+import { mintNft, pollNftDetails } from './utils';
 
 const { Text } = Typography;
 
@@ -102,20 +103,13 @@ export const MintNft = () => {
                     {isBadgePollLoading ? 'Generating' : 'Mint Badge'}
                   </Button>
                   {isBadgePollLoading ? (
-                    <Text
-                      type="secondary"
-                      className="custom-text-secondary mt-12"
-                    >
-                      Your badge can take a while to generate. While you
-                      wait,&nbsp;
+                    <Text type="secondary" className="custom-text-secondary mt-12">
+                      Your badge can take a while to generate. While you wait,&nbsp;
                       <DiscordLink text="complete Discord verification" />
                       &nbsp;to activate it
                     </Text>
                   ) : (
-                    <Text
-                      type="secondary"
-                      className="custom-text-secondary mt-12"
-                    >
+                    <Text type="secondary" className="custom-text-secondary mt-12">
                       Free to mint! Only cost is gas.
                     </Text>
                   )}

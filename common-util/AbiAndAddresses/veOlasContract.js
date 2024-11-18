@@ -217,7 +217,10 @@ export const VEOLAS_ABI = [
         type: 'uint8',
       },
       {
-        indexed: false, internalType: 'uint256', name: 'ts', type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+        name: 'ts',
+        type: 'uint256',
       },
     ],
     name: 'Deposit',
@@ -246,10 +249,16 @@ export const VEOLAS_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true, internalType: 'address', name: 'from', type: 'address',
+        indexed: true,
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
       },
       {
-        indexed: true, internalType: 'address', name: 'to', type: 'address',
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
       },
       {
         indexed: false,
@@ -277,7 +286,10 @@ export const VEOLAS_ABI = [
         type: 'uint256',
       },
       {
-        indexed: false, internalType: 'uint256', name: 'ts', type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+        name: 'ts',
+        type: 'uint256',
       },
     ],
     name: 'Withdraw',
@@ -416,9 +428,7 @@ export const VEOLAS_ABI = [
   {
     inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
     name: 'getNumUserPoints',
-    outputs: [
-      { internalType: 'uint256', name: 'accountNumPoints', type: 'uint256' },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'accountNumPoints', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },

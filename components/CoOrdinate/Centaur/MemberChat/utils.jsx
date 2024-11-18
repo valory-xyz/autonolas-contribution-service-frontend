@@ -1,25 +1,22 @@
 import { flatMap, reverse } from 'lodash';
+
 import { areAddressesEqual } from '@autonolas/frontend-library';
 
-export const areBothMembersChatting = (
-  loggedInAddress,
-  toChatWithAddress,
-  receipientDetails,
-) => {
+export const areBothMembersChatting = (loggedInAddress, toChatWithAddress, receipientDetails) => {
   const [memberOne, memberTwo] = receipientDetails;
   const addressOfMemberOne = memberOne.metadata.address;
   const addressOfMemberTwo = memberTwo.metadata.address;
 
   if (
-    areAddressesEqual(loggedInAddress, addressOfMemberOne)
-    && areAddressesEqual(toChatWithAddress, addressOfMemberTwo)
+    areAddressesEqual(loggedInAddress, addressOfMemberOne) &&
+    areAddressesEqual(toChatWithAddress, addressOfMemberTwo)
   ) {
     return true;
   }
 
   if (
-    areAddressesEqual(loggedInAddress, addressOfMemberTwo)
-    && areAddressesEqual(toChatWithAddress, addressOfMemberOne)
+    areAddressesEqual(loggedInAddress, addressOfMemberTwo) &&
+    areAddressesEqual(toChatWithAddress, addressOfMemberOne)
   ) {
     return true;
   }
@@ -46,12 +43,7 @@ export const getToChatWithDid = async (orbis, toChatWith) => {
   return receipientDid;
 };
 
-export const createOrbisConversation = async (
-  orbis,
-  account,
-  toChatWith,
-  receipientDid,
-) => {
+export const createOrbisConversation = async (orbis, account, toChatWith, receipientDid) => {
   const { doc, status } = await orbis.createConversation({
     recipients: [receipientDid],
     name: 'Member Chat',
@@ -75,9 +67,7 @@ export const createOrbisConversation = async (
  * get messages from the conversation id
  */
 export const getMessages = async (orbis, conversationId) => {
-  const { data: messagesData, error: messagesError } = await orbis.getMessages(
-    conversationId,
-  );
+  const { data: messagesData, error: messagesError } = await orbis.getMessages(conversationId);
 
   if (messagesError) {
     window.console.error('Error getting messages: ', messagesError);
@@ -110,11 +100,7 @@ export const getAllTheMessages = async (orbis, account, toChatWith) => {
   }
 
   const filteredMessages = data.filter((e) => {
-    const areSame = areBothMembersChatting(
-      account,
-      toChatWith,
-      e.recipients_details,
-    );
+    const areSame = areBothMembersChatting(account, toChatWith, e.recipients_details);
 
     return areSame;
   });

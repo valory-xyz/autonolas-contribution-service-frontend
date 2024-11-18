@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import {
-  Button, Typography, Timeline,
-} from 'antd';
 import { CloseOutlined, EditFilled } from '@ant-design/icons';
+import { Button, Timeline, Typography } from 'antd';
+import PropTypes from 'prop-types';
 import { Fragment } from 'react';
+
 import { NA } from '@autonolas/frontend-library';
-import { EachThreadContainer } from './styles';
+
 import MediaList, { MODE } from './MediaList';
+import { EachThreadContainer } from './styles';
 
 const { Text } = Typography;
 
@@ -30,15 +30,14 @@ export const ViewThread = ({ thread, onEditThread, onRemoveFromThread }) => (
                 />
               )}
 
-              {(tweet.text?.length > 1 || tweet.media.length > 0)
-                && onRemoveFromThread && (
-                  <Button
-                    danger
-                    className="ml-8"
-                    size="small"
-                    icon={<CloseOutlined />}
-                    onClick={() => onRemoveFromThread(threadIndex)}
-                  />
+              {(tweet.text?.length > 1 || tweet.media.length > 0) && onRemoveFromThread && (
+                <Button
+                  danger
+                  className="ml-8"
+                  size="small"
+                  icon={<CloseOutlined />}
+                  onClick={() => onRemoveFromThread(threadIndex)}
+                />
               )}
             </div>
           </EachThreadContainer>

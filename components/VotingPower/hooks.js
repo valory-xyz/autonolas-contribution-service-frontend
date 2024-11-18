@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react';
-import { fetchVotingPower } from 'components/MembersList/requests';
 import { multicall } from '@wagmi/core';
-import {
-  VEOLAS_ABI,
-  VEOLAS_ADDRESS_MAINNET,
-} from 'common-util/AbiAndAddresses';
 import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+
+import { VEOLAS_ABI, VEOLAS_ADDRESS_MAINNET } from 'common-util/AbiAndAddresses';
 import { wagmiConfig } from 'common-util/Login/config';
-import {
-  delegate,
-  fetchDelegatee,
-  fetchDelegatorList,
-  fetchVeolasBalance,
-} from './requests';
+import { fetchVotingPower } from 'components/MembersList/requests';
+
+import { delegate, fetchDelegatee, fetchDelegatorList, fetchVeolasBalance } from './requests';
 import { validateBeforeDelegate } from './utils';
 
 /**

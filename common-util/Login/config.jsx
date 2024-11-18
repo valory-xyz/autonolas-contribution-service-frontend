@@ -1,14 +1,12 @@
-import { cookieStorage, createStorage, http } from 'wagmi';
-import { mainnet, goerli, base} from 'wagmi/chains';
 import { defaultWagmiConfig } from '@web3modal/wagmi';
+import { cookieStorage, createStorage, http } from 'wagmi';
+import { base, goerli, mainnet } from 'wagmi/chains';
 
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 import { RPC_URLS } from 'common-util/Contracts';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 
 // if the PFP_URL contains staging, include goerli
-export const SUPPORTED_CHAINS = (
-  process.env.NEXT_PUBLIC_PFP_URL || ''
-).includes('staging')
+export const SUPPORTED_CHAINS = (process.env.NEXT_PUBLIC_PFP_URL || '').includes('staging')
   ? [goerli, mainnet, base]
   : [mainnet, base];
 

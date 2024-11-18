@@ -1,17 +1,14 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import Web3 from 'web3';
-import PropTypes from 'prop-types';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
-import styled from 'styled-components';
 import { Button } from 'antd';
 import Link from 'next/link';
-import {
-  CannotConnectAddressOfacError,
-  notifyError,
-} from '@autonolas/frontend-library';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import Web3 from 'web3';
 
-import { setChainId, setUserBalance } from 'store/setup';
+import { CannotConnectAddressOfacError, notifyError } from '@autonolas/frontend-library';
+
 import {
   getChainId,
   getChainIdOrDefaultToMainnet,
@@ -19,6 +16,7 @@ import {
 } from 'common-util/functions';
 // import { SignInToOrbis } from 'components/SignInToOrbis';
 import VotingPower from 'components/VotingPower';
+import { setChainId, setUserBalance } from 'store/setup';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -28,10 +26,7 @@ const LoginContainer = styled.div`
   gap: 8px;
 `;
 
-export const LoginV2 = ({
-  onConnect: onConnectCb,
-  onDisconnect: onDisconnectCb,
-}) => {
+export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
 
@@ -84,8 +79,8 @@ export const LoginV2 = ({
       try {
         // This is the initial `provider` that is returned when
         // using web3Modal to connect. Can be MetaMask or WalletConnect.
-        const modalProvider = connector?.options?.getProvider?.()
-          || (await connector?.getProvider?.());
+        const modalProvider =
+          connector?.options?.getProvider?.() || (await connector?.getProvider?.());
 
         if (modalProvider) {
           // We plug the initial `provider` and get back
@@ -103,7 +98,11 @@ export const LoginV2 = ({
             // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
             const handleChainChanged = () => {
               // Temp hack not to reload page when switch to base chain on staking or profile page
-              if (!['staking', 'profile'].some(segment => window.location.pathname.includes(segment))) {
+              if (
+                !['staking', 'profile'].some((segment) =>
+                  window.location.pathname.includes(segment),
+                )
+              ) {
                 window.location.reload();
               }
             };
@@ -113,10 +112,7 @@ export const LoginV2 = ({
             // cleanup
             return () => {
               if (modalProvider.removeListener) {
-                modalProvider.removeListener(
-                  'chainChanged',
-                  handleChainChanged,
-                );
+                modalProvider.removeListener('chainChanged', handleChainChanged);
               }
             };
           }
@@ -132,7 +128,7 @@ export const LoginV2 = ({
     if (connector && !isAddressProhibited(address)) {
       getData();
     }
-  }, [connector]);
+  }, [address, connector]);
 
   // Disconnect if the address is prohibited
   useEffect(() => {
@@ -141,25 +137,21 @@ export const LoginV2 = ({
       notifyError(<CannotConnectAddressOfacError />);
       if (onDisconnectCb) onDisconnectCb();
     }
-  }, [address]);
+  }, [address, disconnect, onDisconnectCb]);
 
   return (
     <LoginContainer>
       {/* <div className="mr-8">
         <SignInToOrbis />
       </div> */}
-      {address && <>
-        <VotingPower />
-        <Link
-          href={`/profile/${address}`}
-          passHref
-        >
-          <Button>
-            Your profile
-          </Button>
-        </Link>
-        
-      </>}
+      {address && (
+        <>
+          <VotingPower />
+          <Link href={`/profile/${address}`} passHref>
+            <Button>Your profile</Button>
+          </Link>
+        </>
+      )}
       <w3m-button balance="hide" />
     </LoginContainer>
   );

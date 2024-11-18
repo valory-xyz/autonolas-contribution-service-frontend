@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import {
-  Col, Popover, Row, Typography,
-} from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { getEducationItemByComponent } from 'util/education';
+import { Col, Popover, Row, Typography } from 'antd';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+
+import { getEducationItemByComponent } from 'util/education';
 
 const { Title } = Typography;
 
@@ -40,7 +39,7 @@ export const EducationTitle = ({ title, level, educationItem }) => {
   useEffect(() => {
     const intFullEducationItem = getEducationItemByComponent(educationItem);
     setFullEducationItem(intFullEducationItem);
-  }, []);
+  }, [educationItem]);
 
   return (
     <Row gutter={8} align="middle">

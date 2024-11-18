@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
 import { Card } from 'antd';
+import styled from 'styled-components';
 
-export const Container = styled(Card)`
-`;
+import { COLOR, MEDIA_QUERY } from '@autonolas/frontend-library';
+
+export const Container = styled(Card)``;
 
 export const WrapperDiv = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ export const DocSection = styled.div`
     .green-text-2 {
       font-size: 19px;
       color: ${COLOR.PRIMARY};
-      font-family: "minecraft", sans-serif;
+      font-family: 'minecraft', sans-serif;
     }
   }
   .ant-anchor {

@@ -8,7 +8,7 @@
       "components/*": ["./components/*"],
       "util/*": ["./util/*"],
       "images/*": ["./public/images/*"],
-      "store/*": ["./store/*"]
+      "store/*": ["./store/*"],
     }
   },
   "exclude": ["node_modules"]

@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
+import { Card, Col, Row, Skeleton, Statistic, Typography } from 'antd';
 import Link from 'next/link';
-import {
-  Card, Col, Row, Skeleton, Statistic, Typography,
-} from 'antd';
+import { useSelector } from 'react-redux';
+
 import { NA } from '@autonolas/frontend-library';
 
 import { getTier } from 'common-util/functions';
@@ -18,9 +17,7 @@ export const ProfileCard = () => {
   return (
     <Card
       title="Your Profile"
-      extra={
-        account && <Link href={`/profile/${account}`}>Full profile &rarr;</Link>
-      }
+      extra={account && <Link href={`/profile/${account}`}>Full profile &rarr;</Link>}
     >
       {isLoading ? (
         <Skeleton active />
@@ -32,10 +29,7 @@ export const ProfileCard = () => {
                 <Statistic title="Rank" value={profile?.rank || NA} />
               </Col>
               <Col>
-                <Statistic
-                  title="Tier"
-                  value={profile?.points ? getTier(profile.points) : NA}
-                />
+                <Statistic title="Tier" value={profile?.points ? getTier(profile.points) : NA} />
               </Col>
               <Col>
                 <Statistic title="Points" value={profile?.points || NA} />
@@ -43,9 +37,7 @@ export const ProfileCard = () => {
             </Row>
           )}
 
-          {!account && (
-            <Text type="secondary">To view profile, connect wallet</Text>
-          )}
+          {!account && <Text type="secondary">To view profile, connect wallet</Text>}
         </>
       )}
     </Card>

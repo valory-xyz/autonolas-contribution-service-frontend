@@ -1,25 +1,19 @@
 /* eslint-disable no-param-reassign */
-import { useState } from 'react';
-import {
-  Card,
-  Button,
-  Popconfirm,
-  List,
-  Modal,
-  Input,
-  notification,
-} from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Card, Input, List, Modal, Popconfirm, notification } from 'antd';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+
 import { notifyError } from '@autonolas/frontend-library';
 
-import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import { addActionToCentaur } from 'util/addActionToCentaur';
-import { updateMemoryDetails } from 'common-util/api';
-import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
-import { canAddMemoryMessaage } from 'common-util/functions';
 import { EducationTitle } from 'common-util/Education/EducationTitle';
+import ExtendedReactMarkdown from 'common-util/ExtendedReactMarkdown';
+import { updateMemoryDetails } from 'common-util/api';
+import { canAddMemoryMessaage } from 'common-util/functions';
+import { addActionToCentaur } from 'util/addActionToCentaur';
+import { DEFAULT_COORDINATE_ID } from 'util/constants';
+
 import { useCentaursFunctionalities } from '../CoOrdinate/Centaur/hooks';
 import { AddToMemory } from './AddToMemory';
 
@@ -28,31 +22,22 @@ const MemoryCard = () => {
   const [currentEditingIndex, setCurrentEditingIndex] = useState(null);
   const [isUpdatingMemory, setIsUpdatingMemory] = useState(false);
 
-  const {
-    currentMemoryDetails,
-    memoryDetailsList,
-    fetchUpdatedMemory,
-    isAddressPresent,
-  } = useCentaursFunctionalities();
+  const { currentMemoryDetails, memoryDetailsList, fetchUpdatedMemory, isAddressPresent } =
+    useCentaursFunctionalities();
 
   const centaurId = DEFAULT_COORDINATE_ID;
 
   const account = useSelector((state) => state?.setup?.account);
   const membersOfCurrentCentaur = currentMemoryDetails?.members || [];
 
-  const addMemoryErrorMsg = canAddMemoryMessaage(
-    membersOfCurrentCentaur,
-    account,
-  );
+  const addMemoryErrorMsg = canAddMemoryMessaage(membersOfCurrentCentaur, account);
 
   // update the ownership of the person who updated the memory
   const updateMemoryAndOwnership = async (newMemory) => {
     // if the user is not a member of the centaur,
     // don't allow them to update the memory
     if (!isAddressPresent) {
-      throw new Error(
-        'Only members can update the memory. To update, join this coordinate.',
-      );
+      throw new Error('Only members can update the memory. To update, join this coordinate.');
     }
 
     const updatedMembers = membersOfCurrentCentaur.map((member) => {
@@ -67,10 +52,7 @@ const MemoryCard = () => {
 
     // add the new memory to the existing memory
     const updatedMemory = newMemory;
-    currentMemoryDetails.memory = [
-      ...(currentMemoryDetails.memory || []),
-      updatedMemory,
-    ];
+    currentMemoryDetails.memory = [...(currentMemoryDetails.memory || []), updatedMemory];
 
     const updatedMemoryDetails = memoryDetailsList.map((centaur) => {
       if (centaur.id === centaurId) {
@@ -131,9 +113,7 @@ const MemoryCard = () => {
 
   const clearMemory = async () => {
     if (!isAddressPresent) {
-      throw new Error(
-        'Only members can modify the memory. To clear memory, join this coordinate.',
-      );
+      throw new Error('Only members can modify the memory. To clear memory, join this coordinate.');
     }
     currentMemoryDetails.memory = [];
     const updatedMemoryDetails = memoryDetailsList.map((centaur) => {
@@ -161,7 +141,8 @@ const MemoryCard = () => {
   const handleUpdateMemory = async () => {
     try {
       if (!isAddressPresent) {
-        const errorMessage = 'Only members can modify the memory. To update memory, join this coordinate.';
+        const errorMessage =
+          'Only members can modify the memory. To update memory, join this coordinate.';
         notifyError(errorMessage);
         throw new Error(errorMessage);
       }
@@ -170,8 +151,8 @@ const MemoryCard = () => {
 
       const updatedMemory = editingMemory.trim();
 
-      currentMemoryDetails.memory = currentMemoryDetails.memory.map(
-        (item, index) => (index === currentEditingIndex ? updatedMemory : item),
+      currentMemoryDetails.memory = currentMemoryDetails.memory.map((item, index) =>
+        index === currentEditingIndex ? updatedMemory : item,
       );
 
       const updatedMemoryDetails = memoryDetailsList.map((centaur) => {
@@ -216,12 +197,12 @@ const MemoryCard = () => {
   return (
     <Card
       title={<EducationTitle title="Edit memory" educationItem="memory" />}
-      extra={(
+      extra={
         <AddToMemory
           updateMemoryAndOwnership={updateMemoryAndOwnership}
           addMemoryErrorMsg={addMemoryErrorMsg}
         />
-      )}
+      }
       bodyStyle={{ padding: 0 }}
       actions={[
         <Popconfirm
@@ -229,6 +210,7 @@ const MemoryCard = () => {
           onConfirm={clearMemory}
           okText="Yes"
           cancelText="No"
+          key="clear"
         >
           <Button danger type="text" disabled={!account || !!addMemoryErrorMsg}>
             Clear memory
@@ -239,34 +221,26 @@ const MemoryCard = () => {
       <List
         itemLayout="vertical"
         locale={{
-          emptyText: !isAddressPresent
-            ? 'To see memory, join this centaur'
-            : 'No memory items',
+          emptyText: !isAddressPresent ? 'To see memory, join this centaur' : 'No memory items',
         }}
         dataSource={currentMemoryDetails.memory}
         renderItem={(memoryItem, index) => (
           <List.Item
             className="memory-list-item"
             actions={[
-              <EditOutlined
-                key="edit"
-                onClick={() => handleEditMemory(index)}
-              />,
+              <EditOutlined key="edit" onClick={() => handleEditMemory(index)} />,
               <Popconfirm
                 title="Are you sure you want to delete this item?"
                 onConfirm={() => removeMemoryItem(index)}
                 okText="Yes"
                 cancelText="No"
+                key="remove"
               >
                 <DeleteOutlined danger key="remove" />
               </Popconfirm>,
             ]}
           >
-            <List.Item.Meta
-              description={
-                <ExtendedReactMarkdown content={memoryItem} rows={5} />
-              }
-            />
+            <List.Item.Meta description={<ExtendedReactMarkdown content={memoryItem} rows={5} />} />
           </List.Item>
         )}
       />

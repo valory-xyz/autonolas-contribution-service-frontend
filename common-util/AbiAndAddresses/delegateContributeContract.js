@@ -74,9 +74,7 @@ export const DELEGATE_CONTRIBUTE_ABI = [
   {
     inputs: [{ internalType: 'address', name: 'delegatee', type: 'address' }],
     name: 'votingPower',
-    outputs: [
-      { internalType: 'uint256', name: 'totalVotingPower', type: 'uint256' },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'totalVotingPower', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },

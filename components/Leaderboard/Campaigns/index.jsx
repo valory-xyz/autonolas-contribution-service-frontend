@@ -1,9 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import { Card, Table, Typography } from 'antd';
 import { get } from 'lodash';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+// import { getTimeAgo } from 'common-util/functions/time';
 import { DEFAULT_COORDINATE_ID } from 'util/constants';
-import { getTimeAgo } from 'common-util/functions/time';
 
 const { Title, Paragraph } = Typography;
 
@@ -11,7 +12,7 @@ const columns = [
   {
     title: 'Hashtag',
     dataIndex: 'hashtag',
-    render: (hashtag) => (`#${hashtag}`),
+    render: (hashtag) => `#${hashtag}`,
     width: 120,
   },
   // {
@@ -34,12 +35,15 @@ export const Campaigns = () => {
         Campaigns
       </Title>
       <Paragraph>
-        Mention <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">@autonolas</a>
-        {' '}and include at least one of the following tags to earn leaderboard points and be eligible 
+        Mention{' '}
+        <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">
+          @autonolas
+        </a>{' '}
+        and include at least one of the following tags to earn leaderboard points and be eligible
         for staking rewards.
       </Paragraph>
       <Paragraph>
-      The leaderboard points you can earn by tweeting vary according to the AI's evaluation.
+        The leaderboard points you can earn by tweeting vary according to the AI&apos;s evaluation.
       </Paragraph>
       <Table
         columns={columns}
@@ -49,5 +53,5 @@ export const Campaigns = () => {
         scroll={{ x: 'max-content' }}
       />
     </Card>
-  )
-}
+  );
+};

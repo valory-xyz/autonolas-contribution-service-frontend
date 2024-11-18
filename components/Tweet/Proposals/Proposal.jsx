@@ -1,26 +1,23 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ethers } from 'ethers';
-import { useSignMessage } from 'wagmi';
-import { cloneDeep, isNil, set } from 'lodash';
+import { Card, Col, Row, Steps, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { ethers } from 'ethers';
+import { cloneDeep, isNil, set } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import {
-  Typography, Card, Row, Col, Steps,
-} from 'antd';
+import { useSignMessage } from 'wagmi';
+
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import DisplayName from 'common-util/DisplayName';
+import { useHelpers } from 'common-util/hooks/useHelpers';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { VEOLAS_QUORUM } from 'util/constants';
-import { useHelpers } from 'common-util/hooks/useHelpers';
+
+import { useCentaursFunctionalities, useProposals } from '../../CoOrdinate/Centaur/hooks';
 import { fetchVotingPower } from '../../MembersList/requests';
-import {
-  useCentaursFunctionalities,
-  useProposals,
-} from '../../CoOrdinate/Centaur/hooks';
 import { getFirstTenCharsOfTweet } from '../utils';
-import { ExecuteStep } from './ExecuteStep';
 import { ApproveStep } from './ApproveStep';
+import { ExecuteStep } from './ExecuteStep';
 
 const { Text } = Typography;
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
@@ -65,9 +62,7 @@ export const Proposal = ({ proposal }) => {
 
       // Check if the user has at least 1 veOlas
       const accountVeOlasBalance = await fetchVotingPower({ account });
-      const accountVeOlasBalanceInEth = Number(
-        ethers.formatEther(accountVeOlasBalance),
-      );
+      const accountVeOlasBalanceInEth = Number(ethers.formatEther(accountVeOlasBalance));
       if (!isStaging && accountVeOlasBalanceInEth < 1) {
         notifyError('You need at least 1 veOLAS to approve');
         return;
@@ -90,8 +85,8 @@ export const Proposal = ({ proposal }) => {
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
       set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
-      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
-        (tweet) => (tweet.request_id === proposal.request_id ? updatedProposal : tweet),
+      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map((tweet) =>
+        tweet.request_id === proposal.request_id ? updatedProposal : tweet,
       );
 
       // Update centaur with updated tweets
@@ -144,8 +139,8 @@ export const Proposal = ({ proposal }) => {
       const updatedProposal = cloneDeep(proposal);
       set(updatedProposal, 'executionAttempts', executionAttempts);
 
-      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
-        (tweet) => (tweet.request_id === updatedProposal.request_id ? updatedProposal : tweet),
+      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map((tweet) =>
+        tweet.request_id === updatedProposal.request_id ? updatedProposal : tweet,
       );
 
       // Update centaur with updated tweets

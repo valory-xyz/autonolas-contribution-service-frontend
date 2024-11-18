@@ -5,9 +5,7 @@ import { Ed25519Provider } from 'key-did-provider-ed25519';
 import { getResolver } from 'key-did-resolver';
 import { fromString } from 'uint8arrays';
 
-export const CERAMIC_OBJECT = new CeramicClient(
-  process.env.NEXT_PUBLIC_CERAMIC_GATEWAY_URL,
-);
+export const CERAMIC_OBJECT = new CeramicClient(process.env.NEXT_PUBLIC_CERAMIC_GATEWAY_URL);
 
 export const getMemoryDetails = async () => {
   const response = await TileDocument.load(
@@ -18,9 +16,7 @@ export const getMemoryDetails = async () => {
 };
 
 export const updateMemoryDetails = async (memoryDetails) => {
-  const provider = new Ed25519Provider(
-    fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'),
-  );
+  const provider = new Ed25519Provider(fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'));
   const did = new DID({ provider, resolver: getResolver() });
   // Authenticate the DID with the provider
   await did.authenticate();

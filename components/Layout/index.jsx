@@ -1,49 +1,48 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { Layout, Grid, Button, Typography } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
-import { notifyError } from '@autonolas/frontend-library';
 import {
   CalendarOutlined,
-  NotificationOutlined,
-  FileTextOutlined,
-  // MessageOutlined,
+  FileTextOutlined, // MessageOutlined,
   NodeIndexOutlined,
-  // RobotOutlined,
+  NotificationOutlined, // RobotOutlined,
   // StarOutlined,
   TrophyOutlined,
-  TwitterOutlined,
-  // UserOutlined,
+  TwitterOutlined, // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
+import { Button, Grid, Layout, Typography } from 'antd';
+import { get } from 'lodash';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setIsVerified,
-  setMemoryDetails,
-  setIsMemoryDetailsLoading,
-  setLeaderboard,
-  setIsLeaderboardLoading,
-} from 'store/setup';
+import { notifyError } from '@autonolas/frontend-library';
+
+import { wagmiConfig } from 'common-util/Login/config';
 import { getLeaderboardList, getMemoryDetails } from 'common-util/api';
 import useOrbis from 'common-util/hooks/useOrbis';
-import { wagmiConfig } from 'common-util/Login/config';
-import Footer from './Footer';
-import { getAddressStatus } from './utils';
 import {
-  CustomLayout,
-  CustomHeaderContent,
+  setIsLeaderboardLoading,
+  setIsMemoryDetailsLoading,
+  setIsVerified,
+  setLeaderboard,
+  setMemoryDetails,
+} from 'store/setup';
+import { MENU_WIDTH } from 'util/constants';
+
+import Footer from './Footer';
+import {
   Banner,
+  CustomHeader,
+  CustomHeaderContent,
+  CustomLayout,
+  CustomMenu,
   Logo,
   RightMenu,
-  CustomHeader,
-  CustomMenu,
 } from './styles';
-import { MENU_WIDTH } from 'util/constants';
+import { getAddressStatus } from './utils';
 
 const Login = dynamic(() => import('../Login'));
 const LogoSvg = dynamic(() => import('common-util/SVGs/logo'));
@@ -77,7 +76,7 @@ const NavigationBar = ({ children }) => {
   const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
   const [isBannerVisible, setIsBannerVisible] = useState(true);
-  const handleBannerClose = () => setIsBannerVisible(false)
+  const handleBannerClose = () => setIsBannerVisible(false);
 
   const dispatch = useDispatch();
   const account = useSelector((state) => get(state, 'setup.account'));
@@ -159,7 +158,7 @@ const NavigationBar = ({ children }) => {
       setSelectedMenu(name || 'leaderboard');
 
       if (pathname.includes('staking')) {
-        setIsBannerVisible(false)
+        setIsBannerVisible(false);
       }
     }
   }, [pathname]);
@@ -180,9 +179,9 @@ const NavigationBar = ({ children }) => {
     const unwatch = watchAccount(wagmiConfig, {
       onChange(data) {
         if (
-          account
-          && (data.address !== account || isOrbisConnected)
-          && isOrbisConnected !== undefined
+          account &&
+          (data.address !== account || isOrbisConnected) &&
+          isOrbisConnected !== undefined
         ) {
           disconnect();
         }
@@ -205,18 +204,16 @@ const NavigationBar = ({ children }) => {
       <CustomHeader isBannerVisible={isBannerVisible.toString()}>
         {isBannerVisible && (
           <Banner
-            message={(
+            message={
               <>
                 <Text ellipsis>
-                  <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }}/>
-                  Contribute staking is live! Spread the word about Olas on Twitter and have a chance to earn rewards.
-                </Text>
-                {' '}
-                <Link href="/staking">
-                  Set up staking now
-                </Link>
-             </>
-            )}
+                  <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }} />
+                  Contribute staking is live! Spread the word about Olas on Twitter and have a
+                  chance to earn rewards.
+                </Text>{' '}
+                <Link href="/staking">Set up staking now</Link>
+              </>
+            }
             type="info"
             closable
             onClose={handleBannerClose}
@@ -226,10 +223,7 @@ const NavigationBar = ({ children }) => {
           {logo}
           <RightMenu>
             {!screens.md && (
-              <Button
-                className="mr-8"
-                onClick={() => setIsMenuVisible(!isMenuVisible)}
-              >
+              <Button className="mr-8" onClick={() => setIsMenuVisible(!isMenuVisible)}>
                 Menu
               </Button>
             )}
@@ -250,10 +244,7 @@ const NavigationBar = ({ children }) => {
         />
       )}
 
-      <Content
-        className="site-layout"
-        style={{ marginLeft: screens.md ? `${MENU_WIDTH}px` : '0' }}
-      >
+      <Content className="site-layout" style={{ marginLeft: screens.md ? `${MENU_WIDTH}px` : '0' }}>
         <div className="site-layout-background">{children}</div>
 
         {!isPadded && (

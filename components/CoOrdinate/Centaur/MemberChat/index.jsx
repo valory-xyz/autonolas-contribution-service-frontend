@@ -1,19 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import {
-  Button, Input, notification, Space, Card, Typography,
-} from 'antd';
 import { SendOutlined } from '@ant-design/icons';
+import { Button, Card, Input, Space, Typography, notification } from 'antd';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import orbis from 'common-util/orbis';
 import useOrbis from 'common-util/hooks/useOrbis';
+import orbis from 'common-util/orbis';
+
 import { Conversations } from './Conversation';
-import {
-  getToChatWithDid,
-  createOrbisConversation,
-  getAllTheMessages,
-} from './utils';
+import { createOrbisConversation, getAllTheMessages, getToChatWithDid } from './utils';
 
 const { Title, Text } = Typography;
 
@@ -36,10 +31,7 @@ export const MemberChat = () => {
   const toChatWith = router.query.address || null;
 
   const updateAfterSendMessage = () => {
-    setMessages((prev) => [
-      ...prev,
-      { address: account, message: inputMessage },
-    ]);
+    setMessages((prev) => [...prev, { address: account, message: inputMessage }]);
     setInputMessage('');
     setIsSending(false);
   };
@@ -60,14 +52,9 @@ export const MemberChat = () => {
       });
     }
 
-    // get the receipient did and create a conversation
-    const receipientDid = await getToChatWithDid(orbis, toChatWith);
-    const conId = await createOrbisConversation(
-      orbis,
-      account,
-      toChatWith,
-      receipientDid,
-    );
+    // get the recipient did and create a conversation
+    const recipientDid = await getToChatWithDid(orbis, toChatWith);
+    const conId = await createOrbisConversation(orbis, account, toChatWith, recipientDid);
 
     // send the message once the conversation is created
     const finalSendMessageResponse = await orbis.sendMessage({
@@ -76,17 +63,14 @@ export const MemberChat = () => {
     });
 
     if (finalSendMessageResponse.error) {
-      window.console.log(
-        'Error sending message: ',
-        finalSendMessageResponse.error,
-      );
+      window.console.log('Error sending message: ', finalSendMessageResponse.error);
       return;
     }
 
     updateAfterSendMessage();
   };
 
-  const getMessagesForTheDid = async () => {
+  const getMessagesForTheDid = useCallback(async () => {
     const list = await getAllTheMessages(orbis, account, toChatWith);
 
     // we update the message list once "Send" button is clicked
@@ -94,7 +78,7 @@ export const MemberChat = () => {
     if (list.length > messages.length) {
       setMessages(list);
     }
-  };
+  }, [account, messages.length, toChatWith]);
 
   // on load, fetch the messages
   useEffect(() => {
@@ -107,7 +91,7 @@ export const MemberChat = () => {
     if (account && isOrbisConnected) {
       getData();
     }
-  }, [account, isOrbisConnected]);
+  }, [account, getMessagesForTheDid, isOrbisConnected]);
 
   // poll for messages every 6 seconds
   useEffect(() => {
@@ -117,7 +101,7 @@ export const MemberChat = () => {
       }
     }, 6000);
     return () => clearInterval(interval);
-  }, [account, isOrbisConnected]);
+  }, [account, getMessagesForTheDid, isOrbisConnected]);
 
   return (
     <Card className="member-chat-card">
@@ -144,9 +128,7 @@ export const MemberChat = () => {
           </Button>
 
           {!isOrbisConnected && (
-            <Text type="secondary">
-              Sign in to Orbis to chat and see messages
-            </Text>
+            <Text type="secondary">Sign in to Orbis to chat and see messages</Text>
           )}
         </Space>
       </Space>

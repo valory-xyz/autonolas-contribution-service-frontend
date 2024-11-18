@@ -1,8 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import { notifyError } from '@autonolas/frontend-library';
 import axios from 'axios';
+import { findIndex, memoize, toLower } from 'lodash';
+
+import { notifyError } from '@autonolas/frontend-library';
+
 import { getMintContract } from 'common-util/Contracts';
-import { findIndex, toLower, memoize } from 'lodash';
 
 const getTotalSupply = memoize(async () => {
   try {
@@ -33,10 +35,7 @@ export const getLatestMintedNft = memoize(async (account) => {
     /**
      * find the element in reverse order to fetch the latest
      */
-    const latestNftIndex = findIndex(
-      ownerList,
-      (e) => toLower(e) === toLower(account),
-    );
+    const latestNftIndex = findIndex(ownerList, (e) => toLower(e) === toLower(account));
 
     if (latestNftIndex !== -1) {
       const tokenId = `${Number(latestNftIndex) + 1}`;
