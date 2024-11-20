@@ -198,14 +198,13 @@ const StakingDetails = ({ profile }) => {
   const tweetsThisEpoch = useMemo(() => {
     if (!isNumber(stakingDetails.epochCounter)) return [];
     if (stakingDetails.stakingStatus !== 'Staked') return [];
-    // Calculate total points earned for current epoch's tweets
     return Object.entries(profile.tweets)
       .map(([tweetId, tweet]) => ({ tweetId, ...tweet }))
       .filter((tweet) => tweet.epoch > stakingDetails.epochCounter && tweet.points > 0);
   }, [profile, stakingDetails]);
 
+  // Calculate total points earned for current epoch's tweets
   const pointsEarned = useMemo(() => {
-    // Calculate total points earned for current epoch's tweets
     return tweetsThisEpoch.reduce((sum, tweet) => {
       if (tweet.epoch > stakingDetails.epochCounter) {
         sum += tweet.points;

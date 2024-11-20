@@ -245,7 +245,7 @@ const TweetAndEarn = ({ disabled }) => {
       </Paragraph>
       <Paragraph type="secondary">
         First epoch activity reward is proportional to the time between contributor registration and
-        the end of the on-going epoch
+        the end of the on-going epoch.
       </Paragraph>
       <Link href={`/profile/${address}`} passHref>
         <Button type="primary" disabled={disabled}>

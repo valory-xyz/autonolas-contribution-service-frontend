@@ -21,41 +21,46 @@ const NoTweetsText = styled(Paragraph)`
   max-width: 400px;
 `;
 
-export const PointsShowcase = memo(({ tweetsData }) => {
-  const earnedPointsTweets = Object.entries(tweetsData || {})
-    .map(([tweetId, tweet]) => ({ tweetId, points: tweet.points }))
-    .filter(({ points }) => points > 0);
+export const PointsShowcase = memo(
+  ({ tweetsData }) => {
+    const earnedPointsTweets = Object.entries(tweetsData || {})
+      .map(([tweetId, tweet]) => ({ tweetId, points: tweet.points }))
+      .filter(({ points }) => points > 0);
 
-  const tweets = shuffleArray(earnedPointsTweets).slice(0, MAX_TWEETS_SHOWN);
+    const tweets = shuffleArray(earnedPointsTweets).slice(0, MAX_TWEETS_SHOWN);
 
-  return (
-    <>
-      <Text className="font-weight-600 mt-24" type="secondary">
-        Points Showcase
-      </Text>
-      {tweets.length > 0 ? (
-        <>
-          <Paragraph type="secondary">
-            Here is a selection of tweets you have made that have earned points.
-          </Paragraph>
+    return (
+      <>
+        <Text className="font-weight-600 mt-24" type="secondary">
+          Points Showcase
+        </Text>
+        {tweets.length > 0 ? (
+          <>
+            <Paragraph type="secondary">
+              Here is a selection of tweets you have made that have earned points.
+            </Paragraph>
 
-          <Row gutter={[16, 16]} className="mt-12">
-            {tweets.map((item) => (
-              <StyledCol key={item.tweetId} xs={24} md={8}>
-                <TweetEmbed tweetId={item.tweetId} points={item.points} width={250} />
-              </StyledCol>
-            ))}
-          </Row>
-        </>
-      ) : (
-        <NoTweetsText type="secondary" className="mt-12">
-          No tweets found. Connect your Twitter account and start completing{' '}
-          <Link href="/leaderboard">actions</Link> to earn more points
-        </NoTweetsText>
-      )}
-    </>
-  );
-});
+            <Row gutter={[16, 16]} className="mt-12">
+              {tweets.map((item) => (
+                <StyledCol key={item.tweetId} xs={24} md={8}>
+                  <TweetEmbed tweetId={item.tweetId} points={item.points} width={250} />
+                </StyledCol>
+              ))}
+            </Row>
+          </>
+        ) : (
+          <NoTweetsText type="secondary" className="mt-12">
+            No tweets found. Connect your Twitter account and start completing{' '}
+            <Link href="/leaderboard">actions</Link> to earn more points
+          </NoTweetsText>
+        )}
+      </>
+    );
+  },
+  (prevProps, nextProps) => {
+    return JSON.stringify(prevProps.tweetsData) === JSON.stringify(nextProps.tweetsData);
+  },
+);
 
 PointsShowcase.displayName = 'PointsShowcase';
 PointsShowcase.propTypes = {

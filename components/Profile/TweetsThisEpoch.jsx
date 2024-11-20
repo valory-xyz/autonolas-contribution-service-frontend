@@ -41,7 +41,7 @@ export const TweetsThisEpoch = ({ tweets }) => {
   ) : (
     <Flex vertical align="center" className="mt-24 mb-24">
       <TwitterOutlined style={{ color: '#A3AEBB', fontSize: 48 }} />
-      <Text type="secondary">No tweets this epoch yet.</Text>
+      <Text type="secondary">No tweets posted this epoch yet.</Text>
       <Text type="secondary">Share something on Twitter!</Text>
     </Flex>
   );

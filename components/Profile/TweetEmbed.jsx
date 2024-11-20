@@ -13,6 +13,7 @@ const TweetPlaceholder = styled.div`
   gap: 8px;
   align-items: center;
   justify-content: center;
+  text-align: center;
   margin: 16px;
   min-height: 120px;
 `;
@@ -23,13 +24,13 @@ const StyledCard = styled(Card)`
 
 export const TweetEmbed = ({ points, tweetId, width = 250 }) => {
   const [isError, setIsError] = useState(false);
-  const [isMounted, setIsMounted] = useState(true);
+  const [isReloading, setIsReloading] = useState(false);
 
+  // Toggle isReloading state so that TwitterTweetEmbed
+  // component is mounted again and can be reloaded automatically
   const handleReload = () => {
-    // Toggle isMounted state so that TwitterTweetEmbed
-    // component is mounted again nad can be reloaded
-    setIsMounted(false);
-    setTimeout(() => setIsMounted(true));
+    setIsReloading(true);
+    setTimeout(() => setIsReloading(false));
     setIsError(false);
   };
 
@@ -44,11 +45,11 @@ export const TweetEmbed = ({ points, tweetId, width = 250 }) => {
     >
       {isError && (
         <TweetPlaceholder>
-          <Text className="block">Error loading tweet</Text>
+          <Text className="block">Failed to load the tweet, please try reloading</Text>
           <Button onClick={handleReload} icon={<ReloadOutlined />} type="text" />
         </TweetPlaceholder>
       )}
-      {isMounted && (
+      {!isReloading && (
         <TwitterTweetEmbed
           tweetId={`${tweetId}`}
           options={{
