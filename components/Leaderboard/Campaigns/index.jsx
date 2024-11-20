@@ -39,8 +39,8 @@ export const Campaigns = () => {
         <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">
           @autonolas
         </a>{' '}
-        and include at least one of the following tags to earn leaderboard points and be eligible
-        for staking rewards.
+        or use at least one of the following tags in your tweet to earn leaderboard points and be
+        eligible for staking rewards.
       </Paragraph>
       <Paragraph>
         The leaderboard points you can earn by tweeting vary according to the AI&apos;s evaluation.

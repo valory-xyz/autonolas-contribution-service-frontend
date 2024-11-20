@@ -1,5 +1,23 @@
-import { QuestionCircleOutlined, WarningFilled } from '@ant-design/icons';
-import { Button, Card, Col, Flex, Row, Skeleton, Tag, Tooltip, Typography } from 'antd';
+import {
+  CaretDownOutlined,
+  CaretRightOutlined,
+  QuestionCircleOutlined,
+  WarningFilled,
+} from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Divider,
+  Flex,
+  Progress,
+  Row,
+  Skeleton,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
 import { isNil, isNumber } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,25 +31,33 @@ import { COLOR, NA, notifyError } from '@autonolas/frontend-library';
 
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { formatDynamicTimeRange } from 'common-util/functions/time';
+import { TweetShape } from 'common-util/prop-types';
 import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking';
 
+import { TweetsThisEpoch } from './TweetsThisEpoch';
 import { stake, unstake } from './requests';
 
 const { Title, Text, Paragraph } = Typography;
-
-const ImageContainer = styled.div`
-  img {
-    position: relative !important;
-  }
-`;
 
 const HintText = styled(Text)`
   display: block;
   width: max-content;
   color: #606f85;
-  margin-top: 4px;
+  margin-top: 12px;
   border-bottom: 1px dashed #606f85;
+`;
+const ImageContainer = styled.div`
+  img {
+    position: relative !important;
+  }
+`;
+const StyledProgress = styled(Progress)`
+  max-width: 200px;
+`;
+const StyledDivider = styled(Divider)`
+  width: auto;
+  margin: 24px -24px;
 `;
 
 const TweetCountTooltip = () => (
@@ -169,14 +195,28 @@ const StakingDetails = ({ profile }) => {
     switchChainAsync,
   ]);
 
-  const tweetsMade = useMemo(() => {
-    if (!isNumber(stakingDetails.epochCounter)) return 0;
-    if (stakingDetails.stakingStatus !== 'Staked') return 0;
-    // Only count tweets with campaigns and epoch > than last checkpoint
-    return Object.values(profile.tweets).filter(
-      (tweet) => tweet.epoch > stakingDetails.epochCounter && tweet.campaign !== null,
-    ).length;
+  const tweetsThisEpoch = useMemo(() => {
+    if (!isNumber(stakingDetails.epochCounter)) return [];
+    if (stakingDetails.stakingStatus !== 'Staked') return [];
+    // Calculate total points earned for current epoch's tweets
+    return Object.entries(profile.tweets)
+      .map(([tweetId, tweet]) => ({ tweetId, ...tweet }))
+      .filter((tweet) => tweet.epoch > stakingDetails.epochCounter && tweet.points > 0);
   }, [profile, stakingDetails]);
+
+  const pointsEarned = useMemo(() => {
+    // Calculate total points earned for current epoch's tweets
+    return tweetsThisEpoch.reduce((sum, tweet) => {
+      if (tweet.epoch > stakingDetails.epochCounter) {
+        sum += tweet.points;
+      }
+      return sum;
+    }, 0);
+  }, [tweetsThisEpoch, stakingDetails]);
+
+  const pointsPercentage = contractDetails
+    ? Math.min((pointsEarned / contractDetails.pointsPerEpoch) * 100, 100)
+    : 0;
 
   const stakingStatusColumnData = useMemo(() => {
     if (!serviceInfo) return;
@@ -252,14 +292,23 @@ const StakingDetails = ({ profile }) => {
 
   return (
     <>
+      <StyledDivider />
       <Title level={5}>Rewards</Title>
       <Row gutter={[16, 24]} className="w-100 mb-32">
         <InfoColumn
-          title="Tweets made this epoch"
+          title="Points earned this epoch"
           isLoading={isServiceInfoLoading}
-          value={contractDetails ? `${tweetsMade} / ${contractDetails.tweetsPerEpoch}` : undefined}
+          value={
+            contractDetails ? `${pointsEarned} / ${contractDetails.pointsPerEpoch}` : undefined
+          }
         >
-          {!isServiceInfoLoading && <TweetCountTooltip />}
+          {!isServiceInfoLoading && (
+            <StyledProgress
+              percent={pointsPercentage}
+              showInfo={pointsPercentage === 100}
+              strokeColor={pointsPercentage < 100 ? COLOR.PRIMARY : undefined}
+            />
+          )}
         </InfoColumn>
         <InfoColumn title="OLAS rewards this epoch" isLoading={isStakingDetailsLoading}>
           {contractDetails && stakingDetails?.rewardsPerEpoch ? (
@@ -267,7 +316,7 @@ const StakingDetails = ({ profile }) => {
               <Text className="font-weight-600">
                 {`${OLAS_UNICODE_SYMBOL}${stakingDetails.rewardsPerEpoch}`}
               </Text>
-              {tweetsMade >= contractDetails.tweetsPerEpoch ? (
+              {pointsPercentage === 100 ? (
                 <Tag color="success">Earned</Tag>
               ) : (
                 <Tag color="blue">Not yet earned</Tag>
@@ -299,7 +348,19 @@ const StakingDetails = ({ profile }) => {
           value={stakingDetails.epochLength ?? undefined}
         />
       </Row>
+      <Collapse
+        expandIcon={({ isActive }) => (isActive ? <CaretDownOutlined /> : <CaretRightOutlined />)}
+        items={[
+          {
+            key: '1',
+            label: 'My tweets this epoch',
+            children: <TweetsThisEpoch tweets={tweetsThisEpoch} />,
+          },
+        ]}
+      />
+      <TweetCountTooltip />
 
+      <StyledDivider />
       <Title level={5}>Details</Title>
       <Row gutter={[16, 24]} className="w-100 mb-32">
         <InfoColumn
@@ -332,6 +393,7 @@ const StakingDetails = ({ profile }) => {
         />
       </Row>
 
+      <StyledDivider />
       <Title level={5}>Guidelines</Title>
       <Paragraph type="secondary">
         To be eligible to earn rewards, make the required number of tweets each epoch and include at
@@ -354,13 +416,6 @@ export const Staking = ({ profile }) => {
       {profile.service_multisig ? <StakingDetails profile={profile} /> : <SetupStaking />}
     </Card>
   );
-};
-
-const TweetShape = {
-  epoch: PropTypes.number,
-  points: PropTypes.number.isRequired,
-  campaign: PropTypes.string,
-  timestamp: PropTypes.string,
 };
 
 Staking.propTypes = {

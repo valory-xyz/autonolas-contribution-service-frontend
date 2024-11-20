@@ -206,8 +206,8 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
                   <Text className="font-weight-600">{item.name}</Text>
                   <Text type="secondary">
                     {` | ${item.totalBond} OLAS stake | ${
-                      item.tweetsPerEpoch
-                    } tweet${item.tweetsPerEpoch > 1 ? 's' : ''} per epoch`}
+                      item.pointsPerEpoch
+                    } point${item.pointsPerEpoch > 1 ? 's' : ''} per epoch`}
                   </Text>
                 </Radio>
               ))}
@@ -242,6 +242,10 @@ const TweetAndEarn = ({ disabled }) => {
       <Paragraph type="secondary">
         Visit your user profile page and participate in tweet campaigns. If you post enough for the
         epoch, you might be eligible to earn staking rewards.
+      </Paragraph>
+      <Paragraph type="secondary">
+        First epoch activity reward is proportional to the time between contributor registration and
+        the end of the on-going epoch
       </Paragraph>
       <Link href={`/profile/${address}`} passHref>
         <Button type="primary" disabled={disabled}>
