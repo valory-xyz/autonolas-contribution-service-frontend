@@ -1,4 +1,5 @@
 import { Col, Row, Typography } from 'antd';
+import isEqual from 'lodash/isEqual';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { memo } from 'react';
@@ -57,9 +58,7 @@ export const PointsShowcase = memo(
       </>
     );
   },
-  (prevProps, nextProps) => {
-    return JSON.stringify(prevProps.tweetsData) === JSON.stringify(nextProps.tweetsData);
-  },
+  (prevProps, nextProps) => isEqual(prevProps.tweetsData, nextProps.tweetsData),
 );
 
 PointsShowcase.displayName = 'PointsShowcase';
