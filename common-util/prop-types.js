@@ -94,3 +94,10 @@ export const CentaurPropTypes = PropTypes.shape({
     memberWhitelist: PropTypes.arrayOf(PropTypes.string),
   }),
 });
+
+export const TweetShape = {
+  epoch: PropTypes.number,
+  points: PropTypes.number.isRequired,
+  campaign: PropTypes.string,
+  timestamp: PropTypes.string,
+};

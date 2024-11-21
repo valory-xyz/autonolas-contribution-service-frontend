@@ -11,6 +11,7 @@ import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { getLatestMintedNft } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
+import { TweetShape } from 'common-util/prop-types';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { PointsShowcase } from './PointsShowcase';
@@ -151,13 +152,6 @@ const ProfileBody = ({ profile, id }) => {
       {account && areAddressesEqual(id, account) && <Staking profile={profile} />}
     </Root>
   );
-};
-
-const TweetShape = {
-  epoch: PropTypes.number,
-  points: PropTypes.number.isRequired,
-  campaign: PropTypes.string,
-  timestamp: PropTypes.string,
 };
 
 ProfileBody.propTypes = {

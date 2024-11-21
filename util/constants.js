@@ -38,17 +38,17 @@ export const STAKING_CONTRACTS_DETAILS = {
   '0x00000000000000000000000095146adf659f455f300d7521b3b62a3b6c4aba1f': {
     name: 'Contribute Alpha',
     totalBond: 100,
-    tweetsPerEpoch: 1,
+    pointsPerEpoch: 200,
   },
   '0x0000000000000000000000002c8a5ac7b431ce04a037747519ba475884bce2fb': {
     name: 'Contribute Alpha 2',
     totalBond: 100,
-    tweetsPerEpoch: 1,
+    pointsPerEpoch: 200,
   },
   '0x000000000000000000000000708e511d5fcb3bd5a5d42f42aa9a69ec5b0ee2e8': {
     name: 'Contribute Alpha 3',
     totalBond: 500,
-    tweetsPerEpoch: 5,
+    pointsPerEpoch: 1000,
   },
 };
 
