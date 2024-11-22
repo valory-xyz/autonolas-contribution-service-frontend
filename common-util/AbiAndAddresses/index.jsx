@@ -6,3 +6,4 @@ export * from './contributeManager';
 export * from './contributors';
 export * from './stakingToken';
 export * from './olas';
+export * from './serviceRegistryL2';

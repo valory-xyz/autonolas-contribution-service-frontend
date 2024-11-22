@@ -29,6 +29,7 @@ import { useAccount, useSwitchChain } from 'wagmi';
 
 import { COLOR, NA, notifyError } from '@autonolas/frontend-library';
 
+import { CONTRIBUTE_MANAGER_ADDRESS_BASE } from 'common-util/AbiAndAddresses';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { formatDynamicTimeRange } from 'common-util/functions/time';
 import { TweetShape } from 'common-util/prop-types';
@@ -36,7 +37,7 @@ import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from '
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking';
 
 import { TweetsThisEpoch } from './TweetsThisEpoch';
-import { stake, unstake } from './requests';
+import { approveServiceTransfer, stake, unstake } from './requests';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -165,6 +166,14 @@ const StakingDetails = ({ profile }) => {
 
       // First unstake
       await unstake({ account });
+      // Service is now transferred back to the user,
+      // In order to stake again, need to approve the transfer
+      // to contribute manager
+      await approveServiceTransfer({
+        account,
+        serviceId,
+        contractAddress: CONTRIBUTE_MANAGER_ADDRESS_BASE,
+      });
       // Then stake to the same contract
       await stake({
         account,
