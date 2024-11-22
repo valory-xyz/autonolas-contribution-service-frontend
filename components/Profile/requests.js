@@ -1,7 +1,7 @@
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { base } from 'wagmi/chains';
 
-import { getContributeManagerContract } from 'common-util/Contracts';
+import { getContributeManagerContract, getServiceRegistryL2Contract } from 'common-util/Contracts';
 import { wagmiConfig } from 'common-util/Login/config';
 import { getEstimatedGasLimit } from 'common-util/functions/requests';
 
@@ -28,6 +28,23 @@ export const stake = async ({ account, socialId, serviceId, stakingInstance }) =
     const stakeFn = contract.methods.stake(socialId, serviceId, stakingInstance);
     const estimatedGas = await getEstimatedGasLimit(stakeFn, account);
     const result = await stakeFn.send({ from: account, gas: estimatedGas });
+    const receipt = await waitForTransactionReceipt(wagmiConfig, {
+      chainId: base.id,
+      hash: result.transactionHash,
+    });
+    return receipt;
+  } catch (error) {
+    console.error('Error staking:', error);
+    throw error;
+  }
+};
+
+export const approveServiceTransfer = async ({ account, serviceId, address }) => {
+  try {
+    const contract = getServiceRegistryL2Contract();
+    const approveFn = contract.methods.approve(address, serviceId);
+    const estimatedGas = await getEstimatedGasLimit(approveFn, account);
+    const result = await approveFn.send({ from: account, gas: estimatedGas });
     const receipt = await waitForTransactionReceipt(wagmiConfig, {
       chainId: base.id,
       hash: result.transactionHash,

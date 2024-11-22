@@ -10,6 +10,8 @@ import {
   MINT_NFT_CONTRACT_ABI_MAINNET,
   MINT_NFT_CONTRACT_ADDRESS_GOERLI,
   MINT_NFT_CONTRACT_ADDRESS_MAINNET,
+  SERVICE_REGISTRY_ABI,
+  SERVICE_REGISTRY_ADDRESS_BASE,
   VEOLAS_ABI, // veOlas
   VEOLAS_ADDRESS_GOERLI,
   VEOLAS_ADDRESS_MAINNET,
@@ -72,6 +74,11 @@ export const getDelegateContributeContract = () => {
 
 export const getContributeManagerContract = () => {
   const contract = getContract(CONTRIBUTE_MANAGER_ABI, CONTRIBUTE_MANAGER_ADDRESS_BASE);
+  return contract;
+};
+
+export const getServiceRegistryL2Contract = () => {
+  const contract = getContract(SERVICE_REGISTRY_ABI, SERVICE_REGISTRY_ADDRESS_BASE);
   return contract;
 };
 
