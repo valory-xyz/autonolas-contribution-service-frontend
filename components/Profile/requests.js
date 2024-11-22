@@ -39,10 +39,10 @@ export const stake = async ({ account, socialId, serviceId, stakingInstance }) =
   }
 };
 
-export const approveServiceTransfer = async ({ account, serviceId, address }) => {
+export const approveServiceTransfer = async ({ account, serviceId, contractAddress }) => {
   try {
     const contract = getServiceRegistryL2Contract();
-    const approveFn = contract.methods.approve(address, serviceId);
+    const approveFn = contract.methods.approve(contractAddress, serviceId);
     const estimatedGas = await getEstimatedGasLimit(approveFn, account);
     const result = await approveFn.send({ from: account, gas: estimatedGas });
     const receipt = await waitForTransactionReceipt(wagmiConfig, {

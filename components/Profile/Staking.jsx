@@ -172,7 +172,7 @@ const StakingDetails = ({ profile }) => {
       await approveServiceTransfer({
         account,
         serviceId,
-        address: CONTRIBUTE_MANAGER_ADDRESS_BASE,
+        contractAddress: CONTRIBUTE_MANAGER_ADDRESS_BASE,
       });
       // Then stake to the same contract
       await stake({
