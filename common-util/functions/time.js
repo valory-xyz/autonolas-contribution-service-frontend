@@ -50,10 +50,12 @@ export const formatDynamicTimeRange = (timestamp, timeOffsetMs = ONE_HOUR_IN_MS)
   const timestampInMs = timestamp * 1000;
 
   // Get current date and time in the format: "17/11/2024" and "13:39:07"
-  const [currentDate, currentTime] = new Date(timestampInMs).toLocaleString().split(', ');
+  const [currentDate, currentTime] = new Date(timestampInMs).toLocaleString('en-US').split(', ');
 
   // Get next date and time
-  const [nextDate, nextTime] = new Date(timestampInMs + timeOffsetMs).toLocaleString().split(', ');
+  const [nextDate, nextTime] = new Date(timestampInMs + timeOffsetMs)
+    .toLocaleString('en-US')
+    .split(', ');
 
   const { hour: currentHour, period: currentPeriod } = getHourAndPeriod(currentTime);
   const { hour: nextHour, period: nextPeriod } = getHourAndPeriod(nextTime);
