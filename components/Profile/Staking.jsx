@@ -36,6 +36,7 @@ import { TweetShape } from 'common-util/prop-types';
 import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking';
 
+import { HowTweetsAreScoredModal } from './HowTweetsAreScoredModal';
 import { TweetsThisEpoch } from './TweetsThisEpoch';
 import { approveServiceTransfer, stake, unstake } from './requests';
 
@@ -407,7 +408,11 @@ const StakingDetails = ({ profile }) => {
         To be eligible to earn rewards, make the required number of tweets each epoch and include at
         least one of the keywords from active campaigns.
       </Paragraph>
-      <Link href="/leaderboard">Review active campaigns on Leaderboard</Link>
+      <Flex align="center" gap={8} wrap>
+        <Link href="/leaderboard">Review active campaigns on Leaderboard</Link>
+        <Text type="secondary">•</Text>
+        <HowTweetsAreScoredModal />
+      </Flex>
     </>
   );
 };
