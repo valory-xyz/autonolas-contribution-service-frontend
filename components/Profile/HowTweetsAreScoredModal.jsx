@@ -1,0 +1,90 @@
+import { Alert, Button, Modal, Typography } from 'antd';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+const { Text, Paragraph } = Typography;
+
+const NumberedList = styled.ol`
+  padding-left: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  .ant-typography {
+    font-weight: 400;
+  }
+`;
+
+const DotList = styled.ul`
+  list-style-type: square;
+  padding-left: 20px;
+  gap: 8px;
+  li {
+    padding-left: 8px;
+    &::marker {
+      color: #b972e8;
+    }
+    &:not(:last-of-type) {
+      margin-bottom: 8px;
+    }
+  }
+`;
+
+export const HowTweetsAreScoredModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+  return (
+    <>
+      <Button type="link" onClick={handleOpen} className="p-0">
+        How your tweets are scored
+      </Button>
+      <Modal
+        title="How your tweets are scored"
+        open={isOpen}
+        onCancel={handleClose}
+        width={700}
+        footer={
+          <Button type="primary" onClick={handleClose}>
+            Close
+          </Button>
+        }
+      >
+        <Text className="block mt-24">
+          Your tweets about Olas earn points based on three key factors:
+        </Text>
+        <NumberedList>
+          <li>
+            Writing Quality
+            <Paragraph>
+              Assessed as LOW, AVERAGE, or HIGH. This reflects how well your tweet is written.
+            </Paragraph>
+          </li>
+          <li>
+            Relevance to Olas
+            <Paragraph>
+              Rated as LOW, AVERAGE, or HIGH. This measures how closely your tweet relates to Olas
+              and its key topics like Blockchain, Web3, AI agents, co-own AI, and agent economies.
+            </Paragraph>
+          </li>
+          <li>
+            Engagement
+            <Paragraph>
+              Categorized as LOW, AVERAGE, or HIGH based on the number of impressions your tweet
+              receives.
+            </Paragraph>
+          </li>
+        </NumberedList>
+        <Text className="font-weight-600">How points are calculated</Text>
+        <DotList>
+          <li>Each factor is assigned a score from 1 (LOW) to 3 (HIGH).</li>
+          <li>These scores are added together for a total between 3 and 9.</li>
+          <li>The total is then scaled to award you between 100 and 1000 points.</li>
+        </DotList>
+        <Alert
+          type="info"
+          showIcon
+          message="Tip: Craft high-quality, relevant tweets that engage your audience to earn more points!"
+        />
+      </Modal>
+    </>
+  );
+};
