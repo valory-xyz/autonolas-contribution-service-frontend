@@ -49,7 +49,12 @@ export const HowTweetsAreScoredModal = () => {
         }
       >
         <Text className="block mt-24">
-          Your tweets about Olas earn points based on three key factors:
+          When you make a tweet that mentions{' '}
+          <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">
+            @autonolas
+          </a>{' '}
+          or includes an eligible hashtag, it is assessed and awarded points according to three
+          factors:
         </Text>
         <NumberedList>
           <li>
