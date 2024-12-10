@@ -139,7 +139,7 @@ const StakingDetails = ({ profile }) => {
 
   const [isRestaking, setIsRestaking] = useState(false);
 
-  const serviceId = serviceInfo?.serviceId?.toString() ?? null;
+  const serviceId = profile.service_id;
   const contractAddress = serviceInfo?.stakingInstance
     ? getBytes32FromAddress(serviceInfo.stakingInstance)
     : null;
@@ -339,7 +339,7 @@ const StakingDetails = ({ profile }) => {
           value={
             stakingDetails.totalRewards !== null
               ? `${OLAS_UNICODE_SYMBOL}${stakingDetails.totalRewards}`
-              : undefined
+              : NA
           }
         />
         <InfoColumn
@@ -348,13 +348,13 @@ const StakingDetails = ({ profile }) => {
           value={
             stakingDetails.epochEndTimestamp
               ? formatDynamicTimeRange(stakingDetails.epochEndTimestamp)
-              : undefined
+              : NA
           }
         />
         <InfoColumn
           title="Epoch length"
           isLoading={isStakingDetailsLoading}
-          value={stakingDetails.epochLength ?? undefined}
+          value={stakingDetails.epochLength ?? NA}
         />
       </Row>
       <Collapse
@@ -383,13 +383,14 @@ const StakingDetails = ({ profile }) => {
         <InfoColumn
           title="Staking contract"
           isLoading={isServiceInfoLoading}
+          value={isNil(contractDetails?.name) ? NA : undefined}
           link={
             contractDetails
               ? {
                   href: `${GOVERN_APP_URL}/contracts/${contractAddress}`,
                   text: contractDetails.name,
                 }
-              : NA
+              : undefined
           }
           comingSoonButtonText="Change"
         />
@@ -439,6 +440,7 @@ Staking.propTypes = {
     twitter_handle: PropTypes.string,
     service_multisig: PropTypes.string,
     points: PropTypes.number,
+    service_id: PropTypes.string,
     tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
   }),
 };
@@ -450,6 +452,7 @@ Staking.defaultProps = {
     twitter_id: '',
     twitter_handle: '',
     service_multisig: '',
+    service_id: '',
     points: 0,
     tweets: {},
   },
