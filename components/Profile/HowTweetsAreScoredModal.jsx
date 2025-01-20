@@ -50,7 +50,7 @@ export const HowTweetsAreScoredModal = () => {
       >
         <Text className="block mt-24">
           When you make a post that mentions{' '}
-          <a href="https://X.com/autonolas" target="_blank" rel="noopener noreferrer">
+          <a href="https://x.com/autonolas" target="_blank" rel="noopener noreferrer">
             @autonolas
           </a>{' '}
           or includes an eligible hashtag, it is assessed and awarded points according to three

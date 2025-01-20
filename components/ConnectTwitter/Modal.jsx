@@ -16,7 +16,7 @@ const ConnectTwitterModal = () => {
   const handleCreateTweet = () => {
     const tweetText = `I'm linking my wallet to @Autonolas Contribute:\n${account}\n\nStart contributing to #OlasNetwork: https://contribute.olas.network`;
     const encodedTweetText = encodeURIComponent(tweetText).replace(/%0D%0A/g, '%0A');
-    window.open(`https://X.com/intent/tweet?text=${encodedTweetText}`, '_blank');
+    window.open(`https://x.com/intent/tweet?text=${encodedTweetText}`, '_blank');
   };
 
   return (

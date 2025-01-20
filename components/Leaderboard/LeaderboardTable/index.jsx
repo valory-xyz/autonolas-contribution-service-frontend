@@ -59,7 +59,7 @@ export const LeaderboardTable = () => {
           ),
           twitter_handle && (
             <a
-              href={`https://X.com/${twitter_handle}`}
+              href={`https://x.com/${twitter_handle}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X handle"

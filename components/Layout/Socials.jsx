@@ -12,7 +12,7 @@ const Socials = () => {
     },
     {
       type: 'X',
-      url: 'https://X.com/autonolas',
+      url: 'https://x.com/autonolas',
     },
   ];
 

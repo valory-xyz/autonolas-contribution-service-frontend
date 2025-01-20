@@ -169,7 +169,7 @@ export const Campaigns = () => {
       </Title>
       <Paragraph>
         Mention{' '}
-        <a href="https://X.com/autonolas" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/autonolas" target="_blank" rel="noopener noreferrer">
           @autonolas
         </a>{' '}
         or use at least one of the following tags in your post to earn leaderboard points and be

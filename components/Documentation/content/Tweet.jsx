@@ -12,7 +12,7 @@ export const Tweet = () => (
     <Title level={2}>Post</Title>
     <Paragraph>
       Members have the unique ability to write and propose new posts to be posting from the{' '}
-      <a href="https://X.com/autonolas">Olas X account</a>. This puts the community in control of
+      <a href="https://x.com/autonolas">Olas X account</a>. This puts the community in control of
       the narrative and a key piece of the brand.
     </Paragraph>
 

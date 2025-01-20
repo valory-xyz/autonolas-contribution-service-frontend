@@ -38,7 +38,7 @@ const ConnectTwitter = ({ account }) => {
     return (
       <Text type="secondary">
         Your connected X account:{' '}
-        <a href={`https://X.com/${account}`} target="_blank">
+        <a href={`https://x.com/${account}`} target="_blank">
           @{account} ↗
         </a>
       </Text>
