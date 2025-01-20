@@ -1,4 +1,4 @@
-import { TwitterOutlined } from '@ant-design/icons';
+import { XOutlined } from '@ant-design/icons';
 import { Col, Flex, Grid, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -40,9 +40,9 @@ export const TweetsThisEpoch = ({ tweets }) => {
     </Scrollable>
   ) : (
     <Flex vertical align="center" className="mt-24 mb-24">
-      <TwitterOutlined style={{ color: '#A3AEBB', fontSize: 48 }} />
-      <Text type="secondary">No tweets posted this epoch yet.</Text>
-      <Text type="secondary">Share something on Twitter!</Text>
+      <XOutlined style={{ color: '#A3AEBB', fontSize: 48 }} />
+      <Text type="secondary">Nothing posted this epoch yet.</Text>
+      <Text type="secondary">Share something on X!</Text>
     </Flex>
   );
 };

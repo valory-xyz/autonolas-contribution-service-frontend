@@ -1,4 +1,4 @@
-import { TwitterOutlined } from '@ant-design/icons';
+import { XOutlined } from '@ant-design/icons';
 import { Button, Modal, Typography } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,19 +16,19 @@ const ConnectTwitterModal = () => {
   const handleCreateTweet = () => {
     const tweetText = `I'm linking my wallet to @Autonolas Contribute:\n${account}\n\nStart contributing to #OlasNetwork: https://contribute.olas.network`;
     const encodedTweetText = encodeURIComponent(tweetText).replace(/%0D%0A/g, '%0A');
-    window.open(`https://twitter.com/intent/tweet?text=${encodedTweetText}`, '_blank');
+    window.open(`https://X.com/intent/tweet?text=${encodedTweetText}`, '_blank');
   };
 
   return (
     <>
       <Button onClick={() => setIsModalVisible(true)}>
-        <TwitterOutlined /> Connect Twitter
+        <XOutlined /> Connect X
       </Button>
 
       <Modal
         title={
           <Title level={4} className="mb-0">
-            Connect Twitter
+            Connect X
           </Title>
         }
         open={isModalVisible}
@@ -51,19 +51,19 @@ const ConnectTwitterModal = () => {
           disabled={!account}
           title={!account && 'Connect a wallet'}
         >
-          <TwitterOutlined /> Post tweet
+          <XOutlined /> Post
         </Button>
         <br />
         <Text type="secondary">
-          Don&apos;t change the tweet – it contains a unique code that links your wallet to your
-          Twitter account.
+          Don&apos;t change the post – it contains a unique code that links your wallet to your X
+          account.
         </Text>
         <br />
         <br />
         <Title className="mb-0" level={5}>
           Step 3:
         </Title>
-        <Text>Wait up to 5-10 minutes – your Twitter account will be automatically linked.</Text>
+        <Text>Wait up to 5-10 minutes – your X account will be automatically linked.</Text>
         <br />
         <br />
         <Title className="mb-0" level={5}>

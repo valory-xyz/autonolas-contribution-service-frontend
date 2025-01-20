@@ -9,17 +9,17 @@ const { Title, Paragraph } = Typography;
 
 export const Tweet = () => (
   <div id={DOCS_SECTIONS.tweet}>
-    <Title level={2}>Tweet</Title>
+    <Title level={2}>Post</Title>
     <Paragraph>
-      Members have the unique ability to write and propose new tweets to be posting from the{' '}
-      <a href="https://twitter.com/autonolas">Olas Twitter account</a>. This puts the community in
-      control of the narrative and a key piece of the brand.
+      Members have the unique ability to write and propose new posts to be posting from the{' '}
+      <a href="https://X.com/autonolas">Olas X account</a>. This puts the community in control of
+      the narrative and a key piece of the brand.
     </Paragraph>
 
     <Paragraph>
       First, become a <Link href="#members">member</Link>. Then head to the{' '}
-      <Link href="/tweet">Tweet</Link> page. Write your tweet and propose it. Other members will
-      vote on it. If the proposed tweet gets enough voting power, it will be posted.
+      <Link href="/post">Post</Link> page. Write your post and propose it. Other members will vote
+      on it. If the proposed post gets enough voting power, it will be posted.
     </Paragraph>
 
     <Paragraph>

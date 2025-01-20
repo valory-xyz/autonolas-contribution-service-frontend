@@ -27,9 +27,9 @@ const checkmark = '✅';
 const VerificationDisclaimer = () => (
   <Text type="secondary">
     <Text strong>Disclaimer&nbsp;-&nbsp;</Text>
-    By connecting and/or verifying your information (including your Discord, Twitter and wallet
-    address details) you are creating public information. In particular, the leaderboard
-    functionality will display a link between your provided Discord and Twitter handles.
+    By connecting and/or verifying your information (including your Discord, X and wallet address
+    details) you are creating public information. In particular, the leaderboard functionality will
+    display a link between your provided Discord and X handles.
   </Text>
 );
 

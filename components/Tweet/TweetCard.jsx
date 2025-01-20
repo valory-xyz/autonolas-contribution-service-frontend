@@ -12,17 +12,17 @@ const TweetCard = () => {
 
   return (
     <Card
-      title={<EducationTitle title="Tweet" educationItem="tweet" level={5} />}
+      title={<EducationTitle title="Post" educationItem="post" level={5} />}
       actions={[
-        <Link href="/tweet" key="propose">
-          Propose a tweet
+        <Link href="/post" key="propose">
+          Propose a post
         </Link>,
-        <Link href="/tweet" key="review">
+        <Link href="/post" key="review">
           Review proposals
         </Link>,
       ]}
     >
-      <Statistic title="Pending tweet proposals" value={pendingTweetProposals?.length || NA} />
+      <Statistic title="Pending post proposals" value={pendingTweetProposals?.length || NA} />
     </Card>
   );
 };

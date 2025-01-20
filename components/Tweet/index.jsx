@@ -24,7 +24,7 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 const ToProposeTweetText = () => (
-  <Text type="secondary">To propose a tweet, you must have at least 100k veOLAS voting power.</Text>
+  <Text type="secondary">To propose a post, you must have at least 100k veOLAS voting power.</Text>
 );
 
 export const TweetPropose = () => {
@@ -51,12 +51,12 @@ export const TweetPropose = () => {
       const has100kVotingPower = await checkVotingPower(account, HUNDRED_K_OLAS_IN_WEI);
 
       if (!isStaging && !has100kVotingPower) {
-        notifyError('You must have at least 100k veOLAS voting power to propose a tweet.');
+        notifyError('You must have at least 100k veOLAS voting power to propose a post.');
         return;
       }
 
       const signature = await signMessageAsync({
-        message: `I am signing a message to verify that I propose a tweet starting with ${getFirstTenCharsOfTweet(
+        message: `I am signing a message to verify that I propose a post starting with ${getFirstTenCharsOfTweet(
           tweetOrThread.text,
         )}`,
       });
@@ -87,20 +87,20 @@ export const TweetPropose = () => {
       const action = {
         actorAddress: account,
         commitId,
-        description: 'proposed a tweet',
+        description: 'proposed a post',
         timestamp: Date.now(),
       };
 
       const updatedMemoryDetails = await fetchUpdatedMemory();
 
       await triggerAction(currentMemoryDetails.id, action, updatedMemoryDetails);
-      notifySuccess('Tweet proposed');
+      notifySuccess('Post proposed');
 
       // reset form
       setTweet('');
       setMedia([]);
     } catch (error) {
-      notifyError('Tweet proposal failed');
+      notifyError('Post proposal failed');
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -119,7 +119,7 @@ export const TweetPropose = () => {
 
   return (
     <SocialPosterContainer>
-      <EducationTitle title="Tweet" educationItem="tweet" />
+      <EducationTitle title="Post" educationItem="post" />
 
       <TextArea
         value={tweet}

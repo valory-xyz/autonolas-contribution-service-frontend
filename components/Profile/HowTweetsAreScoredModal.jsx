@@ -35,10 +35,10 @@ export const HowTweetsAreScoredModal = () => {
   return (
     <>
       <Button type="link" onClick={handleOpen} className="p-0">
-        How your tweets are scored
+        How your posts are scored
       </Button>
       <Modal
-        title="How your tweets are scored"
+        title="How your posts are scored"
         open={isOpen}
         onCancel={handleClose}
         width={700}
@@ -49,8 +49,8 @@ export const HowTweetsAreScoredModal = () => {
         }
       >
         <Text className="block mt-24">
-          When you make a tweet that mentions{' '}
-          <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">
+          When you make a post that mentions{' '}
+          <a href="https://X.com/autonolas" target="_blank" rel="noopener noreferrer">
             @autonolas
           </a>{' '}
           or includes an eligible hashtag, it is assessed and awarded points according to three
@@ -60,20 +60,20 @@ export const HowTweetsAreScoredModal = () => {
           <li>
             Writing Quality
             <Paragraph>
-              Assessed as LOW, AVERAGE, or HIGH. This reflects how well your tweet is written.
+              Assessed as LOW, AVERAGE, or HIGH. This reflects how well your post is written.
             </Paragraph>
           </li>
           <li>
             Relevance to Olas
             <Paragraph>
-              Rated as LOW, AVERAGE, or HIGH. This measures how closely your tweet relates to Olas
+              Rated as LOW, AVERAGE, or HIGH. This measures how closely your post relates to Olas
               and its key topics like Blockchain, Web3, AI agents, co-own AI, and agent economies.
             </Paragraph>
           </li>
           <li>
             Engagement
             <Paragraph>
-              Categorized as LOW, AVERAGE, or HIGH based on the number of impressions your tweet
+              Categorized as LOW, AVERAGE, or HIGH based on the number of impressions your post
               receives.
             </Paragraph>
           </li>
@@ -87,7 +87,7 @@ export const HowTweetsAreScoredModal = () => {
         <Alert
           type="info"
           showIcon
-          message="Tip: Craft high-quality, relevant tweets that engage your audience to earn more points!"
+          message="Tip: Craft high-quality, relevant posts that engage your audience to earn more points!"
         />
       </Modal>
     </>

@@ -87,7 +87,7 @@ const CalendarComponent = () => {
               <Text>
                 For a full list of what has happened in the Olas ecosystem, follow{' '}
                 <a
-                  href="https://twitter.com/autonolas/status/1676576697863507968"
+                  href="https://X.com/autonolas/status/1676576697863507968"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

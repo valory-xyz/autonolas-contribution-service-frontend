@@ -37,8 +37,8 @@ const ConnectTwitter = ({ account }) => {
   if (account) {
     return (
       <Text type="secondary">
-        Your connected Twitter account:{' '}
-        <a href={`https://twitter.com/${account}`} target="_blank">
+        Your connected X account:{' '}
+        <a href={`https://X.com/${account}`} target="_blank">
           @{account} ↗
         </a>
       </Text>
@@ -46,7 +46,7 @@ const ConnectTwitter = ({ account }) => {
   }
   return (
     <>
-      <Paragraph type="secondary">Link your Twitter account to your Contribute profile.</Paragraph>
+      <Paragraph type="secondary">Link your X account to your Contribute profile.</Paragraph>
       <ConnectTwitterModal />
     </>
   );
@@ -240,7 +240,7 @@ const TweetAndEarn = ({ disabled }) => {
   return (
     <>
       <Paragraph type="secondary">
-        Visit your user profile page and participate in tweet campaigns. If you post enough for the
+        Visit your user profile page and participate in X post campaigns. If you post enough for the
         epoch, you might be eligible to earn staking rewards.
       </Paragraph>
       <Paragraph type="secondary">
@@ -284,7 +284,7 @@ export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) =
         items={[
           {
             key: 'connectTwitter',
-            title: <Text className="block mb-8">Connect Twitter</Text>,
+            title: <Text className="block mb-8">Connect X</Text>,
             description: <ConnectTwitter account={twitterAccount} />,
           },
           {
@@ -305,7 +305,7 @@ export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) =
           },
           {
             key: 'tweetAndEarn',
-            title: <Text className="block mb-8">Tweet about Olas. Earn points. Earn rewards.</Text>,
+            title: <Text className="block mb-8">Post about Olas. Earn points. Earn rewards.</Text>,
             description: <TweetAndEarn disabled={step !== STAKING_STEPS.TWEET_AND_EARN} />,
           },
         ]}

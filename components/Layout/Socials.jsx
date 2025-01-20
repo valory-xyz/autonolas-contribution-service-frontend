@@ -11,8 +11,8 @@ const Socials = () => {
       url: 'https://github.com/valory-xyz/autonolas-contribution-service-frontend',
     },
     {
-      type: 'twitter',
-      url: 'https://twitter.com/autonolas',
+      type: 'X',
+      url: 'https://X.com/autonolas',
     },
   ];
 

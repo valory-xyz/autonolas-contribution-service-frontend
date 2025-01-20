@@ -82,7 +82,7 @@ const ProfileBody = ({ profile, id }) => {
     if (account && areAddressesEqual(id, account)) {
       return (
         <>
-          <Text type="secondary">Twitter not connected</Text>
+          <Text type="secondary">X not connected</Text>
           <ConnectTwitterModal />
         </>
       );
@@ -123,7 +123,7 @@ const ProfileBody = ({ profile, id }) => {
               </List.Item>
               <List.Item>
                 <Flex vertical gap={8}>
-                  <Text>Twitter Handle</Text>
+                  <Text>X Handle</Text>
                   {getTwitterHandle()}
                 </Flex>
               </List.Item>

@@ -1,4 +1,4 @@
-import { PlusOutlined, TwitterOutlined } from '@ant-design/icons';
+import { PlusOutlined, XOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Modal, Row, message } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -71,7 +71,7 @@ const ThreadModal = ({
   // POST the thread to the backend
   const onPostThread = async () => {
     if (thread.some((t) => (t.text || '').trim() === '' && t.media.length === 0)) {
-      message.error('One or more tweets are empty. Please fill them all.');
+      message.error('One or more posts are empty. Please fill them all.');
       return;
     }
 
@@ -97,7 +97,7 @@ const ThreadModal = ({
   return (
     <Modal
       open
-      title="Twitter Thread"
+      title="X Thread"
       width={900}
       onOk={onPostThread}
       onCancel={closeThreadModal}
@@ -107,7 +107,7 @@ const ThreadModal = ({
           type="primary"
           loading={isSubmitting}
           onClick={onPostThread}
-          icon={<TwitterOutlined />}
+          icon={<XOutlined />}
         >
           Propose thread
         </Button>,
