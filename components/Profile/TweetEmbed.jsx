@@ -45,7 +45,7 @@ export const TweetEmbed = ({ points, tweetId, width = 250 }) => {
     >
       {isError && (
         <TweetPlaceholder>
-          <Text className="block">Failed to load the tweet, please try reloading</Text>
+          <Text className="block">Failed to load the post, please try reloading</Text>
           <Button onClick={handleReload} icon={<ReloadOutlined />} type="text" />
         </TweetPlaceholder>
       )}

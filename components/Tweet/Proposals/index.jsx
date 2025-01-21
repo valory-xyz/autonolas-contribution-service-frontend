@@ -25,7 +25,7 @@ export const Proposals = () => {
   return (
     <>
       <div className="mb-24">
-        <EducationTitle title="Proposed tweets" educationItem="proposals" />
+        <EducationTitle title="Proposed posts" educationItem="proposals" />
       </div>
 
       {isLoading ? (

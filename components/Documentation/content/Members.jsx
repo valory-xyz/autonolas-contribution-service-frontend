@@ -13,7 +13,7 @@ export const Members = () => (
     <Paragraph>
       Becoming a member of Olas Contribute enables you to act for the DAO across the app:
       <ul>
-        <li>propose and vote on tweets</li>
+        <li>propose and vote on posts</li>
         <li>manage Chatbot memory</li>
         <li>chat with other members</li>
       </ul>

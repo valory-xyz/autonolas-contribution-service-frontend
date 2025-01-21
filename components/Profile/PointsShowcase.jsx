@@ -38,7 +38,7 @@ export const PointsShowcase = memo(
         {tweets.length > 0 ? (
           <>
             <Paragraph type="secondary">
-              Here is a selection of tweets you have made that have earned points.
+              Here is a selection of posts you have made that have earned points.
             </Paragraph>
 
             <Row gutter={[16, 16]} className="mt-12">
@@ -51,7 +51,7 @@ export const PointsShowcase = memo(
           </>
         ) : (
           <NoTweetsText type="secondary" className="mt-12">
-            No tweets found. Connect your Twitter account and start completing{' '}
+            No posts found. Connect your X account and start completing{' '}
             <Link href="/leaderboard">actions</Link> to earn more points
           </NoTweetsText>
         )}

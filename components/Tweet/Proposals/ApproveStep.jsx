@@ -85,7 +85,7 @@ export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
             disabled={isApproveDisabled}
             onClick={onApprove}
           >
-            Approve this tweet
+            Approve this post
           </Button>
 
           {!account && <ConnectWalletToApprove />}

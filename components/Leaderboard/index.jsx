@@ -16,7 +16,7 @@ const Leaderboard = () => {
       <Col xs={24} lg={14}>
         {!isVerified && (
           <TwitterCard>
-            <Text>Connect Twitter and start earning points</Text>
+            <Text>Connect X and start earning points</Text>
             <ConnectTwitterModal />
           </TwitterCard>
         )}

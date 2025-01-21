@@ -66,7 +66,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
       <Result
         style={{ borderLeft: `1px solid ${COLOR.BORDER_GREY}` }}
         status="success"
-        title="Tweet posted successfully!"
+        title="Posted successfully!"
         extra={[
           <Button
             key={`extra-${proposal.action_id}`}
@@ -76,7 +76,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            View tweet
+            View post
           </Button>,
         ]}
       />
@@ -89,7 +89,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
       {isFailed && <TweetFailed />}
 
       <Popconfirm
-        title="Are you sure？This will immediately post to the @autonolas Twitter account."
+        title="Are you sure？This will immediately post to the @autonolas X account."
         icon={<ExclamationCircleOutlined style={{ color: COLOR.ORANGE }} />}
         onConfirm={onExecute}
       >
@@ -100,7 +100,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
           disabled={!account || !isQuorumAchieved || !isProposalVerified || isValidating}
           className="mb-12"
         >
-          Execute & post tweet
+          Execute & post
         </Button>
       </Popconfirm>
       <br />

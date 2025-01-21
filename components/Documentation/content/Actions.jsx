@@ -13,11 +13,11 @@ export const ActionsDocs = () => (
     </Paragraph>
 
     <Paragraph>
-      Currently, there is one action: &quot;Spread the word on Twitter&quot;. To complete this, you
-      must first connect to Twitter – you can do this via the Leaderboard page. Once connected,
-      tweet about Olas being sure to either mention @autonolas, or use the hashtag #OlasNetwork. In
-      the background, an AI-powered Olas service will analyse your tweet based on quality and
-      relevance, and you&apos;ll be rewarded accordingly.
+      Currently, there is one action: &quot;Spread the word on X&quot;. To complete this, you must
+      first connect to X – you can do this via the Leaderboard page. Once connected, post about Olas
+      being sure to either mention @autonolas, or use the hashtag #OlasNetwork. In the background,
+      an AI-powered Olas service will analyse your post based on quality and relevance, and
+      you&apos;ll be rewarded accordingly.
     </Paragraph>
     <br />
     <br />

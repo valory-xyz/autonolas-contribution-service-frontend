@@ -21,7 +21,7 @@
   {
     "id": "4131d7f5-4980-4a28-bb32-5ff2a231d989",
     "component": "members",
-    "text": "Any veOLAS holder can join Contribute. Being a member unlocks abilities like updating the Chatbot, proposing tweets and more.",
+    "text": "Any veOLAS holder can join Contribute. Being a member unlocks abilities like updating the Chatbot, proposing posts and more.",
     "docsLink": "#members",
     "hidden": true
   },
@@ -41,9 +41,9 @@
   },
   {
     "id": "b053ab42-b24e-4e38-b96d-1d56a3f11aab",
-    "component": "tweet",
-    "text": "Members can propose tweets to be sent from the Olas Twitter account (@autonolas).",
-    "docsLink": "#tweet"
+    "component": "post",
+    "text": "Members can propose posts to be sent from the Olas X account (@autonolas).",
+    "docsLink": "#post"
   },
   {
     "id": "e0cf5a7e-770d-4d13-9845-7b30ee66f223",
@@ -55,7 +55,7 @@
   {
     "id": "9dcd5c61-cc48-45e9-b393-88977f8cec17",
     "component": "proposals",
-    "text": "Members can vote to approve or reject tweet proposals. Approved tweets are automatically posted by an Olas-powered service."
+    "text": "Members can vote to approve or reject post proposals. Approved posts are automatically posted by an Olas-powered service."
   },
   {
     "id": "697e205d-e9cc-4a4b-a553-21fc53215062",

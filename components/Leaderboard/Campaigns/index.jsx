@@ -169,14 +169,14 @@ export const Campaigns = () => {
       </Title>
       <Paragraph>
         Mention{' '}
-        <a href="https://twitter.com/autonolas" target="_blank" rel="noopener noreferrer">
+        <a href="https://x.com/autonolas" target="_blank" rel="noopener noreferrer">
           @autonolas
         </a>{' '}
-        or use at least one of the following tags in your tweet to earn leaderboard points and be
+        or use at least one of the following tags in your post to earn leaderboard points and be
         eligible for staking rewards.
       </Paragraph>
       <Paragraph>
-        The leaderboard points you can earn by tweeting vary according to the AI&apos;s evaluation.
+        The leaderboard points you can earn by posting vary according to the AI&apos;s evaluation.
       </Paragraph>
       <Table
         columns={columns}

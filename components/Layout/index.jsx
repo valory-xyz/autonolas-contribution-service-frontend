@@ -6,7 +6,7 @@ import {
   NotificationOutlined, // RobotOutlined,
   // StarOutlined,
   TrophyOutlined,
-  TwitterOutlined, // UserOutlined,
+  XOutlined, // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
 import { Button, Grid, Layout, Typography } from 'antd';
@@ -55,7 +55,7 @@ const { Text } = Typography;
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> },
-  { key: 'tweet', label: 'Tweet', icon: <TwitterOutlined /> },
+  { key: 'post', label: 'Post', icon: <XOutlined /> },
   // { key: 'members', label: 'Members', icon: <UserOutlined /> },
   // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
   // { key: 'predict', label: 'Predict', icon: <StarOutlined /> },
@@ -208,8 +208,8 @@ const NavigationBar = ({ children }) => {
               <>
                 <Text ellipsis>
                   <InfoCircleFilled className="mr-8" style={{ color: '#1677FF' }} />
-                  Contribute staking is live! Spread the word about Olas on Twitter and have a
-                  chance to earn rewards.
+                  Contribute staking is live! Spread the word about Olas on X and have a chance to
+                  earn rewards.
                 </Text>{' '}
                 <Link href="/staking">Set up staking now</Link>
               </>

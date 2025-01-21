@@ -68,19 +68,17 @@ const TweetCountTooltip = () => (
     title={
       <>
         <Paragraph>
-          Contribute is regularly checking tweets in the background to capture eligible posts.
+          Contribute is regularly checking posts in the background to capture eligible posts.
         </Paragraph>
-        <Paragraph>
-          Due to Twitter API restrictions, some of your tweets may not be counted.
-        </Paragraph>
+        <Paragraph>Due to X API restrictions, some of your posts may not be counted.</Paragraph>
         <Paragraph className="mb-0">
-          Please ensure your tweets are public, include the required tags, and meet all eligibility
+          Please ensure your posts are public, include the required tags, and meet all eligibility
           guidelines.
         </Paragraph>
       </>
     }
   >
-    <HintText>Why wasn’t my tweet counted?</HintText>
+    <HintText>Why wasn’t my post counted?</HintText>
   </Tooltip>
 );
 
@@ -249,9 +247,7 @@ const StakingDetails = ({ profile }) => {
           <Tooltip
             color={COLOR.WHITE}
             title={
-              <Text>
-                You didn&apos;t post enough tweets and missed the epoch target multiple times.
-              </Text>
+              <Text>You didn&apos;t post enough and missed the epoch target multiple times.</Text>
             }
           >
             <QuestionCircleOutlined style={{ color: '#4D596A' }} />
@@ -362,7 +358,7 @@ const StakingDetails = ({ profile }) => {
         items={[
           {
             key: '1',
-            label: 'My tweets this epoch',
+            label: 'My posts this epoch',
             children: <TweetsThisEpoch tweets={tweetsThisEpoch} />,
           },
         ]}
@@ -405,7 +401,7 @@ const StakingDetails = ({ profile }) => {
       <StyledDivider />
       <Title level={5}>Guidelines</Title>
       <Paragraph type="secondary">
-        To be eligible to earn rewards, make the required number of tweets each epoch and include at
+        To be eligible to earn rewards, make the required number of posts each epoch and include at
         least one of the keywords from active campaigns.
       </Paragraph>
       <Flex align="center" gap={8} wrap>
@@ -424,7 +420,7 @@ export const Staking = ({ profile }) => {
         Staking
       </Title>
       <Paragraph type="secondary" className="mb-24">
-        Staking allows you to earn OLAS rewards when you post about Olas on Twitter.
+        Staking allows you to earn OLAS rewards when you post about Olas on X.
       </Paragraph>
       {profile.service_multisig ? <StakingDetails profile={profile} /> : <SetupStaking />}
     </Card>
