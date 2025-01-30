@@ -49,7 +49,7 @@ export const useReadStakingContract = (functionName, address, chainId, args, ena
 
 const checkpointQuery = gql`
   {
-    checkpoints(orderBy: epoch, orderDirection: desc) {
+    checkpoints(orderBy: epoch, orderDirection: desc, first: 1000) {
       id
       epoch
       contractAddress

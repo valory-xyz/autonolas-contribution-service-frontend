@@ -54,7 +54,7 @@ const { Text } = Typography;
 
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
-  { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> },
+  // { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> }, // TODO: uncomment when contribute staking is fixed
   { key: 'post', label: 'Post', icon: <XOutlined /> },
   // { key: 'members', label: 'Members', icon: <UserOutlined /> },
   // { key: 'chat', label: 'Chat', icon: <MessageOutlined /> },
@@ -75,7 +75,7 @@ const NavigationBar = ({ children }) => {
   const { pathname } = router;
   const { isOrbisConnected, disconnect, updateOrbisConnectionState } = useOrbis();
 
-  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const [isBannerVisible, setIsBannerVisible] = useState(false); // TODO: set back to true when contribute staking is fixed
   const handleBannerClose = () => setIsBannerVisible(false);
 
   const dispatch = useDispatch();
