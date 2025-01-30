@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { ConnectWallet } from './ConnectWallet';
-import { StakingStepper } from './StakingStepper';
 
-const { Title } = Typography;
+// import { StakingStepper } from './StakingStepper';
+
+const { Title, Text } = Typography;
 
 const Root = styled.div`
   max-width: 640px;
@@ -32,11 +33,15 @@ export const StakingPage = () => {
         <Title level={4}>Set up staking</Title>
         {!account && <ConnectWallet />}
         {account && (
-          <StakingStepper
-            twitterAccount={twitterProfile.account}
-            twitterId={twitterProfile.id}
-            multisigAddress={twitterProfile.multisig}
-          />
+          <Text type="secondary" className="block m-8">
+            Coming soon...
+          </Text>
+          // TODO: uncomment when contribute staking is fixed
+          // <StakingStepper
+          //   twitterAccount={twitterProfile.account}
+          //   twitterId={twitterProfile.id}
+          //   multisigAddress={twitterProfile.multisig}
+          // />
         )}
       </Card>
     </Root>
