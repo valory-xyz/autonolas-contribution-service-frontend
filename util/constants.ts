@@ -34,7 +34,10 @@ export const VEOLAS_URL = 'https://govern.olas.network/veolas';
 export const GOVERN_APP_URL = 'https://govern.olas.network';
 export const OPERATE_APP_URL = 'https://operate.olas.network';
 
-export const STAKING_CONTRACTS_DETAILS = {
+export const STAKING_CONTRACTS_DETAILS: Record<
+  string,
+  { name: string; totalBond: number; pointsPerEpoch: number }
+> = {
   '0x00000000000000000000000095146adf659f455f300d7521b3b62a3b6c4aba1f': {
     name: 'Contribute Alpha',
     totalBond: 100,

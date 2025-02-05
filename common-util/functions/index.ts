@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+// @ts-nocheck // TODO: provide all types
 import { ethers } from 'ethers';
 import { isNil, lowerCase, toLower } from 'lodash';
 
@@ -98,7 +99,7 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
  * @param {Number} fractionDigits Number of digits after the decimal point
  * @returns {String} with 2 decimal places
  */
-export const formatToEth = (value, dv = 0, fractionDigits = 2) => {
+export const formatToEth = (value: ethers.BigNumberish, dv = 0, fractionDigits = 2) => {
   if (isNil(value)) return dv || 0;
   return (+ethers.formatEther(value)).toFixed(fractionDigits);
 };

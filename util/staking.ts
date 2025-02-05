@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { gql, request } from 'graphql-request';
 import { isNil, isNumber } from 'lodash';
 import { useMemo } from 'react';
+import { Address, ContractFunctionArgs, ContractFunctionName } from 'viem';
 import { useReadContract } from 'wagmi';
 import { base } from 'wagmi/chains';
 
@@ -14,15 +15,16 @@ import {
 } from 'common-util/AbiAndAddresses';
 import { formatToEth } from 'common-util/functions';
 import { formatTimeDifference } from 'common-util/functions/time';
+import { Checkpoint } from 'types/staking';
 import { SERVICE_STAKING_STATE, STAKING_CONTRACTS_BASE_SUBGRAPH_URL } from 'util/constants';
 
-export const useAccountServiceInfo = (account) => {
+export const useAccountServiceInfo = (account: Address | undefined) => {
   const { data, isLoading } = useReadContract({
     address: CONTRIBUTORS_ADDRESS_BASE,
     abi: CONTRIBUTORS_ABI,
     chainId: base.id,
     functionName: 'mapAccountServiceInfo',
-    args: [account],
+    args: account ? [account] : undefined,
     query: {
       enabled: !!account,
       select: (data) => {
@@ -35,8 +37,19 @@ export const useAccountServiceInfo = (account) => {
   return { data, isLoading };
 };
 
-export const useReadStakingContract = (functionName, address, chainId, args, enabled = true) =>
-  useReadContract({
+export const useReadStakingContract = <
+  TFunctionName extends ContractFunctionName<typeof STAKING_TOKEN_ABI, 'pure' | 'view'>,
+>(
+  functionName: TFunctionName,
+  address: Address | null,
+  chainId: number,
+  args?: ContractFunctionArgs<typeof STAKING_TOKEN_ABI, 'pure' | 'view', TFunctionName>,
+  enabled: boolean = true,
+) => {
+  // TODO: The return type is correct and based on the functionName provided,
+  // but for some reason the below code is red
+  // @ts-ignore
+  return useReadContract({
     address,
     abi: STAKING_TOKEN_ABI,
     chainId,
@@ -46,6 +59,7 @@ export const useReadStakingContract = (functionName, address, chainId, args, ena
       enabled: !!address && enabled,
     },
   });
+};
 
 const checkpointQuery = gql`
   {
@@ -60,11 +74,15 @@ const checkpointQuery = gql`
   }
 `;
 
-export const useStakingDetails = (serviceId, stakingInstance) => {
+export const useStakingDetails = (serviceId: string | null, stakingInstance: Address | null) => {
   const { data, isLoading } = useQuery({
     queryKey: ['checkpoints', serviceId],
     enabled: !!serviceId,
-    queryFn: async () => await request(STAKING_CONTRACTS_BASE_SUBGRAPH_URL, checkpointQuery),
+    queryFn: async () =>
+      await request<{ checkpoints: Checkpoint[] } | null>(
+        STAKING_CONTRACTS_BASE_SUBGRAPH_URL,
+        checkpointQuery,
+      ),
   });
 
   const { data: livenessPeriod, isLoading: isLivenessPeriodLoading } = useReadStakingContract(
@@ -83,14 +101,14 @@ export const useStakingDetails = (serviceId, stakingInstance) => {
     'getStakingState',
     stakingInstance,
     base.id,
-    [serviceId],
+    serviceId ? [BigInt(serviceId)] : undefined,
     !!serviceId,
   );
   const { data: serviceInfo, isLoading: isServiceInfoLoading } = useReadStakingContract(
     'getServiceInfo',
     stakingInstance,
     base.id,
-    [serviceId],
+    serviceId ? [BigInt(serviceId)] : undefined,
     !!serviceId,
   );
 
@@ -118,7 +136,7 @@ export const useStakingDetails = (serviceId, stakingInstance) => {
     if (!rewardsPerSecond) return null;
 
     const lastEpoch = data.checkpoints.find((item) =>
-      areAddressesEqual(item.contractAddress, stakingInstance),
+      areAddressesEqual(item.contractAddress, `${stakingInstance}`),
     );
     if (!lastEpoch) return null;
     return {

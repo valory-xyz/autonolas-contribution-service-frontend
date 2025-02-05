@@ -1,6 +1,5 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Card, Spin, Typography } from 'antd';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import styled from 'styled-components';
@@ -22,7 +21,13 @@ const StyledCard = styled(Card)`
   width: 100%;
 `;
 
-export const TweetEmbed = ({ points, tweetId, width = 250 }) => {
+type TweetEmbedProps = {
+  tweetId: string;
+  points: number;
+  width?: number;
+};
+
+export const TweetEmbed = ({ points, tweetId, width = 250 }: TweetEmbedProps) => {
   const [isError, setIsError] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
 
@@ -71,14 +76,4 @@ export const TweetEmbed = ({ points, tweetId, width = 250 }) => {
       )}
     </StyledCard>
   );
-};
-
-TweetEmbed.propTypes = {
-  tweetId: PropTypes.string.isRequired,
-  points: PropTypes.number.isRequired,
-  width: PropTypes.number,
-};
-
-TweetEmbed.defaultValues = {
-  width: 250,
 };

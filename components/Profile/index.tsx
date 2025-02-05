@@ -1,6 +1,5 @@
 import { Card, Flex, List, Skeleton, Statistic, Typography } from 'antd';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,7 +10,7 @@ import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
 import { getLatestMintedNft } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
-import { TweetShape } from 'common-util/prop-types';
+import { XProfile } from 'types/x';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { PointsShowcase } from './PointsShowcase';
@@ -53,16 +52,20 @@ const ProfileContent = styled.div`
   }
 `;
 
-const ProfileBody = ({ profile, id }) => {
+type ProfileBodyProps = {
+  profile: XProfile;
+  id: string;
+};
+
+const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
   const [isBadgeLoading, setIsBadgeLoading] = useState(false);
-  const [details, setDetails] = useState(null);
-  const account = useSelector((state) => state?.setup?.account);
+  const [details, setDetails] = useState<{ image: string; tokenId: string } | null>(null);
+  const account = useSelector((state: any) => state?.setup?.account);
 
   useEffect(() => {
     const getData = async () => {
       try {
         setIsBadgeLoading(true);
-
         const { details: badgeDetails } = await getLatestMintedNft(profile?.wallet_address);
         setDetails(badgeDetails);
       } catch (error) {
@@ -154,37 +157,13 @@ const ProfileBody = ({ profile, id }) => {
   );
 };
 
-ProfileBody.propTypes = {
-  profile: PropTypes.shape({
-    wallet_address: PropTypes.string,
-    discord_handle: PropTypes.string,
-    twitter_handle: PropTypes.string,
-    service_multisig: PropTypes.string,
-    points: PropTypes.number,
-    tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
-  }),
-  id: PropTypes.string.isRequired,
-};
-
-ProfileBody.defaultProps = {
-  profile: {
-    wallet_address: '',
-    discord_handle: '',
-    twitter_handle: '',
-    service_multisig: '',
-    points: 0,
-    tweets: {},
-  },
-};
-
-export const Profile = () => {
+export const Profile: React.FC = () => {
   const router = useRouter();
+  const { id } = router.query as { id: string };
+  const data = useSelector((state: any) => state?.setup?.leaderboard);
+  const profile = data.find((item: XProfile) => item.wallet_address === id);
 
-  const { id } = router.query;
-  const data = useSelector((state) => state?.setup?.leaderboard);
-  const profile = data.find((item) => item.wallet_address === id);
-
-  if (data?.length === 0) {
+  if (!data || data.length === 0) {
     return <Skeleton active />;
   }
 

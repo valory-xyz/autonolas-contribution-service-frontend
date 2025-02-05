@@ -1,11 +1,8 @@
 import { Col, Row, Typography } from 'antd';
 import isEqual from 'lodash/isEqual';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 import { memo } from 'react';
 import styled from 'styled-components';
-
-import { TweetShape } from 'common-util/prop-types';
 
 import { TweetEmbed } from './TweetEmbed';
 import { shuffleArray } from './utils';
@@ -22,8 +19,12 @@ const NoTweetsText = styled(Paragraph)`
   max-width: 400px;
 `;
 
+type PointsShowcaseProps = {
+  tweetsData: Record<string, { points: number }>;
+};
+
 export const PointsShowcase = memo(
-  ({ tweetsData }) => {
+  function PointsShowcase({ tweetsData }: PointsShowcaseProps) {
     const earnedPointsTweets = Object.entries(tweetsData || {})
       .map(([tweetId, tweet]) => ({ tweetId, points: tweet.points }))
       .filter(({ points }) => points > 0);
@@ -60,8 +61,3 @@ export const PointsShowcase = memo(
   },
   (prevProps, nextProps) => isEqual(prevProps.tweetsData, nextProps.tweetsData),
 );
-
-PointsShowcase.displayName = 'PointsShowcase';
-PointsShowcase.propTypes = {
-  tweetsData: PropTypes.objectOf(PropTypes.shape(TweetShape)).isRequired,
-};

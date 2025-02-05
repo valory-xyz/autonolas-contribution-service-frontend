@@ -1,11 +1,14 @@
 import { waitForTransactionReceipt } from '@wagmi/core';
+import { Address } from 'viem';
 import { base } from 'wagmi/chains';
 
 import { getContributeManagerContract, getServiceRegistryL2Contract } from 'common-util/Contracts';
 import { wagmiConfig } from 'common-util/Login/config';
 import { getEstimatedGasLimit } from 'common-util/functions/requests';
 
-export const unstake = async ({ account }) => {
+type UnstakeParams = { account: Address };
+
+export const unstake = async ({ account }: UnstakeParams) => {
   try {
     const contract = getContributeManagerContract();
     const unstakeFn = contract.methods.unstake();
@@ -22,7 +25,14 @@ export const unstake = async ({ account }) => {
   }
 };
 
-export const stake = async ({ account, socialId, serviceId, stakingInstance }) => {
+type StakeParams = {
+  account: Address;
+  socialId: string;
+  serviceId: string;
+  stakingInstance: Address;
+};
+
+export const stake = async ({ account, socialId, serviceId, stakingInstance }: StakeParams) => {
   try {
     const contract = getContributeManagerContract();
     const stakeFn = contract.methods.stake(socialId, serviceId, stakingInstance);
@@ -39,7 +49,17 @@ export const stake = async ({ account, socialId, serviceId, stakingInstance }) =
   }
 };
 
-export const approveServiceTransfer = async ({ account, serviceId, contractAddress }) => {
+type ApproveServiceTransferParams = {
+  account: Address;
+  serviceId: string;
+  contractAddress: Address;
+};
+
+export const approveServiceTransfer = async ({
+  account,
+  serviceId,
+  contractAddress,
+}: ApproveServiceTransferParams) => {
   try {
     const contract = getServiceRegistryL2Contract();
     const approveFn = contract.methods.approve(contractAddress, serviceId);

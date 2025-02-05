@@ -95,6 +95,7 @@ export const CentaurPropTypes = PropTypes.shape({
   }),
 });
 
+// TODO: remove, use the one from types/x.ts
 export const TweetShape = {
   epoch: PropTypes.number,
   points: PropTypes.number.isRequired,

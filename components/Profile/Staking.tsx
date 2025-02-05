@@ -21,8 +21,7 @@ import {
 import { isNil, isNumber } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { base, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -32,7 +31,7 @@ import { COLOR, NA, notifyError } from '@autonolas/frontend-library';
 import { CONTRIBUTE_MANAGER_ADDRESS_BASE } from 'common-util/AbiAndAddresses';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { formatDynamicTimeRange } from 'common-util/functions/time';
-import { TweetShape } from 'common-util/prop-types';
+import { XProfile } from 'types/x';
 import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
 import { useAccountServiceInfo, useStakingDetails } from 'util/staking';
 
@@ -82,7 +81,26 @@ const TweetCountTooltip = () => (
   </Tooltip>
 );
 
-const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonText }) => {
+type InfoColumnProps = {
+  isLoading?: boolean;
+  title: string;
+  value?: string | ReactNode;
+  link?: {
+    href: string;
+    text: string;
+  };
+  children?: ReactNode;
+  comingSoonButtonText?: string;
+};
+
+const InfoColumn = ({
+  isLoading,
+  title,
+  value,
+  link,
+  children,
+  comingSoonButtonText,
+}: InfoColumnProps) => {
   let content = null;
 
   if (isLoading) {
@@ -130,7 +148,7 @@ const SetupStaking = () => (
   </>
 );
 
-const StakingDetails = ({ profile }) => {
+const StakingDetails = ({ profile }: { profile: XProfile }) => {
   const { chainId, address: account } = useAccount();
   const { switchChainAsync, switchChain } = useSwitchChain();
   const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account);
@@ -143,17 +161,19 @@ const StakingDetails = ({ profile }) => {
     : null;
   const contractDetails =
     contractAddress &&
-    STAKING_CONTRACTS_DETAILS[getBytes32FromAddress(serviceInfo.stakingInstance)];
+    STAKING_CONTRACTS_DETAILS[getBytes32FromAddress(serviceInfo?.stakingInstance)];
 
   const { data: stakingDetails, isLoading: isStakingDetailsLoading } = useStakingDetails(
     serviceId,
-    serviceInfo?.stakingInstance,
+    serviceInfo?.stakingInstance || null,
   );
 
   const handleRestake = useCallback(async () => {
     if (!account) return;
     if (!contractDetails) return;
     if (!serviceInfo) return;
+    if (!profile.twitter_id) return;
+    if (!serviceId) return;
 
     setIsRestaking(true);
 
@@ -208,13 +228,16 @@ const StakingDetails = ({ profile }) => {
     if (stakingDetails.stakingStatus !== 'Staked') return [];
     return Object.entries(profile.tweets)
       .map(([tweetId, tweet]) => ({ tweetId, ...tweet }))
-      .filter((tweet) => tweet.epoch > stakingDetails.epochCounter && tweet.points > 0);
+      .filter((tweet) => {
+        if (isNil(stakingDetails.epochCounter)) return false;
+        return tweet.epoch > stakingDetails.epochCounter && tweet.points > 0;
+      });
   }, [profile, stakingDetails]);
 
   // Calculate total points earned for current epoch's tweets
   const pointsEarned = useMemo(() => {
     return tweetsThisEpoch.reduce((sum, tweet) => {
-      if (tweet.epoch > stakingDetails.epochCounter) {
+      if (!isNil(stakingDetails.epochCounter) && tweet.epoch > stakingDetails.epochCounter) {
         sum += tweet.points;
       }
       return sum;
@@ -256,12 +279,7 @@ const StakingDetails = ({ profile }) => {
       );
       if (stakingDetails.isEligibleForStaking) {
         children = (
-          <Button
-            size="small"
-            isLoading={isRestaking}
-            onClick={handleRestake}
-            className="block mt-8"
-          >
+          <Button size="small" loading={isRestaking} onClick={handleRestake} className="block mt-8">
             Restake
           </Button>
         );
@@ -385,7 +403,7 @@ const StakingDetails = ({ profile }) => {
                   href: `${GOVERN_APP_URL}/contracts/${contractAddress}`,
                   text: contractDetails.name,
                 }
-              : NA
+              : undefined
           }
           comingSoonButtonText="Change"
         />
@@ -413,7 +431,7 @@ const StakingDetails = ({ profile }) => {
   );
 };
 
-export const Staking = ({ profile }) => {
+export const Staking = ({ profile }: { profile: XProfile }) => {
   return (
     <Card bordered={false}>
       <Title level={3} className="mb-8">
@@ -426,30 +444,3 @@ export const Staking = ({ profile }) => {
     </Card>
   );
 };
-
-Staking.propTypes = {
-  profile: PropTypes.shape({
-    wallet_address: PropTypes.string,
-    discord_handle: PropTypes.string,
-    twitter_id: PropTypes.string,
-    twitter_handle: PropTypes.string,
-    service_multisig: PropTypes.string,
-    points: PropTypes.number,
-    tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
-  }),
-};
-
-Staking.defaultProps = {
-  profile: {
-    wallet_address: '',
-    discord_handle: '',
-    twitter_id: '',
-    twitter_handle: '',
-    service_multisig: '',
-    points: 0,
-    tweets: {},
-  },
-};
-
-StakingDetails.propTypes = Staking.propTypes;
-StakingDetails.defaultProps = Staking.defaultProps;

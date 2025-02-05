@@ -1,18 +1,29 @@
+// TODO: deprecated?
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { Address } from 'viem';
 
 import { areAddressesEqual } from '@autonolas/frontend-library';
 
 import useOrbis from 'common-util/hooks/useOrbis';
 
-export const UpdateUsername = ({ loadOrbisProfile, id }) => {
+type UpdateUsernameProps = {
+  loadOrbisProfile: (value: true) => Promise<void>;
+  id: Address;
+};
+
+type FormValues = {
+  username: string;
+};
+
+export const UpdateUsername = ({ loadOrbisProfile, id }: UpdateUsernameProps) => {
   const [updateNameModalVisible, setUpdateNameModalVisible] = useState(false);
   const { updateUsername, address: orbisAddress, isLoading, profile } = useOrbis();
   const [form] = Form.useForm();
 
-  const handleUpdateUsername = async (values) => {
+  const handleUpdateUsername = async (values: FormValues) => {
     const result = await updateUsername(values.username.trim());
 
     form.resetFields();
@@ -58,7 +69,11 @@ export const UpdateUsername = ({ loadOrbisProfile, id }) => {
         onCancel={() => setUpdateNameModalVisible(false)}
         okButtonProps={{ loading: isLoading }}
       >
-        <Form form={form} layout="vertical" initialValues={{ username: profile?.username }}>
+        <Form<FormValues>
+          form={form}
+          layout="vertical"
+          initialValues={{ username: profile?.username }}
+        >
           <Form.Item
             name="username"
             rules={[{ required: true, message: 'Please input your new username!' }]}
