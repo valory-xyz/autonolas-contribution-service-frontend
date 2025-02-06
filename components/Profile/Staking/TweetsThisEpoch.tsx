@@ -2,7 +2,7 @@ import { XOutlined } from '@ant-design/icons';
 import { Col, Flex, Grid, Row, Typography } from 'antd';
 import styled from 'styled-components';
 
-import { TweetEmbed } from './TweetEmbed';
+import { TweetEmbed } from '../TweetEmbed';
 
 const { Text } = Typography;
 const { useBreakpoint } = Grid;

@@ -156,7 +156,7 @@ const SetUpAndStake = ({
       const abiInputs =
         CONTRIBUTORS_V2_ABI.find(
           (item) => 'name' in item && item.name === 'CreatedAndStaked',
-        )?.inputs.filter((item) => !item.indexed) || [];
+        )?.inputs.filter((item) => 'indexed' in item && !item.indexed) || [];
       // decode event data
       const decodedData = AbiCoder.defaultAbiCoder().decode(
         abiInputs.map((item) => item.type),
