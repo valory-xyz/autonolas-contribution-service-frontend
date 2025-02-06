@@ -1,6 +1,8 @@
-import { Alert, Button, Modal, Typography } from 'antd';
+import { Alert, Button, Modal, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import styled from 'styled-components';
+
+import { COLOR } from '@autonolas/frontend-library';
 
 const { Text, Paragraph } = Typography;
 
@@ -11,6 +13,14 @@ const NumberedList = styled.ol`
   .ant-typography {
     font-weight: 400;
   }
+`;
+
+const HintText = styled(Text)`
+  display: block;
+  width: max-content;
+  color: #606f85;
+  margin-top: 12px;
+  border-bottom: 1px dashed #606f85;
 `;
 
 const DotList = styled.ul`
@@ -93,3 +103,23 @@ export const HowTweetsAreScoredModal = () => {
     </>
   );
 };
+
+export const TweetCountTooltip = () => (
+  <Tooltip
+    color={COLOR.WHITE}
+    title={
+      <>
+        <Paragraph>
+          Contribute is regularly checking posts in the background to capture eligible posts.
+        </Paragraph>
+        <Paragraph>Due to X API restrictions, some of your posts may not be counted.</Paragraph>
+        <Paragraph className="mb-0">
+          Please ensure your posts are public, include the required tags, and meet all eligibility
+          guidelines.
+        </Paragraph>
+      </>
+    }
+  >
+    <HintText>Why wasn’t my post counted?</HintText>
+  </Tooltip>
+);

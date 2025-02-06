@@ -1,4 +1,4 @@
-// @ts-nocheck TODO: provide types
+// @ts-nocheck TODO: provide types for useSelector
 import { Card, Col, Row, Skeleton, Statistic, Typography } from 'antd';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';

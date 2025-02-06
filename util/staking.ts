@@ -11,6 +11,8 @@ import { areAddressesEqual } from '@autonolas/frontend-library';
 import {
   CONTRIBUTORS_ABI,
   CONTRIBUTORS_ADDRESS_BASE,
+  CONTRIBUTORS_V2_ABI,
+  CONTRIBUTORS_V2_ADDRESS_BASE,
   STAKING_TOKEN_ABI,
 } from 'common-util/AbiAndAddresses';
 import { formatToEth } from 'common-util/functions';
@@ -18,10 +20,21 @@ import { formatTimeDifference } from 'common-util/functions/time';
 import { Checkpoint } from 'types/staking';
 import { SERVICE_STAKING_STATE, STAKING_CONTRACTS_BASE_SUBGRAPH_URL } from 'util/constants';
 
-export const useAccountServiceInfo = (account: Address | undefined) => {
+// A hook to get the user service's info based on their account
+// and if the info should be searched in old ContributorsManager or new Contributors
+export const useServiceInfo = ({
+  account,
+  isNew,
+}: {
+  account: Address | undefined;
+  isNew: boolean;
+}) => {
+  const address = isNew ? CONTRIBUTORS_V2_ADDRESS_BASE : CONTRIBUTORS_ADDRESS_BASE;
+  const abi = isNew ? CONTRIBUTORS_V2_ABI : CONTRIBUTORS_ABI;
+
   const { data, isLoading } = useReadContract({
-    address: CONTRIBUTORS_ADDRESS_BASE,
-    abi: CONTRIBUTORS_ABI,
+    address,
+    abi,
     chainId: base.id,
     functionName: 'mapAccountServiceInfo',
     args: account ? [account] : undefined,
@@ -41,12 +54,12 @@ export const useReadStakingContract = <
   TFunctionName extends ContractFunctionName<typeof STAKING_TOKEN_ABI, 'pure' | 'view'>,
 >(
   functionName: TFunctionName,
-  address: Address | null,
+  address: Address | undefined,
   chainId: number,
   args?: ContractFunctionArgs<typeof STAKING_TOKEN_ABI, 'pure' | 'view', TFunctionName>,
   enabled: boolean = true,
 ) => {
-  // TODO: The return type is correct and based on the functionName provided,
+  // TODO: The return type is correct based on the functionName provided,
   // but for some reason the below code is red
   // @ts-ignore
   return useReadContract({
@@ -74,7 +87,10 @@ const checkpointQuery = gql`
   }
 `;
 
-export const useStakingDetails = (serviceId: string | null, stakingInstance: Address | null) => {
+export const useStakingDetails = (
+  serviceId: string | null,
+  stakingInstance: Address | undefined,
+) => {
   const { data, isLoading } = useQuery({
     queryKey: ['checkpoints', serviceId],
     enabled: !!serviceId,

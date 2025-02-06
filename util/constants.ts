@@ -1,3 +1,5 @@
+import { Address } from 'viem';
+
 export const GATEWAY_URL = 'https://gateway.autonolas.tech/ipfs/';
 
 export const SITE_URL = 'https://contribute.olas.network';
@@ -36,24 +38,49 @@ export const OPERATE_APP_URL = 'https://operate.olas.network';
 
 export const STAKING_CONTRACTS_DETAILS: Record<
   string,
-  { name: string; totalBond: number; pointsPerEpoch: number }
+  { name: string; totalBond: number; pointsPerEpoch: number; isDeprecated?: boolean }
 > = {
-  '0x00000000000000000000000095146adf659f455f300d7521b3b62a3b6c4aba1f': {
+  '0x95146adf659f455f300d7521b3b62a3b6c4aba1f': {
     name: 'Contribute Alpha',
     totalBond: 100,
     pointsPerEpoch: 200,
+    isDeprecated: true,
   },
-  '0x0000000000000000000000002c8a5ac7b431ce04a037747519ba475884bce2fb': {
+  '0x2c8a5ac7b431ce04a037747519ba475884bce2fb': {
     name: 'Contribute Alpha 2',
     totalBond: 100,
     pointsPerEpoch: 200,
+    isDeprecated: true,
   },
-  '0x000000000000000000000000708e511d5fcb3bd5a5d42f42aa9a69ec5b0ee2e8': {
+  '0x708e511d5fcb3bd5a5d42f42aa9a69ec5b0ee2e8': {
     name: 'Contribute Alpha 3',
+    totalBond: 500,
+    pointsPerEpoch: 1000,
+    isDeprecated: true,
+  },
+  '0xe2e68ddafbdc0ae48e39cdd1e778298e9d865cf4': {
+    name: 'Contribute Beta I',
+    totalBond: 100,
+    pointsPerEpoch: 200,
+  },
+  '0x6ce93e724606c365fc882d4d6dfb4a0a35fe2387': {
+    name: 'Contribute Beta II',
+    totalBond: 300,
+    pointsPerEpoch: 600,
+  },
+  '0x28877ffc6583170a4c9ed0121fc3195d06fd3a26': {
+    name: 'Contribute Beta III',
     totalBond: 500,
     pointsPerEpoch: 1000,
   },
 };
+
+export const DEPRECATED_CONTRACTS_ADDRESSES = Object.entries(STAKING_CONTRACTS_DETAILS).reduce<
+  string[]
+>((acc, [address, item]) => {
+  if (item.isDeprecated) acc.push(address);
+  return acc;
+}, []);
 
 export const STAKING_CONTRACTS_BASE_SUBGRAPH_URL =
   'https://api.studio.thegraph.com/query/67875/olas-base-staking-rewards-history/version/latest';

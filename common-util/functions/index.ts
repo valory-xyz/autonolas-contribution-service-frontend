@@ -94,12 +94,16 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
 
 /**
  *
- * @param {BigInt} value value to be converted to Eth
- * @param {Number} dv Default value to be returned
- * @param {Number} fractionDigits Number of digits after the decimal point
- * @returns {String} with 2 decimal places
+ * @param value value to be converted to Eth
+ * @param dv Default value to be returned
+ * @param fractionDigits Number of digits after the decimal point
+ * @returns string with 2 decimal places
  */
-export const formatToEth = (value: ethers.BigNumberish, dv = 0, fractionDigits = 2) => {
+export const formatToEth = (
+  value: ethers.BigNumberish,
+  dv: number = 0,
+  fractionDigits: number = 2,
+) => {
   if (isNil(value)) return dv || 0;
   return (+ethers.formatEther(value)).toFixed(fractionDigits);
 };
@@ -110,7 +114,7 @@ export const formatToEth = (value: ethers.BigNumberish, dv = 0, fractionDigits =
  * input: 1
  * output: 1000000000000000000
  */
-export const ethersToWei = (value) => ethers.parseUnits(value, 'ether');
+export const ethersToWei = (value: string) => ethers.parseUnits(value, 'ether');
 
 /**
  * returns error message if user can't add memory message

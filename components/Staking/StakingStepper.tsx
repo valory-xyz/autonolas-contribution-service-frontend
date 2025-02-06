@@ -1,39 +1,39 @@
-import { Button, Flex, Radio, Skeleton, Space, Steps, Typography } from 'antd';
+import { Button, Flex, Radio, RadioChangeEvent, Skeleton, Space, Steps, Typography } from 'antd';
 import { AbiCoder, ZeroAddress } from 'ethers';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Address } from 'viem';
 import { base, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
 
-import { NA, areAddressesEqual, notifyError } from '@autonolas/frontend-library';
+import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
 
-import { CONTRIBUTE_MANAGER_ABI } from 'common-util/AbiAndAddresses';
+import { CONTRIBUTORS_V2_ABI, CONTRIBUTORS_V2_ADDRESS_BASE } from 'common-util/AbiAndAddresses';
 import { updateUserStakingData } from 'common-util/api';
-import {
-  ethersToWei,
-  getAddressFromBytes32,
-  getBytes32FromAddress,
-  truncateAddress,
-} from 'common-util/functions';
+import { ethersToWei, getAddressFromBytes32, truncateAddress } from 'common-util/functions';
+import { XProfile } from 'types/x';
 import { GOVERN_APP_URL, OPERATE_APP_URL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
-import { useAccountServiceInfo } from 'util/staking';
+import { useServiceInfo } from 'util/staking';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
-import { checkAndApproveOlasForManager, checkHasEnoughOlas, createAndStake } from './requests';
+import { checkAndApproveOlasForAddress, checkHasEnoughOlas, createAndStake } from './requests';
 
 const { Paragraph, Text } = Typography;
 
-const STAKING_STEPS = {
-  CONNECT_TWITTER: 0,
-  SET_UP_AND_STAKE: 1,
-  TWEET_AND_EARN: 2,
-};
-const STAKING_CONTRACTS = Object.entries(STAKING_CONTRACTS_DETAILS).map(([key, values]) => ({
-  id: key,
-  ...values,
-}));
+enum STAKING_STEPS {
+  CONNECT_TWITTER,
+  SET_UP_AND_STAKE,
+  TWEET_AND_EARN,
+}
 
-const ConnectTwitter = ({ account }) => {
+const STAKING_CONTRACTS = Object.entries(STAKING_CONTRACTS_DETAILS)
+  .filter(([_, values]) => !values.isDeprecated)
+  .map(([key, values]) => ({
+    id: key,
+    ...values,
+  }));
+
+const ConnectTwitter = ({ account }: { account: string | null }) => {
   if (account) {
     return (
       <Text type="secondary">
@@ -52,15 +52,28 @@ const ConnectTwitter = ({ account }) => {
   );
 };
 
-const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => {
+const SetUpAndStake = ({
+  disabled,
+  twitterId,
+  multisigAddress,
+  onNextStep,
+}: {
+  disabled: boolean;
+  twitterId: string | null;
+  multisigAddress: string | null;
+  onNextStep: () => void;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [contract, setContract] = useState(null);
+  const [contract, setContract] = useState<Address | null>(null);
   const [multisig, setMultisig] = useState(multisigAddress);
 
   const { chainId, address: account } = useAccount();
   const { switchChainAsync, switchChain } = useSwitchChain();
 
-  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account);
+  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useServiceInfo({
+    account,
+    isNew: true,
+  });
 
   useEffect(() => {
     if (multisigAddress) {
@@ -70,7 +83,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
 
   useEffect(() => {
     if (serviceInfo && !areAddressesEqual(serviceInfo.stakingInstance, ZeroAddress)) {
-      setContract(getBytes32FromAddress(serviceInfo.stakingInstance));
+      setContract(serviceInfo.stakingInstance);
     }
   }, [serviceInfo]);
 
@@ -86,16 +99,22 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
     }
   }, [serviceInfo, multisigAddress, twitterId]);
 
-  const handleSelectContract = (e) => {
+  const handleSelectContract = (e: RadioChangeEvent) => {
     setContract(e.target.value);
   };
 
   const handleSetUpAndStake = async () => {
     if (!account) return;
+    if (!contract) return;
     if (!twitterId) return;
 
     const selectedContract = STAKING_CONTRACTS_DETAILS[contract];
+
     if (!selectedContract) return;
+    if (selectedContract.isDeprecated) {
+      notifyError('Selected contract is deprecated!');
+      return;
+    }
 
     setIsLoading(true);
 
@@ -108,15 +127,16 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
       const olasRequiredInWei = ethersToWei(`${selectedContract.totalBond}`);
 
       // Check that user has enough OLAS
-      const hasEnoughOlas = await checkHasEnoughOlas(account, olasRequiredInWei);
+      const hasEnoughOlas = await checkHasEnoughOlas({ account, amountInWei: olasRequiredInWei });
       if (!hasEnoughOlas) {
         notifyError("Error: you don't have enough OLAS to continue");
         return;
       }
 
-      // Approve OLAS for Contribute Manager contract
-      await checkAndApproveOlasForManager({
+      // Approve OLAS for Contributors contract
+      await checkAndApproveOlasForAddress({
         account,
+        addressToApprove: CONTRIBUTORS_V2_ADDRESS_BASE,
         amountToApprove: olasRequiredInWei,
       });
 
@@ -124,7 +144,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
       const result = await createAndStake({
         account,
         socialId: twitterId,
-        stakingInstance: getAddressFromBytes32(contract),
+        stakingInstance: contract,
       });
 
       if (!result) return;
@@ -133,9 +153,10 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
       const createdAndStakedEvent = logs[logs.length - 1];
 
       // get all non-indexed inputs of CreatedAndStaked event
-      const abiInputs = CONTRIBUTE_MANAGER_ABI.find(
-        (item) => item.name === 'CreatedAndStaked',
-      )?.inputs.filter((item) => !item.indexed);
+      const abiInputs =
+        CONTRIBUTORS_V2_ABI.find(
+          (item) => 'name' in item && item.name === 'CreatedAndStaked',
+        )?.inputs.filter((item) => !item.indexed) || [];
       // decode event data
       const decodedData = AbiCoder.defaultAbiCoder().decode(
         abiInputs.map((item) => item.type),
@@ -168,7 +189,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
   };
 
   if (multisig) {
-    const selectedContract = STAKING_CONTRACTS_DETAILS[contract];
+    const selectedContract = contract ? STAKING_CONTRACTS_DETAILS[contract] : null;
     return (
       <Flex vertical gap={8}>
         <Text type="secondary">
@@ -194,12 +215,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
     <>
       {!disabled && (
         <>
-          <Radio.Group
-            onChange={handleSelectContract}
-            disabled={disabled}
-            value={contract}
-            className="mt-12 mb-12"
-          >
+          <Radio.Group onChange={handleSelectContract} value={contract} className="mt-12 mb-12">
             <Space direction="vertical">
               {STAKING_CONTRACTS.map((item) => (
                 <Radio value={item.id} key={item.id}>
@@ -234,7 +250,7 @@ const SetUpAndStake = ({ disabled, twitterId, multisigAddress, onNextStep }) => 
   );
 };
 
-const TweetAndEarn = ({ disabled }) => {
+const TweetAndEarn = ({ disabled }: { disabled: boolean }) => {
   const { address } = useAccount();
 
   return (
@@ -256,24 +272,22 @@ const TweetAndEarn = ({ disabled }) => {
   );
 };
 
-export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) => {
+export const StakingStepper = ({ profile }: { profile: XProfile | null }) => {
   const [step, setStep] = useState(
-    twitterAccount ? STAKING_STEPS.SET_UP_AND_STAKE : STAKING_STEPS.CONNECT_TWITTER,
+    profile?.twitter_id ? STAKING_STEPS.SET_UP_AND_STAKE : STAKING_STEPS.CONNECT_TWITTER,
   );
 
-  const handleNext = () => {
-    setStep((prev) => prev + 1);
-  };
+  const handleNext = () => setStep((prev) => prev + 1);
 
   useEffect(() => {
     // The leaderboard is re-fetched at intervals in the background.
     // Based on the data updated, we can navigate to next step
-    if (multisigAddress) {
+    if (profile?.service_multisig) {
       setStep(STAKING_STEPS.TWEET_AND_EARN);
-    } else if (twitterAccount) {
+    } else if (profile?.twitter_id) {
       setStep(STAKING_STEPS.SET_UP_AND_STAKE);
     }
-  }, [multisigAddress, twitterAccount]);
+  }, [profile]);
 
   return (
     <Flex>
@@ -283,12 +297,10 @@ export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) =
         current={step}
         items={[
           {
-            key: 'connectTwitter',
             title: <Text className="block mb-8">Connect X</Text>,
-            description: <ConnectTwitter account={twitterAccount} />,
+            description: <ConnectTwitter account={profile?.twitter_handle || null} />,
           },
           {
-            key: 'setUpAndStake',
             title: (
               <Text className="block mb-8">
                 Select staking contract, set up on-chain account and stake funds
@@ -297,14 +309,13 @@ export const StakingStepper = ({ twitterAccount, twitterId, multisigAddress }) =
             description: (
               <SetUpAndStake
                 disabled={step !== STAKING_STEPS.SET_UP_AND_STAKE}
-                twitterId={twitterId}
-                multisigAddress={multisigAddress}
+                twitterId={profile?.twitter_id || null}
+                multisigAddress={profile?.service_multisig || null}
                 onNextStep={handleNext}
               />
             ),
           },
           {
-            key: 'tweetAndEarn',
             title: <Text className="block mb-8">Post about Olas. Earn points. Earn rewards.</Text>,
             description: <TweetAndEarn disabled={step !== STAKING_STEPS.TWEET_AND_EARN} />,
           },
