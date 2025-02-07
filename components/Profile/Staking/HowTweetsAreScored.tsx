@@ -110,7 +110,7 @@ export const TweetCountTooltip = () => (
     title={
       <>
         <Paragraph>
-          Contribute is regularly checking posts in the background to capture eligible posts.
+          Contribute regularly checks X in the background to capture eligible posts.
         </Paragraph>
         <Paragraph>Due to X API restrictions, some of your posts may not be counted.</Paragraph>
         <Paragraph className="mb-0">

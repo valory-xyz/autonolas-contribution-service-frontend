@@ -25,7 +25,7 @@ export const useRestake = ({ contractAddress }: UseRestakeParams) => {
 
     if (DEPRECATED_CONTRACTS_ADDRESSES.includes(contractAddress)) {
       notifyWarning(
-        'Restaking is no longer supported for this staking contract. Please use the instruction to unstake and stake to one of the new contracts',
+        'Restaking is no longer supported by this contract. Please follow the instructions to unstake and stake in a new contract.',
       );
       return;
     }
