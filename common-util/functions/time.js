@@ -30,10 +30,10 @@ export const formatTimeDifference = (differenceInMs, postfix) => {
 
 const ONE_HOUR_IN_MS = 3600 * 1000;
 
+// Considering provided time format is en-US
 const getHourAndPeriod = (time) => {
   let [hour, ,] = time.split(':').map(Number);
-  const period = hour >= 12 ? 'pm' : 'am';
-  hour = hour % 12 || 12; // Convert to 12-hour format, handle 0 as 12
+  const period = time.includes('PM') ? 'pm' : 'am';
   return { hour, period };
 };
 

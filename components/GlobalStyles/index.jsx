@@ -157,6 +157,9 @@ const GlobalStyle = createGlobalStyle`
   .border-right {
     border-left: 1px solid ${COLOR.BORDER_GREY};
   }
+  .font-weight-400 {
+    font-weight: 400 !important;
+  }
   .font-weight-600 {
     font-weight: 600 !important;
   }

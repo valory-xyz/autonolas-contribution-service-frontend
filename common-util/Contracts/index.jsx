@@ -4,6 +4,8 @@ import Web3 from 'web3';
 import {
   CONTRIBUTE_MANAGER_ABI, // Contribute manager
   CONTRIBUTE_MANAGER_ADDRESS_BASE,
+  CONTRIBUTORS_V2_ABI, // Contributors
+  CONTRIBUTORS_V2_ADDRESS_BASE,
   DELEGATE_CONTRIBUTE_ABI, // delegateContribute
   DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
   MINT_NFT_CONTRACT_ABI_GOERLI,
@@ -72,8 +74,8 @@ export const getDelegateContributeContract = () => {
   return contract;
 };
 
-export const getContributeManagerContract = () => {
-  const contract = getContract(CONTRIBUTE_MANAGER_ABI, CONTRIBUTE_MANAGER_ADDRESS_BASE);
+export const getContributorsContract = () => {
+  const contract = getContract(CONTRIBUTORS_V2_ABI, CONTRIBUTORS_V2_ADDRESS_BASE);
   return contract;
 };
 

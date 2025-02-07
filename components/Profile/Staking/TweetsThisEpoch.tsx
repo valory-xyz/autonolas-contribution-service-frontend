@@ -1,11 +1,8 @@
 import { XOutlined } from '@ant-design/icons';
 import { Col, Flex, Grid, Row, Typography } from 'antd';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { TweetShape } from 'common-util/prop-types';
-
-import { TweetEmbed } from './TweetEmbed';
+import { TweetEmbed } from '../TweetEmbed';
 
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
@@ -18,7 +15,15 @@ const Scrollable = styled.div`
 const MOBILE_TWEET_WIDTH = 250;
 const TWEET_WIDTH = 310;
 
-export const TweetsThisEpoch = ({ tweets }) => {
+type Tweet = {
+  epoch: number;
+  points: number;
+  campaign: string;
+  timestamp: string;
+  tweetId: string;
+};
+
+export const TweetsThisEpoch = ({ tweets }: { tweets: Tweet[] }) => {
   const screens = useBreakpoint();
   const isMobile = !!screens.xs;
 
@@ -45,10 +50,4 @@ export const TweetsThisEpoch = ({ tweets }) => {
       <Text type="secondary">Share something on X!</Text>
     </Flex>
   );
-};
-
-TweetsThisEpoch.propTypes = {
-  tweets: PropTypes.arrayOf(
-    PropTypes.shape({ ...TweetShape, tweetId: PropTypes.string.isRequired }),
-  ).isRequired,
 };

@@ -1,6 +1,5 @@
 import { Card, Flex, List, Skeleton, Statistic, Typography } from 'antd';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -9,9 +8,9 @@ import { COLOR, MEDIA_QUERY, NA, areAddressesEqual } from '@autonolas/frontend-l
 
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-import { getLatestMintedNft } from 'common-util/api';
+import { getLatestMintedNft, updateUserStakingData } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
-import { TweetShape } from 'common-util/prop-types';
+import { XProfile } from 'types/x';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { PointsShowcase } from './PointsShowcase';
@@ -53,16 +52,21 @@ const ProfileContent = styled.div`
   }
 `;
 
-const ProfileBody = ({ profile, id }) => {
+type ProfileBodyProps = {
+  profile: XProfile | null;
+  id: string;
+};
+
+const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
   const [isBadgeLoading, setIsBadgeLoading] = useState(false);
-  const [details, setDetails] = useState(null);
-  const account = useSelector((state) => state?.setup?.account);
+  const [details, setDetails] = useState<{ image: string; tokenId: string } | null>(null);
+  // TODO: types
+  const account = useSelector((state: any) => state?.setup?.account);
 
   useEffect(() => {
     const getData = async () => {
       try {
         setIsBadgeLoading(true);
-
         const { details: badgeDetails } = await getLatestMintedNft(profile?.wallet_address);
         setDetails(badgeDetails);
       } catch (error) {
@@ -74,6 +78,10 @@ const ProfileBody = ({ profile, id }) => {
 
     getData();
   }, [profile?.wallet_address]);
+
+  useEffect(() => {
+    updateUserStakingData('twitterId', 'multisig', `${1}`);
+  }, []);
 
   const getTwitterHandle = () => {
     if (profile?.twitter_handle) {
@@ -135,56 +143,32 @@ const ProfileBody = ({ profile, id }) => {
             <Flex gap={96} className="mb-24">
               <Statistic
                 title="Tier"
-                value={profile.points ? getTier(profile.points) : NA}
+                value={profile?.points ? getTier(profile.points) : NA}
                 formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
               <Statistic
                 title="Points"
-                value={profile.points ?? NA}
+                value={profile?.points ?? NA}
                 formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
             </Flex>
-            <PointsShowcase tweetsData={profile.tweets} />
+            <PointsShowcase tweetsData={profile?.tweets} />
           </div>
         </ProfileContent>
       </Card>
 
-      {account && areAddressesEqual(id, account) && <Staking profile={profile} />}
+      {account && areAddressesEqual(id, account) && profile && <Staking profile={profile} />}
     </Root>
   );
 };
 
-ProfileBody.propTypes = {
-  profile: PropTypes.shape({
-    wallet_address: PropTypes.string,
-    discord_handle: PropTypes.string,
-    twitter_handle: PropTypes.string,
-    service_multisig: PropTypes.string,
-    points: PropTypes.number,
-    tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
-  }),
-  id: PropTypes.string.isRequired,
-};
-
-ProfileBody.defaultProps = {
-  profile: {
-    wallet_address: '',
-    discord_handle: '',
-    twitter_handle: '',
-    service_multisig: '',
-    points: 0,
-    tweets: {},
-  },
-};
-
-export const Profile = () => {
+export const Profile: React.FC = () => {
   const router = useRouter();
+  const { id } = router.query as { id: string };
+  const data = useSelector((state: any) => state?.setup?.leaderboard);
+  const profile = data.find((item: XProfile) => item.wallet_address === id);
 
-  const { id } = router.query;
-  const data = useSelector((state) => state?.setup?.leaderboard);
-  const profile = data.find((item) => item.wallet_address === id);
-
-  if (data?.length === 0) {
+  if (!data || data.length === 0) {
     return <Skeleton active />;
   }
 

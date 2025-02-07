@@ -50,7 +50,6 @@ export const getLatestMintedNft = memoize(async (account) => {
 
     return { details: null, tokenId: null };
   } catch (e) {
-    notifyError('Error fetching NFT details');
     console.error(e);
     throw e;
   }

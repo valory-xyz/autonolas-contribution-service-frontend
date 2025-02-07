@@ -1,5 +1,7 @@
+/** @deprecated */
 export const CONTRIBUTORS_ADDRESS_BASE = '0x4be7A91e67be963806FeFA9C1FD6C53DfC358d94';
 
+/** @deprecated */
 export const CONTRIBUTORS_ABI = [
   {
     inputs: [],
@@ -429,4 +431,4 @@ export const CONTRIBUTORS_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-];
+] as const;

@@ -6,7 +6,6 @@ import {
 } from '@ant-design/icons';
 import {
   Button,
-  Card,
   Col,
   Collapse,
   Divider,
@@ -18,42 +17,29 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
+import { getAddress } from 'ethers';
 import { isNil, isNumber } from 'lodash';
-import Image from 'next/image';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { useCallback, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 import styled from 'styled-components';
-import { base, mainnet } from 'viem/chains';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { base } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
-import { COLOR, NA, notifyError } from '@autonolas/frontend-library';
+import { COLOR, NA } from '@autonolas/frontend-library';
 
-import { CONTRIBUTE_MANAGER_ADDRESS_BASE } from 'common-util/AbiAndAddresses';
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { formatDynamicTimeRange } from 'common-util/functions/time';
-import { TweetShape } from 'common-util/prop-types';
+import { XProfile } from 'types/x';
 import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
-import { useAccountServiceInfo, useStakingDetails } from 'util/staking';
+import { useServiceInfo, useStakingDetails } from 'util/staking';
 
-import { HowTweetsAreScoredModal } from './HowTweetsAreScoredModal';
+import { HowTweetsAreScoredModal, TweetCountTooltip } from './HowTweetsAreScored';
+import { RecovererAlert } from './RecovererAlert';
 import { TweetsThisEpoch } from './TweetsThisEpoch';
-import { approveServiceTransfer, stake, unstake } from './requests';
+import { useRestake } from './hooks';
 
 const { Title, Text, Paragraph } = Typography;
 
-const HintText = styled(Text)`
-  display: block;
-  width: max-content;
-  color: #606f85;
-  margin-top: 12px;
-  border-bottom: 1px dashed #606f85;
-`;
-const ImageContainer = styled.div`
-  img {
-    position: relative !important;
-  }
-`;
 const StyledProgress = styled(Progress)`
   max-width: 200px;
 `;
@@ -62,27 +48,26 @@ const StyledDivider = styled(Divider)`
   margin: 24px -24px;
 `;
 
-const TweetCountTooltip = () => (
-  <Tooltip
-    color={COLOR.WHITE}
-    title={
-      <>
-        <Paragraph>
-          Contribute is regularly checking posts in the background to capture eligible posts.
-        </Paragraph>
-        <Paragraph>Due to X API restrictions, some of your posts may not be counted.</Paragraph>
-        <Paragraph className="mb-0">
-          Please ensure your posts are public, include the required tags, and meet all eligibility
-          guidelines.
-        </Paragraph>
-      </>
-    }
-  >
-    <HintText>Why wasn’t my post counted?</HintText>
-  </Tooltip>
-);
+type InfoColumnProps = {
+  isLoading?: boolean;
+  title: string;
+  value?: string | ReactNode;
+  link?: {
+    href: string;
+    text: string;
+  };
+  children?: ReactNode;
+  comingSoonButtonText?: string;
+};
 
-const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonText }) => {
+const InfoColumn = ({
+  isLoading,
+  title,
+  value,
+  link,
+  children,
+  comingSoonButtonText,
+}: InfoColumnProps) => {
   let content = null;
 
   if (isLoading) {
@@ -117,116 +102,65 @@ const InfoColumn = ({ isLoading, title, value, link, children, comingSoonButtonT
   );
 };
 
-const SetupStaking = () => (
-  <>
-    <ImageContainer>
-      <Image src="/images/set-up-staking.png" alt="Staking" layout="fill" objectFit="contain" />
-    </ImageContainer>
-    <Flex className="mt-24" justify="center">
-      <Link href="/staking" passHref>
-        <Button type="primary">Set up staking</Button>
-      </Link>
-    </Flex>
-  </>
-);
+export const StakingDetails = ({ profile }: { profile: XProfile }) => {
+  const { address: account } = useAccount();
+  const { data, isLoading: isServiceInfoLoading } = useServiceInfo({
+    account,
+    isNew: !!profile.service_id,
+  });
+  const stakingInstance = data?.stakingInstance;
+  const contractDetails = stakingInstance && STAKING_CONTRACTS_DETAILS[getAddress(stakingInstance)];
 
-const StakingDetails = ({ profile }) => {
-  const { chainId, address: account } = useAccount();
-  const { switchChainAsync, switchChain } = useSwitchChain();
-  const { data: serviceInfo, isLoading: isServiceInfoLoading } = useAccountServiceInfo(account);
+  // If the user staked on new contracts, use service_multisig, otherwise use service_multisig_old
+  const serviceMultisig = profile.service_multisig || profile.service_multisig_old;
 
-  const [isRestaking, setIsRestaking] = useState(false);
-
-  const serviceId = serviceInfo?.serviceId?.toString() ?? null;
-  const contractAddress = serviceInfo?.stakingInstance
-    ? getBytes32FromAddress(serviceInfo.stakingInstance)
-    : null;
-  const contractDetails =
-    contractAddress &&
-    STAKING_CONTRACTS_DETAILS[getBytes32FromAddress(serviceInfo.stakingInstance)];
-
+  // If the user staked on new contracts, use service_id, otherwise use service_id_old
+  const serviceId = (profile.service_id || profile.service_id_old)?.toString() ?? null;
   const { data: stakingDetails, isLoading: isStakingDetailsLoading } = useStakingDetails(
     serviceId,
-    serviceInfo?.stakingInstance,
+    stakingInstance,
   );
 
-  const handleRestake = useCallback(async () => {
-    if (!account) return;
-    if (!contractDetails) return;
-    if (!serviceInfo) return;
-
-    setIsRestaking(true);
-
-    try {
-      // Switch to base
-      if (chainId !== base.id) {
-        await switchChainAsync({ chainId: base.id });
-      }
-
-      // First unstake
-      await unstake({ account });
-      // Service is now transferred back to the user,
-      // In order to stake again, need to approve the transfer
-      // to contribute manager
-      await approveServiceTransfer({
-        account,
-        serviceId,
-        contractAddress: CONTRIBUTE_MANAGER_ADDRESS_BASE,
-      });
-      // Then stake to the same contract
-      await stake({
-        account,
-        socialId: profile.twitter_id,
-        serviceId,
-        stakingInstance: serviceInfo.stakingInstance,
-      });
-    } catch (error) {
-      notifyError('Error: could not restake');
-      console.error(error);
-    } finally {
-      setIsRestaking(false);
-
-      // Suggest the user to switch back to mainnet to avoid any
-      // further errors while they interact with the app
-      if (chainId !== mainnet.id) {
-        switchChain({ chainId: mainnet.id });
-      }
-    }
-  }, [
-    account,
-    chainId,
-    contractDetails,
-    profile.twitter_id,
-    serviceId,
-    serviceInfo,
-    switchChain,
-    switchChainAsync,
-  ]);
+  const { isRestaking, handleRestake } = useRestake({ contractAddress: stakingInstance });
 
   const tweetsThisEpoch = useMemo(() => {
     if (!isNumber(stakingDetails.epochCounter)) return [];
     if (stakingDetails.stakingStatus !== 'Staked') return [];
+
     return Object.entries(profile.tweets)
       .map(([tweetId, tweet]) => ({ tweetId, ...tweet }))
-      .filter((tweet) => tweet.epoch > stakingDetails.epochCounter && tweet.points > 0);
+      .filter((tweet) => {
+        if (isNil(stakingDetails.epochCounter)) return false;
+
+        /**
+         * a dirty hack with stakingDetails.tsStart to calculate points only starting from the migration point
+         * BE only stores epochs number regardless the staking instance (while each has their own epoch counter)
+         * preventing from separating old contracts (with 20+ epochs) from the new ones (they've just started)
+         */
+        if (Number(tweet.timestamp) < Number(stakingDetails.tsStart)) return false;
+
+        return tweet.epoch > stakingDetails.epochCounter && tweet.points > 0;
+      });
   }, [profile, stakingDetails]);
 
   // Calculate total points earned for current epoch's tweets
   const pointsEarned = useMemo(() => {
+    if (contractDetails?.isDeprecated) return 0;
+
     return tweetsThisEpoch.reduce((sum, tweet) => {
-      if (tweet.epoch > stakingDetails.epochCounter) {
+      if (!isNil(stakingDetails.epochCounter) && tweet.epoch > stakingDetails.epochCounter) {
         sum += tweet.points;
       }
       return sum;
     }, 0);
-  }, [tweetsThisEpoch, stakingDetails]);
+  }, [contractDetails, tweetsThisEpoch, stakingDetails]);
 
   const pointsPercentage = contractDetails
     ? Math.min((pointsEarned / contractDetails.pointsPerEpoch) * 100, 100)
     : 0;
 
   const stakingStatusColumnData = useMemo(() => {
-    if (!serviceInfo) return;
+    if (isServiceInfoLoading) return;
 
     let value;
     let comingSoonButtonText;
@@ -256,12 +190,7 @@ const StakingDetails = ({ profile }) => {
       );
       if (stakingDetails.isEligibleForStaking) {
         children = (
-          <Button
-            size="small"
-            isLoading={isRestaking}
-            onClick={handleRestake}
-            className="block mt-8"
-          >
+          <Button size="small" loading={isRestaking} onClick={handleRestake} className="block mt-8">
             Restake
           </Button>
         );
@@ -286,7 +215,7 @@ const StakingDetails = ({ profile }) => {
 
     return { value, comingSoonButtonText, children };
   }, [
-    serviceInfo,
+    isServiceInfoLoading,
     stakingDetails.stakingStatus,
     stakingDetails.isEligibleForStaking,
     stakingDetails.evictionExpiresTimestamp,
@@ -297,6 +226,7 @@ const StakingDetails = ({ profile }) => {
 
   return (
     <>
+      {profile.service_id_old && <RecovererAlert isNew={!!profile.service_id} />}
       <StyledDivider />
       <Title level={5}>Rewards</Title>
       <Row gutter={[16, 24]} className="w-100 mb-32">
@@ -304,7 +234,9 @@ const StakingDetails = ({ profile }) => {
           title="Points earned this epoch"
           isLoading={isServiceInfoLoading}
           value={
-            contractDetails ? `${pointsEarned} / ${contractDetails.pointsPerEpoch}` : undefined
+            contractDetails ? (
+              <div>{`${pointsEarned} / ${contractDetails.pointsPerEpoch}`}</div>
+            ) : undefined
           }
         >
           {!isServiceInfoLoading && (
@@ -344,7 +276,7 @@ const StakingDetails = ({ profile }) => {
           value={
             stakingDetails.epochEndTimestamp
               ? formatDynamicTimeRange(stakingDetails.epochEndTimestamp)
-              : undefined
+              : NA
           }
         />
         <InfoColumn
@@ -382,18 +314,18 @@ const StakingDetails = ({ profile }) => {
           link={
             contractDetails
               ? {
-                  href: `${GOVERN_APP_URL}/contracts/${contractAddress}`,
+                  href: `${GOVERN_APP_URL}/contracts/${getBytes32FromAddress(stakingInstance)}`,
                   text: contractDetails.name,
                 }
-              : NA
+              : undefined
           }
           comingSoonButtonText="Change"
         />
         <InfoColumn
           title="Your Safe address"
           link={{
-            href: `${base.blockExplorers.default.url}/address/${profile.service_multisig}`,
-            text: truncateAddress(profile.service_multisig),
+            href: `${base.blockExplorers.default.url}/address/${serviceMultisig}`,
+            text: truncateAddress(serviceMultisig),
           }}
         />
       </Row>
@@ -412,44 +344,3 @@ const StakingDetails = ({ profile }) => {
     </>
   );
 };
-
-export const Staking = ({ profile }) => {
-  return (
-    <Card bordered={false}>
-      <Title level={3} className="mb-8">
-        Staking
-      </Title>
-      <Paragraph type="secondary" className="mb-24">
-        Staking allows you to earn OLAS rewards when you post about Olas on X.
-      </Paragraph>
-      {profile.service_multisig ? <StakingDetails profile={profile} /> : <SetupStaking />}
-    </Card>
-  );
-};
-
-Staking.propTypes = {
-  profile: PropTypes.shape({
-    wallet_address: PropTypes.string,
-    discord_handle: PropTypes.string,
-    twitter_id: PropTypes.string,
-    twitter_handle: PropTypes.string,
-    service_multisig: PropTypes.string,
-    points: PropTypes.number,
-    tweets: PropTypes.objectOf(PropTypes.shape(TweetShape)),
-  }),
-};
-
-Staking.defaultProps = {
-  profile: {
-    wallet_address: '',
-    discord_handle: '',
-    twitter_id: '',
-    twitter_handle: '',
-    service_multisig: '',
-    points: 0,
-    tweets: {},
-  },
-};
-
-StakingDetails.propTypes = Staking.propTypes;
-StakingDetails.defaultProps = Staking.defaultProps;

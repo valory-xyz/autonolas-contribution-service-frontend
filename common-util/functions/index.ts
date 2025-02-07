@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
+// @ts-nocheck // TODO: provide all types
 import { ethers } from 'ethers';
 import { isNil, lowerCase, toLower } from 'lodash';
+import { Address } from 'viem';
 
 import {
   LOCAL_FORK_ID,
@@ -16,6 +18,7 @@ import { RPC_URLS } from 'common-util/Contracts';
 import data from 'common-util/Education/data.json';
 import { SUPPORTED_CHAINS } from 'common-util/Login/config';
 import orbis, { checkOrbisStatus } from 'common-util/orbis';
+import { XProfile } from 'types/x';
 
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
@@ -70,10 +73,10 @@ export const getTier = (points) => {
   }
 };
 
-export const getName = (profile, address) =>
-  profile.twitter_handle ||
-  profile.discord_handle ||
-  profile.wallet_address ||
+export const getName = (profile: XProfile | null, address: Address) =>
+  profile?.twitter_handle ||
+  profile?.discord_handle ||
+  profile?.wallet_address ||
   (address && truncateAddress(address)) ||
   'Unknown name';
 
@@ -93,12 +96,16 @@ export const isVercelStaging = process.env.NODE_VERCEL_ENV === 'staging';
 
 /**
  *
- * @param {BigInt} value value to be converted to Eth
- * @param {Number} dv Default value to be returned
- * @param {Number} fractionDigits Number of digits after the decimal point
- * @returns {String} with 2 decimal places
+ * @param value value to be converted to Eth
+ * @param dv Default value to be returned
+ * @param fractionDigits Number of digits after the decimal point
+ * @returns string with 2 decimal places
  */
-export const formatToEth = (value, dv = 0, fractionDigits = 2) => {
+export const formatToEth = (
+  value: ethers.BigNumberish,
+  dv: number = 0,
+  fractionDigits: number = 2,
+) => {
   if (isNil(value)) return dv || 0;
   return (+ethers.formatEther(value)).toFixed(fractionDigits);
 };
@@ -109,7 +116,7 @@ export const formatToEth = (value, dv = 0, fractionDigits = 2) => {
  * input: 1
  * output: 1000000000000000000
  */
-export const ethersToWei = (value) => ethers.parseUnits(value, 'ether');
+export const ethersToWei = (value: string) => ethers.parseUnits(value, 'ether');
 
 /**
  * returns error message if user can't add memory message
