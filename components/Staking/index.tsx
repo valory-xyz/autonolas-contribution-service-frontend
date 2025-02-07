@@ -21,7 +21,7 @@ export const StakingPage = () => {
   const account = useSelector((state) => state?.setup?.account);
 
   const xProfile = useMemo(() => {
-    return leaderboard.find((item) => areAddressesEqual(item.wallet_address === account));
+    return leaderboard.find((item) => areAddressesEqual(item.wallet_address, account));
   }, [account, leaderboard]);
 
   return (
