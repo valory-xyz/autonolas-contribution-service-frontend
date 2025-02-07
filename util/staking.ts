@@ -154,10 +154,12 @@ export const useStakingDetails = (
     const lastEpoch = data.checkpoints.find((item) =>
       areAddressesEqual(item.contractAddress, `${stakingInstance}`),
     );
-    if (!lastEpoch) return null;
+
     return {
-      epochEndTimestamp: Number(lastEpoch.blockTimestamp) + Number(livenessPeriod),
-      epochCounter: Number(lastEpoch.epoch),
+      epochEndTimestamp: lastEpoch
+        ? Number(lastEpoch.blockTimestamp) + Number(livenessPeriod)
+        : null,
+      epochCounter: lastEpoch ? Number(lastEpoch.epoch) : 0,
       rewardsPerEpoch: formatToEth((livenessPeriod * rewardsPerSecond).toString()),
     };
   }, [data, stakingInstance, livenessPeriod, rewardsPerSecond]);
@@ -190,6 +192,7 @@ export const useStakingDetails = (
       stakingStatus,
       isEligibleForStaking,
       evictionExpiresTimestamp,
+      tsStart: serviceInfo?.tsStart,
     },
     isLoading:
       isLoading ||

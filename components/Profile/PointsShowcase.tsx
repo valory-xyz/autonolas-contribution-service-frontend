@@ -20,7 +20,7 @@ const NoTweetsText = styled(Paragraph)`
 `;
 
 type PointsShowcaseProps = {
-  tweetsData: Record<string, { points: number }>;
+  tweetsData: Record<string, { points: number }> | undefined;
 };
 
 export const PointsShowcase = memo(

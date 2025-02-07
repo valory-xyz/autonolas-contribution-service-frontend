@@ -20,11 +20,11 @@ import { checkAndApproveOlasForAddress, checkHasEnoughOlas, createAndStake } fro
 
 const { Paragraph, Text } = Typography;
 
-enum STAKING_STEPS {
-  CONNECT_TWITTER,
-  SET_UP_AND_STAKE,
-  TWEET_AND_EARN,
-}
+const STAKING_STEPS = {
+  CONNECT_TWITTER: 0,
+  SET_UP_AND_STAKE: 1,
+  TWEET_AND_EARN: 2,
+};
 
 const STAKING_CONTRACTS = Object.entries(STAKING_CONTRACTS_DETAILS)
   .filter(([_, values]) => !values.isDeprecated)

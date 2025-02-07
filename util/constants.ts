@@ -40,35 +40,35 @@ export const STAKING_CONTRACTS_DETAILS: Record<
   string,
   { name: string; totalBond: number; pointsPerEpoch: number; isDeprecated?: boolean }
 > = {
-  '0x95146adf659f455f300d7521b3b62a3b6c4aba1f': {
+  '0x95146Adf659f455f300D7521B3b62A3b6c4aBA1F': {
     name: 'Contribute Alpha',
     totalBond: 100,
     pointsPerEpoch: 200,
     isDeprecated: true,
   },
-  '0x2c8a5ac7b431ce04a037747519ba475884bce2fb': {
+  '0x2C8a5aC7B431ce04a037747519BA475884BCe2Fb': {
     name: 'Contribute Alpha 2',
     totalBond: 100,
     pointsPerEpoch: 200,
     isDeprecated: true,
   },
-  '0x708e511d5fcb3bd5a5d42f42aa9a69ec5b0ee2e8': {
+  '0x708E511d5fcB3bd5a5d42F42aA9a69EC5B0Ee2E8': {
     name: 'Contribute Alpha 3',
     totalBond: 500,
     pointsPerEpoch: 1000,
     isDeprecated: true,
   },
-  '0xe2e68ddafbdc0ae48e39cdd1e778298e9d865cf4': {
+  '0xe2E68dDafbdC0Ae48E39cDd1E778298e9d865cF4': {
     name: 'Contribute Beta I',
     totalBond: 100,
     pointsPerEpoch: 200,
   },
-  '0x6ce93e724606c365fc882d4d6dfb4a0a35fe2387': {
+  '0x6Ce93E724606c365Fc882D4D6dfb4A0a35fE2387': {
     name: 'Contribute Beta II',
     totalBond: 300,
     pointsPerEpoch: 600,
   },
-  '0x28877ffc6583170a4c9ed0121fc3195d06fd3a26': {
+  '0x28877FFc6583170a4C9eD0121fc3195d06fd3A26': {
     name: 'Contribute Beta III',
     totalBond: 500,
     pointsPerEpoch: 1000,

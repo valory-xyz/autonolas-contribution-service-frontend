@@ -2,6 +2,7 @@
 // @ts-nocheck // TODO: provide all types
 import { ethers } from 'ethers';
 import { isNil, lowerCase, toLower } from 'lodash';
+import { Address } from 'viem';
 
 import {
   LOCAL_FORK_ID,
@@ -17,6 +18,7 @@ import { RPC_URLS } from 'common-util/Contracts';
 import data from 'common-util/Education/data.json';
 import { SUPPORTED_CHAINS } from 'common-util/Login/config';
 import orbis, { checkOrbisStatus } from 'common-util/orbis';
+import { XProfile } from 'types/x';
 
 import prohibitedAddresses from '../../data/prohibited-addresses.json';
 
@@ -71,10 +73,10 @@ export const getTier = (points) => {
   }
 };
 
-export const getName = (profile, address) =>
-  profile.twitter_handle ||
-  profile.discord_handle ||
-  profile.wallet_address ||
+export const getName = (profile: XProfile | null, address: Address) =>
+  profile?.twitter_handle ||
+  profile?.discord_handle ||
+  profile?.wallet_address ||
   (address && truncateAddress(address)) ||
   'Unknown name';
 

@@ -8,7 +8,7 @@ import { COLOR, MEDIA_QUERY, NA, areAddressesEqual } from '@autonolas/frontend-l
 
 import { BadgeLoading, ShowBadge } from 'common-util/ShowBadge';
 import TruncatedEthereumLink from 'common-util/TruncatedEthereumLink';
-import { getLatestMintedNft } from 'common-util/api';
+import { getLatestMintedNft, updateUserStakingData } from 'common-util/api';
 import { getName, getTier } from 'common-util/functions';
 import { XProfile } from 'types/x';
 
@@ -53,13 +53,14 @@ const ProfileContent = styled.div`
 `;
 
 type ProfileBodyProps = {
-  profile: XProfile;
+  profile: XProfile | null;
   id: string;
 };
 
 const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
   const [isBadgeLoading, setIsBadgeLoading] = useState(false);
   const [details, setDetails] = useState<{ image: string; tokenId: string } | null>(null);
+  // TODO: types
   const account = useSelector((state: any) => state?.setup?.account);
 
   useEffect(() => {
@@ -77,6 +78,10 @@ const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
 
     getData();
   }, [profile?.wallet_address]);
+
+  useEffect(() => {
+    updateUserStakingData('twitterId', 'multisig', `${1}`);
+  }, []);
 
   const getTwitterHandle = () => {
     if (profile?.twitter_handle) {
@@ -138,21 +143,21 @@ const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
             <Flex gap={96} className="mb-24">
               <Statistic
                 title="Tier"
-                value={profile.points ? getTier(profile.points) : NA}
+                value={profile?.points ? getTier(profile.points) : NA}
                 formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
               <Statistic
                 title="Points"
-                value={profile.points ?? NA}
+                value={profile?.points ?? NA}
                 formatter={(value) => <Text className="font-weight-600">{value}</Text>}
               />
             </Flex>
-            <PointsShowcase tweetsData={profile.tweets} />
+            <PointsShowcase tweetsData={profile?.tweets} />
           </div>
         </ProfileContent>
       </Card>
 
-      {account && areAddressesEqual(id, account) && <Staking profile={profile} />}
+      {account && areAddressesEqual(id, account) && profile && <Staking profile={profile} />}
     </Root>
   );
 };

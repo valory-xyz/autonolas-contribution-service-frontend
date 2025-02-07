@@ -17,6 +17,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
+import { getAddress } from 'ethers';
 import { isNil, isNumber } from 'lodash';
 import Link from 'next/link';
 import { ReactNode, useMemo } from 'react';
@@ -24,7 +25,7 @@ import styled from 'styled-components';
 import { base } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
-import { COLOR } from '@autonolas/frontend-library';
+import { COLOR, NA } from '@autonolas/frontend-library';
 
 import { getBytes32FromAddress, truncateAddress } from 'common-util/functions';
 import { formatDynamicTimeRange } from 'common-util/functions/time';
@@ -33,6 +34,7 @@ import { GOVERN_APP_URL, OLAS_UNICODE_SYMBOL, STAKING_CONTRACTS_DETAILS } from '
 import { useServiceInfo, useStakingDetails } from 'util/staking';
 
 import { HowTweetsAreScoredModal, TweetCountTooltip } from './HowTweetsAreScored';
+import { RecovererAlert } from './RecovererAlert';
 import { TweetsThisEpoch } from './TweetsThisEpoch';
 import { useRestake } from './hooks';
 
@@ -107,7 +109,7 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
     isNew: !!profile.service_id,
   });
   const stakingInstance = data?.stakingInstance;
-  const contractDetails = stakingInstance && STAKING_CONTRACTS_DETAILS[stakingInstance];
+  const contractDetails = stakingInstance && STAKING_CONTRACTS_DETAILS[getAddress(stakingInstance)];
 
   // If the user staked on new contracts, use service_multisig, otherwise use service_multisig_old
   const serviceMultisig = profile.service_multisig || profile.service_multisig_old;
@@ -124,23 +126,34 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
   const tweetsThisEpoch = useMemo(() => {
     if (!isNumber(stakingDetails.epochCounter)) return [];
     if (stakingDetails.stakingStatus !== 'Staked') return [];
+
     return Object.entries(profile.tweets)
       .map(([tweetId, tweet]) => ({ tweetId, ...tweet }))
       .filter((tweet) => {
         if (isNil(stakingDetails.epochCounter)) return false;
+
+        /**
+         * a dirty hack with stakingDetails.tsStart to calculate points only starting from the migration point
+         * BE only stores epochs number regardless the staking instance (while each has their own epoch counter)
+         * preventing from separating old contracts (with 20+ epochs) from the new ones (they've just started)
+         */
+        if (Number(tweet.timestamp) < Number(stakingDetails.tsStart)) return false;
+
         return tweet.epoch > stakingDetails.epochCounter && tweet.points > 0;
       });
   }, [profile, stakingDetails]);
 
   // Calculate total points earned for current epoch's tweets
   const pointsEarned = useMemo(() => {
+    if (contractDetails?.isDeprecated) return 0;
+
     return tweetsThisEpoch.reduce((sum, tweet) => {
       if (!isNil(stakingDetails.epochCounter) && tweet.epoch > stakingDetails.epochCounter) {
         sum += tweet.points;
       }
       return sum;
     }, 0);
-  }, [tweetsThisEpoch, stakingDetails]);
+  }, [contractDetails, tweetsThisEpoch, stakingDetails]);
 
   const pointsPercentage = contractDetails
     ? Math.min((pointsEarned / contractDetails.pointsPerEpoch) * 100, 100)
@@ -213,6 +226,7 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
 
   return (
     <>
+      {profile.service_id_old && <RecovererAlert isNew={!!profile.service_id} />}
       <StyledDivider />
       <Title level={5}>Rewards</Title>
       <Row gutter={[16, 24]} className="w-100 mb-32">
@@ -220,7 +234,9 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
           title="Points earned this epoch"
           isLoading={isServiceInfoLoading}
           value={
-            contractDetails ? `${pointsEarned} / ${contractDetails.pointsPerEpoch}` : undefined
+            contractDetails ? (
+              <div>{`${pointsEarned} / ${contractDetails.pointsPerEpoch}`}</div>
+            ) : undefined
           }
         >
           {!isServiceInfoLoading && (
@@ -260,7 +276,7 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
           value={
             stakingDetails.epochEndTimestamp
               ? formatDynamicTimeRange(stakingDetails.epochEndTimestamp)
-              : undefined
+              : NA
           }
         />
         <InfoColumn

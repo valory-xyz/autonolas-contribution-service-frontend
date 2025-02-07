@@ -431,4 +431,4 @@ export const CONTRIBUTORS_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-] as const; // <--- const assertion, to support type inference in wagmi;
+] as const;

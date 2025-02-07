@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { areAddressesEqual } from '@autonolas/frontend-library';
+
 import { ConnectWallet } from './ConnectWallet';
 import { StakingStepper } from './StakingStepper';
 
@@ -19,15 +21,14 @@ export const StakingPage = () => {
   const account = useSelector((state) => state?.setup?.account);
 
   const xProfile = useMemo(() => {
-    return leaderboard.find((item) => item.wallet_address === account);
+    return leaderboard.find((item) => areAddressesEqual(item.wallet_address === account));
   }, [account, leaderboard]);
 
   return (
     <Root>
       <Card bordered={false}>
         <Title level={4}>Set up staking</Title>
-        {!account && <ConnectWallet />}
-        {account && <StakingStepper profile={xProfile} />}
+        {account ? <StakingStepper profile={xProfile} /> : <ConnectWallet />}
       </Card>
     </Root>
   );
