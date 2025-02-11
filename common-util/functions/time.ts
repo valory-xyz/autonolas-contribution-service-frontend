@@ -3,12 +3,12 @@
  * @param ms timestamp in ms
  * @returns time in format "12 days ago" or "5 hours ago"
  */
-export const getTimeAgo = (ms, showPostfix = true) => {
+export const getTimeAgo = (ms: number, showPostfix = true) => {
   const differenceInMs = Date.now() - ms;
   return formatTimeDifference(differenceInMs, showPostfix ? 'ago' : '');
 };
 
-export const formatTimeDifference = (differenceInMs, postfix) => {
+export const formatTimeDifference = (differenceInMs: number, postfix: string) => {
   // Calculate time differences
   const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
   const differenceInHours = Math.floor(differenceInMinutes / 60);
@@ -31,7 +31,7 @@ export const formatTimeDifference = (differenceInMs, postfix) => {
 const ONE_HOUR_IN_MS = 3600 * 1000;
 
 // Considering provided time format is en-US
-const getHourAndPeriod = (time) => {
+const getHourAndPeriod = (time: string) => {
   let [hour, ,] = time.split(':').map(Number);
   const period = time.includes('PM') ? 'pm' : 'am';
   return { hour, period };
@@ -46,7 +46,7 @@ const getHourAndPeriod = (time) => {
  * 11am-12pm, 14/11/24 (next time is in the next period AM to PM)
  * 11pm-12am, 14/11/24-15/11/24 (next time is on the next day)
  */
-export const formatDynamicTimeRange = (timestamp, timeOffsetMs = ONE_HOUR_IN_MS) => {
+export const formatDynamicTimeRange = (timestamp: number, timeOffsetMs = ONE_HOUR_IN_MS) => {
   const timestampInMs = timestamp * 1000;
 
   // Get current date and time in the format: "17/11/2024" and "13:39:07"
@@ -76,4 +76,19 @@ export const formatDynamicTimeRange = (timestamp, timeOffsetMs = ONE_HOUR_IN_MS)
   } else {
     return `${timeRange}, ${currentDate} - ${nextDate}`;
   }
+};
+
+/**
+ *
+ * @param timeInMs - time in milliseconds
+ * @returns formatted date string
+ * @example formatDate(number) => Jan 11, 2025, 10:17:13 PM GMT+5:30
+ */
+export const formatDate = (timeInMs: number) => {
+  if (timeInMs === 0) return null;
+
+  return Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'long',
+  }).format(new Date(timeInMs));
 };

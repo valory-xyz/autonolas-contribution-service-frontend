@@ -170,13 +170,12 @@ export const useStakingDetails = (
     : SERVICE_STAKING_STATE[0];
 
   // Eviction expire timestamp
-  const evictionExpiresTimestamp =
-    Number(serviceInfo?.tsStart ?? 0) + Number(minStakingDuration ?? 0);
+  const canUnstakeTimestamp = Number(serviceInfo?.tsStart ?? 0) + Number(minStakingDuration ?? 0);
 
   const isServiceStakedForMinimumDuration =
     !isNil(serviceInfo?.tsStart) &&
     !isNil(minStakingDuration) &&
-    evictionExpiresTimestamp <= Math.round(Date.now() / 1000);
+    canUnstakeTimestamp <= Math.round(Date.now() / 1000);
 
   // TODO: add check if the contract has enough rewards and slots
   const isEligibleForStaking =
@@ -191,7 +190,7 @@ export const useStakingDetails = (
       epochLength: livenessPeriod ? formatTimeDifference(Number(livenessPeriod) * 1000) : null,
       stakingStatus,
       isEligibleForStaking,
-      evictionExpiresTimestamp,
+      canUnstakeTimestamp,
       tsStart: serviceInfo?.tsStart,
     },
     isLoading:

@@ -1,10 +1,17 @@
 import { Alert, Flex, Typography } from 'antd';
 
+import { formatDate } from 'common-util/functions/time';
 import { GOVERN_APP_URL } from 'util/constants';
 
 const { Text, Paragraph } = Typography;
 
-export const RecovererAlert = ({ isNew }: { isNew: boolean }) => {
+export const RecovererAlert = ({
+  isNew,
+  unstakeTimestamp,
+}: {
+  isNew: boolean;
+  unstakeTimestamp: number | null;
+}) => {
   return (
     <Alert
       type="warning"
@@ -34,6 +41,16 @@ export const RecovererAlert = ({ isNew }: { isNew: boolean }) => {
               one way to do so in the PDF.
             </li>
           </ol>
+          {unstakeTimestamp && (
+            <Paragraph>
+              <span className="font-weight-600">Note:</span> if you have recently staked, you may
+              not be able to begin the withdrawal process yet, as you need to remain staked for a
+              certain period.
+              <br />
+              You can start withdrawing no earlier than:{' '}
+              <span className="font-weight-600">{formatDate(unstakeTimestamp * 1000)}</span>
+            </Paragraph>
+          )}
           <a
             href={`${GOVERN_APP_URL}/proposals?proposalId=36031414401270968281819940673886809451115732209347053152611693625665455429080`}
             target="_blank"
