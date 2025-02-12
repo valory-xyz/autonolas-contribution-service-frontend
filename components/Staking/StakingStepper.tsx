@@ -1,8 +1,8 @@
 import { Button, Flex, Radio, RadioChangeEvent, Skeleton, Space, Steps, Typography } from 'antd';
 import { AbiCoder, ZeroAddress } from 'ethers';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Address } from 'viem';
+import { useEffect, useMemo, useState } from 'react';
+import { Address, getAddress } from 'viem';
 import { base, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
 
@@ -13,7 +13,7 @@ import { updateUserStakingData } from 'common-util/api';
 import { ethersToWei, getAddressFromBytes32, truncateAddress } from 'common-util/functions';
 import { XProfile } from 'types/x';
 import { GOVERN_APP_URL, OPERATE_APP_URL, STAKING_CONTRACTS_DETAILS } from 'util/constants';
-import { useServiceInfo } from 'util/staking';
+import { useReadStakingContract, useServiceInfo } from 'util/staking';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
 import { checkAndApproveOlasForAddress, checkHasEnoughOlas, createAndStake } from './requests';
@@ -49,6 +49,43 @@ const ConnectTwitter = ({ account }: { account: string | null }) => {
       <Paragraph type="secondary">Link your X account to your Contribute profile.</Paragraph>
       <ConnectTwitterModal />
     </>
+  );
+};
+
+const StakingContractOption = ({
+  contract,
+}: {
+  contract: {
+    address: Address;
+    name: string;
+    totalBond: number;
+    pointsPerEpoch: number;
+    maxSlots: number;
+  };
+}) => {
+  const { data, isLoading } = useReadStakingContract('getServiceIds', contract.address, base.id);
+
+  const hasEnoughServiceSlots = useMemo(() => {
+    if (!data) return false;
+    if (data.length === contract.maxSlots) return false;
+    return true;
+  }, [contract.maxSlots, data]);
+
+  return (
+    <Radio value={contract.address} disabled={!hasEnoughServiceSlots || isLoading}>
+      <Text className="font-weight-600">{contract.name}</Text>
+      {isLoading ? (
+        <Skeleton.Input size="small" className="ml-8" />
+      ) : hasEnoughServiceSlots ? (
+        <Text type="secondary">
+          {` | ${contract.totalBond} OLAS stake | ${
+            contract.pointsPerEpoch
+          } point${contract.pointsPerEpoch > 1 ? 's' : ''} per epoch`}
+        </Text>
+      ) : (
+        <Text type="secondary"> | No slots available</Text>
+      )}
+    </Radio>
   );
 };
 
@@ -218,14 +255,16 @@ const SetUpAndStake = ({
           <Radio.Group onChange={handleSelectContract} value={contract} className="mt-12 mb-12">
             <Space direction="vertical">
               {STAKING_CONTRACTS.map((item) => (
-                <Radio value={item.id} key={item.id}>
-                  <Text className="font-weight-600">{item.name}</Text>
-                  <Text type="secondary">
-                    {` | ${item.totalBond} OLAS stake | ${
-                      item.pointsPerEpoch
-                    } point${item.pointsPerEpoch > 1 ? 's' : ''} per epoch`}
-                  </Text>
-                </Radio>
+                <StakingContractOption
+                  key={item.id}
+                  contract={{
+                    address: getAddress(item.id),
+                    name: item.name,
+                    totalBond: item.totalBond,
+                    pointsPerEpoch: item.pointsPerEpoch,
+                    maxSlots: item.maxSlots,
+                  }}
+                />
               ))}
             </Space>
           </Radio.Group>

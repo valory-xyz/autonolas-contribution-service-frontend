@@ -8,7 +8,7 @@ export const getTimeAgo = (ms: number, showPostfix = true) => {
   return formatTimeDifference(differenceInMs, showPostfix ? 'ago' : '');
 };
 
-export const formatTimeDifference = (differenceInMs: number, postfix: string) => {
+export const formatTimeDifference = (differenceInMs: number, postfix?: string) => {
   // Calculate time differences
   const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
   const differenceInHours = Math.floor(differenceInMinutes / 60);
