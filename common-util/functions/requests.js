@@ -1,4 +1,5 @@
-const ESTIMATED_GAS_LIMIT = 500_000;
+// TODO: better handle setting 2M for base/gnosis, 500k for ethereum
+const ESTIMATED_GAS_LIMIT = 2_000_000;
 
 /**
  * function to estimate gas limit

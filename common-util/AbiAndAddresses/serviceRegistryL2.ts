@@ -1889,4 +1889,4 @@ export const SERVICE_REGISTRY_L2_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-];
+] as const;

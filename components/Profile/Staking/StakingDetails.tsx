@@ -104,9 +104,11 @@ const InfoColumn = ({
 
 export const StakingDetails = ({ profile }: { profile: XProfile }) => {
   const { address: account } = useAccount();
+  const isNewContracts = !!profile.service_id;
+
   const { data, isLoading: isServiceInfoLoading } = useServiceInfo({
     account,
-    isNew: !!profile.service_id,
+    isNew: isNewContracts,
   });
   const stakingInstance = data?.stakingInstance;
   const contractDetails = stakingInstance && STAKING_CONTRACTS_DETAILS[getAddress(stakingInstance)];
@@ -200,7 +202,7 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
             title={
               <Text>
                 You’ll be able to restake at approximately{' '}
-                {formatDynamicTimeRange(stakingDetails.evictionExpiresTimestamp)}.
+                {formatDynamicTimeRange(stakingDetails.canUnstakeTimestamp)}.
               </Text>
             }
             color={COLOR.WHITE}
@@ -218,7 +220,7 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
     isServiceInfoLoading,
     stakingDetails.stakingStatus,
     stakingDetails.isEligibleForStaking,
-    stakingDetails.evictionExpiresTimestamp,
+    stakingDetails.canUnstakeTimestamp,
     contractDetails,
     isRestaking,
     handleRestake,
@@ -226,7 +228,12 @@ export const StakingDetails = ({ profile }: { profile: XProfile }) => {
 
   return (
     <>
-      {profile.service_id_old && <RecovererAlert isNew={!!profile.service_id} />}
+      {profile.service_id_old && (
+        <RecovererAlert
+          isNew={isNewContracts}
+          unstakeTimestamp={isNewContracts ? null : stakingDetails.canUnstakeTimestamp}
+        />
+      )}
       <StyledDivider />
       <Title level={5}>Rewards</Title>
       <Row gutter={[16, 24]} className="w-100 mb-32">

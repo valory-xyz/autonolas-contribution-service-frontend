@@ -50,3 +50,28 @@ export const updateUserStakingData = async (twitterId, multisig, serviceId) => {
   // Update the data
   await response.update(newContent);
 };
+
+export const clearUserOldStakingData = async (twitterId) => {
+  const provider = new Ed25519Provider(fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'));
+  const did = new DID({ provider, resolver: getResolver() });
+  // Authenticate the DID with the provider
+  await did.authenticate();
+  // The Ceramic client can create and update streams using the authenticated DID
+  CERAMIC_OBJECT.did = did;
+
+  const response = await TileDocument.load(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID);
+
+  const newContent = cloneDeep(response.content);
+
+  // Find a user by the provided twitterId
+  for (let key in newContent.users) {
+    if (newContent.users[key].twitter_id === twitterId) {
+      newContent.users[key].service_multisig_old = null;
+      newContent.users[key].service_id_old = null;
+      break;
+    }
+  }
+
+  // Update the data
+  await response.update(newContent);
+};
