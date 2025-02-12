@@ -1,11 +1,17 @@
 import { message } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Address } from 'viem';
 import { base, mainnet } from 'viem/chains';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useReadContract, useSwitchChain } from 'wagmi';
 
 import { notifyError, notifyWarning } from '@autonolas/frontend-library';
 
+import {
+  SERVICE_REGISTRY_L2_ABI,
+  SERVICE_REGISTRY_L2_ADDRESS_BASE,
+} from 'common-util/AbiAndAddresses';
+import { clearUserOldStakingData } from 'common-util/api';
+import { XProfile } from 'types/x';
 import { DEPRECATED_CONTRACTS_ADDRESSES } from 'util/constants';
 
 import { restake } from './requests';
@@ -55,4 +61,39 @@ export const useRestake = ({ contractAddress }: UseRestakeParams) => {
   }, [account, chainId, contractAddress, switchChain, switchChainAsync]);
 
   return { isRestaking, handleRestake };
+};
+
+/**
+ * A hook to check if the old user's service is terminated
+ * meaning the user went through the recovery process from old broken staking contracts
+ * and clear old values in order to not to show the alert message
+ */
+export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile) => {
+  const oldStakingDataCleared = useRef(false);
+
+  const { data: isTerminated } = useReadContract({
+    address: SERVICE_REGISTRY_L2_ADDRESS_BASE,
+    abi: SERVICE_REGISTRY_L2_ABI,
+    chainId: base.id,
+    functionName: 'getService',
+    args: profile.service_id_old ? [BigInt(profile.service_id_old)] : [BigInt(0)],
+    query: {
+      enabled: !!profile.service_id_old,
+      select: (data) => {
+        // state == TerminatedBonded (5)
+        if (data.state === 5) return true;
+        return false;
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (oldStakingDataCleared.current) return;
+
+    if (isTerminated) {
+      clearUserOldStakingData(profile.twitter_id).then(() => {
+        oldStakingDataCleared.current = true;
+      });
+    }
+  }, [isTerminated, profile.twitter_id]);
 };

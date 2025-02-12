@@ -1,11 +1,13 @@
 import { Button, Card, Flex, Typography } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { XProfile } from 'types/x';
 
 import { StakingDetails } from './StakingDetails';
+import { useUpdateProfileIfOldServiceTerminated } from './hooks';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -31,8 +33,7 @@ const SetupStaking = () => (
 export const Staking = ({ profile }: { profile: XProfile }) => {
   const hasStaked = !!(profile.service_id_old || profile.service_id);
 
-  // TODO: check if service_id_old is terminated (meaning the user went through the recovery process)
-  // and clear service_id_old and service_multisig_old
+  useUpdateProfileIfOldServiceTerminated(profile);
 
   return (
     <Card bordered={false}>
