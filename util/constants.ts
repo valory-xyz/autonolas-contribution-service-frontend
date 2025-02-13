@@ -1,5 +1,3 @@
-import { Address } from 'viem';
-
 export const GATEWAY_URL = 'https://gateway.autonolas.tech/ipfs/';
 
 export const SITE_URL = 'https://contribute.olas.network';
@@ -98,3 +96,5 @@ export const STAKING_CONTRACTS_BASE_SUBGRAPH_URL =
   'https://api.studio.thegraph.com/query/67875/olas-base-staking-rewards-history/version/latest';
 export const OLAS_UNICODE_SYMBOL = '☴';
 export const SERVICE_STAKING_STATE = ['Unstaked', 'Staked', 'Evicted'];
+
+export const SUPPORT_URL = 'https://discord.com/channels/899649805582737479/899649805582737482';

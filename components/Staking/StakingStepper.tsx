@@ -1,14 +1,20 @@
 import { Button, Flex, Radio, RadioChangeEvent, Skeleton, Space, Steps, Typography } from 'antd';
-import { AbiCoder, ZeroAddress } from 'ethers';
+import { AbiCoder, ZeroAddress, isAddress } from 'ethers';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { Address, getAddress } from 'viem';
 import { base, mainnet } from 'viem/chains';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useReadContract, useSwitchChain } from 'wagmi';
 
 import { areAddressesEqual, notifyError } from '@autonolas/frontend-library';
 
-import { CONTRIBUTORS_V2_ABI, CONTRIBUTORS_V2_ADDRESS_BASE } from 'common-util/AbiAndAddresses';
+import {
+  CONTRIBUTE_MANAGER_ADDRESS_BASE,
+  CONTRIBUTORS_V2_ABI,
+  CONTRIBUTORS_V2_ADDRESS_BASE,
+  SERVICE_REGISTRY_L2_ABI,
+  SERVICE_REGISTRY_L2_ADDRESS_BASE,
+} from 'common-util/AbiAndAddresses';
 import { updateUserStakingData } from 'common-util/api';
 import { ethersToWei, getAddressFromBytes32, truncateAddress } from 'common-util/functions';
 import { XProfile } from 'types/x';
@@ -16,6 +22,7 @@ import { GOVERN_APP_URL, OPERATE_APP_URL, STAKING_CONTRACTS_DETAILS } from 'util
 import { useReadStakingContract, useServiceInfo } from 'util/staking';
 
 import ConnectTwitterModal from '../ConnectTwitter/Modal';
+import { WalletUpdateRequired } from './WalletUpdateRequired';
 import { checkAndApproveOlasForAddress, checkHasEnoughOlas, createAndStake } from './requests';
 
 const { Paragraph, Text } = Typography;
@@ -52,9 +59,7 @@ const ConnectTwitter = ({ account }: { account: string | null }) => {
   );
 };
 
-const StakingContractOption = ({
-  contract,
-}: {
+type StakingContractOptionProps = {
   contract: {
     address: Address;
     name: string;
@@ -62,7 +67,9 @@ const StakingContractOption = ({
     pointsPerEpoch: number;
     maxSlots: number;
   };
-}) => {
+};
+
+const StakingContractOption = ({ contract }: StakingContractOptionProps) => {
   const { data, isLoading } = useReadStakingContract('getServiceIds', contract.address, base.id);
 
   const hasEnoughServiceSlots = useMemo(() => {
@@ -328,38 +335,61 @@ export const StakingStepper = ({ profile }: { profile: XProfile | null }) => {
     }
   }, [profile]);
 
+  const { data: isWalletUpdateRequired, isLoading } = useReadContract({
+    address: SERVICE_REGISTRY_L2_ADDRESS_BASE,
+    abi: SERVICE_REGISTRY_L2_ABI,
+    chainId: base.id,
+    functionName: 'mapAgentInstanceOperators',
+    args: profile?.wallet_address ? [getAddress(profile.wallet_address)] : [ZeroAddress as Address],
+    query: {
+      enabled: isAddress(profile?.wallet_address),
+      select: (address) => {
+        // Check if user's wallet is already engaged with contribute manager
+        // meaning the user can't stake on new contracts and should switch the wallet
+        return areAddressesEqual(address, CONTRIBUTE_MANAGER_ADDRESS_BASE);
+      },
+    },
+  });
+
   return (
-    <Flex>
-      <Steps
-        direction="vertical"
-        size="small"
-        current={step}
-        items={[
-          {
-            title: <Text className="block mb-8">Connect X</Text>,
-            description: <ConnectTwitter account={profile?.twitter_handle || null} />,
-          },
-          {
-            title: (
-              <Text className="block mb-8">
-                Select staking contract, set up on-chain account and stake funds
-              </Text>
-            ),
-            description: (
-              <SetUpAndStake
-                disabled={step !== STAKING_STEPS.SET_UP_AND_STAKE}
-                twitterId={profile?.twitter_id || null}
-                multisigAddress={profile?.service_multisig || null}
-                onNextStep={handleNext}
-              />
-            ),
-          },
-          {
-            title: <Text className="block mb-8">Post about Olas. Earn points. Earn rewards.</Text>,
-            description: <TweetAndEarn disabled={step !== STAKING_STEPS.TWEET_AND_EARN} />,
-          },
-        ]}
-      />
+    <Flex gap={24} vertical>
+      {isWalletUpdateRequired && <WalletUpdateRequired />}
+      <Flex>
+        <Steps
+          direction="vertical"
+          size="small"
+          current={step}
+          items={[
+            {
+              title: <Text className="block mb-8">Connect X</Text>,
+              description: <ConnectTwitter account={profile?.twitter_handle || null} />,
+            },
+            {
+              title: (
+                <Text className="block mb-8">
+                  Select staking contract, set up on-chain account and stake funds
+                </Text>
+              ),
+              description: (
+                <SetUpAndStake
+                  disabled={
+                    step !== STAKING_STEPS.SET_UP_AND_STAKE || isLoading || !!isWalletUpdateRequired
+                  }
+                  twitterId={profile?.twitter_id || null}
+                  multisigAddress={profile?.service_multisig || null}
+                  onNextStep={handleNext}
+                />
+              ),
+            },
+            {
+              title: (
+                <Text className="block mb-8">Post about Olas. Earn points. Earn rewards.</Text>
+              ),
+              description: <TweetAndEarn disabled={step !== STAKING_STEPS.TWEET_AND_EARN} />,
+            },
+          ]}
+        />
+      </Flex>
     </Flex>
   );
 };

@@ -1,5 +1,7 @@
 /** @deprecated */
 export const CONTRIBUTORS_ADDRESS_BASE = '0x4be7A91e67be963806FeFA9C1FD6C53DfC358d94';
+/** @deprecated */
+export const CONTRIBUTE_MANAGER_ADDRESS_BASE = '0xaea9ef993d8a1A164397642648DF43F053d43D85';
 
 /** @deprecated */
 export const CONTRIBUTORS_ABI = [
