@@ -74,13 +74,13 @@ export const STAKING_CONTRACTS_DETAILS: Record<
   '0x6Ce93E724606c365Fc882D4D6dfb4A0a35fE2387': {
     name: 'Contribute Beta II',
     totalBond: 300,
-    pointsPerEpoch: 600,
+    pointsPerEpoch: 450,
     maxSlots: 10,
   },
   '0x28877FFc6583170a4C9eD0121fc3195d06fd3A26': {
     name: 'Contribute Beta III',
     totalBond: 500,
-    pointsPerEpoch: 1000,
+    pointsPerEpoch: 700,
     maxSlots: 10,
   },
 };
@@ -92,8 +92,7 @@ export const DEPRECATED_CONTRACTS_ADDRESSES = Object.entries(STAKING_CONTRACTS_D
   return acc;
 }, []);
 
-export const STAKING_CONTRACTS_BASE_SUBGRAPH_URL =
-  'https://api.studio.thegraph.com/query/67875/olas-base-staking-rewards-history/version/latest';
+export const STAKING_CONTRACTS_BASE_SUBGRAPH_URL = `${process.env.NEXT_STAKING_CONTRACTS_BASE_SUBGRAPH_URL}`;
 export const OLAS_UNICODE_SYMBOL = '☴';
 export const SERVICE_STAKING_STATE = ['Unstaked', 'Staked', 'Evicted'];
 
