@@ -1,4 +1,4 @@
-import { InfoCircleFilled } from '@ant-design/icons';
+import { InfoCircleFilled, MenuOutlined } from '@ant-design/icons';
 import {
   CalendarOutlined,
   FileTextOutlined, // MessageOutlined,
@@ -9,7 +9,7 @@ import {
   XOutlined, // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
-import { Button, Grid, Layout, Typography } from 'antd';
+import { Button, Dropdown, Grid, Layout, Typography } from 'antd';
 import { get } from 'lodash';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { notifyError } from '@autonolas/frontend-library';
 
@@ -52,6 +53,23 @@ const { Content } = Layout;
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
 
+const BurgerMenuButton = styled(Button)`
+  padding: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+`;
+
+const HeaderLeftContent = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ExternalLink = ({ href, label }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer">
+    {label}
+  </a>
+);
+
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> },
@@ -63,6 +81,45 @@ const menuItems = [
   { key: 'calendar', label: 'Calendar', icon: <CalendarOutlined /> },
   // { key: 'chatbot', label: 'Chatbot', icon: <RobotOutlined /> },
   { key: 'docs', label: 'Docs', icon: <FileTextOutlined /> },
+];
+
+const navItems = [
+  { key: 'bond', label: <ExternalLink label="Bond" href="https://bond.olas.network/" /> },
+  {
+    key: 'build',
+    label: <ExternalLink label="Build" href="https://build.olas.network/" />,
+  },
+  {
+    key: 'contribute',
+    label: <span>Contribute</span>,
+    disabled: true,
+  },
+  {
+    key: 'govern',
+    label: <ExternalLink label="Govern" href="https://govern.olas.network/" />,
+  },
+  {
+    key: 'launch',
+    label: <ExternalLink label="Launch" href="https://launch.olas.network/" />,
+  },
+  {
+    key: 'operate',
+    label: <ExternalLink label="Operate" href="https://operate.olas.network/" />,
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'registry',
+    label: <ExternalLink label="Registry" href="https://registry.olas.network/" />,
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'olas',
+    label: <ExternalLink label="Olas website" href="https://olas.network/" />,
+  },
 ];
 
 const INTERVAL = 10000;
@@ -86,6 +143,22 @@ const NavigationBar = ({ children }) => {
     const { response } = await getMemoryDetails();
     dispatch(setMemoryDetails(response));
   }, [dispatch]);
+
+  const NavDropdown = () => {
+    return (
+      <Dropdown
+        menu={{
+          items: navItems,
+          selectedKeys: ['contribute'],
+        }}
+        trigger={['click']}
+      >
+        <BurgerMenuButton>
+          <MenuOutlined />
+        </BurgerMenuButton>
+      </Dropdown>
+    );
+  };
 
   // load leaderboard list only once on page load
   useEffect(() => {
@@ -220,7 +293,10 @@ const NavigationBar = ({ children }) => {
           />
         )}
         <CustomHeaderContent>
-          {logo}
+          <HeaderLeftContent>
+            {logo}
+            <NavDropdown />
+          </HeaderLeftContent>
           <RightMenu>
             {!screens.md && (
               <Button className="mr-8" onClick={() => setIsMenuVisible(!isMenuVisible)}>
