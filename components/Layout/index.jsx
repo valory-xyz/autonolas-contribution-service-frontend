@@ -81,7 +81,7 @@ const navItems = [
   },
   {
     key: 'contribute',
-    label: Contribute,
+    label: 'Contribute',
     url: 'https://contribute.olas.network/',
     disabled: true,
   },
@@ -144,7 +144,20 @@ const NavigationBar = ({ children }) => {
     return (
       <Dropdown
         menu={{
-          items: navItems,
+          items: navItems.map((item) => {
+            if (item.type === 'divider') {
+              return item;
+            }
+
+            return {
+              ...item,
+              label: (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.label}
+                </a>
+              ),
+            };
+          }),
           selectedKeys: ['contribute'],
         }}
         trigger={['click']}
