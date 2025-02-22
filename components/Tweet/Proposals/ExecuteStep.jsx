@@ -13,6 +13,8 @@ import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
 
+const OLAS_X_ACCOUNT = 'https://x.com/autonolas';
+
 const TweetValidating = () => (
   <>
     <Alert type="warning" message="Validating approvals and quorum amount…" showIcon />
@@ -72,7 +74,7 @@ export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
             key={`extra-${proposal.action_id}`}
             type="primary"
             ghost
-            href={proposal.action_id}
+            href={OLAS_X_ACCOUNT}
             rel="noopener noreferrer"
             target="_blank"
           >

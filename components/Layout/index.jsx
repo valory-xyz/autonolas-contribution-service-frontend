@@ -9,7 +9,7 @@ import {
   XOutlined, // UserOutlined,
 } from '@ant-design/icons';
 import { watchAccount } from '@wagmi/core';
-import { Button, Dropdown, Grid, Layout, Typography } from 'antd';
+import { Button, Dropdown, Flex, Grid, Layout, Typography } from 'antd';
 import { get } from 'lodash';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -59,17 +59,6 @@ const BurgerMenuButton = styled(Button)`
   margin-bottom: auto;
 `;
 
-const HeaderLeftContent = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const ExternalLink = ({ href, label }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer">
-    {label}
-  </a>
-);
-
 const menuItems = [
   { key: 'leaderboard', label: 'Leaderboard', icon: <TrophyOutlined /> },
   { key: 'staking', label: 'Staking', icon: <NotificationOutlined /> },
@@ -84,41 +73,48 @@ const menuItems = [
 ];
 
 const navItems = [
-  { key: 'bond', label: <ExternalLink label="Bond" href="https://bond.olas.network/" /> },
+  { key: 'bond', label: 'Bond', url: 'https://bond.olas.network/' },
   {
     key: 'build',
-    label: <ExternalLink label="Build" href="https://build.olas.network/" />,
+    label: 'Build',
+    url: 'https://build.olas.network/',
   },
   {
     key: 'contribute',
-    label: <span>Contribute</span>,
+    label: 'Contribute',
+    url: 'https://contribute.olas.network/',
     disabled: true,
   },
   {
     key: 'govern',
-    label: <ExternalLink label="Govern" href="https://govern.olas.network/" />,
+    label: 'Govern',
+    url: 'https://govern.olas.network/',
   },
   {
     key: 'launch',
-    label: <ExternalLink label="Launch" href="https://launch.olas.network/" />,
+    label: 'Launch',
+    url: 'https://launch.olas.network/',
   },
   {
     key: 'operate',
-    label: <ExternalLink label="Operate" href="https://operate.olas.network/" />,
+    label: 'Operate',
+    url: 'https://operate.olas.network/',
   },
   {
     type: 'divider',
   },
   {
     key: 'registry',
-    label: <ExternalLink label="Registry" href="https://registry.olas.network/" />,
+    label: 'Registry',
+    url: 'https://registry.olas.network/',
   },
   {
     type: 'divider',
   },
   {
     key: 'olas',
-    label: <ExternalLink label="Olas website" href="https://olas.network/" />,
+    label: 'Olas website',
+    url: 'https://olas.network/',
   },
 ];
 
@@ -148,7 +144,20 @@ const NavigationBar = ({ children }) => {
     return (
       <Dropdown
         menu={{
-          items: navItems,
+          items: navItems.map((item) => {
+            if (item.type === 'divider') {
+              return item;
+            }
+
+            return {
+              ...item,
+              label: (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.label}
+                </a>
+              ),
+            };
+          }),
           selectedKeys: ['contribute'],
         }}
         trigger={['click']}
@@ -293,10 +302,10 @@ const NavigationBar = ({ children }) => {
           />
         )}
         <CustomHeaderContent>
-          <HeaderLeftContent>
+          <Flex>
             {logo}
             <NavDropdown />
-          </HeaderLeftContent>
+          </Flex>
           <RightMenu>
             {!screens.md && (
               <Button className="mr-8" onClick={() => setIsMenuVisible(!isMenuVisible)}>
