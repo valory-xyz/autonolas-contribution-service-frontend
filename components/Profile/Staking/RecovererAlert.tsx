@@ -41,7 +41,7 @@ export const RecovererAlert = ({
               one way to do so in the PDF.
             </li>
           </ol>
-          {unstakeTimestamp && (
+          {unstakeTimestamp && unstakeTimestamp > 0 && (
             <Paragraph>
               <span className="font-weight-600">Note:</span> if you have recently staked, you may
               not be able to begin the withdrawal process yet, as you need to remain staked for a
@@ -60,7 +60,7 @@ export const RecovererAlert = ({
             Track DAO proposal status&nbsp;↗
           </a>
           <a
-            href="/documents/How Contributors Can Recover Their Bond and Premiums.pdf"
+            href="/documents/How Contributors Can Recover Their Bond and Premiums.pdf?v=2"
             target="_blank"
             rel="noopener noreferrer"
           >
