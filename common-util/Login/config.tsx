@@ -10,7 +10,7 @@ export const SUPPORTED_CHAINS = (process.env.NEXT_PUBLIC_PFP_URL || '').includes
   ? [goerli, mainnet, base]
   : [mainnet, base];
 
-export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
+export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID as string;
 
 const metadata = {
   name: SITE_TITLE,
@@ -23,6 +23,7 @@ const metadata = {
  * @type {import('@web3modal/wagmi').WagmiOptions}
  */
 export const wagmiConfig = defaultWagmiConfig({
+  // @ts-ignore TODO: remove this line and fix type
   chains: SUPPORTED_CHAINS,
   projectId,
   metadata,
