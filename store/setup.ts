@@ -2,7 +2,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { lowerCase, orderBy } from 'lodash';
 
-const initialState = {
+type RankedValue = {
+  points: number;
+  rank: number;
+};
+
+type SetupState = {
+  account: string | null;
+  balance: number | null;
+  chainId: string | null;
+  errorMessage: string | null;
+  isVerified: boolean;
+  isLeaderboardLoading: boolean;
+  leaderboard: RankedValue[];
+  nftDetails: any | null;
+  isMemoryDetailsLoading: boolean;
+  memoryDetails: any[];
+  predictionRequests: any[];
+  approvedRequestsCount: number | null;
+  connection: any;
+};
+
+const initialState: SetupState = {
   account: null,
   balance: null,
   chainId: null,
@@ -27,6 +48,7 @@ const initialState = {
 
   // orbis
   connection: {},
+  approvedRequestsCount: null,
 };
 
 export const setupSlice = createSlice({
@@ -61,7 +83,7 @@ export const setupSlice = createSlice({
         ['desc', 'asc'],
       );
 
-      const rankedValues = [];
+      const rankedValues: RankedValue[] = [];
       values.forEach((e, index) => {
         // setting rank for the first index
         if (index === 0) {

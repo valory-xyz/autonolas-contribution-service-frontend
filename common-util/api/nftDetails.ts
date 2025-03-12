@@ -2,8 +2,6 @@
 import axios from 'axios';
 import { findIndex, memoize, toLower } from 'lodash';
 
-import { notifyError } from '@autonolas/frontend-library';
-
 import { getMintContract } from 'common-util/Contracts';
 
 const getTotalSupply = memoize(async () => {

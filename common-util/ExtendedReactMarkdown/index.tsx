@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 
 const { Text } = Typography;
 
-function ExtendedReactMarkdown({ content, rows }) {
+function ExtendedReactMarkdown({ content, rows }: { content: string; rows: number }) {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {

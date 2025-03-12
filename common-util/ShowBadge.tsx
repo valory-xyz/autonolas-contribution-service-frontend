@@ -12,8 +12,14 @@ import { getAutonolasTokenUri } from '../components/Leaderboard/MintNft/utils';
 const IMAGE_SIZE = 160;
 const { Text } = Typography;
 
-export const ShowBadge = ({ image, tokenId }) => {
-  const chainId = useSelector((state) => state?.setup?.chainId);
+type State = {
+  setup: {
+    chainId: number;
+  };
+};
+
+export const ShowBadge = ({ image, tokenId }: { image: string; tokenId: string }) => {
+  const chainId = useSelector((state: State) => state?.setup?.chainId);
   const openSeaUrl = isGoerli(chainId)
     ? 'https://testnets.opensea.io/assets/goerli/0x7c3b976434fae9986050b26089649d9f63314bd8'
     : 'https://opensea.io/assets/ethereum/0x02c26437b292d86c5f4f21bbcce0771948274f84';

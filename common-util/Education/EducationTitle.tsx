@@ -8,7 +8,12 @@ import { getEducationItemByComponent } from 'util/education';
 
 const { Title } = Typography;
 
-const PopoverContent = ({ text, docsLink }) => (
+type EducationItem = {
+  text: string;
+  docsLink?: string;
+};
+
+const PopoverContent = ({ text, docsLink }: EducationItem) => (
   <>
     {text}
     {docsLink && (
@@ -32,9 +37,17 @@ PopoverContent.defaultProps = {
 /**
  * Education title component
  */
-export const EducationTitle = ({ title, level, educationItem }) => {
-  const [fullEducationItem, setFullEducationItem] = useState({});
-  const { text, docsLink } = fullEducationItem;
+export const EducationTitle = ({
+  title,
+  level,
+  educationItem,
+}: {
+  title: string;
+  level: 1 | 2 | 3 | 4 | 5 | undefined;
+  educationItem: string;
+}) => {
+  const [fullEducationItem, setFullEducationItem] = useState<EducationItem | null>(null);
+  const { text, docsLink } = fullEducationItem || { text: '', docsLink: '' };
 
   useEffect(() => {
     const intFullEducationItem = getEducationItemByComponent(educationItem);

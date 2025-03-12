@@ -4,7 +4,15 @@ import React from 'react';
 
 import { truncateAddress } from './functions';
 
-function TruncatedEthereumLink({ text, isTransaction, className }) {
+function TruncatedEthereumLink({
+  text,
+  isTransaction,
+  className,
+}: {
+  text: string;
+  isTransaction: boolean;
+  className: string;
+}) {
   const etherscanLink = `https://etherscan.io/${isTransaction ? 'tx' : 'address'}/${text}`;
 
   return (

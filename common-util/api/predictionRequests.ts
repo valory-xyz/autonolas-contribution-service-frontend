@@ -36,7 +36,7 @@ export const getPredictionRequests = async () => {
   };
 };
 
-export const postPredictionRequest = async (payload) => {
+export const postPredictionRequest = async (payload: unknown) => {
   const headers = {
     Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
     'Content-Type': 'application/json',

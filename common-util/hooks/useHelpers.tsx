@@ -5,10 +5,17 @@ import { setChainId } from 'store/setup';
 
 import { getChainId } from '../functions';
 
+type RootState = {
+  setup: {
+    account: string | null;
+    chainId: number;
+  };
+};
+
 export const useHelpers = () => {
   const dispatch = useDispatch();
-  const account = useSelector((state) => state?.setup?.account);
-  const chainId = useSelector((state) => state?.setup?.chainId);
+  const account = useSelector((state: RootState) => state?.setup?.account);
+  const chainId = useSelector((state: RootState) => state?.setup?.chainId);
   const isStaging = process.env.NEXT_PUBLIC_PFP_URL?.includes('staging');
 
   /**

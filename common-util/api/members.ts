@@ -10,13 +10,16 @@ export const CERAMIC_OBJECT = new CeramicClient(process.env.NEXT_PUBLIC_CERAMIC_
 export const getMemoryDetails = async () => {
   const response = await TileDocument.load(
     CERAMIC_OBJECT,
-    process.env.NEXT_PUBLIC_COORDINATE_STREAM_ID,
+    process.env.NEXT_PUBLIC_COORDINATE_STREAM_ID as string,
   );
   return { response: response.content, ceramic: CERAMIC_OBJECT };
 };
 
 export const updateMemoryDetails = async (memoryDetails) => {
-  const provider = new Ed25519Provider(fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED, 'base16'));
+
+  const provider = new Ed25519Provider(
+    fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED as string, 'base16'),
+  );
   const did = new DID({ provider, resolver: getResolver() });
   // Authenticate the DID with the provider
   await did.authenticate();
@@ -25,7 +28,7 @@ export const updateMemoryDetails = async (memoryDetails) => {
 
   const response = await TileDocument.load(
     CERAMIC_OBJECT,
-    process.env.NEXT_PUBLIC_COORDINATE_STREAM_ID,
+    process.env.NEXT_PUBLIC_COORDINATE_STREAM_ID as string,
   );
   await response.update(memoryDetails);
 

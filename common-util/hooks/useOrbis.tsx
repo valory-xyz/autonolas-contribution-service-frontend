@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
+import { RpcUrl, getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, {
@@ -27,15 +27,30 @@ const messages = {
   usernameRequiredError: 'Username is required to update the profile.',
 };
 
+type State = {
+  setup: {
+    account: string;
+    connection: {
+      details: {
+        profile: string;
+        metadata: {
+          address: string;
+        };
+      };
+      status: number;
+    };
+  };
+};
+
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const account = useSelector((state) => state?.setup?.account);
-  const connection = useSelector((state) => state.setup.connection);
+  const account = useSelector((state: State) => state?.setup?.account);
+  const connection = useSelector((state: State) => state.setup.connection);
   const { chain } = useAccount();
   const dispatch = useDispatch();
 
   // Helper function to manage loading state
-  const setLoadingState = (state) => {
+  const setLoadingState = (state: boolean) => {
     setIsLoading(state);
   };
 
@@ -70,6 +85,10 @@ const useOrbis = () => {
       return null;
     }
 
+    if (!chain) {
+      throw new Error('Chain required.');
+    }
+
     // Error out if not on Ethereum Mainnet
     if (chain.id !== ORBIS_SUPPORTED_CHAIN) {
       notifyError(messages.connectMainnetError);
@@ -77,7 +96,7 @@ const useOrbis = () => {
       return null;
     }
 
-    const provider = getProvider([mainnet], RPC_URLS);
+    const provider = getProvider([mainnet], RPC_URLS as RpcUrl);
 
     const newConnection = await orbis.connect_v2({
       provider,
@@ -111,7 +130,7 @@ const useOrbis = () => {
     return checkOrbisStatus(res?.status) ? res : null;
   }, [dispatch]);
 
-  const getProfile = useCallback(async (address) => {
+  const getProfile = useCallback(async (address: string) => {
     setLoadingState(true);
 
     if (!address) {
@@ -138,7 +157,7 @@ const useOrbis = () => {
   const address = connection?.details?.metadata?.address || null;
 
   const updateUsername = useCallback(
-    async (username) => {
+    async (username: string) => {
       setLoadingState(true);
 
       if (!username) {
