@@ -26,11 +26,13 @@ const LoginContainer = styled.div`
   gap: 8px;
 `;
 
+// @ts-ignore TODO: remove this line and fix type
 export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
 
   const { address, connector, chainId } = useAccount({
+    // @ts-ignore TODO: remove this line and fix type
     onConnect: ({ address: currentAddress }) => {
       if (isAddressProhibited(currentAddress)) {
         disconnect();
@@ -80,6 +82,7 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
         // This is the initial `provider` that is returned when
         // using web3Modal to connect. Can be MetaMask or WalletConnect.
         const modalProvider =
+          // @ts-ignore TODO: remove this line and fix type
           connector?.options?.getProvider?.() || (await connector?.getProvider?.());
 
         if (modalProvider) {
@@ -91,7 +94,9 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
           // *******************************************************
           // ************ setting to the window object! ************
           // *******************************************************
+          // @ts-ignore TODO: remove this line and fix type
           window.MODAL_PROVIDER = modalProvider;
+          // @ts-ignore TODO: remove this line and fix type
           window.WEB3_PROVIDER = wProvider;
 
           if (modalProvider?.on) {
@@ -152,6 +157,7 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
           </Link>
         </>
       )}
+      {/* @ts-ignore TODO: remove this line and fix type */}
       <w3m-button balance="hide" />
     </LoginContainer>
   );
