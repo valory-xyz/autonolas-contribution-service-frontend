@@ -17,6 +17,7 @@ function ExtendedReactMarkdown({ content, rows }: { content: string; rows: numbe
 
   return (
     <div>
+      {/* @ts-ignore TODO: remove this line and fix type */}
       <Text type="primary">
         <ReactMarkdown>{visibleContent}</ReactMarkdown>
       </Text>

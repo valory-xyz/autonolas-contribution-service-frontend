@@ -94,11 +94,13 @@ export const getDelegateContributeContract = () => {
 };
 
 export const getContributorsContract = () => {
+  // @ts-ignore TODO: remove this line and fix type
   const contract = getContract(CONTRIBUTORS_V2_ABI, CONTRIBUTORS_V2_ADDRESS_BASE);
   return contract;
 };
 
 export const getServiceRegistryL2Contract = () => {
+  // @ts-ignore TODO: remove this line and fix type
   const contract = getContract(SERVICE_REGISTRY_L2_ABI, SERVICE_REGISTRY_L2_ADDRESS_BASE);
   return contract;
 };

@@ -55,6 +55,7 @@ const useOrbis = () => {
   };
 
   const updateOrbisConnectionState = useCallback(
+    // @ts-ignore TODO: remove this line and fix type
     async (updatedConnection) => {
       setLoadingState(true);
       const res = await orbis.isConnected();

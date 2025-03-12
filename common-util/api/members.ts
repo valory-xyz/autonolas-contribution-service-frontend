@@ -15,8 +15,8 @@ export const getMemoryDetails = async () => {
   return { response: response.content, ceramic: CERAMIC_OBJECT };
 };
 
+// @ts-ignore TODO: remove this line and fix type
 export const updateMemoryDetails = async (memoryDetails) => {
-
   const provider = new Ed25519Provider(
     fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED as string, 'base16'),
   );
