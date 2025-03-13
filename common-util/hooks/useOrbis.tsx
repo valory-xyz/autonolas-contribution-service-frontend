@@ -11,6 +11,7 @@ import orbis, {
   checkOrbisStatus,
 } from 'common-util/orbis';
 import { setOrbisConnection } from 'store/setup';
+import { SetupState, StateDetails } from 'types/hooks';
 
 // Messages object for success and error notifications
 const messages = {
@@ -27,25 +28,10 @@ const messages = {
   usernameRequiredError: 'Username is required to update the profile.',
 };
 
-type State = {
-  setup: {
-    account: string;
-    connection: {
-      details: {
-        profile: string;
-        metadata: {
-          address: string;
-        };
-      };
-      status: number;
-    };
-  };
-};
-
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const account = useSelector((state: State) => state?.setup?.account);
-  const connection = useSelector((state: State) => state.setup.connection);
+  const account = useSelector((state: SetupState) => state?.setup?.account);
+  const connection = useSelector((state: SetupState) => state.setup.connection);
   const { chain } = useAccount();
   const dispatch = useDispatch();
 
@@ -55,8 +41,7 @@ const useOrbis = () => {
   };
 
   const updateOrbisConnectionState = useCallback(
-    // @ts-ignore TODO: remove this line and fix type
-    async (updatedConnection) => {
+    async (updatedConnection: StateDetails) => {
       setLoadingState(true);
       const res = await orbis.isConnected();
 
@@ -174,7 +159,7 @@ const useOrbis = () => {
           ...connection,
           details: { ...connection.details, profile: { username } },
         };
-        await updateOrbisConnectionState(updatedConnection);
+        await updateOrbisConnectionState(updatedConnection as StateDetails);
         notifySuccess(messages.updateUsernameSuccess);
       } else {
         notifyError(messages.updateUsernameError);

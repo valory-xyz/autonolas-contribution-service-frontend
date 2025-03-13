@@ -6,25 +6,17 @@ import { getResolver } from 'key-did-resolver';
 import { cloneDeep, get } from 'lodash';
 import { fromString } from 'uint8arrays';
 
+import { XProfile } from 'types/x';
+
 const API_URL = 'https://ceramic-valory.hirenodes.io';
 const CERAMIC_OBJECT = new CeramicClient(API_URL);
-
-interface User {
-  wallet_address: string;
-  points: number;
-  discord_id: string;
-  twitter_id: string;
-  service_multisig: string;
-  service_id: string;
-  [key: string]: any;
-}
 
 export const getLeaderboardList = async () => {
   const response = await TileDocument.load(
     CERAMIC_OBJECT,
     process.env.NEXT_PUBLIC_STREAM_ID as string,
   );
-  const users: Record<string, User> = get(response, 'content.users', {});
+  const users: Record<string, XProfile> = get(response, 'content.users', {});
 
   const usersList = Object.values(users)
     .filter((e) => !!e.wallet_address)
@@ -52,15 +44,13 @@ export const updateUserStakingData = async (
   // The Ceramic client can create and update streams using the authenticated DID
   CERAMIC_OBJECT.did = did;
 
-  const response: {
-    update(newContent: Record<string, User>): void;
-    content: Record<string, User>;
-  } = (await TileDocument.load(
-    CERAMIC_OBJECT,
-    process.env.NEXT_PUBLIC_STREAM_ID as string,
-  )) as TileDocument;
+  const response = await TileDocument.load<{
+    users: Record<string, XProfile>;
+  }>(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID as string);
 
-  const newContent: Record<string, User> = cloneDeep(response.content);
+  const newContent = cloneDeep<{
+    users: Record<string, XProfile>;
+  }>(response.content);
 
   // Find a user by the provided twitterId
   for (let key in newContent.users) {
@@ -86,12 +76,13 @@ export const clearUserOldStakingData = async (twitterId: string | null) => {
   // The Ceramic client can create and update streams using the authenticated DID
   CERAMIC_OBJECT.did = did;
 
-  const response = await TileDocument.load(
-    CERAMIC_OBJECT,
-    process.env.NEXT_PUBLIC_STREAM_ID as string,
-  );
+  const response = await TileDocument.load<{
+    users: Record<string, XProfile>;
+  }>(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID as string);
 
-  const newContent: Record<string, User> = cloneDeep(response.content) as Record<string, User>;
+  const newContent = cloneDeep<{
+    users: Record<string, XProfile>;
+  }>(response.content);
 
   // Find a user by the provided twitterId
   for (let key in newContent.users) {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { Connector, useAccount, useBalance, useDisconnect } from 'wagmi';
 import Web3 from 'web3';
 
 import { CannotConnectAddressOfacError, notifyError } from '@autonolas/frontend-library';
@@ -26,14 +26,26 @@ const LoginContainer = styled.div`
   gap: 8px;
 `;
 
-// @ts-ignore TODO: remove this line and fix type
-export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }) => {
+function hasOptions(connector: any): connector is { options: { getProvider: () => any } } {
+  return connector && connector.options && typeof connector.options.getProvider === 'function';
+}
+
+export const LoginV2 = ({
+  onConnect: onConnectCb,
+  onDisconnect: onDisconnectCb,
+}: {
+  onConnect: Function;
+  onDisconnect: Function;
+}) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
 
-  const { address, connector, chainId } = useAccount({
-    // @ts-ignore TODO: remove this line and fix type
-    onConnect: ({ address: currentAddress }) => {
+  const { address, connector, chainId, isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      const currentAddress = address;
+
       if (isAddressProhibited(currentAddress)) {
         disconnect();
       } else if (onConnectCb) {
@@ -43,13 +55,14 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
           chainId,
         });
       }
-    },
-    onDisconnect() {
-      if (onDisconnectCb) {
-        onDisconnectCb();
-      }
-    },
-  });
+    }
+  }, [isConnected, address, chainId, disconnect, onConnectCb]);
+
+  useEffect(() => {
+    if (!isConnected && onDisconnectCb) {
+      onDisconnectCb();
+    }
+  }, [isConnected, onDisconnectCb]);
 
   // Update the balance
   const { data: balance } = useBalance({ address });
@@ -81,9 +94,9 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
       try {
         // This is the initial `provider` that is returned when
         // using web3Modal to connect. Can be MetaMask or WalletConnect.
-        const modalProvider =
-          // @ts-ignore TODO: remove this line and fix type
-          connector?.options?.getProvider?.() || (await connector?.getProvider?.());
+        const modalProvider = hasOptions(connector)
+          ? connector.options.getProvider() // If it has options, use the `getProvider` method
+          : await connector?.getProvider?.();
 
         if (modalProvider) {
           // We plug the initial `provider` and get back
@@ -94,9 +107,7 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
           // *******************************************************
           // ************ setting to the window object! ************
           // *******************************************************
-          // @ts-ignore TODO: remove this line and fix type
           window.MODAL_PROVIDER = modalProvider;
-          // @ts-ignore TODO: remove this line and fix type
           window.WEB3_PROVIDER = wProvider;
 
           if (modalProvider?.on) {
@@ -157,7 +168,6 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
           </Link>
         </>
       )}
-      {/* @ts-ignore TODO: remove this line and fix type */}
       <w3m-button balance="hide" />
     </LoginContainer>
   );

@@ -5,6 +5,8 @@ import { Ed25519Provider } from 'key-did-provider-ed25519';
 import { getResolver } from 'key-did-resolver';
 import { fromString } from 'uint8arrays';
 
+import { XProfile } from 'types/x';
+
 export const CERAMIC_OBJECT = new CeramicClient(process.env.NEXT_PUBLIC_CERAMIC_GATEWAY_URL);
 
 export const getMemoryDetails = async () => {
@@ -15,8 +17,7 @@ export const getMemoryDetails = async () => {
   return { response: response.content, ceramic: CERAMIC_OBJECT };
 };
 
-// @ts-ignore TODO: remove this line and fix type
-export const updateMemoryDetails = async (memoryDetails) => {
+export const updateMemoryDetails = async (memoryDetails: Record<string, XProfile>) => {
   const provider = new Ed25519Provider(
     fromString(process.env.NEXT_PUBLIC_CERAMIC_SEED as string, 'base16'),
   );

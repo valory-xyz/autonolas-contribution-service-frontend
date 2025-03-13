@@ -1,5 +1,7 @@
+import { Abi } from 'viem';
 import { base, goerli, mainnet } from 'viem/chains';
 import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
 
 import {
   CONTRIBUTORS_V2_ABI, // Contributors
@@ -58,9 +60,9 @@ const getWeb3Details = (): {
  * @param {Array} abi - abi of the contract
  * @param {String} contractAddress - address of the contract
  */
-const getContract = (abi: Array<any>, contractAddress: string) => {
+const getContract = <T extends Abi>(abi: T, contractAddress: string) => {
   const { web3 } = getWeb3Details();
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  const contract = new web3.eth.Contract(abi as unknown as AbiItem | AbiItem[], contractAddress);
   return contract;
 };
 
@@ -76,7 +78,7 @@ export const getMintContract = () => {
   }
 
   const contract = getContract(
-    chainId === 5 ? MINT_NFT_CONTRACT_ABI_GOERLI : MINT_NFT_CONTRACT_ABI_MAINNET,
+    chainId === 5 ? (MINT_NFT_CONTRACT_ABI_GOERLI as Abi) : (MINT_NFT_CONTRACT_ABI_MAINNET as Abi),
     ADDRESSES[chainId].mintNft,
   );
 
@@ -94,13 +96,11 @@ export const getDelegateContributeContract = () => {
 };
 
 export const getContributorsContract = () => {
-  // @ts-ignore TODO: remove this line and fix type
   const contract = getContract(CONTRIBUTORS_V2_ABI, CONTRIBUTORS_V2_ADDRESS_BASE);
   return contract;
 };
 
 export const getServiceRegistryL2Contract = () => {
-  // @ts-ignore TODO: remove this line and fix type
   const contract = getContract(SERVICE_REGISTRY_L2_ABI, SERVICE_REGISTRY_L2_ADDRESS_BASE);
   return contract;
 };

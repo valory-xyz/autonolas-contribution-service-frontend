@@ -7,12 +7,15 @@ const POLLING_TYPE = {
 
 const fetchUrl = (URL: string) => fetch(URL).then((response) => response.json());
 
-// @ts-ignore TODO: remove this line and fix type
-export const useHealthCheckup = (apiEndpoint: string, pollingInterval: number, pollingCallback) => {
+export const useHealthCheckup = (
+  apiEndpoint: string,
+  pollingInterval: number,
+  pollingCallback: Function,
+) => {
   const [isServiceHealthy, setIsServiceHealthy] = useState(false);
 
   // polling type will be decided based on the health of the service
-  const [pollingType, setPollingType] = useState(null);
+  const [pollingType, setPollingType] = useState<string | null>(null);
 
   // function to fetch data from the API
   const fetchData = useCallback(async () => {
@@ -21,7 +24,6 @@ export const useHealthCheckup = (apiEndpoint: string, pollingInterval: number, p
       const isHealthy = !!response.is_transitioning_fast;
 
       setIsServiceHealthy(isHealthy);
-      // @ts-ignore TODO: remove this line and fix type
       setPollingType(isHealthy ? POLLING_TYPE.STANDARD : POLLING_TYPE.DISRUPTED);
     } catch (error) {
       console.error(error);

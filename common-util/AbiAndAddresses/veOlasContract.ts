@@ -644,4 +644,4 @@ export const VEOLAS_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-];
+] as const;
