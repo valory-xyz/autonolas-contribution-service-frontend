@@ -8,19 +8,10 @@ import { forceIndex } from '@orbisclub/orbis-sdk/utils';
  */
 const orbis = new Orbis();
 
-type orbis = {
-  createPost(postContent: string): Promise<{
-    status: number;
-    doc: string;
-    error?: string;
-    result: string;
-  }>;
-};
-
 // This is a wrapper around the normal createPost functionality.
 // It overcomes limitations around error messaging with the current
 // Orbis SDK.
-export const createPost = async (postContent: string, orbisArg: Orbis) => {
+export const createPost = async (postContent, orbisArg) => {
   const {
     status: postStatus,
     doc: postId,
@@ -55,7 +46,7 @@ export const createPost = async (postContent: string, orbisArg: Orbis) => {
 };
 
 export const ORBIS_SUPPORTED_CHAIN = 1;
-export const checkOrbisStatus = (status: number) => status === 200 || status === 201;
-export const checkOrbisNegativeStatus = (status: number) => status !== 200 && status !== 201;
+export const checkOrbisStatus = (status) => status === 200 || status === 201;
+export const checkOrbisNegativeStatus = (status) => status !== 200 && status !== 201;
 
 export default orbis;
