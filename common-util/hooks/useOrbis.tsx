@@ -140,7 +140,7 @@ const useOrbis = () => {
   }, []);
 
   const profile = connection?.details?.profile || null;
-  const address = connection?.details?.metadata?.address || null;
+  const address = connection?.details?.metadata?.address;
 
   const updateUsername = useCallback(
     async (username: string) => {
