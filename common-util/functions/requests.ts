@@ -5,9 +5,9 @@ const ESTIMATED_GAS_LIMIT = 2_000_000;
  * function to estimate gas limit
  */
 export const getEstimatedGasLimit = async (
-  fn: { estimateGas: (arg0: { from: any; value: any }) => any },
-  account: string,
-  value: number | undefined,
+  fn: { estimateGas: (arg0: { from: string; value: number | undefined }) => number },
+  account: `0x${string}`,
+  value?: number | undefined,
 ) => {
   if (!account) {
     throw new Error('Invalid account passed to estimate gas limit');
