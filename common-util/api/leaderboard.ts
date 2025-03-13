@@ -31,7 +31,7 @@ export const getLeaderboardList = async () => {
 };
 
 export const updateUserStakingData = async (
-  twitterId: string,
+  twitterId: string | null,
   multisig: string,
   serviceId: string,
 ) => {
