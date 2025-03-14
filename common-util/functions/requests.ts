@@ -9,7 +9,7 @@ const ESTIMATED_GAS_LIMIT = 2_000_000;
 export const getEstimatedGasLimit = async (
   fn: Contract['methods'],
   account: string | undefined,
-  value?: string,
+  value?: string | number,
 ) => {
   if (!account) {
     throw new Error('Invalid account passed to estimate gas limit');
