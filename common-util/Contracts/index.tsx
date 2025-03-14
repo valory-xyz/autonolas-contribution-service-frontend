@@ -78,7 +78,7 @@ export const getMintContract = () => {
   }
 
   const contract = getContract(
-    chainId === 5 ? (MINT_NFT_CONTRACT_ABI_GOERLI as Abi) : (MINT_NFT_CONTRACT_ABI_MAINNET as Abi),
+    chainId === 5 ? MINT_NFT_CONTRACT_ABI_GOERLI : MINT_NFT_CONTRACT_ABI_MAINNET,
     ADDRESSES[chainId].mintNft,
   );
 
@@ -105,7 +105,7 @@ export const getServiceRegistryL2Contract = () => {
   return contract;
 };
 
-export const RPC_URLS = {
+export const RPC_URLS: { [key: number]: string | undefined } = {
   [mainnet.id]: process.env.NEXT_PUBLIC_MAINNET_URL,
   [goerli.id]: process.env.NEXT_PUBLIC_GOERLI_URL,
   [base.id]: process.env.NEXT_PUBLIC_BASE_URL,

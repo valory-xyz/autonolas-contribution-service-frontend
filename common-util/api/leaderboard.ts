@@ -6,6 +6,7 @@ import { getResolver } from 'key-did-resolver';
 import { cloneDeep, get } from 'lodash';
 import { fromString } from 'uint8arrays';
 
+import { UsersDbContent } from 'types/streams';
 import { XProfile } from 'types/x';
 
 const API_URL = 'https://ceramic-valory.hirenodes.io';
@@ -16,7 +17,7 @@ export const getLeaderboardList = async () => {
     CERAMIC_OBJECT,
     process.env.NEXT_PUBLIC_STREAM_ID as string,
   );
-  const users: Record<string, XProfile> = get(response, 'content.users', {});
+  const users: UsersDbContent = get(response, 'content.users', {});
 
   const usersList = Object.values(users)
     .filter((e) => !!e.wallet_address)
@@ -45,11 +46,11 @@ export const updateUserStakingData = async (
   CERAMIC_OBJECT.did = did;
 
   const response = await TileDocument.load<{
-    users: Record<string, XProfile>;
+    users: UsersDbContent;
   }>(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID as string);
 
   const newContent = cloneDeep<{
-    users: Record<string, XProfile>;
+    users: UsersDbContent;
   }>(response.content);
 
   // Find a user by the provided twitterId
@@ -77,11 +78,11 @@ export const clearUserOldStakingData = async (twitterId: string | null) => {
   CERAMIC_OBJECT.did = did;
 
   const response = await TileDocument.load<{
-    users: Record<string, XProfile>;
+    users: UsersDbContent;
   }>(CERAMIC_OBJECT, process.env.NEXT_PUBLIC_STREAM_ID as string);
 
   const newContent = cloneDeep<{
-    users: Record<string, XProfile>;
+    users: UsersDbContent;
   }>(response.content);
 
   // Find a user by the provided twitterId

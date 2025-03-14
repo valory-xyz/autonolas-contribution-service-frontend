@@ -1,5 +1,6 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Popover, Row, Typography } from 'antd';
+import { TitleProps } from 'antd/es/typography/Title';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -43,7 +44,7 @@ export const EducationTitle = ({
   educationItem,
 }: {
   title: string;
-  level: 1 | 2 | 3 | 4 | 5 | undefined;
+  level: TitleProps['level'] | undefined;
   educationItem: string;
 }) => {
   const [fullEducationItem, setFullEducationItem] = useState<EducationItem | null>(null);

@@ -1,17 +1,16 @@
 import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { RpcUrl, getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
+import { getProvider, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import orbis, {
   ORBIS_SUPPORTED_CHAIN, //  checkOrbisNegativeStatus,
   checkOrbisStatus,
 } from 'common-util/orbis';
-import { setOrbisConnection } from 'store/setup';
-import { SetupState, StateDetails } from 'types/hooks';
+import { setOrbisConnection, useAppSelector } from 'store/setup';
 
 // Messages object for success and error notifications
 const messages = {
@@ -30,18 +29,18 @@ const messages = {
 
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const account = useSelector((state: SetupState) => state?.setup?.account);
-  const connection = useSelector((state: SetupState) => state.setup.connection);
+  const account = useAppSelector((state) => state?.setup?.account);
+  const connection = useAppSelector((state) => state.setup.connection);
   const { chain } = useAccount();
   const dispatch = useDispatch();
 
   // Helper function to manage loading state
-  const setLoadingState = (state: boolean) => {
+  const setLoadingState = (state) => {
     setIsLoading(state);
   };
 
   const updateOrbisConnectionState = useCallback(
-    async (updatedConnection: StateDetails) => {
+    async (updatedConnection) => {
       setLoadingState(true);
       const res = await orbis.isConnected();
 
@@ -82,7 +81,7 @@ const useOrbis = () => {
       return null;
     }
 
-    const provider = getProvider([mainnet], RPC_URLS as RpcUrl);
+    const provider = getProvider([mainnet], RPC_URLS);
 
     const newConnection = await orbis.connect_v2({
       provider,
@@ -116,7 +115,7 @@ const useOrbis = () => {
     return checkOrbisStatus(res?.status) ? res : null;
   }, [dispatch]);
 
-  const getProfile = useCallback(async (address: string) => {
+  const getProfile = useCallback(async (address) => {
     setLoadingState(true);
 
     if (!address) {
@@ -143,7 +142,7 @@ const useOrbis = () => {
   const address = connection?.details?.metadata?.address;
 
   const updateUsername = useCallback(
-    async (username: string) => {
+    async (username) => {
       setLoadingState(true);
 
       if (!username) {
@@ -159,7 +158,7 @@ const useOrbis = () => {
           ...connection,
           details: { ...connection.details, profile: { username } },
         };
-        await updateOrbisConnectionState(updatedConnection as StateDetails);
+        await updateOrbisConnectionState(updatedConnection);
         notifySuccess(messages.updateUsernameSuccess);
       } else {
         notifyError(messages.updateUsernameError);

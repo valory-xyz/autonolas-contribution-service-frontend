@@ -1,6 +1,8 @@
+import { Abi } from 'viem';
+
 export const MINT_NFT_CONTRACT_ADDRESS_GOERLI = '0x7C3B976434faE9986050B26089649D9f63314BD8';
 
-export const MINT_NFT_CONTRACT_ABI_GOERLI = [
+export const MINT_NFT_CONTRACT_ABI_GOERLI: Abi = [
   {
     inputs: [
       { internalType: 'string', name: '_name', type: 'string' },

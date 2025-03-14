@@ -17,8 +17,7 @@ function ExtendedReactMarkdown({ content, rows }: { content: string; rows: numbe
 
   return (
     <div>
-      {/* @ts-ignore NOTE: primary is not in antd Text BaseType */}
-      <Text type="primary">
+      <Text>
         <ReactMarkdown>{visibleContent}</ReactMarkdown>
       </Text>
       {showExpansionLink && (

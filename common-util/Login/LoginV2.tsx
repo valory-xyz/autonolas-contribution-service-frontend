@@ -26,16 +26,16 @@ const LoginContainer = styled.div`
   gap: 8px;
 `;
 
-function hasOptions(connector: any): connector is { options: { getProvider: () => any } } {
-  return connector && connector.options && typeof connector.options.getProvider === 'function';
-}
-
 export const LoginV2 = ({
   onConnect: onConnectCb,
   onDisconnect: onDisconnectCb,
 }: {
-  onConnect: Function;
-  onDisconnect: Function;
+  onConnect: (response: {
+    address: string | undefined;
+    balance: number | null;
+    chainId: number | undefined;
+  }) => void;
+  onDisconnect: () => void;
 }) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
@@ -94,9 +94,7 @@ export const LoginV2 = ({
       try {
         // This is the initial `provider` that is returned when
         // using web3Modal to connect. Can be MetaMask or WalletConnect.
-        const modalProvider = hasOptions(connector)
-          ? connector.options.getProvider() // If it has options, use the `getProvider` method
-          : await connector?.getProvider?.();
+        const modalProvider: any = await connector?.getProvider?.();
 
         if (modalProvider) {
           // We plug the initial `provider` and get back

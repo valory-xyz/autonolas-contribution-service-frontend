@@ -1,6 +1,8 @@
+import { Abi } from 'viem';
+
 export const MINT_NFT_CONTRACT_ADDRESS_MAINNET = '0x02C26437B292D86c5F4F21bbCcE0771948274f84';
 
-export const MINT_NFT_CONTRACT_ABI_MAINNET = [
+export const MINT_NFT_CONTRACT_ABI_MAINNET: Abi = [
   {
     inputs: [
       { internalType: 'string', name: '_name', type: 'string' },

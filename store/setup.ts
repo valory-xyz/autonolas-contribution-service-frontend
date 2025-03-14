@@ -1,17 +1,26 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { lowerCase, orderBy } from 'lodash';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
+
+import { store } from '.';
 
 type RankedValue = {
   points: number;
   rank: number;
 };
 
+export type StateDetails = {
+  details: { profile: { username: string }; metadata: { address: string } };
+  status: number;
+};
+
 type SetupState = {
   account: string | null;
   balance: number | null;
-  chainId: string | null;
+  chainId: number | null;
   errorMessage: string | null;
+  /** If the user is verified. */
   isVerified: boolean;
   isLeaderboardLoading: boolean;
   leaderboard: RankedValue[];
@@ -145,3 +154,7 @@ export const {
   setOrbisConnection,
 } = setupSlice.actions;
 export const setupReducer = setupSlice.reducer;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
