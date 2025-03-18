@@ -26,28 +26,38 @@ const LoginContainer = styled.div`
   gap: 8px;
 `;
 
-export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }) => {
+export const LoginV2 = ({
+  onConnect: onConnectCb,
+  onDisconnect: onDisconnectCb,
+}: {
+  onConnect: (response: { address?: string; balance?: number; chainId?: number }) => void;
+  onDisconnect: () => void;
+}) => {
   const dispatch = useDispatch();
   const { disconnect } = useDisconnect();
 
-  const { address, connector, chainId } = useAccount({
-    onConnect: ({ address: currentAddress }) => {
+  const { address, connector, chainId, isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      const currentAddress = address;
+
       if (isAddressProhibited(currentAddress)) {
         disconnect();
       } else if (onConnectCb) {
         onConnectCb({
           address: address || currentAddress,
-          balance: null,
           chainId,
         });
       }
-    },
-    onDisconnect() {
-      if (onDisconnectCb) {
-        onDisconnectCb();
-      }
-    },
-  });
+    }
+  }, [isConnected, address, chainId, disconnect, onConnectCb]);
+
+  useEffect(() => {
+    if (!isConnected && onDisconnectCb) {
+      onDisconnectCb();
+    }
+  }, [isConnected, onDisconnectCb]);
 
   // Update the balance
   const { data: balance } = useBalance({ address });
@@ -79,8 +89,7 @@ export const LoginV2 = ({ onConnect: onConnectCb, onDisconnect: onDisconnectCb }
       try {
         // This is the initial `provider` that is returned when
         // using web3Modal to connect. Can be MetaMask or WalletConnect.
-        const modalProvider =
-          connector?.options?.getProvider?.() || (await connector?.getProvider?.());
+        const modalProvider: any = await connector?.getProvider?.();
 
         if (modalProvider) {
           // We plug the initial `provider` and get back

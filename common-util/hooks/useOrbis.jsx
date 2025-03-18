@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
@@ -10,7 +10,7 @@ import orbis, {
   ORBIS_SUPPORTED_CHAIN, //  checkOrbisNegativeStatus,
   checkOrbisStatus,
 } from 'common-util/orbis';
-import { setOrbisConnection } from 'store/setup';
+import { setOrbisConnection, useAppSelector } from 'store/setup';
 
 // Messages object for success and error notifications
 const messages = {
@@ -29,8 +29,8 @@ const messages = {
 
 const useOrbis = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const account = useSelector((state) => state?.setup?.account);
-  const connection = useSelector((state) => state.setup.connection);
+  const account = useAppSelector((state) => state?.setup?.account);
+  const connection = useAppSelector((state) => state.setup.connection);
   const { chain } = useAccount();
   const dispatch = useDispatch();
 
@@ -68,6 +68,10 @@ const useOrbis = () => {
       console.error(messages.noAccountError);
       setLoadingState(false);
       return null;
+    }
+
+    if (!chain) {
+      throw new Error('Chain required.');
     }
 
     // Error out if not on Ethereum Mainnet
@@ -135,7 +139,7 @@ const useOrbis = () => {
   }, []);
 
   const profile = connection?.details?.profile || null;
-  const address = connection?.details?.metadata?.address || null;
+  const address = connection?.details?.metadata?.address;
 
   const updateUsername = useCallback(
     async (username) => {

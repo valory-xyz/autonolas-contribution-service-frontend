@@ -78,4 +78,4 @@ export const DELEGATE_CONTRIBUTE_ABI = [
     stateMutability: 'view',
     type: 'function',
   },
-];
+] as const;

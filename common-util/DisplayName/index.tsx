@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { truncateAddress } from 'common-util/functions';
 
-const DisplayName = ({ actorAddress, username }) => (
+const DisplayName = ({ actorAddress, username }: { actorAddress: string; username: string }) => (
   <Link href={`/profile/${actorAddress}`}>{username || truncateAddress(actorAddress)}</Link>
 );
 

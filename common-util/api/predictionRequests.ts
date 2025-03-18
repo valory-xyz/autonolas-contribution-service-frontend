@@ -7,6 +7,16 @@ import {
   PREDICT_PROPOSE_ENDPOINT,
 } from 'util/constants';
 
+type Payload = {
+  id: string;
+  language: string;
+  source: string;
+  question: string;
+  resolution_time: number;
+  topic: string;
+  answers: string[];
+};
+
 export const getPredictionRequests = async () => {
   const response = await axios.get(PREDICT_BASE_URL + PREDICT_GET_ALL_ENDPOINT, {
     headers: {
@@ -36,7 +46,7 @@ export const getPredictionRequests = async () => {
   };
 };
 
-export const postPredictionRequest = async (payload) => {
+export const postPredictionRequest = async (payload: Payload) => {
   const headers = {
     Authorization: process.env.NEXT_PUBLIC_PREDICT_API_KEY,
     'Content-Type': 'application/json',

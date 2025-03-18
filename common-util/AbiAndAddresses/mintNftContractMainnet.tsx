@@ -1,6 +1,8 @@
-export const MINT_NFT_CONTRACT_ADDRESS_GOERLI = '0x7C3B976434faE9986050B26089649D9f63314BD8';
+import { Abi } from 'viem';
 
-export const MINT_NFT_CONTRACT_ABI_GOERLI = [
+export const MINT_NFT_CONTRACT_ADDRESS_MAINNET = '0x02C26437B292D86c5F4F21bbCcE0771948274f84';
+
+export const MINT_NFT_CONTRACT_ABI_MAINNET: Abi = [
   {
     inputs: [
       { internalType: 'string', name: '_name', type: 'string' },
@@ -27,6 +29,11 @@ export const MINT_NFT_CONTRACT_ABI_GOERLI = [
     type: 'error',
   },
   { inputs: [], name: 'ReentrancyGuard', type: 'error' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'provided', type: 'uint256' }],
+    name: 'WrongTokenId',
+    type: 'error',
+  },
   { inputs: [], name: 'ZeroAddress', type: 'error' },
   { inputs: [], name: 'ZeroValue', type: 'error' },
   {
@@ -152,13 +159,6 @@ export const MINT_NFT_CONTRACT_ABI_GOERLI = [
     name: 'baseURI',
     outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
-    name: 'burn',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {

@@ -1,8 +1,38 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { lowerCase, orderBy } from 'lodash';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
-const initialState = {
+import { store } from '.';
+
+type RankedValue = {
+  points: number;
+  rank: number;
+};
+
+export type StateDetails = {
+  details: { profile: { username: string }; metadata: { address: string } };
+  status: number;
+};
+
+type SetupState = {
+  account: string | null;
+  balance: number | null;
+  chainId: number | null;
+  errorMessage: string | null;
+  /** If the user is verified. */
+  isVerified: boolean;
+  isLeaderboardLoading: boolean;
+  leaderboard: RankedValue[];
+  nftDetails: any | null;
+  isMemoryDetailsLoading: boolean;
+  memoryDetails: any[];
+  predictionRequests: any[];
+  approvedRequestsCount: number | null;
+  connection: any;
+};
+
+const initialState: SetupState = {
   account: null,
   balance: null,
   chainId: null,
@@ -27,6 +57,7 @@ const initialState = {
 
   // orbis
   connection: {},
+  approvedRequestsCount: null,
 };
 
 export const setupSlice = createSlice({
@@ -61,7 +92,7 @@ export const setupSlice = createSlice({
         ['desc', 'asc'],
       );
 
-      const rankedValues = [];
+      const rankedValues: RankedValue[] = [];
       values.forEach((e, index) => {
         // setting rank for the first index
         if (index === 0) {
@@ -123,3 +154,7 @@ export const {
   setOrbisConnection,
 } = setupSlice.actions;
 export const setupReducer = setupSlice.reducer;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
