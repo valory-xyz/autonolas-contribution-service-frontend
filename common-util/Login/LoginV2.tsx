@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Connector, useAccount, useBalance, useDisconnect } from 'wagmi';
+import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import Web3 from 'web3';
 
 import { CannotConnectAddressOfacError, notifyError } from '@autonolas/frontend-library';
@@ -30,11 +30,7 @@ export const LoginV2 = ({
   onConnect: onConnectCb,
   onDisconnect: onDisconnectCb,
 }: {
-  onConnect: (response: {
-    address: string | undefined;
-    balance: number | null;
-    chainId: number | undefined;
-  }) => void;
+  onConnect: (response: { address?: string; balance?: number; chainId?: number }) => void;
   onDisconnect: () => void;
 }) => {
   const dispatch = useDispatch();
@@ -51,7 +47,6 @@ export const LoginV2 = ({
       } else if (onConnectCb) {
         onConnectCb({
           address: address || currentAddress,
-          balance: null,
           chainId,
         });
       }
