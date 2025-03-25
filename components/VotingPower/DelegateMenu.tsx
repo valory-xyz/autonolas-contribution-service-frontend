@@ -1,6 +1,8 @@
+import { RefetchOptions } from '@tanstack/react-query';
 import { Button, Divider, Form, Input, Typography, notification } from 'antd';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Address } from 'viem';
 
 import { isValidAddress } from '@autonolas/frontend-library';
 
@@ -17,7 +19,7 @@ import {
 
 const { Text, Paragraph } = Typography;
 
-const DelegateMenu = (props) => {
+const DelegateMenu = (props: { refetchVotingPower: () => void; votingPower: string }) => {
   const [form] = Form.useForm();
   const { account } = useHelpers();
 
@@ -26,18 +28,22 @@ const DelegateMenu = (props) => {
 
   const [delegateFormVisible, setDelegateFormVisible] = useState(false);
   const [whoDelegatedVisible, setWhoDelegatedVisible] = useState(false);
-  const { isDelegating, handleDelegate } = useDelegate(account, delegatee, balance);
+  const { isDelegating, handleDelegate } = useDelegate(
+    account,
+    delegatee as string,
+    balance as unknown as string,
+  );
   const { canUndelegate, isUndelegating, handleUndelegate } = useUndelegate(
     account,
-    delegatee,
-    balance,
+    delegatee as string,
+    balance as unknown as string,
   );
 
-  const onSubmitDelegate = (values) => {
+  const onSubmitDelegate = (values: { address: Address }) => {
     handleDelegate({
       values,
-      onSuccess: (address) => {
-        setDelegatee(address);
+      onSuccess: () => {
+        setDelegatee();
         form.resetFields();
         notification.success({
           message: 'Delegated voting power',
@@ -45,7 +51,7 @@ const DelegateMenu = (props) => {
         setDelegateFormVisible(false);
         props.refetchVotingPower();
       },
-      onError: (error) => {
+      onError: (error: Error) => {
         console.error(error);
         notification.error({
           message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't delegate",
@@ -60,7 +66,7 @@ const DelegateMenu = (props) => {
         setDelegatee(null);
         form.resetFields();
       },
-      onError: (error) => {
+      onError: (error: Error) => {
         console.error(error);
         notification.error({
           message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't undelegate",
@@ -105,8 +111,8 @@ const DelegateMenu = (props) => {
         </>
       )}
       <Divider className="my-8" />
-      <Text strong>You’ve delegated to:</Text>
-      <Paragraph className="my-8" title={delegatee}>
+      <Text strong>You&apos;ve delegated to:</Text>
+      <Paragraph className="my-8" title={delegatee || ''}>
         {delegatee ? (
           <a
             href={`https://etherscan.io/address/${delegatee}`}

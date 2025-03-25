@@ -69,5 +69,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "common-util/functions/index.js"  ]
+, "common-util/functions/index.js", "components/VotingPower/DelegateMenu.jsx", "components/VotingPower/hooks.js", "components/VotingPower/index.jsx"  ]
 }

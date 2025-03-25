@@ -25,11 +25,16 @@ const VotingPower = () => {
       <Dropdown
         placement="bottomRight"
         arrow
-        trigger="click"
-        overlay={<DelegateMenu votingPower={votingPower} refetchVotingPower={refetchVotingPower} />}
+        trigger={['click']}
+        overlay={
+          <DelegateMenu
+            votingPower={votingPower.toString()}
+            refetchVotingPower={refetchVotingPower}
+          />
+        }
       >
         <Button type="text">
-          Voting power: {formatWeiBalance(votingPower)}
+          Voting power: {formatWeiBalance(votingPower.toString())}
           <EditOutlined />
         </Button>
       </Dropdown>
