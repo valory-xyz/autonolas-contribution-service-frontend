@@ -1,4 +1,3 @@
-import { RefetchOptions } from '@tanstack/react-query';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { Address } from 'viem';
@@ -45,9 +44,9 @@ export const useFetchVotingPower = (account: Address) => {
  *
  */
 export const useVotingPowerBreakdown = (account: string) => {
-  const [delegatorList, setDelegatorList] = useState([]);
-  const [balance, setBalance] = useState();
-  const [delegatorsBalance, setDelegatorsBalance] = useState('0');
+  const [delegatorList, setDelegatorList] = useState<Address[]>([]);
+  const [balance, setBalance] = useState<string>('0');
+  const [delegatorsBalance, setDelegatorsBalance] = useState<string>('0');
 
   const getDelegatorList = async () => {
     try {
@@ -77,7 +76,7 @@ export const useVotingPowerBreakdown = (account: string) => {
   const { data } = useReadContracts({
     contracts,
     query: {
-      enabled: delegatorList.length > 0, //
+      enabled: delegatorList.length > 0,
       select: (data) => {
         let total = BigInt(0);
 
@@ -136,8 +135,8 @@ export const useFetchDelegatee = (account: Address) => {
  * used for delegating from account to delegatee,
  * runs validations before delegation
  * @param {string} account
- * @param {string} delegatee
  * @param {string} balance
+ * @param {string} delegatee
  * @returns pending status, delegate handler
  */
 export const useDelegate = (account: string, balance: string, delegatee: string) => {

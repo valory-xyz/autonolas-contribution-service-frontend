@@ -1,4 +1,3 @@
-import { RefetchOptions } from '@tanstack/react-query';
 import { Button, Divider, Form, Input, Typography, notification } from 'antd';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -28,15 +27,11 @@ const DelegateMenu = (props: { refetchVotingPower: () => void; votingPower: stri
 
   const [delegateFormVisible, setDelegateFormVisible] = useState(false);
   const [whoDelegatedVisible, setWhoDelegatedVisible] = useState(false);
-  const { isDelegating, handleDelegate } = useDelegate(
-    account,
-    delegatee as string,
-    balance as unknown as string,
-  );
+  const { isDelegating, handleDelegate } = useDelegate(account, balance || '0', delegatee || '');
   const { canUndelegate, isUndelegating, handleUndelegate } = useUndelegate(
     account,
-    delegatee as string,
-    balance as unknown as string,
+    delegatee || '',
+    balance || '0',
   );
 
   const onSubmitDelegate = (values: { address: Address }) => {
@@ -51,10 +46,11 @@ const DelegateMenu = (props: { refetchVotingPower: () => void; votingPower: stri
         setDelegateFormVisible(false);
         props.refetchVotingPower();
       },
-      onError: (error: Error) => {
+      onError: (error: unknown) => {
         console.error(error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         notification.error({
-          message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't delegate",
+          message: DELEGATE_ERRORS_MAP[errorMessage] || "Couldn't delegate",
         });
       },
     });
@@ -63,13 +59,14 @@ const DelegateMenu = (props: { refetchVotingPower: () => void; votingPower: stri
   const onUndelegateClick = () => {
     handleUndelegate({
       onSuccess: () => {
-        setDelegatee(null);
+        setDelegatee(undefined);
         form.resetFields();
       },
-      onError: (error: Error) => {
+      onError: (error: unknown) => {
         console.error(error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         notification.error({
-          message: DELEGATE_ERRORS_MAP[error.message] || "Couldn't undelegate",
+          message: DELEGATE_ERRORS_MAP[errorMessage] || "Couldn't undelegate",
         });
       },
     });
