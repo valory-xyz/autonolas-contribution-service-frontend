@@ -27,7 +27,7 @@ const DelegateMenu = (props: { refetchVotingPower: () => void; votingPower: stri
 
   const [delegateFormVisible, setDelegateFormVisible] = useState(false);
   const [whoDelegatedVisible, setWhoDelegatedVisible] = useState(false);
-  const { isDelegating, handleDelegate } = useDelegate(account, balance || '0', delegatee || '');
+  const { isDelegating, handleDelegate } = useDelegate(account, balance, delegatee);
   const { canUndelegate, isUndelegating, handleUndelegate } = useUndelegate(
     account,
     delegatee || '',

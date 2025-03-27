@@ -1,13 +1,14 @@
 import { ethers } from 'ethers';
-import { useEffect, useState } from 'react';
+import { isNil } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 import { Address } from 'viem';
 import { useReadContract, useReadContracts } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 import {
-  DELEGATE_CONTRIBUTE_ABI, // delegateContribute
+  DELEGATE_CONTRIBUTE_ABI,
   DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
-  VEOLAS_ABI, // veOlas
+  VEOLAS_ABI,
   VEOLAS_ADDRESS_MAINNET,
 } from 'common-util/AbiAndAddresses';
 
@@ -17,7 +18,6 @@ import { validateBeforeDelegate } from './utils';
 type OnErrorType = (error: unknown | Error) => void;
 
 /**
- * @param {string} account
  * @returns total voting power of the account, refetch data function
  */
 export const useFetchVotingPower = (account: Address) => {
@@ -36,7 +36,6 @@ export const useFetchVotingPower = (account: Address) => {
 };
 
 /**
- * @param {string} account
  * @returns
  * account's veOlas balance,
  * total delegated balance to the account,
@@ -48,23 +47,23 @@ export const useVotingPowerBreakdown = (account: string) => {
   const [balance, setBalance] = useState<string>('0');
   const [delegatorsBalance, setDelegatorsBalance] = useState<string>('0');
 
-  const getDelegatorList = async () => {
+  const getDelegatorList = useCallback(async () => {
     try {
       const list = await fetchDelegatorList({ account });
       setDelegatorList(list);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [account]);
 
-  const getBalance = async () => {
+  const getBalance = useCallback(async () => {
     try {
       const result = await fetchVeolasBalance({ account });
       setBalance(result);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [account]);
 
   const contracts = delegatorList.map((delegator) => ({
     address: VEOLAS_ADDRESS_MAINNET as Address,
@@ -81,11 +80,13 @@ export const useVotingPowerBreakdown = (account: string) => {
         let total = BigInt(0);
 
         data.forEach((item) => {
-          if (item.status === 'success') {
-            if (item.result !== null && item.result !== undefined) {
-              const bigIntValue = BigInt(item.result.toString());
-              total += bigIntValue;
-            }
+          if (
+            item.status === 'success' &&
+            !isNil(item.result) &&
+            typeof item.result !== 'undefined'
+          ) {
+            const bigIntValue = BigInt(item.result);
+            total += bigIntValue;
           }
         });
 
@@ -111,7 +112,6 @@ export const useVotingPowerBreakdown = (account: string) => {
 };
 
 /**
- * @param {string} account
  * @returns address to which the account has delegated
  */
 export const useFetchDelegatee = (account: Address) => {
@@ -134,12 +134,13 @@ export const useFetchDelegatee = (account: Address) => {
 /**
  * used for delegating from account to delegatee,
  * runs validations before delegation
- * @param {string} account
- * @param {string} balance
- * @param {string} delegatee
  * @returns pending status, delegate handler
  */
-export const useDelegate = (account: string, balance: string, delegatee: string) => {
+export const useDelegate = (
+  account: string,
+  balance: string = '0',
+  delegatee: string | null = '',
+) => {
   const [isSending, setIsSending] = useState(false);
 
   const handleDelegate = async ({
@@ -179,9 +180,6 @@ export const useDelegate = (account: string, balance: string, delegatee: string)
 /**
  * used for undelegating from account to Zero address,
  * runs validations before undelegation
- * @param {string} account
- * @param {string} delegatee
- * @param {string} balance
  * @returns pending status, undelegate handler
  */
 export const useUndelegate = (account: string, delegatee: string, balance: string) => {

@@ -52,7 +52,6 @@
       "store/*": [
         "./store/*"
       ],
-
       "types/*": [
         "./types/*"
       ]
@@ -68,6 +67,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "common-util/functions/index.js", "components/VotingPower/DelegateMenu.jsx", "components/VotingPower/hooks.js", "components/VotingPower/index.jsx"  ]
+    "**/*.tsx",
+    "common-util/functions/index.js"
+  ]
 }

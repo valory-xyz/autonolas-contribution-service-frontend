@@ -24,6 +24,10 @@ export const formatWeiBalance = (balanceInWei: string) => {
   return formatNumberWithSuffix(parseFloat(balanceInEther));
 };
 
+function formatNumberWithCommas(number: number) {
+  return number.toLocaleString();
+}
+
 /**
  *
  * @param {string} balanceInWei
@@ -31,10 +35,6 @@ export const formatWeiBalance = (balanceInWei: string) => {
  */
 export const formatWeiBalanceWithCommas = (balanceInWei: string) => {
   const balanceInEther = ethers.formatEther(balanceInWei);
-
-  function formatNumberWithCommas(number: number) {
-    return number.toLocaleString();
-  }
 
   const finalBalance = formatNumberWithCommas(parseInt(balanceInEther));
 
@@ -60,7 +60,7 @@ export const validateBeforeDelegate = async ({
 }: {
   account: string;
   balance: string;
-  delegatee: string;
+  delegatee: string | null;
   newDelegatee: string;
 }) => {
   if (newDelegatee === account) {
