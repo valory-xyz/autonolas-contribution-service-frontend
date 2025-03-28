@@ -1,5 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Grid } from 'antd';
+import { isNil } from 'lodash';
 
 import { useHelpers } from 'common-util/hooks/useHelpers';
 
@@ -17,7 +18,7 @@ const VotingPower = () => {
   const { votingPower, refetchVotingPower } = useFetchVotingPower(account);
 
   if (screens.xs) return null;
-  if (!votingPower) return null;
+  if (isNil(votingPower)) return null;
 
   return (
     <>
