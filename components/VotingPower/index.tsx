@@ -1,5 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Grid } from 'antd';
+import { isNil } from 'lodash';
 
 import { useHelpers } from 'common-util/hooks/useHelpers';
 
@@ -17,7 +18,7 @@ const VotingPower = () => {
   const { votingPower, refetchVotingPower } = useFetchVotingPower(account);
 
   if (screens.xs) return null;
-  if (!votingPower) return null;
+  if (isNil(votingPower)) return null;
 
   return (
     <>
@@ -25,11 +26,16 @@ const VotingPower = () => {
       <Dropdown
         placement="bottomRight"
         arrow
-        trigger="click"
-        overlay={<DelegateMenu votingPower={votingPower} refetchVotingPower={refetchVotingPower} />}
+        trigger={['click']}
+        overlay={
+          <DelegateMenu
+            votingPower={votingPower.toString()}
+            refetchVotingPower={refetchVotingPower}
+          />
+        }
       >
         <Button type="text">
-          Voting power: {formatWeiBalance(votingPower)}
+          Voting power: {formatWeiBalance(votingPower.toString())}
           <EditOutlined />
         </Button>
       </Dropdown>
