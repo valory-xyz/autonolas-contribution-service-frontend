@@ -60,7 +60,7 @@ export const validateBeforeDelegate = async ({
 }: {
   account: string;
   balance: string;
-  delegatee: string | null;
+  delegatee: string;
   newDelegatee: string;
 }) => {
   if (newDelegatee === account) {

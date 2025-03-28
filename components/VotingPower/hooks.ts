@@ -20,13 +20,13 @@ type OnErrorType = (error: unknown | Error) => void;
 /**
  * @returns total voting power of the account, refetch data function
  */
-export const useFetchVotingPower = (account: Address) => {
+export const useFetchVotingPower = (account: string | null) => {
   const { data, refetch } = useReadContract({
     address: DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
     abi: DELEGATE_CONTRIBUTE_ABI,
     functionName: 'votingPower',
     chainId: mainnet.id,
-    args: [account],
+    args: [account as Address],
     query: {
       enabled: !!account,
     },
@@ -42,12 +42,13 @@ export const useFetchVotingPower = (account: Address) => {
  * list of delegators addresses
  *
  */
-export const useVotingPowerBreakdown = (account: string) => {
+export const useVotingPowerBreakdown = (account: string | null) => {
   const [delegatorList, setDelegatorList] = useState<Address[]>([]);
   const [balance, setBalance] = useState<string>('0');
   const [delegatorsBalance, setDelegatorsBalance] = useState<string>('0');
 
   const getDelegatorList = useCallback(async () => {
+    if (!account) return;
     try {
       const list = await fetchDelegatorList({ account });
       setDelegatorList(list);
@@ -57,6 +58,7 @@ export const useVotingPowerBreakdown = (account: string) => {
   }, [account]);
 
   const getBalance = useCallback(async () => {
+    if (!account) return;
     try {
       const result = await fetchVeolasBalance({ account });
       setBalance(result);
@@ -114,13 +116,13 @@ export const useVotingPowerBreakdown = (account: string) => {
 /**
  * @returns address to which the account has delegated
  */
-export const useFetchDelegatee = (account: Address) => {
+export const useFetchDelegatee = (account: string | null) => {
   const { data, refetch } = useReadContract({
     address: DELEGATE_CONTRIBUTE_ADDRESS_MAINNET,
     abi: DELEGATE_CONTRIBUTE_ABI,
     functionName: 'mapDelegation',
     chainId: mainnet.id,
-    args: [account],
+    args: [account as Address],
     query: {
       enabled: !!account,
     },
@@ -137,9 +139,9 @@ export const useFetchDelegatee = (account: Address) => {
  * @returns pending status, delegate handler
  */
 export const useDelegate = (
-  account: string,
+  account: string | null,
   balance: string = '0',
-  delegatee: string | null = '',
+  delegatee: string | null = null,
 ) => {
   const [isSending, setIsSending] = useState(false);
 
@@ -152,6 +154,7 @@ export const useDelegate = (
     onSuccess: (address: Address) => void;
     onError: OnErrorType;
   }) => {
+    if (!account) return;
     setIsSending(true);
 
     try {
@@ -160,7 +163,7 @@ export const useDelegate = (
       await validateBeforeDelegate({
         account,
         balance,
-        delegatee,
+        delegatee: delegatee || '',
         newDelegatee: address,
       });
 
@@ -182,7 +185,11 @@ export const useDelegate = (
  * runs validations before undelegation
  * @returns pending status, undelegate handler
  */
-export const useUndelegate = (account: string, delegatee: string, balance: string) => {
+export const useUndelegate = (
+  account: string | null,
+  delegatee: string | null,
+  balance: string,
+) => {
   const [isSending, setIsSending] = useState(false);
 
   const handleUndelegate = async ({
@@ -192,13 +199,14 @@ export const useUndelegate = (account: string, delegatee: string, balance: strin
     onSuccess: () => void;
     onError: OnErrorType;
   }) => {
+    if (!account) return;
     setIsSending(true);
 
     try {
       await validateBeforeDelegate({
         account,
         balance,
-        delegatee,
+        delegatee: delegatee || '',
         newDelegatee: ethers.ZeroAddress,
       });
       await delegate({ account, delegatee: ethers.ZeroAddress });
