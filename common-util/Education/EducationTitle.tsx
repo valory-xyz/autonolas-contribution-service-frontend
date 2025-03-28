@@ -1,5 +1,6 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Popover, Row, Typography } from 'antd';
+import { TitleProps } from 'antd/es/typography/Title';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +9,12 @@ import { getEducationItemByComponent } from 'util/education';
 
 const { Title } = Typography;
 
-const PopoverContent = ({ text, docsLink }) => (
+type EducationItem = {
+  text: string;
+  docsLink?: string;
+};
+
+const PopoverContent = ({ text, docsLink }: EducationItem) => (
   <>
     {text}
     {docsLink && (
@@ -32,9 +38,17 @@ PopoverContent.defaultProps = {
 /**
  * Education title component
  */
-export const EducationTitle = ({ title, level, educationItem }) => {
-  const [fullEducationItem, setFullEducationItem] = useState({});
-  const { text, docsLink } = fullEducationItem;
+export const EducationTitle = ({
+  title,
+  level,
+  educationItem,
+}: {
+  title: string;
+  level: TitleProps['level'] | undefined;
+  educationItem: string;
+}) => {
+  const [fullEducationItem, setFullEducationItem] = useState<EducationItem | null>(null);
+  const { text, docsLink } = fullEducationItem || { text: '', docsLink: '' };
 
   useEffect(() => {
     const intFullEducationItem = getEducationItemByComponent(educationItem);

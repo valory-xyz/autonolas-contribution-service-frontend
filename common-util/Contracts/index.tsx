@@ -1,9 +1,9 @@
+import { Abi } from 'viem';
 import { base, goerli, mainnet } from 'viem/chains';
 import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
 
 import {
-  CONTRIBUTE_MANAGER_ABI, // Contribute manager
-  CONTRIBUTE_MANAGER_ADDRESS_BASE,
   CONTRIBUTORS_V2_ABI, // Contributors
   CONTRIBUTORS_V2_ADDRESS_BASE,
   DELEGATE_CONTRIBUTE_ABI, // delegateContribute
@@ -20,7 +20,14 @@ import {
 } from 'common-util/AbiAndAddresses';
 import { getChainId, getProvider } from 'common-util/functions';
 
-const ADDRESSES = {
+type AddressInfo = {
+  mintNft: string;
+  veOlas: string;
+};
+
+type AddressRecord = Record<number, AddressInfo>;
+
+const ADDRESSES: AddressRecord = {
   1: {
     mintNft: MINT_NFT_CONTRACT_ADDRESS_MAINNET,
     veOlas: VEOLAS_ADDRESS_MAINNET,
@@ -31,9 +38,18 @@ const ADDRESSES = {
   },
 };
 
-const getWeb3Details = () => {
+const getWeb3Details = (): {
+  web3: Web3;
+  address: AddressInfo | undefined;
+  chainId: number | undefined;
+} => {
   const web3 = new Web3(getProvider());
   const chainId = getChainId();
+
+  if (chainId === undefined) {
+    throw new Error('ChainId undefined.');
+  }
+
   const address = ADDRESSES[chainId];
 
   return { web3, address, chainId };
@@ -44,14 +60,19 @@ const getWeb3Details = () => {
  * @param {Array} abi - abi of the contract
  * @param {String} contractAddress - address of the contract
  */
-const getContract = (abi, contractAddress) => {
+const getContract = <T extends Abi>(abi: T, contractAddress: string) => {
   const { web3 } = getWeb3Details();
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  const contract = new web3.eth.Contract(abi as unknown as AbiItem | AbiItem[], contractAddress);
   return contract;
 };
 
 export const getMintContract = () => {
   const { chainId } = getWeb3Details();
+
+  if (chainId === undefined) {
+    return null;
+  }
+
   if (!ADDRESSES[chainId]) {
     return null;
   }
@@ -84,7 +105,7 @@ export const getServiceRegistryL2Contract = () => {
   return contract;
 };
 
-export const RPC_URLS = {
+export const RPC_URLS: { [key: number]: string | undefined } = {
   [mainnet.id]: process.env.NEXT_PUBLIC_MAINNET_URL,
   [goerli.id]: process.env.NEXT_PUBLIC_GOERLI_URL,
   [base.id]: process.env.NEXT_PUBLIC_BASE_URL,

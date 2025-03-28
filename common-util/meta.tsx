@@ -4,7 +4,16 @@ import React from 'react';
 
 import { META_TAGS_INFO } from 'util/constants';
 
-const Meta = ({ meta }) => {
+type MetaProps = {
+  meta?: {
+    title?: string;
+    description?: string;
+    siteUrl?: string;
+    image?: string;
+  };
+};
+
+const Meta = ({ meta }: MetaProps) => {
   const metaInfo = { ...META_TAGS_INFO, ...(meta || {}) };
 
   return (

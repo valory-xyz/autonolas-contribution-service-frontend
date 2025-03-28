@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const NextConfig = {
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
   reactStrictMode: true,
   compiler: {
     styledComponents: {
