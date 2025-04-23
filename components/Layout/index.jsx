@@ -302,16 +302,16 @@ const NavigationBar = ({ children }) => {
           />
         )}
         <CustomHeaderContent>
-          <Flex>
+          <Flex align="center">
             {logo}
             <NavDropdown />
-          </Flex>
-          <RightMenu>
             {!screens.md && (
-              <Button className="mr-8" onClick={() => setIsMenuVisible(!isMenuVisible)}>
+              <Button className="ml-4" onClick={() => setIsMenuVisible(!isMenuVisible)}>
                 Menu
               </Button>
             )}
+          </Flex>
+          <RightMenu>
             <Login />
           </RightMenu>
         </CustomHeaderContent>

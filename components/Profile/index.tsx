@@ -157,7 +157,7 @@ const ProfileBody: React.FC<ProfileBodyProps> = ({ profile, id }) => {
         </ProfileContent>
       </Card>
 
-      {account && areAddressesEqual(id, account) && profile && <Staking profile={profile} />}
+      {account && areAddressesEqual(id, account) && <Staking profile={profile} />}
     </Root>
   );
 };
