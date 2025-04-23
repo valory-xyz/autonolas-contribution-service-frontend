@@ -29,8 +29,8 @@ const SetupStaking = () => (
   </>
 );
 
-export const Staking = ({ profile }: { profile: XProfile }) => {
-  const hasStaked = !!(profile.service_id_old || profile.service_id);
+export const Staking = ({ profile }: { profile: XProfile | null }) => {
+  const hasStaked = !!(profile?.service_id_old || profile?.service_id);
 
   useUpdateProfileIfOldServiceTerminated(profile);
 
@@ -42,7 +42,7 @@ export const Staking = ({ profile }: { profile: XProfile }) => {
       <Paragraph type="secondary" className="mb-24">
         Staking allows you to earn OLAS rewards when you post about Olas on X.
       </Paragraph>
-      {hasStaked ? <StakingDetails profile={profile} /> : <SetupStaking />}
+      {profile && hasStaked ? <StakingDetails profile={profile} /> : <SetupStaking />}
     </Card>
   );
 };

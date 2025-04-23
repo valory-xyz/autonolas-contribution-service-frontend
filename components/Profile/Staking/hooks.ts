@@ -68,7 +68,7 @@ export const useRestake = ({ contractAddress }: UseRestakeParams) => {
  * meaning the user went through the recovery process from old broken staking contracts
  * and clear old values in order to not to show the alert message
  */
-export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile) => {
+export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile | null) => {
   const oldStakingDataCleared = useRef(false);
 
   const { data: isTerminated } = useReadContract({
@@ -76,9 +76,9 @@ export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile) => {
     abi: SERVICE_REGISTRY_L2_ABI,
     chainId: base.id,
     functionName: 'getService',
-    args: profile.service_id_old ? [BigInt(profile.service_id_old)] : [BigInt(0)],
+    args: profile?.service_id_old ? [BigInt(profile.service_id_old)] : [BigInt(0)],
     query: {
-      enabled: !!profile.service_id_old,
+      enabled: !!profile?.service_id_old,
       select: (data) => {
         // state == TerminatedBonded (5)
         if (data.state === 5) return true;
@@ -88,6 +88,7 @@ export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile) => {
   });
 
   useEffect(() => {
+    if (!profile) return;
     if (oldStakingDataCleared.current) return;
 
     if (isTerminated) {
@@ -95,5 +96,5 @@ export const useUpdateProfileIfOldServiceTerminated = (profile: XProfile) => {
         oldStakingDataCleared.current = true;
       });
     }
-  }, [isTerminated, profile.twitter_id]);
+  }, [isTerminated, profile]);
 };
