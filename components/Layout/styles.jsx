@@ -135,7 +135,7 @@ export const CustomHeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 10px 20px;
   background-color: ${COLOR.WHITE};
   height: var(--header-height);
   border-bottom: 1px solid ${COLOR.BORDER_GREY};
@@ -143,7 +143,6 @@ export const CustomHeaderContent = styled.div`
   ${MEDIA_QUERY.mobileL} {
     flex-direction: column;
     height: auto;
-    padding: 10px 20px;
     gap: 8px;
   }
 `;
