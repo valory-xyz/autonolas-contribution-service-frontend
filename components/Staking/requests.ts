@@ -75,7 +75,7 @@ const approveOlasForAddress = async ({
     const hash = await writeContract(wagmiConfig, {
       address: OLAS_ADDRESS_BASE,
       abi: OLAS_ABI,
-      chainId: base.id,
+      chainId: base.id as number,
       functionName: 'approve',
       args: [addressToApprove, amountToApprove],
     });
