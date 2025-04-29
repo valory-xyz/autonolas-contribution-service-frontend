@@ -1,16 +1,12 @@
-import { defaultWagmiConfig } from '@web3modal/wagmi';
-import { cookieStorage, createStorage, http } from 'wagmi';
-import { Chain, base, goerli, mainnet } from 'wagmi/chains';
+import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2';
+import { cookieStorage, createConfig, createStorage, http } from 'wagmi';
+import { Chain, base, mainnet } from 'wagmi/chains';
+import { injected, walletConnect } from 'wagmi/connectors';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
 
-// if the PFP_URL contains staging, include goerli
-export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = (
-  process.env.NEXT_PUBLIC_PFP_URL || ''
-).includes('staging')
-  ? [goerli, mainnet, base]
-  : [mainnet, base];
+export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [mainnet, base];
 
 export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID as string;
 
@@ -21,13 +17,10 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
-/**
- * @type {import('@web3modal/wagmi').WagmiOptions}
- */
-export const wagmiConfig = defaultWagmiConfig({
+const binanceConnector = getWagmiConnectorV2();
+
+export const wagmiConfig = createConfig({
   chains: SUPPORTED_CHAINS,
-  projectId,
-  metadata,
   ssr: true,
   storage: createStorage({ storage: cookieStorage }),
   transports: SUPPORTED_CHAINS.reduce(
@@ -35,4 +28,13 @@ export const wagmiConfig = defaultWagmiConfig({
       Object.assign(acc, { [chain.id]: http(RPC_URLS[chain.id as keyof typeof RPC_URLS]) }),
     {},
   ),
+  connectors: [
+    injected(),
+    walletConnect({
+      projectId,
+      metadata,
+      showQrModal: false,
+    }),
+    binanceConnector(),
+  ],
 });
