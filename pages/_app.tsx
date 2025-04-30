@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client';
 /** wagmi config */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
+import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
@@ -25,7 +26,7 @@ const Layout = dynamic(() => import('components/Layout'));
 
 const queryClient = new QueryClient();
 
-export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID;
+export const projectId = process.env.NEXT_PUBLIC_WALLET_PROJECT_ID as string;
 
 createWeb3Modal({
   wagmiConfig,
@@ -36,9 +37,12 @@ createWeb3Modal({
     '--w3m-font-size-master': '11px',
     '--w3m-accent': COLOR.PRIMARY,
   },
+  connectorImages: {
+    ['wallet.binance.com']: '/images/binance-wallet.svg',
+  },
 });
 
-const ContributeApp = ({ Component, pageProps }) => {
+const ContributeApp = ({ Component, pageProps }: AppProps) => {
   const initialState = cookieToInitialState(wagmiConfig);
 
   return (
@@ -61,11 +65,6 @@ const ContributeApp = ({ Component, pageProps }) => {
       </Provider>
     </>
   );
-};
-
-ContributeApp.propTypes = {
-  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({})]).isRequired,
-  pageProps: PropTypes.shape({}).isRequired,
 };
 
 export default ContributeApp;
