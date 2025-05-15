@@ -1,7 +1,7 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2';
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi';
 import { Chain, base, mainnet } from 'wagmi/chains';
-import { injected, walletConnect } from 'wagmi/connectors';
+import { walletConnect } from 'wagmi/connectors';
 
 import { RPC_URLS } from 'common-util/Contracts';
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from 'util/constants';
@@ -29,7 +29,6 @@ export const wagmiConfig = createConfig({
     {},
   ),
   connectors: [
-    injected(),
     walletConnect({
       projectId,
       metadata,
