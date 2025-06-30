@@ -34,7 +34,7 @@ const columns: ColumnsType<LeaderboardUser> = [
     title: 'Socials',
     width: 100,
     render: (record) => {
-      const { wallet_address, twitter_handle, discord_id, rowKeyUi } = record;
+      const { wallet_address, twitter_handle, discord_id, id } = record;
 
       const socials = [
         wallet_address && (
@@ -43,7 +43,7 @@ const columns: ColumnsType<LeaderboardUser> = [
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Wallet address"
-            key={`${rowKeyUi}-wallet`}
+            key={`${id}-wallet`}
             className="mr-12"
           >
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
@@ -60,7 +60,7 @@ const columns: ColumnsType<LeaderboardUser> = [
             target="_blank"
             rel="noopener noreferrer"
             aria-label="X handle"
-            key={`${rowKeyUi}-X`}
+            key={`${id}-X`}
             className="mr-12"
           >
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 300 271">
@@ -77,7 +77,7 @@ const columns: ColumnsType<LeaderboardUser> = [
         //     target="_blank"
         //     rel="noopener noreferrer"
         //     aria-label="Discord ID"
-        //     key={`${rowKeyUi}-discord`}
+        //     key={`${id}-discord`}
         //   >
         //     <svg
         //       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ const columns: ColumnsType<LeaderboardUser> = [
       if (socials.length === 0) return NA;
 
       return socials.map((social, index) => (
-        <Text type="secondary" key={`${rowKeyUi}-social-${index}`}>
+        <Text type="secondary" key={`${id}-social-${index}`}>
           {social}
         </Text>
       ));
@@ -133,7 +133,7 @@ export const LeaderboardTable = () => {
         dataSource={leaderboard}
         loading={isLoading}
         pagination={false}
-        rowKey="rowKeyUi"
+        rowKey="id"
         scroll={{ x: 'max-content' }}
       />
     </Card>

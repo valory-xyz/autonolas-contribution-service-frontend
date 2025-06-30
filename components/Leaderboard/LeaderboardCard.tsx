@@ -39,7 +39,7 @@ export const LeaderboardCard = () => {
         loading={isLoading}
         bordered={false}
         pagination={false}
-        rowKey="rowKeyUi"
+        rowKey="id"
       />
     </Card>
   );
