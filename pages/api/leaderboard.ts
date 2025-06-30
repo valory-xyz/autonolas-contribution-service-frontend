@@ -24,8 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const pageData = await response.json();
 
-      // If the returned page is empty, we're on the last page
-      if (!Array.isArray(pageData) || pageData.length === 0) {
+      // If the returned page is empty, or the amount of items is less
+      // than the limit, we're on the last page
+      if (!Array.isArray(pageData) || pageData.length === 0 || pageData.length < LIMIT) {
         break;
       }
 

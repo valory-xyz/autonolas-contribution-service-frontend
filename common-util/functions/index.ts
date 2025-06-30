@@ -140,7 +140,7 @@ export const getNumberInMillions = (num: number) => {
   return formattedNumber;
 };
 
-export const isAddressProhibited = (address: Address) => {
+export const isAddressProhibited = (address: Address | string) => {
   const addresses = prohibitedAddresses.map((e) => toLower(e));
   return addresses.includes(toLower(address));
 };
@@ -162,13 +162,13 @@ export const checkOrbisConnection = async () => {
  * @param {string} address - The Ethereum address to truncate
  * @returns {string} The truncated address
  */
-export const truncateAddress = (address: Address) =>
+export const truncateAddress = (address: Address | string) =>
   address ? `${address.substring(0, 5)}...${address.substring(address.length - 3)}` : '--';
 
-export const getAddressFromBytes32 = (address: Address) => {
+export const getAddressFromBytes32 = (address: Address | string) => {
   return '0x' + address.slice(-40);
 };
 
-export const getBytes32FromAddress = (address: Address) => {
+export const getBytes32FromAddress = (address: Address | string) => {
   return ethers.zeroPadValue(address, 32);
 };
