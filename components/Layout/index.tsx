@@ -102,12 +102,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     verifyAccount();
   }, [account, chainId, dispatch]);
 
-  const logo = (
-    <Logo onClick={() => router.push('/')}>
-      <LogoSvg />
-    </Logo>
-  );
-
   const isPadded = ['chat', 'member-chat'].some((e) => pathname.includes(e));
 
   return (
@@ -132,7 +126,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         )}
         <CustomHeaderContent>
           <Flex align="center">
-            {logo}
+            <Link href="/">
+              <Logo>
+                <LogoSvg />
+              </Logo>
+            </Link>
             <NavDropdown />
             {!screens.md && (
               <Button className="ml-4" onClick={() => setIsMenuVisible((prev) => !prev)}>

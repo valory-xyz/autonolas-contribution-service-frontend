@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 
 import { truncateAddress } from 'common-util/functions';
 
