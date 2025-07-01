@@ -98,17 +98,14 @@ export const NavDropdown = () => (
   </Dropdown>
 );
 
-export const Menu = ({
-  isBannerVisible,
-  onBannerClose,
-  isMenuVisible,
-  onMenuClose,
-}: {
+type MenuProps = {
   isBannerVisible: boolean;
   onBannerClose: () => void;
   isMenuVisible: boolean;
   onMenuClose: () => void;
-}) => {
+};
+
+export const Menu = ({ isBannerVisible, onBannerClose, isMenuVisible, onMenuClose }: MenuProps) => {
   const screens = useBreakpoint();
   const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState('leaderboard');

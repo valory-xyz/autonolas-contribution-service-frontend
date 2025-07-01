@@ -16,14 +16,6 @@ export const ServiceStatus = () => {
     // fetch leaderboard list
     const list = await getLeaderboardList();
     dispatch(setLeaderboard(list));
-
-    // NOTE: leaderboard is now the default page thus no need to poll minted nft
-    //
-    // update badge if the user is logged-in
-    // if (account) {
-    //   const { details, tokenId } = await getLatestMintedNft(account);
-    //   dispatch(setNftDetails({ tokenId, ...(details || {}) }));
-    // }
   };
 
   const [isHealthy] = useHealthCheckup(
