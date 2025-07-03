@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 
 import { NA } from '@autonolas/frontend-library';
 
+import type { TweetOrThread } from '.';
 import MediaList, { MODE } from './MediaList';
 import { EachThreadContainer } from './styles';
 
@@ -12,7 +13,7 @@ const { Text } = Typography;
 type ViewThreadProps = {
   thread: {
     text: string | string[];
-    media: string[];
+    media: (string | TweetOrThread['media'][number])[];
   }[];
   onEditThread?: (threadIndex: number) => void;
   onRemoveFromThread?: (threadIndex: number) => void;

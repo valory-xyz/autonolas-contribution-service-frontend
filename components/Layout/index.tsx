@@ -11,17 +11,12 @@ import { notifyError } from '@autonolas/frontend-library';
 import { LogoSvg } from 'common-util/SVGs/logo';
 import { getLeaderboardList, getMemoryDetails, getTweetsList } from 'common-util/api';
 import { getModuleDetails } from 'common-util/api/moduleDetails';
+import { useFetchApplicationData } from 'common-util/hooks/useFetchApplicationData';
 import Login from 'components/Login';
 import {
-  setIsLeaderboardLoading,
   setIsMemoryDetailsLoading,
-  setIsModuleDetailsLoading,
-  setIsTweetsLoading,
   setIsVerified,
-  setLeaderboard,
   setMemoryDetails,
-  setModuleDetails,
-  setTweets,
   useAppSelector,
 } from 'store/setup';
 import { MENU_WIDTH } from 'util/constants';
@@ -49,55 +44,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const account = useAppSelector((state) => get(state, 'setup.account'));
   const chainId = useAppSelector((state) => get(state, 'setup.chainId'));
 
-  // load leaderboard list only once on page load
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        dispatch(setIsLeaderboardLoading(true));
-        const list = await getLeaderboardList();
-        dispatch(setLeaderboard(list));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        dispatch(setIsLeaderboardLoading(false));
-      }
-    };
-
-    fetchLeaderboard();
-  }, [dispatch]);
-
-  // load tweets only once on page load
-  useEffect(() => {
-    const fetchTweets = async () => {
-      try {
-        dispatch(setIsTweetsLoading(true));
-        const list = await getTweetsList();
-        dispatch(setTweets(list));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        dispatch(setIsTweetsLoading(false));
-      }
-    };
-
-    fetchTweets();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchModuleDetails = async () => {
-      try {
-        dispatch(setIsModuleDetailsLoading(true));
-        const moduleDetails = await getModuleDetails();
-        dispatch(setModuleDetails(moduleDetails));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        dispatch(setIsModuleDetailsLoading(false));
-      }
-    };
-
-    fetchModuleDetails();
-  }, [dispatch]);
+  useFetchApplicationData();
 
   // load memory details only once on page load
   // TODO: to be removed when campaigns requested from new DB
