@@ -22,7 +22,7 @@ type Voter = {
 
 type ExecutionAttempt = {
   id: string;
-  verified: null;
+  verified: boolean | null;
   dateCreated: number;
 };
 
@@ -40,7 +40,8 @@ type Campaign = {
 };
 
 type ScheduledTweet = {
-  text: string[];
+  // Could be a tweet or thread
+  text: string | string[];
   posted: boolean;
   voters: Voter[];
   proposer: Proposer;
@@ -48,6 +49,7 @@ type ScheduledTweet = {
   request_id: string;
   createdDate: number;
   executionAttempts: ExecutionAttempt[];
+  media_hashes: string[];
 };
 
 export type ContributeModuleDetails = {

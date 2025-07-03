@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { cloneDeep, isNil, set } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { Address } from 'viem';
 import { useSignMessage } from 'wagmi';
 
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
@@ -11,11 +12,10 @@ import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 import { DisplayName } from 'common-util/DisplayName';
 import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { ProposalPropTypes } from 'common-util/prop-types';
-import { useAppSelector } from 'store/setup';
+import type { ModuleDetails } from 'store/types';
 import { VEOLAS_QUORUM } from 'util/constants';
 
-import { useCentaursFunctionalities, useProposals } from '../../CoOrdinate/Centaur/hooks';
+import { useCentaursFunctionalities } from '../../CoOrdinate/Centaur/hooks';
 import { fetchVotingPower } from '../../MembersList/requests';
 import { getFirstTenCharsOfTweet } from '../utils';
 import { ApproveStep } from './ApproveStep';
@@ -24,7 +24,9 @@ import { ExecuteStep } from './ExecuteStep';
 const { Text } = Typography;
 const STEPS = { APPROVE: 0, EXECUTE: 1 };
 
-export const Proposal = ({ proposal }) => {
+type Proposal = ModuleDetails['scheduled_tweet']['tweets'][number];
+
+export const Proposal = ({ proposal }: { proposal: Proposal }) => {
   const [current, setCurrent] = useState(STEPS.APPROVE);
   const [isApproveLoading, setIsApproveLoading] = useState(false);
   const [isExecuteLoading, setIsExecuteLoading] = useState(false);
@@ -37,12 +39,9 @@ export const Proposal = ({ proposal }) => {
     currentMemoryDetails: centaur,
     triggerAction,
   } = useCentaursFunctionalities();
-  const { moduleDetails, isModuleDetailsLoading: isLoading } = useAppSelector(
-    (state) => state.setup,
-  );
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
-  const hasVoted = votersAddress?.includes(account) ?? false;
+  const hasVoted = votersAddress?.includes(account as Address) ?? false;
   const canMoveToExecuteStep = isQuorumAchieved || proposal.posted;
 
   // set current step
@@ -90,8 +89,8 @@ export const Proposal = ({ proposal }) => {
       // TODO: Update all the write methods (set, update memory, etc) here with the new DB methods
       set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
-      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map((tweet) =>
-        tweet.request_id === proposal.request_id ? updatedProposal : tweet,
+      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
+        (tweet: Proposal) => (tweet.request_id === proposal.request_id ? updatedProposal : tweet),
       );
 
       // Update centaur with updated tweets
@@ -145,8 +144,9 @@ export const Proposal = ({ proposal }) => {
       const updatedProposal = cloneDeep(proposal);
       set(updatedProposal, 'executionAttempts', executionAttempts);
 
-      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map((tweet) =>
-        tweet.request_id === updatedProposal.request_id ? updatedProposal : tweet,
+      const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map(
+        (tweet: Proposal) =>
+          tweet.request_id === updatedProposal.request_id ? updatedProposal : tweet,
       );
 
       // Update centaur with updated tweets
@@ -236,7 +236,3 @@ export const Proposal = ({ proposal }) => {
     </Card>
   );
 };
-
-Proposal.propTypes = { proposal: ProposalPropTypes };
-
-Proposal.defaultProps = { proposal: {} };
