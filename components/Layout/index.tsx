@@ -75,8 +75,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       if (!account) {
         dispatch(setIsVerified(false));
       }
-      // TODO: to revert.
-      return;
 
       if (account && chainId) {
         try {
