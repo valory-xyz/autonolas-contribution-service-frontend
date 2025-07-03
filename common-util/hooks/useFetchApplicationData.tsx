@@ -15,7 +15,6 @@ import {
 
 /**
  * Hook to concurrently fetch application data (leaderboard, tweets, and module details) on page load
- * @returns null
  */
 export const useFetchApplicationData = () => {
   const dispatch = useDispatch();
@@ -63,6 +62,4 @@ export const useFetchApplicationData = () => {
   useEffect(() => {
     fetchApplicationData();
   }, [fetchApplicationData]);
-
-  return null;
 };
