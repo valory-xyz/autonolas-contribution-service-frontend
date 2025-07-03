@@ -10,14 +10,17 @@ import { notifyError } from '@autonolas/frontend-library';
 
 import { LogoSvg } from 'common-util/SVGs/logo';
 import { getLeaderboardList, getMemoryDetails, getTweetsList } from 'common-util/api';
+import { getModuleDetails } from 'common-util/api/moduleDetails';
 import Login from 'components/Login';
 import {
   setIsLeaderboardLoading,
   setIsMemoryDetailsLoading,
+  setIsModuleDetailsLoading,
   setIsTweetsLoading,
   setIsVerified,
   setLeaderboard,
   setMemoryDetails,
+  setModuleDetails,
   setTweets,
   useAppSelector,
 } from 'store/setup';
@@ -80,6 +83,22 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     fetchTweets();
   }, [dispatch]);
 
+  useEffect(() => {
+    const fetchModuleDetails = async () => {
+      try {
+        dispatch(setIsModuleDetailsLoading(true));
+        const moduleDetails = await getModuleDetails();
+        dispatch(setModuleDetails(moduleDetails));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch(setIsModuleDetailsLoading(false));
+      }
+    };
+
+    fetchModuleDetails();
+  }, [dispatch]);
+
   // load memory details only once on page load
   // TODO: to be removed when campaigns requested from new DB
   useEffect(() => {
@@ -109,6 +128,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       if (!account) {
         dispatch(setIsVerified(false));
       }
+      // TODO: to revert.
+      return;
 
       if (account && chainId) {
         try {
