@@ -6,10 +6,9 @@ import { useMemo } from 'react';
 
 import { COLOR } from '@autonolas/frontend-library';
 
+import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { ProposalPropTypes } from 'common-util/prop-types';
-
-import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 
 const { Text } = Typography;
 
@@ -35,7 +34,6 @@ const TweetFailed = () => (
 
 export const ExecuteStep = ({ isExecuteLoading, proposal, onExecute }) => {
   const { account } = useHelpers();
-  const { getCurrentProposalInfo } = useProposals();
 
   const {
     isQuorumAchieved,

@@ -9,8 +9,10 @@ import { useSignMessage } from 'wagmi';
 import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { DisplayName } from 'common-util/DisplayName';
+import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { ProposalPropTypes } from 'common-util/prop-types';
+import { useAppSelector } from 'store/setup';
 import { VEOLAS_QUORUM } from 'util/constants';
 
 import { useCentaursFunctionalities, useProposals } from '../../CoOrdinate/Centaur/hooks';
@@ -35,7 +37,9 @@ export const Proposal = ({ proposal }) => {
     currentMemoryDetails: centaur,
     triggerAction,
   } = useCentaursFunctionalities();
-  const { getCurrentProposalInfo } = useProposals();
+  const { moduleDetails, isModuleDetailsLoading: isLoading } = useAppSelector(
+    (state) => state.setup,
+  );
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account) ?? false;
@@ -83,6 +87,7 @@ export const Proposal = ({ proposal }) => {
       };
       const updatedProposal = cloneDeep(proposal);
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
+      // TODO: Update all the write methods (set, update memory, etc) here with the new DB methods
       set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
       const updatedTweets = centaur?.plugins_data?.scheduled_tweet?.tweets?.map((tweet) =>
@@ -136,6 +141,7 @@ export const Proposal = ({ proposal }) => {
         { id: uuid(), dateCreated: Date.now(), verified: null },
       ];
 
+      // TODO: update write methods
       const updatedProposal = cloneDeep(proposal);
       set(updatedProposal, 'executionAttempts', executionAttempts);
 

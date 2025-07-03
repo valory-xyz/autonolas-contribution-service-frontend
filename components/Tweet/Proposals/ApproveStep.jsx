@@ -5,11 +5,11 @@ import { useMemo } from 'react';
 import { NA } from '@autonolas/frontend-library';
 
 import { getNumberInMillions } from 'common-util/functions';
+import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
 import { ProposalPropTypes } from 'common-util/prop-types';
 import { VEOLAS_QUORUM } from 'util/constants';
 
-import { useProposals } from '../../CoOrdinate/Centaur/hooks';
 import MediaList, { MODE } from '../MediaList';
 import { ViewThread } from '../ViewThread';
 
@@ -22,7 +22,6 @@ const ConnectWalletToApprove = () => (
 );
 
 export const ApproveStep = ({ isApproveLoading, proposal, onApprove }) => {
-  const { getCurrentProposalInfo } = useProposals();
   const { account } = useHelpers();
 
   const {
