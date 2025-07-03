@@ -68,7 +68,12 @@ export const getMediaSrc = (hashWithExtension: string) => {
 };
 
 const handleFulfilled = (items: PromiseSettledResult<string>[]) =>
-  items.filter((item) => item.status === 'fulfilled').map((item) => item.value);
+  items.reduce<string[]>((acc, item) => {
+    if (item.status === 'fulfilled') {
+      acc.push(item.value);
+    }
+    return acc;
+  }, []);
 
 export const generateMediaHashes = async (tweetOrThread: TweetOrThread) => {
   try {
