@@ -10,7 +10,7 @@ import { LeaderboardUser, ModuleDetails, Tweet } from './types';
 
 type SetupState = {
   account: string | null;
-  balance: number | null;
+  balance: number | string | null;
   chainId: number | null;
   errorMessage: string | null;
   /** If the user is verified. */
