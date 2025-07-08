@@ -1,10 +1,5 @@
-import { CeramicClient } from '@ceramicnetwork/http-client';
-
 import { LeaderboardUser } from 'store/types';
 import { ContributeAgent } from 'types/users';
-
-const API_URL = 'https://ceramic-valory.hirenodes.io';
-const CERAMIC_OBJECT = new CeramicClient(API_URL);
 
 export const getLeaderboardList = async () => {
   const response = await fetch('/api/leaderboard');
@@ -40,7 +35,7 @@ export const updateUserStakingData = async ({
   const response = await fetch('/api/agent-staking', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ attributeId, multisig, serviceId }),
+    body: JSON.stringify({ attributeId, service_multisig: multisig, service_id: serviceId }),
   });
 
   if (!response.ok) {
