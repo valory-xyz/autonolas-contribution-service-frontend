@@ -6,18 +6,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { notifyError } from '@autonolas/frontend-library';
-
 import { LogoSvg } from 'common-util/SVGs/logo';
-import { getMemoryDetails } from 'common-util/api';
 import { useFetchApplicationData } from 'common-util/hooks/useFetchApplicationData';
 import Login from 'components/Login';
-import {
-  setIsMemoryDetailsLoading,
-  setIsVerified,
-  setMemoryDetails,
-  useAppSelector,
-} from 'store/setup';
+import { setIsVerified, useAppSelector } from 'store/setup';
 import { MENU_WIDTH } from 'util/constants';
 
 import Footer from './Footer';
