@@ -32,8 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const moduleDetails = req.body;
 
-    const privateKey = process.env.AGENT_DB_KEY;
-    if (!privateKey) throw new Error('Missing WALLET_PRIVATE_KEY');
+    const privateKey = process.env.AGENT_DB_WALLET_PRIVATE_KEY;
+    if (!privateKey) throw new Error('Missing AGENT_DB_WALLET_PRIVATE_KEY');
 
     const wallet = new Wallet(privateKey);
     const message = `timestamp:${getNowTimestamp()},endpoint:${ENDPOINT_URL}/${ATTRIBUTE_TYPE_ID}`;
