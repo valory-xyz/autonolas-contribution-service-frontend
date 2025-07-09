@@ -9,8 +9,7 @@ import { useDispatch } from 'react-redux';
 import { notifyError } from '@autonolas/frontend-library';
 
 import { LogoSvg } from 'common-util/SVGs/logo';
-import { getLeaderboardList, getMemoryDetails, getTweetsList } from 'common-util/api';
-import { getModuleDetails } from 'common-util/api/moduleDetails';
+import { getMemoryDetails } from 'common-util/api';
 import { useFetchApplicationData } from 'common-util/hooks/useFetchApplicationData';
 import Login from 'components/Login';
 import {
@@ -45,26 +44,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const chainId = useAppSelector((state) => get(state, 'setup.chainId'));
 
   useFetchApplicationData();
-
-  // load memory details only once on page load
-  // TODO: to be removed when campaigns requested from new DB
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        dispatch(setIsMemoryDetailsLoading(true));
-
-        const { response } = await getMemoryDetails();
-        // TODO: to be updated with Ceramic migration
-        dispatch(setMemoryDetails(response as any));
-      } catch (error) {
-        notifyError('Error fetching members');
-      } finally {
-        dispatch(setIsMemoryDetailsLoading(false));
-      }
-    };
-
-    getData();
-  }, [dispatch]);
 
   /**
    * fetch if wallet is verified on page load
