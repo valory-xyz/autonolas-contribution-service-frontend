@@ -53,6 +53,7 @@ type ScheduledTweet = {
 };
 
 export type ContributeModuleDetails = {
+  // TODO: Update this once we point to prod.
   agent_id: 1;
   attr_def_id: 4;
   string_value: null;
