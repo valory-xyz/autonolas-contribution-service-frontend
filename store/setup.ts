@@ -82,11 +82,12 @@ const getRankedUsers = (leaderboard: LeaderboardUser[]): LeaderboardUser[] => {
       rankedUsers.push({ ...user, rank: 1 });
     } else {
       const previousUser = rankedUsers[index - 1];
+      const rank =
+        previousUser.points === user.points ? previousUser.rank : (previousUser.rank || 1) + 1;
+
       rankedUsers.push({
         ...user,
-        rank:
-          // if points are same as previous member, then same rank else add 1
-          previousUser.points === user.points ? previousUser.rank : (previousUser.rank || 1) + 1,
+        rank,
       });
     }
   });

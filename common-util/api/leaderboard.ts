@@ -6,6 +6,8 @@ export const getLeaderboardList = async () => {
   const json: ContributeAgent[] = await response.json();
   const usersList: LeaderboardUser[] = [];
 
+  // TODO: consider filtering and convenient mapping
+  // right inside the api endpoint
   if (json && Array.isArray(json)) {
     json.forEach((user) => {
       if (!user.json_value.wallet_address) return;

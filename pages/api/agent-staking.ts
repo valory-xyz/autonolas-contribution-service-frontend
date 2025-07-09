@@ -8,6 +8,29 @@ const ENDPOINT_URL = '/api/agent-attributes';
 const BASE_URL = `${process.env.NEXT_PUBLIC_AFMDB_URL}${ENDPOINT_URL}`;
 const ERROR_MESSAGE = 'Failed to update user profile.';
 
+const getUpdatedStakingParams = (
+  stakingParams: Pick<
+    ContributeAgent['json_value'],
+    'service_id' | 'service_id_old' | 'service_multisig' | 'service_multisig_old'
+  >,
+  agent: ContributeAgent,
+) => ({
+  service_id:
+    'service_id' in stakingParams ? stakingParams.service_id : agent.json_value.service_id,
+  service_id_old:
+    'service_id_old' in stakingParams
+      ? stakingParams.service_id_old
+      : agent.json_value.service_id_old,
+  service_multisig:
+    'service_multisig' in stakingParams
+      ? stakingParams.service_multisig
+      : agent.json_value.service_multisig,
+  service_multisig_old:
+    'service_multisig_old' in stakingParams
+      ? stakingParams.service_multisig_old
+      : agent.json_value.service_multisig_old,
+});
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'PATCH') {
     res.status(405).end();
@@ -26,8 +49,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const agent: ContributeAgent = await agentResponse.json();
 
     // Create a signature for updating the data
-    const privateKey = process.env.WALLET_PRIVATE_KEY;
-    if (!privateKey) throw new Error('Missing WALLET_PRIVATE_KEY');
+    const privateKey = process.env.AGENT_DB_KEY;
+    if (!privateKey) throw new Error('Missing AGENT_DB_KEY');
     const wallet = new Wallet(privateKey);
     const message = `timestamp:${getNowTimestamp()},endpoint:${ENDPOINT_URL}/${attributeId}`;
     const signature = await wallet.signMessage(message);
@@ -45,22 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           json_value: {
             ...agent.json_value,
             // only update staking parameters if provided
-            service_id:
-              'service_id' in stakingParams
-                ? stakingParams.service_id
-                : agent.json_value.service_id,
-            service_id_old:
-              'service_id_old' in stakingParams
-                ? stakingParams.service_id_old
-                : agent.json_value.service_id_old,
-            service_multisig:
-              'service_multisig' in stakingParams
-                ? stakingParams.service_multisig
-                : agent.json_value.service_multisig,
-            service_multisig_old:
-              'service_multisig_old' in stakingParams
-                ? stakingParams.service_multisig_old
-                : agent.json_value.service_multisig_old,
+            ...getUpdatedStakingParams(stakingParams, agent),
           },
         },
         auth: {
