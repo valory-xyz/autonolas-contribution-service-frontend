@@ -30,16 +30,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    const moduleDetails = req.body;
+    const { moduleDetails, attributeId } = req.body;
 
     const privateKey = process.env.AGENT_DB_WALLET_PRIVATE_KEY;
     if (!privateKey) throw new Error('Missing AGENT_DB_WALLET_PRIVATE_KEY');
 
     const wallet = new Wallet(privateKey);
-    const message = `timestamp:${getNowTimestamp()},endpoint:${ENDPOINT_URL}/${ATTRIBUTE_TYPE_ID}`;
+    const message = `timestamp:${getNowTimestamp()},endpoint:${ENDPOINT_URL}/${attributeId}`;
     const signature = await wallet.signMessage(message);
 
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(`${BASE_URL}/${attributeId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

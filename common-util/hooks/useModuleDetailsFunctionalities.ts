@@ -1,11 +1,15 @@
 import { cloneDeep } from 'lodash';
+import { useDispatch } from 'react-redux';
 
 import { getModuleDetails, proposePost } from 'common-util/api';
-import { useAppSelector } from 'store/setup';
+import { setModuleDetails, useAppSelector } from 'store/setup';
 import type { ModuleDetails } from 'store/types';
 
 export const useModuleDetailsFunctionalities = () => {
-  const { moduleDetails, isModuleDetailsLoading } = useAppSelector((state) => state.setup);
+  const { moduleDetails, moduleDetailsAttributeId, isModuleDetailsLoading } = useAppSelector(
+    (state) => state.setup,
+  );
+  const dispatch = useDispatch();
 
   const getUpdatedModuleDetailsAfterPostProposal = (
     tweetDetails: ModuleDetails['scheduled_tweet']['tweets'][number],
@@ -34,13 +38,13 @@ export const useModuleDetailsFunctionalities = () => {
   };
 
   const updateModuleDetails = async (updatedModuleDetails: ModuleDetails) => {
-    const response = await proposePost(updatedModuleDetails);
+    const response = await proposePost(updatedModuleDetails, moduleDetailsAttributeId!);
     return response;
   };
 
   const fetchUpdatedModuleDetails = async () => {
-    const response = await getModuleDetails();
-    return response;
+    const { moduleDetails } = await getModuleDetails();
+    dispatch(setModuleDetails(moduleDetails));
   };
 
   return {

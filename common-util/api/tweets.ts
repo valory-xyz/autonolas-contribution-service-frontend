@@ -17,13 +17,13 @@ export const getTweetsList = async () => {
   return tweetsList;
 };
 
-export const proposePost = async (updatedModuleDetails: ModuleDetails) => {
+export const proposePost = async (updatedModuleDetails: ModuleDetails, attributeId: number) => {
   const response = await fetch('/api/propose-post', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(updatedModuleDetails),
+    body: JSON.stringify({ moduleDetails: updatedModuleDetails, attributeId }),
   });
 
   if (!response.ok) {
