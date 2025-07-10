@@ -10,6 +10,11 @@ export const MODULE_DETAILS_API_BASE_URL = `${process.env.NEXT_PUBLIC_AFMDB_URL}
 
 const ERROR_MESSAGE = 'Failed to fetch module details.';
 
+/**
+ * Prevent nextjs from caching the route which is the default behaviour.
+ */
+export const revalidate = 0;
+
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
     const response = await fetch(MODULE_DETAILS_API_BASE_URL);
