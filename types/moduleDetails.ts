@@ -39,7 +39,7 @@ type Campaign = {
   proposer: Proposer;
 };
 
-type ScheduledTweet = {
+export type ScheduledTweet = {
   // Could be a tweet or thread
   text: string | string[];
   posted: boolean;

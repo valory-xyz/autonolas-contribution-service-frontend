@@ -33,12 +33,7 @@ export const Proposal = ({ proposal }: { proposal: Proposal }) => {
 
   const { signMessageAsync } = useSignMessage();
   const { account, isStaging } = useHelpers();
-  const {
-    fetchUpdatedModuleDetails,
-    updateModuleDetails,
-    moduleDetails,
-    getUpdatedModuleDetailsAfterPostMutation,
-  } = useUpdateModuleDetails();
+  const { submitApprovedExecutedPost } = useUpdateModuleDetails();
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account as Address) ?? false;
@@ -88,11 +83,7 @@ export const Proposal = ({ proposal }: { proposal: Proposal }) => {
       const updatedVotersWithVeOlas = [...(proposal.voters || []), vote];
       set(updatedProposal, 'voters', updatedVotersWithVeOlas);
 
-      const updatedModuleDetails = getUpdatedModuleDetailsAfterPostMutation(updatedProposal);
-
-      await updateModuleDetails(updatedModuleDetails!);
-      await fetchUpdatedModuleDetails();
-
+      await submitApprovedExecutedPost(updatedProposal);
       notifySuccess('Proposal approved');
     } catch (error) {
       notifyError('Failed to approve proposal');
@@ -127,11 +118,7 @@ export const Proposal = ({ proposal }: { proposal: Proposal }) => {
       const updatedProposal = cloneDeep(proposal);
       set(updatedProposal, 'executionAttempts', executionAttempts);
 
-      const updatedModuleDetails = getUpdatedModuleDetailsAfterPostMutation(updatedProposal);
-
-      await updateModuleDetails(updatedModuleDetails!);
-      await fetchUpdatedModuleDetails();
-
+      await submitApprovedExecutedPost(updatedProposal);
       notifySuccess('Proposal executed');
     } catch (error) {
       notifyError('Failed to execute');

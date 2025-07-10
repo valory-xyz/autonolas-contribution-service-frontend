@@ -37,11 +37,7 @@ export const TweetPropose = () => {
   const { signMessageAsync } = useSignMessage();
   const { isStaging, account } = useHelpers();
 
-  const {
-    getUpdatedModuleDetailsAfterPostProposal,
-    updateModuleDetails,
-    fetchUpdatedModuleDetails,
-  } = useUpdateModuleDetails();
+  const { submitPostProposal } = useUpdateModuleDetails();
   const [tweet, setTweet] = useState('');
   const [media, setMedia] = useState<TweetOrThread['media']>([]);
 
@@ -79,12 +75,7 @@ export const TweetPropose = () => {
         action_id: '',
       };
 
-      const updatedModuleDetails = getUpdatedModuleDetailsAfterPostProposal(tweetDetails);
-
-      // Update the module details
-      await updateModuleDetails(updatedModuleDetails!);
-      await fetchUpdatedModuleDetails();
-
+      await submitPostProposal(tweetDetails);
       notifySuccess('Post proposed');
 
       // reset form

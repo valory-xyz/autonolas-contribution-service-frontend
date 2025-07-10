@@ -1,5 +1,4 @@
-import type { ModuleDetails } from 'store/types';
-import type { ContributeModuleDetails } from 'types/moduleDetails';
+import type { ContributeModuleDetails, ScheduledTweet } from 'types/moduleDetails';
 import type { ContributeTweet } from 'types/tweets';
 
 export const getTweetsList = async () => {
@@ -17,21 +16,27 @@ export const getTweetsList = async () => {
   return tweetsList;
 };
 
-export const proposeOrUpdatePost = async (
-  updatedModuleDetails: ModuleDetails,
-  attributeId: number,
-) => {
-  const response = await fetch('/api/propose-post', {
+export const proposePost = async (post: ScheduledTweet, attributeId: number) => {
+  const response = await fetch('/api/post', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ moduleDetails: updatedModuleDetails, attributeId }),
+    body: JSON.stringify({ post, attributeId, isPostProposal: true }),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to propose tweet');
-  }
+  const json: ContributeModuleDetails = await response.json();
+  return json;
+};
+
+export const approveExecutePost = async (post: ScheduledTweet, attributeId: number) => {
+  const response = await fetch('/api/post', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ post, attributeId, isPostProposal: false }),
+  });
 
   const json: ContributeModuleDetails = await response.json();
   return json;
