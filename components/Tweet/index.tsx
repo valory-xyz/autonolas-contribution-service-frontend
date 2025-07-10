@@ -9,7 +9,7 @@ import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { useUpdateModuleDetails } from 'common-util/hooks/useUpdateModuleDetails';
+import { useModuleUtilities } from 'common-util/hooks/useModuleUtilities';
 import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_IMAGES, MAX_TWEET_LENGTH } from 'util/constants';
 
 import { checkVotingPower } from '../MembersList/requests';
@@ -37,7 +37,7 @@ export const TweetPropose = () => {
   const { signMessageAsync } = useSignMessage();
   const { isStaging, account } = useHelpers();
 
-  const { submitPostProposal } = useUpdateModuleDetails();
+  const { submitPostProposal } = useModuleUtilities();
   const [tweet, setTweet] = useState('');
   const [media, setMedia] = useState<TweetOrThread['media']>([]);
 

@@ -4,7 +4,7 @@ import { approveExecutePost, proposePost } from 'common-util/api';
 import { setModuleDetails, useAppSelector } from 'store/setup';
 import type { ScheduledTweet } from 'types/moduleDetails';
 
-export const useUpdateModuleDetails = () => {
+export const useModuleUtilities = () => {
   const { moduleDetails, moduleDetailsAttributeId, isModuleDetailsLoading } = useAppSelector(
     (state) => state.setup,
   );

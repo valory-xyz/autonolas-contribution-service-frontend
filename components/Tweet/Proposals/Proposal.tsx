@@ -12,7 +12,7 @@ import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 import { DisplayName } from 'common-util/DisplayName';
 import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { useUpdateModuleDetails } from 'common-util/hooks/useUpdateModuleDetails';
+import { useModuleUtilities } from 'common-util/hooks/useModuleUtilities';
 import type { ModuleDetails } from 'store/types';
 import { VEOLAS_QUORUM } from 'util/constants';
 
@@ -33,7 +33,7 @@ export const Proposal = ({ proposal }: { proposal: Proposal }) => {
 
   const { signMessageAsync } = useSignMessage();
   const { account, isStaging } = useHelpers();
-  const { submitApprovedExecutedPost } = useUpdateModuleDetails();
+  const { submitApprovedExecutedPost } = useModuleUtilities();
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account as Address) ?? false;
