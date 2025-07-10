@@ -17,7 +17,10 @@ export const getTweetsList = async () => {
   return tweetsList;
 };
 
-export const proposePost = async (updatedModuleDetails: ModuleDetails, attributeId: number) => {
+export const proposeOrUpdatePost = async (
+  updatedModuleDetails: ModuleDetails,
+  attributeId: number,
+) => {
   const response = await fetch('/api/propose-post', {
     method: 'PUT',
     headers: {

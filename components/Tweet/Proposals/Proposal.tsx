@@ -12,7 +12,7 @@ import { NA, notifyError, notifySuccess } from '@autonolas/frontend-library';
 import { DisplayName } from 'common-util/DisplayName';
 import { getCurrentProposalInfo } from 'common-util/functions/proposal';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { useModuleDetailsFunctionalities } from 'common-util/hooks/useModuleDetailsFunctionalities';
+import { useUpdateModuleDetails } from 'common-util/hooks/useUpdateModuleDetails';
 import type { ModuleDetails } from 'store/types';
 import { VEOLAS_QUORUM } from 'util/constants';
 
@@ -38,7 +38,7 @@ export const Proposal = ({ proposal }: { proposal: Proposal }) => {
     updateModuleDetails,
     moduleDetails,
     getUpdatedModuleDetailsAfterPostMutation,
-  } = useModuleDetailsFunctionalities();
+  } = useUpdateModuleDetails();
 
   const { isQuorumAchieved, votersAddress, isProposalVerified } = getCurrentProposalInfo(proposal);
   const hasVoted = votersAddress?.includes(account as Address) ?? false;

@@ -1,11 +1,11 @@
 import { cloneDeep } from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { getModuleDetails, proposePost } from 'common-util/api';
+import { getModuleDetails, proposeOrUpdatePost } from 'common-util/api';
 import { setModuleDetails, useAppSelector } from 'store/setup';
 import type { ModuleDetails } from 'store/types';
 
-export const useModuleDetailsFunctionalities = () => {
+export const useUpdateModuleDetails = () => {
   const { moduleDetails, moduleDetailsAttributeId, isModuleDetailsLoading } = useAppSelector(
     (state) => state.setup,
   );
@@ -38,7 +38,7 @@ export const useModuleDetailsFunctionalities = () => {
   };
 
   const updateModuleDetails = async (updatedModuleDetails: ModuleDetails) => {
-    const response = await proposePost(updatedModuleDetails, moduleDetailsAttributeId!);
+    const response = await proposeOrUpdatePost(updatedModuleDetails, moduleDetailsAttributeId!);
     return response;
   };
 

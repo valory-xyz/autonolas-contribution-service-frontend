@@ -20,7 +20,6 @@ export const useHealthCheckup = (
   // function to fetch data from the API
   const fetchData = useCallback(async () => {
     try {
-      return;
       const response = await fetchUrl(apiEndpoint);
       const isHealthy = !!response.is_transitioning_fast;
 

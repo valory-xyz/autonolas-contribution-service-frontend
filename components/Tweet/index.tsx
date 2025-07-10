@@ -9,7 +9,7 @@ import { notifyError, notifySuccess } from '@autonolas/frontend-library';
 
 import { EducationTitle } from 'common-util/Education/EducationTitle';
 import { useHelpers } from 'common-util/hooks/useHelpers';
-import { useModuleDetailsFunctionalities } from 'common-util/hooks/useModuleDetailsFunctionalities';
+import { useUpdateModuleDetails } from 'common-util/hooks/useUpdateModuleDetails';
 import { HUNDRED_K_OLAS_IN_WEI, MAX_TWEET_IMAGES, MAX_TWEET_LENGTH } from 'util/constants';
 
 import { checkVotingPower } from '../MembersList/requests';
@@ -41,7 +41,7 @@ export const TweetPropose = () => {
     getUpdatedModuleDetailsAfterPostProposal,
     updateModuleDetails,
     fetchUpdatedModuleDetails,
-  } = useModuleDetailsFunctionalities();
+  } = useUpdateModuleDetails();
   const [tweet, setTweet] = useState('');
   const [media, setMedia] = useState<TweetOrThread['media']>([]);
 
