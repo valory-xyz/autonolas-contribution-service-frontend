@@ -42,6 +42,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
    */
   useEffect(() => {
     const verifyAccount = async () => {
+      return;
       // on first render, if there is no account (ie. wallet not connected),
       // mark as not verified
       if (!account) {
