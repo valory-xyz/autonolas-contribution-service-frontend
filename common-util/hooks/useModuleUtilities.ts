@@ -1,6 +1,7 @@
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { approveExecutePost, proposePost } from 'common-util/api';
+import { approveOrExecutePost, proposePost } from 'common-util/api';
 import { setModuleDetails, useAppSelector } from 'store/setup';
 import type { ScheduledTweet } from 'types/moduleDetails';
 
@@ -10,23 +11,27 @@ export const useModuleUtilities = () => {
   );
   const dispatch = useDispatch();
 
-  const submitPostProposal = async (post: ScheduledTweet) => {
-    const response = await proposePost(post, moduleDetailsAttributeId!);
-    dispatch(setModuleDetails(response.json_value));
-    return response;
-  };
+  const submitPostProposal = useCallback(
+    async (post: ScheduledTweet) => {
+      const response = await proposePost(post, moduleDetailsAttributeId!);
+      dispatch(setModuleDetails(response.json_value));
+    },
+    [moduleDetailsAttributeId, dispatch],
+  );
 
-  const submitApprovedExecutedPost = async (post: ScheduledTweet) => {
-    const response = await approveExecutePost(post, moduleDetailsAttributeId!);
-    dispatch(setModuleDetails(response.json_value));
-    return response;
-  };
+  const submitApprovedOrExecutedPost = useCallback(
+    async (post: ScheduledTweet) => {
+      const response = await approveOrExecutePost(post, moduleDetailsAttributeId!);
+      dispatch(setModuleDetails(response.json_value));
+    },
+    [moduleDetailsAttributeId, dispatch],
+  );
 
   return {
     moduleDetails,
     isModuleDetailsLoading,
     moduleDetailsAttributeId,
     submitPostProposal,
-    submitApprovedExecutedPost,
+    submitApprovedOrExecutedPost,
   };
 };

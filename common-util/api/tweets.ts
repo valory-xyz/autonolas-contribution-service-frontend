@@ -16,7 +16,10 @@ export const getTweetsList = async () => {
   return tweetsList;
 };
 
-export const proposePost = async (post: ScheduledTweet, attributeId: number) => {
+export const proposePost = async (
+  post: ScheduledTweet,
+  attributeId: number,
+): Promise<ContributeModuleDetails> => {
   const response = await fetch('/api/post', {
     method: 'PUT',
     headers: {
@@ -25,11 +28,13 @@ export const proposePost = async (post: ScheduledTweet, attributeId: number) => 
     body: JSON.stringify({ post, attributeId, isPostProposal: true }),
   });
 
-  const json: ContributeModuleDetails = await response.json();
-  return json;
+  return await response.json();
 };
 
-export const approveExecutePost = async (post: ScheduledTweet, attributeId: number) => {
+export const approveOrExecutePost = async (
+  post: ScheduledTweet,
+  attributeId: number,
+): Promise<ContributeModuleDetails> => {
   const response = await fetch('/api/post', {
     method: 'PUT',
     headers: {
@@ -38,6 +43,5 @@ export const approveExecutePost = async (post: ScheduledTweet, attributeId: numb
     body: JSON.stringify({ post, attributeId, isPostProposal: false }),
   });
 
-  const json: ContributeModuleDetails = await response.json();
-  return json;
+  return await response.json();
 };

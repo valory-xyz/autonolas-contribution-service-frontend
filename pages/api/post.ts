@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, omit } from 'lodash';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MODULE_DETAILS_API_BASE_URL } from 'pages/api/module-details';
 
@@ -48,17 +48,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     const { post, attributeId, isPostProposal } = req.body;
 
-    /* Update module details depending whether it's a
+    /**
+     * Update module details depending whether it's a
      * new post proposal or an old post has been approved/executed
      */
     const moduleDetails = isPostProposal
       ? await getUpdatedModuleDetailsOnPostProposal(post)
       : await getUpdatedModuleDetailsAfterPostMutation(post);
-    const {
-      last_updated: _lastUpdated,
-      attribute_id: _attributeId,
-      ...agentAttr
-    } = moduleDetails[0];
 
     const message = `timestamp:${getNowTimestamp()},endpoint:${ENDPOINT_URL}/${attributeId}`;
     const signature = await getSignature(message);
@@ -69,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        agent_attr: agentAttr,
+        agent_attr: omit(moduleDetails[0], ['last_updated', 'attribute_id']),
         auth: {
           agent_id: AGENT_TYPE,
           signature,
